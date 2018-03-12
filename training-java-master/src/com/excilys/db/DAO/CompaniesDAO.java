@@ -1,18 +1,8 @@
 package com.excilys.db.DAO;
 
-public class CompaniesDAO {
-	private int id;
-	private String name;
-	public int getId() {
-		return id;
-	}
-	public void setId(int id) {
-		this.id = id;
-	}
-	public String getName() {
-		return name;
-	}
-	public void setName(String name) {
-		this.name = name;
-	}
+import com.excilys.db.mapper.Companies;
+
+public interface CompaniesDAO {
+ 
+	public Companies[] listCompanies();
 }
