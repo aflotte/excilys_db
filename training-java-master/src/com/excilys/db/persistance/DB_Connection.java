@@ -3,6 +3,7 @@ package com.excilys.db.persistance;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import com.mysql.jdbc.Driver;
 
 //singleton ??
 //TODO : faire un singleton si nécessaire
@@ -19,19 +20,15 @@ public final class DB_Connection {
 	    private String              password;
 	
 	    
-	    Connection conn = null;
+	    private static Connection conn = null;
 	    private static DB_Connection instance;
 	    
 	    private DB_Connection() {
-	    	try {
-				Class.forName("com.mysql.jcdb.Driver").newInstance();
-			} catch (InstantiationException | IllegalAccessException | ClassNotFoundException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+	    	
+	    	
 	    }
 	    
-	    public DB_Connection getInstance() {
+	    public static DB_Connection getInstance() {
 			if (null == instance) {
 				instance = new DB_Connection();
 			}
@@ -45,11 +42,34 @@ public final class DB_Connection {
 	    public void Connection() {
 
 	    try {
-			Connection conn = DriverManager.getConnection(PROPERTY_URL,PROPERTY_NOM_UTILISATEUR,PROPERTY_MOT_DE_PASSE);
+			conn = DriverManager.getConnection(PROPERTY_URL,PROPERTY_NOM_UTILISATEUR,PROPERTY_MOT_DE_PASSE);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	    }
+	    
+	    public void Disconnect() {
+	    	if ( conn != null) {
+	    		System.out.println("Fermeture de la connection");
+	    		try {
+					conn.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+	    	}
+	    	conn = null;
+	    }
+
+		public static Connection getConn() {
+			return conn;
+		}
+
+		public void setConn(Connection conn) {
+			this.conn = conn;
+		}
+	    
+
 	    
 }
