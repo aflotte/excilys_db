@@ -6,6 +6,10 @@ public class Computer {
 	private int id;
 	private String name;
 	private Date introduced;
+	private Date discontinued;
+	private int companyId;
+	
+	
 	public int getId() {
 		return id;
 	}
@@ -36,8 +40,7 @@ public class Computer {
 	public void setCompanyId(int companyId) {
 		this.companyId = companyId;
 	}
-	private Date discontinued;
-	private int companyId;
+
 	
 	
 	
