@@ -1,5 +1,6 @@
 package com.excilys.db.test;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
@@ -29,8 +30,9 @@ public class test {
     	testComp.setName("Test");
     	testComp.setIntroduced(new Date());
     	testComp.setDiscontinued(new Date());
-    	computers.createAComputer(testComp);
-    	
+    	int id  = computers.createAComputer(testComp);
+    	System.out.println(id);
+    	//computers.deleteAComputer(id);
     	System.out.println("Fin du test");
     }
 }

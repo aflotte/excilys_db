@@ -64,7 +64,7 @@ public class ComputerDAO {
 	public void updateAComputer(Computer comp, int id) {	
 		DB_Connection.getInstance().Connection();
 		Connection conn = DB_Connection.getConn();
-		String querry = "UPDATE computer SET name = " + comp.getName() + ", introduced = "+ comp.getIntroduced() + ", discontinued = " + comp.getDiscontinued() + ", company_id = " + comp.getCompanyId() +" WHERE id = "+ id;
+		String querry = "UPDATE computer SET name = " + comp.getName() + ", introduced = '"+ comp.getIntroduced() + "', discontinued = '" + comp.getDiscontinued() + "', company_id = " + comp.getCompanyId() +" WHERE id = "+ id;
 		try {
 			PreparedStatement prep1 = conn.prepareStatement(querry);
 			prep1.executeQuery();
@@ -74,17 +74,32 @@ public class ComputerDAO {
 		}
 	}
 
-	public void createAComputer(Computer computer) {
+	public int createAComputer(Computer computer) {
 		DB_Connection.getInstance().Connection();
 		Connection conn = DB_Connection.getConn();
-		String querry = "INSERT INTO computer(name,introduced,discontinued,company_id) VALUES (" + computer.getName() + "," + computer.getIntroduced() + "," + computer.getDiscontinued() + "," + computer.getCompanyId() + ")";
+		ResultSet resultSet = null;
+		
+		java.sql.Date dateIntroduced = new java.sql.Date(computer.getIntroduced().getTime());
+		java.sql.Date dateDiscontinued = new java.sql.Date(computer.getDiscontinued().getTime());
+		
+		java.util.Date dt = new java.util.Date();
+
+		java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+		String currentTime = sdf.format(dt);
+		
+		String querry = "INSERT INTO computer(name,introduced,discontinued,company_id) VALUES ('" + computer.getName() + "','" + currentTime + "','" + currentTime + "'," + computer.getCompanyId() + ")";
+		System.out.println(querry);
+		int id  = 0;
 		try {
-			PreparedStatement prep1 = conn.prepareStatement(querry);
-			prep1.executeQuery();
-		} catch (SQLException e) {
+			java.sql.Statement statement = conn.createStatement();
+			id = statement.executeUpdate(querry);
+		} catch (SQLException e1) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			e1.printStackTrace();
 		}
+
+		return id;
 	}
 
 	public void deleteAComputer(int id) {
