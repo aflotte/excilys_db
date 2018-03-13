@@ -13,12 +13,12 @@ public class test {
     public static void main(String[] args) {
     	System.out.println("Mise en route !");
 
-    	CompaniesDAO companies = new CompaniesDAO();
+    	CompaniesDAO companies = CompaniesDAO.getInstance();
     	List<Companies> companiesList = companies.listCompanies();
     	for (int i = 0; i < companiesList.size();i++) {
     		System.out.println(companiesList.get(i).getName());
     	}
-    	ComputerDAO computers = new ComputerDAO();
+    	ComputerDAO computers = ComputerDAO.getInstance();
     	List<Computer> computerList = computers.listComputer();
     	for (int i = 0; i < computerList.size();i++) {
     		System.out.println(computerList.get(i).getName());

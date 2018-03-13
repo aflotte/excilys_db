@@ -29,21 +29,19 @@ public class ScanCLI {
 	
 	
 	public static Date scanDate(Scanner used) {
-		SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyy/MM/dd");
         String stringDate = used.next();
         if ( stringDate.equals("null")) {
         	return null;
         }
         try {
-
             Date date = formatter.parse(stringDate);
             System.out.println(date);
             System.out.println(formatter.format(date));
             return date;
         } catch (ParseException e) {
-            e.printStackTrace();
+            System.out.println("Comme la date entrée ne correspondait pas au format, aujourd'hui a été rentré par default !");
             return new Date();
-        }
-		
+        }	
 	}
 }

@@ -13,6 +13,32 @@ import com.excilys.db.persistance.DB_Connection;
 public class ComputerDAO {
 
 	
+	private static ComputerDAO instance;
+    
+    private ComputerDAO() {
+    	
+    	
+    }
+    
+    public static ComputerDAO getInstance() {
+		if (null == instance) {
+			instance = new ComputerDAO();
+		}
+    	return instance;
+    	
+    }
+	
+	
+	
+	
+	public Computer ResultToComputer(ResultSet resultSet) throws SQLException {
+		Computer toReturn = new Computer();
+		toReturn.setName(resultSet.getString(1));
+		toReturn.setIntroduced(resultSet.getDate(2));
+		toReturn.setIntroduced(resultSet.getDate(3));
+		toReturn.setCompanyId(resultSet.getInt(4));
+		return toReturn;
+	}
 	
 	public List<Computer> listComputer() {
 		DB_Connection.getInstance().Connection();
@@ -24,11 +50,7 @@ public class ComputerDAO {
 			PreparedStatement prep1 = conn.prepareStatement(querry);
 			resultSet = prep1.executeQuery();
 			while (resultSet.next()) {
-				Computer toAdd = new Computer();
-				toAdd.setName(resultSet.getString(1));
-				toAdd.setIntroduced(resultSet.getDate(2));
-				toAdd.setIntroduced(resultSet.getDate(3));
-				toAdd.setCompanyId(resultSet.getInt(4));
+				Computer toAdd = ResultToComputer(resultSet);
 				listResult.add(toAdd);
 			}
 		} catch (SQLException e) {
@@ -49,10 +71,7 @@ public class ComputerDAO {
 			PreparedStatement prep1 = conn.prepareStatement(querry);
 			resultSet = prep1.executeQuery();
 			if (resultSet.next()) {
-				result.setName(resultSet.getString(1));
-				result.setIntroduced(resultSet.getDate(2));
-				result.setDiscontinued(resultSet.getDate(3));
-				result.setCompanyId(resultSet.getInt(4));
+				result = ResultToComputer(resultSet);
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block

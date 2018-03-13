@@ -12,6 +12,20 @@ import com.excilys.db.persistance.DB_Connection;
 
 public class CompaniesDAO{
 	
+	private static CompaniesDAO instance;
+    
+    private CompaniesDAO() {
+    	
+    	
+    }
+    
+    public static CompaniesDAO getInstance() {
+		if (null == instance) {
+			instance = new CompaniesDAO();
+		}
+    	return instance;
+    	
+    }
 	
 	public List<Companies> listCompanies() {
 		DB_Connection.getInstance().Connection();

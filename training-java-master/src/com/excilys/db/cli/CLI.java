@@ -73,7 +73,7 @@ public class CLI {
 	}
 	
 	public static void AfficherCompagnies() {
-		CompaniesDAO companies = new CompaniesDAO();
+		CompaniesDAO companies = CompaniesDAO.getInstance();
 		List<Companies> listeCompanies =companies.listCompanies();
 		System.out.println("Voici la liste des compagnies : ");
 		for (int i = 0; i < listeCompanies.size();i++) {
@@ -82,7 +82,7 @@ public class CLI {
 	}
 	
 	public static void AfficherOrdinateurs() {
-		ComputerDAO computer = new ComputerDAO();
+		ComputerDAO computer = ComputerDAO.getInstance();
 		List<Computer> listeOrdinateur =computer.listComputer();
 		System.out.println("Voici la liste des ordinateurs : ");
 		for (int i = 0; i < listeOrdinateur.size();i++) {
@@ -91,7 +91,7 @@ public class CLI {
 	}
 	
 	public static void AjouterOrdinateur() {
-		ComputerDAO computer = new ComputerDAO();
+		ComputerDAO computer = ComputerDAO.getInstance();
 		Computer aAjouter = new Computer();
 		aAjouter = ScanCLI.scanComputer();
 		computer.createAComputer(aAjouter);
@@ -100,20 +100,20 @@ public class CLI {
 	
 	
 	private static void SupprimerOrdinateur() {
-		ComputerDAO computer = new ComputerDAO();
+		ComputerDAO computer = ComputerDAO.getInstance();
 		System.out.println("Donner l'Id de l'ordinateur à supprimer");
 		computer.deleteAComputer(sc.nextInt());
 	}
 	
 
 	private static void AfficherOrdinateur() {
-		ComputerDAO computer = new ComputerDAO();
+		ComputerDAO computer = ComputerDAO.getInstance();
 		System.out.println("Donner l'Id de l'ordinateur à afficher");
 		System.out.println(computer.showDetails(sc.nextInt()));
 	}
 	
 	private static void MettreAJour() {
-		ComputerDAO computer = new ComputerDAO();
+		ComputerDAO computer = ComputerDAO.getInstance();
 		Computer aAjouter = new Computer();
 		aAjouter = ScanCLI.scanComputer();
 		computer.updateAComputer(aAjouter,sc.nextInt());
