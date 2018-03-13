@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import com.excilys.db.mapper.Computer;
@@ -28,7 +29,13 @@ public class ComputerDAO {
     	
     }
 	
+	private static Connection conn;
 	
+	private void Init() {
+		DB_Connection.getInstance().Connection();
+		conn = DB_Connection.getConn();
+		
+	}
 	
 	
 	public Computer ResultToComputer(ResultSet resultSet) throws SQLException {
@@ -41,8 +48,7 @@ public class ComputerDAO {
 	}
 	
 	public List<Computer> listComputer() {
-		DB_Connection.getInstance().Connection();
-		Connection conn = DB_Connection.getConn();
+		Init();
 		ResultSet resultSet = null;
 		List<Computer> listResult = new ArrayList<Computer>();
 		String querry = "SELECT name, introduced, discontinued, company_id FROM computer";
@@ -55,17 +61,14 @@ public class ComputerDAO {
 			}
 			DB_Connection.getInstance().Disconnect();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			DB_Connection.getInstance().Disconnect();
 		}
-		
 		return listResult;
 	}
 
 	public Computer showDetails(int id) {
-		DB_Connection.getInstance().Connection();
-		Connection conn = DB_Connection.getConn();
+		Init();
 		ResultSet resultSet = null;
 		Computer result = new Computer();
 		String querry = "SELECT name, introduced, discontinued, company_id FROM computer WHERE id = " + id;
@@ -77,7 +80,6 @@ public class ComputerDAO {
 			}
 			
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			DB_Connection.getInstance().Disconnect();
 		}
@@ -86,8 +88,7 @@ public class ComputerDAO {
 	}
 
 	public void updateAComputer(Computer computer, int id) {	
-		DB_Connection.getInstance().Connection();
-		Connection conn = DB_Connection.getConn();
+		Init();
 		java.util.Date dateIntroduced = computer.getIntroduced();
 		java.util.Date dateDiscontinued = computer.getDiscontinued();
 
@@ -113,15 +114,13 @@ public class ComputerDAO {
 			ps.executeUpdate();
 			DB_Connection.getInstance().Disconnect();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			DB_Connection.getInstance().Disconnect();
 		}
 	}
 
 	public void createAComputer(Computer computer) {
-		DB_Connection.getInstance().Connection();
-		Connection conn = DB_Connection.getConn();
+		Init();
 		java.util.Date dateIntroduced = computer.getIntroduced();
 		java.util.Date dateDiscontinued = computer.getDiscontinued();
 
@@ -145,7 +144,6 @@ public class ComputerDAO {
 			ps.executeUpdate();
 			DB_Connection.getInstance().Disconnect();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			DB_Connection.getInstance().Disconnect();
 		}
@@ -153,36 +151,33 @@ public class ComputerDAO {
 		
 	}
 	
-	public List<Integer> getId(Computer computer) {
-		List<Integer> result = new ArrayList<Integer>();
-		DB_Connection.getInstance().Connection();
-		Connection conn = DB_Connection.getConn();
-		ResultSet resultSet = null;
-		java.util.Date dateIntroduced = computer.getIntroduced();
-		java.util.Date dateDiscontinued = computer.getDiscontinued();
-
-		java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+	
+	
+	private String chooseTheQuerry(Date dateIntroduced,Date dateDiscontinued ) {
 		String querryNotNULL = "SELECT id FROM computer WHERE name = ? AND introduced = ? AND discontinued = ? AND company_id = ?";
 		String querryIntroducedNULL = "SELECT id FROM computer WHERE name = ? AND introduced is ? AND discontinued = ? AND company_id = ?";
 		String querryDiscontinuedNULL = "SELECT id FROM computer WHERE name = ? AND introduced = ? AND discontinued is ? AND company_id = ?";
 		String querryBothNULL = "SELECT id FROM computer WHERE name = ? AND introduced is ? AND discontinued is ? AND company_id = ?";
-		// choice of the good query
-		String querry;
 		if(dateIntroduced == null) {
 			if(dateDiscontinued == null) {
-				querry = querryBothNULL;
+				return querryBothNULL;
 			}else {
-				querry = querryIntroducedNULL;
+				return querryIntroducedNULL;
 			}
 		}else {
 			if(dateDiscontinued == null) {
-				querry = querryNotNULL;
+				return querryNotNULL;
 			}else {
-				querry = querryDiscontinuedNULL;
+				return querryDiscontinuedNULL;
 			}
 		}
-		try {
-			PreparedStatement ps = conn.prepareStatement(querry);
+	}
+	
+	private void fillGetIdStatement(PreparedStatement ps,Computer computer) throws SQLException {
+		java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		java.util.Date dateIntroduced = computer.getIntroduced();
+		java.util.Date dateDiscontinued = computer.getDiscontinued();
+
 			ps.setString(1, computer.getName());
 			if (dateIntroduced == null) {
 				ps.setNString(2,null);
@@ -195,12 +190,22 @@ public class ComputerDAO {
 				ps.setString(3, sdf.format(dateDiscontinued));
 			}
 			ps.setInt(4, computer.getCompanyId());
+
+	}
+	
+	public List<Integer> getId(Computer computer) {
+		Init();
+		List<Integer> result = new ArrayList<Integer>();
+		ResultSet resultSet = null;
+		String querry = chooseTheQuerry(computer.getIntroduced(),computer.getDiscontinued());
+		try {
+			PreparedStatement ps = conn.prepareStatement(querry);
+			fillGetIdStatement(ps,computer);
 			resultSet = ps.executeQuery();
 			while (resultSet.next()) {
 				result.add(resultSet.getInt(1));
 			}
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			DB_Connection.getInstance().Disconnect();
 		}
@@ -211,9 +216,8 @@ public class ComputerDAO {
 	
 	
 	public List<Integer> getIdFromName(String name) {
+		Init();
 		List<Integer> result = new ArrayList<Integer>();
-		DB_Connection.getInstance().Connection();
-		Connection conn = DB_Connection.getConn();
 		ResultSet resultSet = null;
 		String querry = "SELECT id FROM computer WHERE name = ?";
 		try {
@@ -225,7 +229,6 @@ public class ComputerDAO {
 				result.add(resultSet.getInt(1));
 			}
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			DB_Connection.getInstance().Disconnect();
 		}
@@ -246,7 +249,6 @@ public class ComputerDAO {
 			prep1.executeUpdate(querry);
 			DB_Connection.getInstance().Disconnect();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			DB_Connection.getInstance().Disconnect();
 		}

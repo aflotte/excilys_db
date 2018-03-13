@@ -30,8 +30,9 @@ public class test {
     	testComp.setDiscontinued(new Date());
     	computers.createAComputer(testComp);
     	List<Integer> testList = computers.getId(testComp);
+    	
     	for (int i = 0; i < testList.size(); i++) {
-    		
+    		System.out.println("L'id de l'ordinateur ajouté est :" +testList.get(i) );
     		testComp.setName("7357");
     		computers.updateAComputer(testComp, testList.get(i));
     		Computer testDetails = computers.showDetails(testList.get(i));
