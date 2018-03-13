@@ -1,6 +1,6 @@
 package com.excilys.db.test;
 
-import java.time.LocalDate;
+
 import java.util.Date;
 import java.util.List;
 
@@ -8,7 +8,6 @@ import com.excilys.db.DAO.CompaniesDAO;
 import com.excilys.db.DAO.ComputerDAO;
 import com.excilys.db.mapper.Companies;
 import com.excilys.db.mapper.Computer;
-import com.excilys.db.persistance.DB_Connection;
 
 public class test {
     public static void main(String[] args) {
@@ -32,6 +31,9 @@ public class test {
     	computers.createAComputer(testComp);
     	List<Integer> testList = computers.getId(testComp);
     	for (int i = 0; i < testList.size(); i++) {
+    		
+    		testComp.setName("7357");
+    		computers.updateAComputer(testComp, testList.get(i));
     		Computer testDetails = computers.showDetails(testList.get(i));
     		System.out.println("testDetails = " + testDetails);
     		computers.deleteAComputer(testList.get(i));

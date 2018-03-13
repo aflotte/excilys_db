@@ -5,7 +5,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import com.excilys.db.mapper.Computer;
@@ -81,8 +80,6 @@ public class ComputerDAO {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		//String querry = "UPDATE computer SET name = " + comp.getName() + ", introduced = '"+ comp.getIntroduced() + "', discontinued = '" + comp.getDiscontinued() + "', company_id = " + comp.getCompanyId() +" WHERE id = "+ id;
-
 	}
 
 	public void createAComputer(Computer computer) {
@@ -145,8 +142,6 @@ public class ComputerDAO {
 		DB_Connection.getInstance().Connection();
 		Connection conn = DB_Connection.getConn();
 		ResultSet resultSet = null;
-
-		java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		String querry = "SELECT id FROM computer WHERE name = ?";
 		try {
 			PreparedStatement ps = conn.prepareStatement(querry);

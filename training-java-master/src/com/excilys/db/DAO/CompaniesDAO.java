@@ -11,12 +11,6 @@ import com.excilys.db.mapper.Companies;
 import com.excilys.db.persistance.DB_Connection;
 
 public class CompaniesDAO{
-
-    private DAOFactory          daoFactory;
-
-    public void CompaniesDaoImpl( DAOFactory daoFactory ) {
-        this.daoFactory = daoFactory;
-    }
 	
 	
 	public List<Companies> listCompanies() {

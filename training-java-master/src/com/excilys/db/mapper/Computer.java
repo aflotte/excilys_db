@@ -1,6 +1,5 @@
 package com.excilys.db.mapper;
 
-import java.time.LocalDate;
 import java.util.Date;
 
 public class Computer {
@@ -41,10 +40,7 @@ public class Computer {
 	public void setCompanyId(int companyId) {
 		this.companyId = companyId;
 	}
-	public void setCompanyId(String string) {
-		// TODO Auto-generated method stub
-		
-	}
+	
 	
 	@Override
 	public String toString() {
