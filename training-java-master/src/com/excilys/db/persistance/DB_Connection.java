@@ -7,7 +7,6 @@ import java.sql.SQLException;
 
 public final class DB_Connection {
 	
-	 	private static final String FICHIER_PROPERTIES       = "/com/excilys/db/dao/dao.properties";
 	    private static final String PROPERTY_URL             = "jdbc:mysql://localhost:3306/computer-database-db?zeroDateTimeBehavior=convertToNull&autoReconnect=true&characterEncoding=UTF-8&characterSetResults=UTF-8";
 	    private static final String PROPERTY_NOM_UTILISATEUR = "admincdb";
 	    private static final String PROPERTY_MOT_DE_PASSE    = "qwerty1234";
@@ -45,7 +44,6 @@ public final class DB_Connection {
 	    
 	    public void Disconnect() {
 	    	if ( conn != null) {
-	    		System.out.println("Fermeture de la connection");
 	    		try {
 					conn.close();
 				} catch (SQLException e) {
@@ -60,9 +58,6 @@ public final class DB_Connection {
 			return conn;
 		}
 
-		public void setConn(Connection conn) {
-			this.conn = conn;
-		}
 	    
 
 	    

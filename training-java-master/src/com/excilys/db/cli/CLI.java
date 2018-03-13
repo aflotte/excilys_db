@@ -13,6 +13,7 @@ public class CLI {
 	static Scanner sc;
 	
 	public static void main(String[] args) {
+		System.out.println("Bienvenue sur le CLI de la base de donnée");
 		sc = new Scanner(System.in);
 		boolean continu = true;
 		while ( continu) {
@@ -50,7 +51,7 @@ public class CLI {
 //TODO: mettre les fonctions
 
 	public static void MenuIntroduction() {
-		System.out.println("Bienvenue sur le CLI de la base de donnée");
+
 		System.out.println("Liste des commandes :");
 		System.out.println("1 - Afficher la liste des compagnies");
 		System.out.println("2 - Afficher la liste des ordinateurs");
@@ -100,6 +101,7 @@ public class CLI {
 	
 	
 	private static void SupprimerOrdinateur() {
+		//TODO: gérer le cas où l'id est faux
 		ComputerDAO computer = ComputerDAO.getInstance();
 		System.out.println("Donner l'Id de l'ordinateur à supprimer");
 		computer.deleteAComputer(sc.nextInt());

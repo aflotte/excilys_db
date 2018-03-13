@@ -9,6 +9,10 @@ import com.excilys.db.mapper.Computer;
 
 public class ScanCLI {
 	
+	//TODO: un scanInt qui gère les erreurs du nextInt comme voulu
+	
+	
+	
 	
 	public static Computer scanComputer() {
 		Computer aRetourner = new Computer(); 
@@ -22,7 +26,7 @@ public class ScanCLI {
 		System.out.println("rentrer null pour ne pas remplir le champ");
 		aRetourner.setDiscontinued(ScanCLI.scanDate(sc));
 		System.out.println("Entrer l'Id de la compagnie :");
-		//TODO: vérifier l'Id
+		//TODO: vérifier l'Id + gestion de l'erreur
 		aRetourner.setCompanyId(sc.nextInt());
 		return aRetourner;
 	}
