@@ -1,4 +1,4 @@
-package col.excilys.db.exception;
+package com.excilys.db.exception;
 
 public class DAOConfigurationException extends RuntimeException {
 	/**

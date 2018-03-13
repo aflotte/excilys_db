@@ -4,8 +4,11 @@ import com.excilys.db.DAO.ComputerDAO;
 import com.excilys.db.mapper.Companies;
 import com.excilys.db.mapper.Computer;
 import com.excilys.db.cli.ScanCLI;
+import com.excilys.db.exception.CompaniesIdIncorrect;
 
 import java.util.InputMismatchException;
+import com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException;
+
 import java.util.List;
 import java.util.Scanner;
 
@@ -101,6 +104,8 @@ public class CLI {
 			computer.createAComputer(aAjouter);
 		}catch (InputMismatchException e){
 			System.out.println("Entrez un entier !");
+		}catch (CompaniesIdIncorrect e) {
+			System.out.println("L'id de la compagnie que vous avez rentré ne correspond à aucune compagnie !");
 		}
 	}
 	

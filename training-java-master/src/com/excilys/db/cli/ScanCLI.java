@@ -6,6 +6,8 @@ import java.util.Date;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
+import com.excilys.db.DAO.CompaniesDAO;
+import com.excilys.db.exception.CompaniesIdIncorrect;
 import com.excilys.db.mapper.Computer;
 
 public class ScanCLI {
@@ -15,7 +17,7 @@ public class ScanCLI {
 	
 	
 	
-	public static Computer scanComputer() throws InputMismatchException{
+	public static Computer scanComputer() throws InputMismatchException, CompaniesIdIncorrect{
 		Computer aRetourner = new Computer(); 
 		Scanner sc = new Scanner(System.in);
 		System.out.println("Entrer le nom de l'ordinateur : ");
@@ -27,8 +29,15 @@ public class ScanCLI {
 		System.out.println("rentrer null pour ne pas remplir le champ");
 		aRetourner.setDiscontinued(ScanCLI.scanDate(sc));
 		System.out.println("Entrer l'Id de la compagnie :");
+		int id_companie = sc.nextInt();
+		if (CompaniesDAO.existCompanies(id_companie)) {
+			aRetourner.setCompanyId(id_companie);
+		}else {
+			System.out.println("La compagnie rentrée n'existe pas");
+			throw new CompaniesIdIncorrect();
+		}
 		//TODO: vérifier l'Id + gestion de l'erreur
-		aRetourner.setCompanyId(sc.nextInt());
+
 		return aRetourner;
 	}
 	

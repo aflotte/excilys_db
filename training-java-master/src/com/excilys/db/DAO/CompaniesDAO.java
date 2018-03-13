@@ -11,7 +11,13 @@ import com.excilys.db.mapper.Companies;
 import com.excilys.db.persistance.DB_Connection;
 
 public class CompaniesDAO{
+	private static Connection conn;
 	
+	private static void Init() {
+		DB_Connection.getInstance().Connection();
+		conn = DB_Connection.getConn();
+		
+	}
 	private static CompaniesDAO instance;
     
     private CompaniesDAO() {
@@ -26,10 +32,31 @@ public class CompaniesDAO{
     	return instance;
     	
     }
+    
+    public static boolean existCompanies(int id) {
+    	Init();
+		ResultSet resultSet = null;
+		List<Companies> listResult = new ArrayList<Companies>();
+		String querry = "SELECT name FROM company WHERE id = " + id;
+		try {
+			PreparedStatement prep1 = conn.prepareStatement(querry);
+			resultSet = prep1.executeQuery();
+			if (resultSet.next()) {
+				return true;
+			}else {
+				return false;
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			DB_Connection.getInstance().Disconnect();
+		}
+		DB_Connection.getInstance().Disconnect();
+		return false;
+    }
 	
 	public List<Companies> listCompanies() {
-		DB_Connection.getInstance().Connection();
-		Connection conn = DB_Connection.getConn();
+		Init();
 		ResultSet resultSet = null;
 		List<Companies> listResult = new ArrayList<Companies>();
 		String querry = "SELECT name FROM company";

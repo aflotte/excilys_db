@@ -8,9 +8,10 @@ import com.excilys.db.DAO.CompaniesDAO;
 import com.excilys.db.DAO.ComputerDAO;
 import com.excilys.db.mapper.Companies;
 import com.excilys.db.mapper.Computer;
+import com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException;
 
 public class test {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws MySQLIntegrityConstraintViolationException {
     	System.out.println("Mise en route !");
 
     	CompaniesDAO companies = CompaniesDAO.getInstance();
