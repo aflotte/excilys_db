@@ -103,15 +103,13 @@ public class CLI {
 		ComputerDAO computer = new ComputerDAO();
 		System.out.println("Donner l'Id de l'ordinateur à supprimer");
 		computer.deleteAComputer(sc.nextInt());
-		sc.close();
 	}
 	
 
 	private static void AfficherOrdinateur() {
 		ComputerDAO computer = new ComputerDAO();
 		System.out.println("Donner l'Id de l'ordinateur à afficher");
-		computer.showDetails(sc.nextInt());
-		sc.close();
+		System.out.println(computer.showDetails(sc.nextInt()));
 	}
 	
 	private static void MettreAJour() {
