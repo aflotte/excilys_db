@@ -53,9 +53,11 @@ public class ComputerDAO {
 				Computer toAdd = ResultToComputer(resultSet);
 				listResult.add(toAdd);
 			}
+			DB_Connection.getInstance().Disconnect();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			DB_Connection.getInstance().Disconnect();
 		}
 		
 		return listResult;
@@ -73,10 +75,13 @@ public class ComputerDAO {
 			if (resultSet.next()) {
 				result = ResultToComputer(resultSet);
 			}
+			
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			DB_Connection.getInstance().Disconnect();
 		}
+		DB_Connection.getInstance().Disconnect();
 		return result;
 	}
 
@@ -106,9 +111,11 @@ public class ComputerDAO {
 			ps.setInt(4, computer.getCompanyId());
 			ps.setInt(5,id);
 			ps.executeUpdate();
+			DB_Connection.getInstance().Disconnect();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			DB_Connection.getInstance().Disconnect();
 		}
 	}
 
@@ -136,9 +143,11 @@ public class ComputerDAO {
 			}
 			ps.setInt(4, computer.getCompanyId());
 			ps.executeUpdate();
+			DB_Connection.getInstance().Disconnect();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			DB_Connection.getInstance().Disconnect();
 		}
 		
 		
@@ -193,7 +202,9 @@ public class ComputerDAO {
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			DB_Connection.getInstance().Disconnect();
 		}
+		DB_Connection.getInstance().Disconnect();
 		return result;
 	
 	}
@@ -216,7 +227,9 @@ public class ComputerDAO {
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			DB_Connection.getInstance().Disconnect();
 		}
+		DB_Connection.getInstance().Disconnect();
 		return result;
 	
 	}
@@ -231,9 +244,11 @@ public class ComputerDAO {
 		try {
 			PreparedStatement prep1 = conn.prepareStatement(querry);
 			prep1.executeUpdate(querry);
+			DB_Connection.getInstance().Disconnect();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			DB_Connection.getInstance().Disconnect();
 		}
 	}
 

@@ -44,8 +44,9 @@ public class CompaniesDAO{
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			DB_Connection.getInstance().Disconnect();
 		}
-		
+		DB_Connection.getInstance().Disconnect();
 		return listResult;
 	}
 

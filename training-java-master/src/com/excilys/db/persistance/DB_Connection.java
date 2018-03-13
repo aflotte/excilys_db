@@ -3,21 +3,15 @@ package com.excilys.db.persistance;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import com.mysql.jdbc.Driver;
 
-//singleton ??
-//TODO : faire un singleton si nécessaire
+
 public final class DB_Connection {
 	
 	 	private static final String FICHIER_PROPERTIES       = "/com/excilys/db/dao/dao.properties";
 	    private static final String PROPERTY_URL             = "jdbc:mysql://localhost:3306/computer-database-db?zeroDateTimeBehavior=convertToNull&autoReconnect=true&characterEncoding=UTF-8&characterSetResults=UTF-8";
-	    private static final String PROPERTY_DRIVER          = "driver";
 	    private static final String PROPERTY_NOM_UTILISATEUR = "admincdb";
 	    private static final String PROPERTY_MOT_DE_PASSE    = "qwerty1234";
 	    
-	    private String              url;
-	    private String              username;
-	    private String              password;
 	
 	    
 	    private static Connection conn = null;
