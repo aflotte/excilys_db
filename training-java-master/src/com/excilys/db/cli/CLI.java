@@ -4,6 +4,8 @@ import com.excilys.db.DAO.ComputerDAO;
 import com.excilys.db.mapper.Companies;
 import com.excilys.db.mapper.Computer;
 import com.excilys.db.cli.ScanCLI;
+
+import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 
@@ -94,8 +96,12 @@ public class CLI {
 	public static void AjouterOrdinateur() {
 		ComputerDAO computer = ComputerDAO.getInstance();
 		Computer aAjouter = new Computer();
-		aAjouter = ScanCLI.scanComputer();
-		computer.createAComputer(aAjouter);
+		try {
+			aAjouter = ScanCLI.scanComputer();
+			computer.createAComputer(aAjouter);
+		}catch (InputMismatchException e){
+			System.out.println("Entrez un entier !");
+		}
 	}
 	
 	

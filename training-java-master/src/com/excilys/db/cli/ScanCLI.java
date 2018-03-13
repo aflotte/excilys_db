@@ -3,6 +3,7 @@ package com.excilys.db.cli;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 import com.excilys.db.mapper.Computer;
@@ -14,7 +15,7 @@ public class ScanCLI {
 	
 	
 	
-	public static Computer scanComputer() {
+	public static Computer scanComputer() throws InputMismatchException{
 		Computer aRetourner = new Computer(); 
 		Scanner sc = new Scanner(System.in);
 		System.out.println("Entrer le nom de l'ordinateur : ");

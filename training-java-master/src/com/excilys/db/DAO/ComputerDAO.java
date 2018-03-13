@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.InputMismatchException;
 import java.util.List;
 
 import com.excilys.db.mapper.Computer;
@@ -119,7 +120,7 @@ public class ComputerDAO {
 		}
 	}
 
-	public void createAComputer(Computer computer) {
+	public void createAComputer(Computer computer){
 		Init();
 		java.util.Date dateIntroduced = computer.getIntroduced();
 		java.util.Date dateDiscontinued = computer.getDiscontinued();
@@ -146,6 +147,8 @@ public class ComputerDAO {
 		} catch (SQLException e) {
 			e.printStackTrace();
 			DB_Connection.getInstance().Disconnect();
+		} catch (InputMismatchException e) {
+			System.out.println("Entrez un entier our le champ companie_Id!");
 		}
 		
 		
@@ -240,9 +243,7 @@ public class ComputerDAO {
 	
 
 	public void deleteAComputer(int id) {
-		
-		DB_Connection.getInstance().Connection();
-		Connection conn = DB_Connection.getConn();
+		Init();
 		String querry = "DELETE FROM computer WHERE id = "+ id;
 		try {
 			PreparedStatement prep1 = conn.prepareStatement(querry);
