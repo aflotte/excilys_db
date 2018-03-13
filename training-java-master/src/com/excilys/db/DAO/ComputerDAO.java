@@ -12,6 +12,8 @@ import com.excilys.db.persistance.DB_Connection;
 
 public class ComputerDAO {
 
+	
+	
 	public List<Computer> listComputer() {
 		DB_Connection.getInstance().Connection();
 		Connection conn = DB_Connection.getConn();
