@@ -13,7 +13,6 @@ import com.excilys.db.persistance.DB_Connection;
 public class test {
     public static void main(String[] args) {
     	System.out.println("Mise en route !");
-    	DB_Connection conn = DB_Connection.getInstance();
 
     	CompaniesDAO companies = new CompaniesDAO();
     	List<Companies> companiesList = companies.listCompanies();
@@ -30,9 +29,17 @@ public class test {
     	testComp.setName("Test");
     	testComp.setIntroduced(new Date());
     	testComp.setDiscontinued(new Date());
-    	int id  = computers.createAComputer(testComp);
-    	System.out.println(id);
-    	//computers.deleteAComputer(id);
+    	computers.createAComputer(testComp);
+    	List<Integer> testList = computers.getId(testComp);
+    	for (int i = 0; i < testList.size(); i++) {
+    		Computer testDetails = computers.showDetails(testList.get(i));
+    		System.out.println("testDetails = " + testDetails);
+    		computers.deleteAComputer(testList.get(i));
+    	}
+    /*	List<Integer> testList2 = computers.getIdFromName("Test");
+    	for (int i = 0; i < testList2.size(); i++) {
+    		computers.deleteAComputer(testList2.get(i));
+    	}*/
     	System.out.println("Fin du test");
     }
 }

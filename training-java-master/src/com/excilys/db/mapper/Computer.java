@@ -45,6 +45,18 @@ public class Computer {
 		// TODO Auto-generated method stub
 		
 	}
+	
+	@Override
+	public String toString() {
+		StringBuilder sB = new StringBuilder(200);
+		sB.append(super.toString());
+		sB.append(" name=").append(this.getName());
+		sB.append(" introduced=").append(this.getIntroduced());
+		sB.append(" discontinued=").append(this.getDiscontinued());
+		sB.append(" companyId=").append(this.getCompanyId()); 
+		return sB.toString();
+		
+	}
 
 	
 	

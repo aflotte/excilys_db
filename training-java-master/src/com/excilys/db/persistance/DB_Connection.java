@@ -10,7 +10,7 @@ import com.mysql.jdbc.Driver;
 public final class DB_Connection {
 	
 	 	private static final String FICHIER_PROPERTIES       = "/com/excilys/db/dao/dao.properties";
-	    private static final String PROPERTY_URL             = "jdbc:mysql://localhost:3306/computer-database-db";
+	    private static final String PROPERTY_URL             = "jdbc:mysql://localhost:3306/computer-database-db?zeroDateTimeBehavior=convertToNull&autoReconnect=true&characterEncoding=UTF-8&characterSetResults=UTF-8";
 	    private static final String PROPERTY_DRIVER          = "driver";
 	    private static final String PROPERTY_NOM_UTILISATEUR = "admincdb";
 	    private static final String PROPERTY_MOT_DE_PASSE    = "qwerty1234";

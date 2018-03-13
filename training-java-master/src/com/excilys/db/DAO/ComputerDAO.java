@@ -26,7 +26,7 @@ public class ComputerDAO {
 				Computer toAdd = new Computer();
 				toAdd.setName(resultSet.getString(1));
 				toAdd.setIntroduced(resultSet.getDate(2));
-				toAdd.setDiscontinued(resultSet.getDate(3));
+				toAdd.setIntroduced(resultSet.getDate(3));
 				toAdd.setCompanyId(resultSet.getInt(4));
 				listResult.add(toAdd);
 			}
@@ -49,7 +49,6 @@ public class ComputerDAO {
 			resultSet = prep1.executeQuery();
 			if (resultSet.next()) {
 				result.setName(resultSet.getString(1));
-				//TODO: gérer la date nulle
 				result.setIntroduced(resultSet.getDate(2));
 				result.setDiscontinued(resultSet.getDate(3));
 				result.setCompanyId(resultSet.getInt(4));
@@ -61,46 +60,111 @@ public class ComputerDAO {
 		return result;
 	}
 
-	public void updateAComputer(Computer comp, int id) {	
+	public void updateAComputer(Computer computer, int id) {	
 		DB_Connection.getInstance().Connection();
 		Connection conn = DB_Connection.getConn();
-		String querry = "UPDATE computer SET name = " + comp.getName() + ", introduced = '"+ comp.getIntroduced() + "', discontinued = '" + comp.getDiscontinued() + "', company_id = " + comp.getCompanyId() +" WHERE id = "+ id;
+		java.util.Date dateIntroduced = computer.getIntroduced();
+		java.util.Date dateDiscontinued = computer.getDiscontinued();
+
+		java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		String querry = "UPDATE computer SET name = ?, introduced = ?, discontinued = ?, company_id = ? WHERE id = ?";
 		try {
-			PreparedStatement prep1 = conn.prepareStatement(querry);
-			prep1.executeQuery();
+			PreparedStatement ps = conn.prepareStatement(querry);
+			ps.setString(1, computer.getName());
+		
+			ps.setString(2, sdf.format(dateIntroduced));
+			ps.setString(3, sdf.format(dateDiscontinued));
+			ps.setInt(4, computer.getCompanyId());
+			ps.setInt(5,id);
+			ps.executeUpdate();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		//String querry = "UPDATE computer SET name = " + comp.getName() + ", introduced = '"+ comp.getIntroduced() + "', discontinued = '" + comp.getDiscontinued() + "', company_id = " + comp.getCompanyId() +" WHERE id = "+ id;
+
 	}
 
-	public int createAComputer(Computer computer) {
+	public void createAComputer(Computer computer) {
 		DB_Connection.getInstance().Connection();
 		Connection conn = DB_Connection.getConn();
-		ResultSet resultSet = null;
-		
-		java.sql.Date dateIntroduced = new java.sql.Date(computer.getIntroduced().getTime());
-		java.sql.Date dateDiscontinued = new java.sql.Date(computer.getDiscontinued().getTime());
-		
-		java.util.Date dt = new java.util.Date();
+		java.util.Date dateIntroduced = computer.getIntroduced();
+		java.util.Date dateDiscontinued = computer.getDiscontinued();
 
 		java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
-		String currentTime = sdf.format(dt);
-		
-		String querry = "INSERT INTO computer(name,introduced,discontinued,company_id) VALUES ('" + computer.getName() + "','" + currentTime + "','" + currentTime + "'," + computer.getCompanyId() + ")";
-		System.out.println(querry);
-		int id  = 0;
+		String querry = "INSERT INTO computer(name,introduced,discontinued,company_id) VALUES (?,?,?,?)";
 		try {
-			java.sql.Statement statement = conn.createStatement();
-			id = statement.executeUpdate(querry);
-		} catch (SQLException e1) {
+			PreparedStatement ps = conn.prepareStatement(querry);
+			ps.setString(1, computer.getName());
+		
+			ps.setString(2, sdf.format(dateIntroduced));
+			ps.setString(3, sdf.format(dateDiscontinued));
+			ps.setInt(4, computer.getCompanyId());
+			ps.executeUpdate();
+		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e1.printStackTrace();
+			e.printStackTrace();
 		}
-
-		return id;
+		
+		
 	}
+	
+	public List<Integer> getId(Computer computer) {
+		List<Integer> result = new ArrayList<Integer>();
+		DB_Connection.getInstance().Connection();
+		Connection conn = DB_Connection.getConn();
+		ResultSet resultSet = null;
+		java.util.Date dateIntroduced = computer.getIntroduced();
+		java.util.Date dateDiscontinued = computer.getDiscontinued();
+
+		java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		String querry = "SELECT id FROM computer WHERE name = ? AND introduced = ? AND discontinued = ? AND company_id = ?";
+		try {
+			PreparedStatement ps = conn.prepareStatement(querry);
+			ps.setString(1, computer.getName());
+			
+			ps.setString(2, sdf.format(dateIntroduced));
+			ps.setString(3, sdf.format(dateDiscontinued));
+			ps.setInt(4, computer.getCompanyId());
+			resultSet = ps.executeQuery();
+			while (resultSet.next()) {
+				result.add(resultSet.getInt(1));
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return result;
+	
+	}
+	
+	
+	public List<Integer> getIdFromName(String name) {
+		List<Integer> result = new ArrayList<Integer>();
+		DB_Connection.getInstance().Connection();
+		Connection conn = DB_Connection.getConn();
+		ResultSet resultSet = null;
+
+		java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		String querry = "SELECT id FROM computer WHERE name = ?";
+		try {
+			PreparedStatement ps = conn.prepareStatement(querry);
+			ps.setString(1, name);
+
+			resultSet = ps.executeQuery();
+			while (resultSet.next()) {
+				result.add(resultSet.getInt(1));
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return result;
+	
+	}
+	
+	
 
 	public void deleteAComputer(int id) {
 		
@@ -109,7 +173,7 @@ public class ComputerDAO {
 		String querry = "DELETE FROM computer WHERE id = "+ id;
 		try {
 			PreparedStatement prep1 = conn.prepareStatement(querry);
-			prep1.executeQuery();
+			prep1.executeUpdate(querry);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
