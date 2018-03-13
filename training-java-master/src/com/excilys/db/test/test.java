@@ -26,7 +26,7 @@ public class test {
     	Computer testComp = new Computer();
     	testComp.setCompanyId(1);
     	testComp.setName("Test");
-    	testComp.setIntroduced(new Date());
+    	testComp.setIntroduced(null);
     	testComp.setDiscontinued(new Date());
     	computers.createAComputer(testComp);
     	List<Integer> testList = computers.getId(testComp);
@@ -38,7 +38,9 @@ public class test {
     		System.out.println("testDetails = " + testDetails);
     		computers.deleteAComputer(testList.get(i));
     	}
-    /*	List<Integer> testList2 = computers.getIdFromName("Test");
+    	/*
+    	//clean
+    	List<Integer> testList2 = computers.getIdFromName("Test");
     	for (int i = 0; i < testList2.size(); i++) {
     		computers.deleteAComputer(testList2.get(i));
     	}*/

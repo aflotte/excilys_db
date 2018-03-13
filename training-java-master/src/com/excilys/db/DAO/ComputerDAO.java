@@ -67,12 +67,21 @@ public class ComputerDAO {
 
 		java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		String querry = "UPDATE computer SET name = ?, introduced = ?, discontinued = ?, company_id = ? WHERE id = ?";
+
+		
 		try {
 			PreparedStatement ps = conn.prepareStatement(querry);
 			ps.setString(1, computer.getName());
-		
-			ps.setString(2, sdf.format(dateIntroduced));
-			ps.setString(3, sdf.format(dateDiscontinued));
+			if (dateIntroduced == null) {
+				ps.setNString(2,null);
+			}else {
+				ps.setString(2, sdf.format(dateIntroduced));
+			}
+			if (dateDiscontinued == null) {
+				ps.setNString(3,null);
+			}else {
+				ps.setString(3, sdf.format(dateDiscontinued));
+			}
 			ps.setInt(4, computer.getCompanyId());
 			ps.setInt(5,id);
 			ps.executeUpdate();
@@ -94,9 +103,16 @@ public class ComputerDAO {
 		try {
 			PreparedStatement ps = conn.prepareStatement(querry);
 			ps.setString(1, computer.getName());
-		
-			ps.setString(2, sdf.format(dateIntroduced));
-			ps.setString(3, sdf.format(dateDiscontinued));
+			if (dateIntroduced == null) {
+				ps.setNString(2,null);
+			}else {
+				ps.setString(2, sdf.format(dateIntroduced));
+			}
+			if (dateDiscontinued == null) {
+				ps.setNString(3,null);
+			}else {
+				ps.setString(3, sdf.format(dateDiscontinued));
+			}
 			ps.setInt(4, computer.getCompanyId());
 			ps.executeUpdate();
 		} catch (SQLException e) {
@@ -116,13 +132,38 @@ public class ComputerDAO {
 		java.util.Date dateDiscontinued = computer.getDiscontinued();
 
 		java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-		String querry = "SELECT id FROM computer WHERE name = ? AND introduced = ? AND discontinued = ? AND company_id = ?";
+		String querryNotNULL = "SELECT id FROM computer WHERE name = ? AND introduced = ? AND discontinued = ? AND company_id = ?";
+		String querryIntroducedNULL = "SELECT id FROM computer WHERE name = ? AND introduced is ? AND discontinued = ? AND company_id = ?";
+		String querryDiscontinuedNULL = "SELECT id FROM computer WHERE name = ? AND introduced = ? AND discontinued is ? AND company_id = ?";
+		String querryBothNULL = "SELECT id FROM computer WHERE name = ? AND introduced is ? AND discontinued is ? AND company_id = ?";
+		// choice of the good query
+		String querry;
+		if(dateIntroduced == null) {
+			if(dateDiscontinued == null) {
+				querry = querryBothNULL;
+			}else {
+				querry = querryIntroducedNULL;
+			}
+		}else {
+			if(dateDiscontinued == null) {
+				querry = querryNotNULL;
+			}else {
+				querry = querryDiscontinuedNULL;
+			}
+		}
 		try {
 			PreparedStatement ps = conn.prepareStatement(querry);
 			ps.setString(1, computer.getName());
-			
-			ps.setString(2, sdf.format(dateIntroduced));
-			ps.setString(3, sdf.format(dateDiscontinued));
+			if (dateIntroduced == null) {
+				ps.setNString(2,null);
+			}else {
+				ps.setString(2, sdf.format(dateIntroduced));
+			}
+			if (dateDiscontinued == null) {
+				ps.setNString(3,null);
+			}else {
+				ps.setString(3, sdf.format(dateDiscontinued));
+			}
 			ps.setInt(4, computer.getCompanyId());
 			resultSet = ps.executeQuery();
 			while (resultSet.next()) {
