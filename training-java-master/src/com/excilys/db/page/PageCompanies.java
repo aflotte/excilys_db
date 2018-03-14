@@ -32,11 +32,12 @@ public class PageCompanies {
 	
 	public void afficher() {
 		while (index < companies.size()) {
-			afficherNElements(NOMBRE_AFFICHAGE);
+			
 			String exit = sc.nextLine();
 			if (exit.equals("Q")||exit.equals("q")){
 				index = companies.size();
 			}
+			afficherNElements(NOMBRE_AFFICHAGE);
 			
 		}
 	}

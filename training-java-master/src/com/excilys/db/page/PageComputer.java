@@ -32,11 +32,12 @@ public class PageComputer {
 	
 	public void afficher() {
 		while (index < computers.size()) {
-			afficherNElements(NOMBRE_AFFICHAGE);
+			
 			String exit = sc.nextLine();
 			if (exit.equals("Q")||exit.equals("q")){
 				index = computers.size();
 			}
+			afficherNElements(NOMBRE_AFFICHAGE);
 		}
 	}
 	
