@@ -6,6 +6,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Date;
 
+import com.excilys.db.exception.CompaniesIdIncorrect;
+import com.excilys.db.exception.IncoherentDates;
 import com.excilys.db.mapper.Computer;
 import com.excilys.db.persistance.DB_Connection;
 
@@ -52,5 +54,15 @@ public class ComputerValidator {
 		}
 		DB_Connection.getInstance().disconnect();
 		return false;
+	}
+	
+	public static boolean validate() throws IncoherentDates, CompaniesIdIncorrect {
+		if (testDate()) {
+			throw new IncoherentDates();
+		}
+		if (!testIdCompanie()) {
+			throw new CompaniesIdIncorrect();
+		}
+		return (testDate()&&testIdCompanie());
 	}
 }

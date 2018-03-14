@@ -1,5 +1,7 @@
 package com.excilys.db.mapper;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.Date;
 
 public class Computer {
@@ -45,13 +47,22 @@ public class Computer {
 	@Override
 	public String toString() {
 		StringBuilder sB = new StringBuilder(200);
-		sB.append(super.toString());
+		//sB.append(super.toString());
 		sB.append(" name=").append(this.getName());
 		sB.append(" introduced=").append(this.getIntroduced());
 		sB.append(" discontinued=").append(this.getDiscontinued());
 		sB.append(" companyId=").append(this.getCompanyId()); 
 		return sB.toString();
 		
+	}
+	
+	public static Computer ResultToComputer(ResultSet resultSet) throws SQLException {
+		Computer toReturn = new Computer();
+		toReturn.setName(resultSet.getString(1));
+		toReturn.setIntroduced(resultSet.getDate(2));
+		toReturn.setIntroduced(resultSet.getDate(3));
+		toReturn.setCompanyId(resultSet.getInt(4));
+		return toReturn;
 	}
 
 	

@@ -10,6 +10,7 @@ import com.excilys.db.DAO.CompaniesDAO;
 import com.excilys.db.exception.CompaniesIdIncorrect;
 import com.excilys.db.exception.IncoherentDates;
 import com.excilys.db.mapper.Computer;
+import com.excilys.db.validator.ComputerValidator;
 
 public class ScanCLI {
 	
@@ -43,18 +44,11 @@ public class ScanCLI {
 		System.out.println("rentrer null pour ne pas remplir le champ");
 		aRetourner.setDiscontinued(ScanCLI.scanDate(sc));
 		
-		boolean errorDate = checkDate(aRetourner.getIntroduced(),aRetourner.getDiscontinued());
-		if (errorDate) {
-			throw new IncoherentDates();
-		}else {
-			System.out.println("Entrer l'Id de la compagnie :");
-			int id_companie = sc.nextInt();
-			if (CompaniesDAO.existCompanies(id_companie)) {
-				aRetourner.setCompanyId(id_companie);
-			}else {
-				throw new CompaniesIdIncorrect();
-			}
-		}
+		System.out.println("Entrer l'Id de la compagnie :");
+		int id_companie = sc.nextInt();
+		aRetourner.setCompanyId(id_companie);
+		ComputerValidator.init(aRetourner);
+		ComputerValidator.validate();
 		return aRetourner;
 	}
 	

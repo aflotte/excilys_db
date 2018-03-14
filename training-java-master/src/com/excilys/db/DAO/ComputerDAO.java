@@ -16,6 +16,7 @@ public class ComputerDAO {
 
 	
 	private static ComputerDAO instance;
+	private static Connection conn;
     
     private ComputerDAO() {
     	
@@ -30,23 +31,13 @@ public class ComputerDAO {
     	
     }
 	
-	private static Connection conn;
-	
+
 	private void Init() {
 		DB_Connection.getInstance().connect();
 		conn = DB_Connection.getConn();
 		
 	}
 	
-	
-	public Computer ResultToComputer(ResultSet resultSet) throws SQLException {
-		Computer toReturn = new Computer();
-		toReturn.setName(resultSet.getString(1));
-		toReturn.setIntroduced(resultSet.getDate(2));
-		toReturn.setIntroduced(resultSet.getDate(3));
-		toReturn.setCompanyId(resultSet.getInt(4));
-		return toReturn;
-	}
 	
 	public List<Computer> listComputer() {
 		Init();
@@ -57,7 +48,7 @@ public class ComputerDAO {
 			PreparedStatement prep1 = conn.prepareStatement(querry);
 			resultSet = prep1.executeQuery();
 			while (resultSet.next()) {
-				Computer toAdd = ResultToComputer(resultSet);
+				Computer toAdd = Computer.ResultToComputer(resultSet);
 				listResult.add(toAdd);
 			}
 			DB_Connection.getInstance().disconnect();
@@ -77,7 +68,7 @@ public class ComputerDAO {
 			PreparedStatement prep1 = conn.prepareStatement(querry);
 			resultSet = prep1.executeQuery();
 			if (resultSet.next()) {
-				result = ResultToComputer(resultSet);
+				result = Computer.ResultToComputer(resultSet);
 			}
 			
 		} catch (SQLException e) {
