@@ -11,10 +11,21 @@ import com.excilys.db.exception.IncoherentDates;
 import com.excilys.db.mapper.Computer;
 import com.excilys.db.validator.ComputerValidator;
 
+/**
+ * L'implémentation des scans avec la gestion d'erreur qui convient pour la CLI
+ * @author flotte
+ *
+ */
 public class ScanCLI {
 	
 	//TODO: un scanInt qui gère les erreurs du nextInt comme voulu
 	
+	
+	/**
+	 * 
+	 * @param Le scanner précédement ouvert
+	 * @return ce qui est entrée par l'utilisateur, -1 en cas d'erreur
+	 */
 	public static int scanInt(Scanner used) {
 		int result;
 		try {
@@ -26,11 +37,13 @@ public class ScanCLI {
 		return result;
 	}
 	
-	
-	public static boolean checkDate(Date introduced,Date discontinued) {
-		return ((introduced != null)&&(discontinued != null)&&(introduced.compareTo(discontinued)>0));
-	}
-	
+	/**
+	 * 
+	 * @return L'ordinateur entrée par l'utilisateur
+	 * @throws InputMismatchException
+	 * @throws CompaniesIdIncorrect
+	 * @throws IncoherentDates
+	 */
 	public static Computer scanComputer() throws InputMismatchException, CompaniesIdIncorrect, IncoherentDates{
 		Computer aRetourner = new Computer(); 
 		Scanner sc = new Scanner(System.in);
@@ -53,7 +66,11 @@ public class ScanCLI {
 		return aRetourner;
 	}
 	
-	
+	/**
+	 * 
+	 * @param le scanner précédement ouvert
+	 * @return Une date rentré par l'utilisateur
+	 */
 	public static Date scanDate(Scanner used) {
 		SimpleDateFormat formatter = new SimpleDateFormat("yyyy/MM/dd");
         String stringDate = used.next();

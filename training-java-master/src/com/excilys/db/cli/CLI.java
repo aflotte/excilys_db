@@ -15,7 +15,11 @@ import java.util.List;
 import java.util.Scanner;
 
 
-
+/**
+ * L'interface en ligne de commande
+ * @author flotte
+ *
+ */
 public class CLI {
 	static Scanner sc;
 	
@@ -65,7 +69,11 @@ public class CLI {
 		System.out.println("6 - Mettre à jour un ordinateur");
 		System.out.println("7 - Quitter le CLI");
 	}
-	
+
+	/**
+	 * 
+	 * @return Le choix de l'utilisateur, 0 si l'utilisateur rentre quelque chose d'incorrect
+	 */
 	public static int ChoixMenuIntroduction() {
 		int result = 0;
 		result = ScanCLI.scanInt(sc);

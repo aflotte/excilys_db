@@ -12,6 +12,11 @@ import java.util.List;
 import com.excilys.db.mapper.Computer;
 import com.excilys.db.persistance.DB_Connection;
 
+/**
+ * La classe DAO des ordinateurs
+ * @author flotte
+ *
+ */
 public class ComputerDAO {
 
 	
@@ -31,16 +36,21 @@ public class ComputerDAO {
     	
     }
 	
-
-	private void Init() {
+    /**
+     * L'initialisation de la connexion
+     */
+	private void init() {
 		DB_Connection.getInstance().connect();
 		conn = DB_Connection.getConn();
 		
 	}
 	
-	
+	/**
+	 * 
+	 * @return la liste des ordinateurs
+	 */
 	public List<Computer> listComputer() {
-		Init();
+		init();
 		ResultSet resultSet = null;
 		List<Computer> listResult = new ArrayList<Computer>();
 		String querry = "SELECT name, introduced, discontinued, company_id FROM computer";
@@ -59,8 +69,13 @@ public class ComputerDAO {
 		return listResult;
 	}
 
+	/**
+	 * 
+	 * @param id de l'ordinateur
+	 * @return l'ordinateur
+	 */
 	public Computer showDetails(int id) {
-		Init();
+		init();
 		ResultSet resultSet = null;
 		Computer result = new Computer();
 		String querry = "SELECT name, introduced, discontinued, company_id FROM computer WHERE id = " + id;
@@ -79,8 +94,13 @@ public class ComputerDAO {
 		return result;
 	}
 
+	/**
+	 * 
+	 * @param computer l'ordinateur qui remplacera l'ancien
+	 * @param id de l'ordinateur à remplacer
+	 */
 	public void updateAComputer(Computer computer, int id) {	
-		Init();
+		init();
 		java.util.Date dateIntroduced = computer.getIntroduced();
 		java.util.Date dateDiscontinued = computer.getDiscontinued();
 
@@ -116,7 +136,7 @@ public class ComputerDAO {
 	}
 
 	public void createAComputer(Computer computer){
-		Init();
+		init();
 		java.util.Date dateIntroduced = computer.getIntroduced();
 		java.util.Date dateDiscontinued = computer.getDiscontinued();
 		java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -198,7 +218,7 @@ public class ComputerDAO {
 	}
 	
 	public List<Integer> getId(Computer computer) {
-		Init();
+		init();
 		List<Integer> result = new ArrayList<Integer>();
 		ResultSet resultSet = null;
 		String querry = chooseTheQuerry(computer.getIntroduced(),computer.getDiscontinued());
@@ -220,7 +240,7 @@ public class ComputerDAO {
 	
 	
 	public List<Integer> getIdFromName(String name) {
-		Init();
+		init();
 		List<Integer> result = new ArrayList<Integer>();
 		ResultSet resultSet = null;
 		String querry = "SELECT id FROM computer WHERE name = ?";
@@ -244,7 +264,7 @@ public class ComputerDAO {
 	
 
 	public void deleteAComputer(int id) {
-		Init();
+		init();
 		String querry = "DELETE FROM computer WHERE id = "+ id;
 		try {
 			PreparedStatement prep1 = conn.prepareStatement(querry);

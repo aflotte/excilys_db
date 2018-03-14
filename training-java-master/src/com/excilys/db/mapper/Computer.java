@@ -51,10 +51,17 @@ public class Computer {
 		sB.append(" | name=").append(this.getName());
 		sB.append(" | introduced=").append(this.getIntroduced());
 		sB.append(" | discontinued=").append(this.getDiscontinued());
-		sB.append(" | companyId=").append(this.getCompanyId()); 
+		Integer CompIdtoPrint;
+		if (this.getCompanyId() == 0) {
+			CompIdtoPrint = null;
+		}else {
+			CompIdtoPrint = this.getCompanyId();
+		}
+		sB.append(" | companyId=").append(CompIdtoPrint); 
 		return sB.toString();
 		
 	}
+	
 	
 	public static Computer ResultToComputer(ResultSet resultSet) throws SQLException {
 		Computer toReturn = new Computer();

@@ -1,0 +1,8 @@
+com.excilys.db.DAO
+com.excilys.db.cli
+com.excilys.db.exception
+com.excilys.db.mapper
+com.excilys.db.page
+com.excilys.db.persistance
+com.excilys.db.test
+com.excilys.db.validator

@@ -22,7 +22,7 @@ public class CompaniesDAO{
 	/**
 	 * Initialise la connection
 	 */
-	private static void Init() {
+	private static void init() {
 		DB_Connection.getInstance().connect();
 		conn = DB_Connection.getConn();
 		
@@ -40,8 +40,13 @@ public class CompaniesDAO{
     	
     }
     
+    /**
+     * 
+     * @param id d'une compagnie
+     * @return true si la compagnie exist, false sinon
+     */
     public static boolean existCompanies(int id) {
-    	Init();
+    	init();
 		ResultSet resultSet = null;
 		String querry = "SELECT name FROM company WHERE id = " + id;
 		try {
@@ -61,8 +66,12 @@ public class CompaniesDAO{
 		return false;
     }
 	
+    /**
+     * 
+     * @return la liste des compagnies
+     */
 	public List<Companies> listCompanies() {
-		Init();
+		init();
 		ResultSet resultSet = null;
 		List<Companies> listResult = new ArrayList<Companies>();
 		String querry = "SELECT name FROM company";
