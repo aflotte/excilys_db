@@ -38,6 +38,9 @@ public class ComputerValidator {
 	public static boolean testIdCompanie() {
     	Init();
 		ResultSet resultSet = null;
+		if (computer.getCompanyId()==null) {
+			return true;
+		}
 		String querry = "SELECT name FROM company WHERE id = " + computer.getCompanyId();
 		try {
 			PreparedStatement prep1 = conn.prepareStatement(querry);

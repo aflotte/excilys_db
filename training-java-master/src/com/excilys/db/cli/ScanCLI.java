@@ -44,9 +44,11 @@ public class ScanCLI {
 		System.out.println("rentrer null pour ne pas remplir le champ");
 		aRetourner.setDiscontinued(ScanCLI.scanDate(sc));
 		
-		System.out.println("Entrer l'Id de la compagnie :");
+		System.out.println("Entrer l'Id de la compagnie ( -2 pour laisser vide ) :");
 		int id_companie = sc.nextInt();
+		if (id_companie != -2) {
 		aRetourner.setCompanyId(id_companie);
+		}
 		ComputerValidator.init(aRetourner);
 		ComputerValidator.validate();
 		return aRetourner;

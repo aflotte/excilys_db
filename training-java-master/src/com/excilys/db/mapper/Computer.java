@@ -9,7 +9,7 @@ public class Computer {
 	private String name;
 	private Date introduced;
 	private Date discontinued;
-	private int companyId;
+	private Integer companyId;
 	
 	
 	public int getId() {
@@ -36,10 +36,10 @@ public class Computer {
 	public void setDiscontinued(Date discontinued) {
 		this.discontinued = discontinued;
 	}
-	public int getCompanyId() {
+	public Integer getCompanyId() {
 		return companyId;
 	}
-	public void setCompanyId(int companyId) {
+	public void setCompanyId(Integer companyId) {
 		this.companyId = companyId;
 	}
 	

@@ -101,7 +101,11 @@ public class ComputerDAO {
 			}else {
 				ps.setString(3, sdf.format(dateDiscontinued));
 			}
+			if (computer.getCompanyId() != null) {
 			ps.setInt(4, computer.getCompanyId());
+			}else {
+				ps.setNull(4, java.sql.Types.INTEGER);
+			}
 			ps.setInt(5,id);
 			ps.executeUpdate();
 			DB_Connection.getInstance().disconnect();
@@ -130,7 +134,11 @@ public class ComputerDAO {
 			}else {
 				ps.setString(3, sdf.format(dateDiscontinued));
 			}
+			if (computer.getCompanyId() != null) {
 			ps.setInt(4, computer.getCompanyId());
+			}else {
+				ps.setNull(4, java.sql.Types.INTEGER);
+			}
 			ps.executeUpdate();
 			DB_Connection.getInstance().disconnect();
 		} catch (SQLException e) {
@@ -181,7 +189,11 @@ public class ComputerDAO {
 			}else {
 				ps.setString(3, sdf.format(dateDiscontinued));
 			}
+			if (computer.getCompanyId() != null) {
 			ps.setInt(4, computer.getCompanyId());
+			}else {
+				ps.setNull(4, java.sql.Types.INTEGER);
+			}
 
 	}
 	
