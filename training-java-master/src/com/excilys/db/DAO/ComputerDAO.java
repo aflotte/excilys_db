@@ -53,7 +53,7 @@ public class ComputerDAO {
 		init();
 		ResultSet resultSet = null;
 		List<Computer> listResult = new ArrayList<Computer>();
-		String querry = "SELECT name, introduced, discontinued, company_id FROM computer";
+		String querry = "SELECT name, introduced, discontinued, company_id, id FROM computer";
 		try {
 			PreparedStatement prep1 = conn.prepareStatement(querry);
 			resultSet = prep1.executeQuery();
@@ -78,7 +78,7 @@ public class ComputerDAO {
 		init();
 		ResultSet resultSet = null;
 		Computer result = new Computer();
-		String querry = "SELECT name, introduced, discontinued, company_id FROM computer WHERE id = " + id;
+		String querry = "SELECT name, introduced, discontinued, company_id, id FROM computer WHERE id = " + id;
 		try {
 			PreparedStatement prep1 = conn.prepareStatement(querry);
 			resultSet = prep1.executeQuery();

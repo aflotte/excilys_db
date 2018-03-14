@@ -6,6 +6,8 @@ import java.util.Date;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
+
+
 import com.excilys.db.exception.CompaniesIdIncorrect;
 import com.excilys.db.exception.IncoherentDates;
 import com.excilys.db.mapper.Computer;
@@ -18,9 +20,8 @@ import com.excilys.db.validator.ComputerValidator;
  */
 public class ScanCLI {
 	
-	//TODO: un scanInt qui gère les erreurs du nextInt comme voulu
 	
-	
+		
 	/**
 	 * 
 	 * @param Le scanner précédement ouvert

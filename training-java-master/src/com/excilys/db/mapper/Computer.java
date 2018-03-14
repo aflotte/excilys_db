@@ -5,17 +5,17 @@ import java.sql.SQLException;
 import java.util.Date;
 
 public class Computer {
-	private int id;
+	private Integer id;
 	private String name;
 	private Date introduced;
 	private Date discontinued;
 	private Integer companyId;
 	
 	
-	public int getId() {
+	public Integer getId() {
 		return id;
 	}
-	public void setId(int id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 	public String getName() {
@@ -48,6 +48,10 @@ public class Computer {
 	public String toString() {
 		StringBuilder sB = new StringBuilder(200);
 		//sB.append(super.toString());
+		if(this.getId()!= null) {
+			sB.append(" | id=").append(this.getId());	
+		}
+		
 		sB.append(" | name=").append(this.getName());
 		sB.append(" | introduced=").append(this.getIntroduced());
 		sB.append(" | discontinued=").append(this.getDiscontinued());
@@ -69,6 +73,7 @@ public class Computer {
 		toReturn.setIntroduced(resultSet.getDate(2));
 		toReturn.setIntroduced(resultSet.getDate(3));
 		toReturn.setCompanyId(resultSet.getInt(4));
+		toReturn.setId(resultSet.getInt(5));
 		return toReturn;
 	}
 
