@@ -36,7 +36,6 @@ public class CompaniesDAO{
     public static boolean existCompanies(int id) {
     	Init();
 		ResultSet resultSet = null;
-		List<Companies> listResult = new ArrayList<Companies>();
 		String querry = "SELECT name FROM company WHERE id = " + id;
 		try {
 			PreparedStatement prep1 = conn.prepareStatement(querry);

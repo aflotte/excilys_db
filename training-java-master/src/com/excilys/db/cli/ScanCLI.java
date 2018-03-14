@@ -8,16 +8,30 @@ import java.util.Scanner;
 
 import com.excilys.db.DAO.CompaniesDAO;
 import com.excilys.db.exception.CompaniesIdIncorrect;
+import com.excilys.db.exception.IncoherentDates;
 import com.excilys.db.mapper.Computer;
 
 public class ScanCLI {
 	
 	//TODO: un scanInt qui gère les erreurs du nextInt comme voulu
 	
+	public static int scanInt(Scanner used) {
+		int result;
+		try {
+		result = used.nextInt();
+		}catch (InputMismatchException e){
+			used.nextLine();
+			return -1;
+		}
+		return result;
+	}
 	
 	
+	public static boolean checkDate(Date introduced,Date discontinued) {
+		return ((introduced != null)&&(discontinued != null)&&(introduced.compareTo(discontinued)>0));
+	}
 	
-	public static Computer scanComputer() throws InputMismatchException, CompaniesIdIncorrect{
+	public static Computer scanComputer() throws InputMismatchException, CompaniesIdIncorrect, IncoherentDates{
 		Computer aRetourner = new Computer(); 
 		Scanner sc = new Scanner(System.in);
 		System.out.println("Entrer le nom de l'ordinateur : ");
@@ -28,16 +42,19 @@ public class ScanCLI {
 		System.out.println("Entrer la date d'abandon de l'ordinateur (aaaa/mm/jj) : ");
 		System.out.println("rentrer null pour ne pas remplir le champ");
 		aRetourner.setDiscontinued(ScanCLI.scanDate(sc));
-		System.out.println("Entrer l'Id de la compagnie :");
-		int id_companie = sc.nextInt();
-		if (CompaniesDAO.existCompanies(id_companie)) {
-			aRetourner.setCompanyId(id_companie);
+		
+		boolean errorDate = checkDate(aRetourner.getIntroduced(),aRetourner.getDiscontinued());
+		if (errorDate) {
+			throw new IncoherentDates();
 		}else {
-			System.out.println("La compagnie rentrée n'existe pas");
-			throw new CompaniesIdIncorrect();
+			System.out.println("Entrer l'Id de la compagnie :");
+			int id_companie = sc.nextInt();
+			if (CompaniesDAO.existCompanies(id_companie)) {
+				aRetourner.setCompanyId(id_companie);
+			}else {
+				throw new CompaniesIdIncorrect();
+			}
 		}
-		//TODO: vérifier l'Id + gestion de l'erreur
-
 		return aRetourner;
 	}
 	

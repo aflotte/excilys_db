@@ -11,7 +11,6 @@ import java.util.List;
 
 import com.excilys.db.mapper.Computer;
 import com.excilys.db.persistance.DB_Connection;
-import com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException;
 
 public class ComputerDAO {
 
@@ -121,13 +120,11 @@ public class ComputerDAO {
 		}
 	}
 
-	public void createAComputer(Computer computer) throws MySQLIntegrityConstraintViolationException{
+	public void createAComputer(Computer computer){
 		Init();
 		java.util.Date dateIntroduced = computer.getIntroduced();
 		java.util.Date dateDiscontinued = computer.getDiscontinued();
-
 		java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-
 		String querry = "INSERT INTO computer(name,introduced,discontinued,company_id) VALUES (?,?,?,?)";
 		try {
 			PreparedStatement ps = conn.prepareStatement(querry);

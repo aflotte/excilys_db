@@ -5,9 +5,9 @@ import com.excilys.db.mapper.Companies;
 import com.excilys.db.mapper.Computer;
 import com.excilys.db.cli.ScanCLI;
 import com.excilys.db.exception.CompaniesIdIncorrect;
+import com.excilys.db.exception.IncoherentDates;
 
 import java.util.InputMismatchException;
-import com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException;
 
 import java.util.List;
 import java.util.Scanner;
@@ -53,10 +53,7 @@ public class CLI {
 		sc.close();
 	}	
 
-//TODO: mettre les fonctions
-
 	public static void MenuIntroduction() {
-
 		System.out.println("Liste des commandes :");
 		System.out.println("1 - Afficher la liste des compagnies");
 		System.out.println("2 - Afficher la liste des ordinateurs");
@@ -68,14 +65,15 @@ public class CLI {
 	}
 	
 	public static int ChoixMenuIntroduction() {
-		//TODO: gérer l'entrée de lettre ou carractère spéciaux
-		int result = sc.nextInt();
+		int result = 0;
+		result = ScanCLI.scanInt(sc);
 		if ((result > 7)||(result<1) ){
 			System.out.println("Veuillez entrer un nombre correct");
-			sc.close();
 			return 0;
 		}
 		return result;
+
+		
 	}
 	
 	public static void AfficherCompagnies() {
@@ -102,6 +100,8 @@ public class CLI {
 		try {
 			aAjouter = ScanCLI.scanComputer();
 			computer.createAComputer(aAjouter);
+		} catch (IncoherentDates e) {
+			System.out.println("Les dates rentrées sont incohérentes");
 		}catch (InputMismatchException e){
 			System.out.println("Entrez un entier !");
 		}catch (CompaniesIdIncorrect e) {
@@ -109,26 +109,53 @@ public class CLI {
 		}
 	}
 	
-	
-	
 	private static void SupprimerOrdinateur() {
 		//TODO: gérer le cas où l'id est faux
 		ComputerDAO computer = ComputerDAO.getInstance();
-		System.out.println("Donner l'Id de l'ordinateur à supprimer");
-		computer.deleteAComputer(sc.nextInt());
+		System.out.println("Donner l'Id de l'ordinateur à supprimer ( -2 pour annuler )");
+		int toDelete = -1;
+		while (toDelete == -1) {
+			toDelete = ScanCLI.scanInt(sc);
+		}
+		if (toDelete != -2) {
+			computer.deleteAComputer(toDelete);
+		}
 	}
 	
-
 	private static void AfficherOrdinateur() {
 		ComputerDAO computer = ComputerDAO.getInstance();
-		System.out.println("Donner l'Id de l'ordinateur à afficher");
-		System.out.println(computer.showDetails(sc.nextInt()));
+		System.out.println("Donner l'Id de l'ordinateur à afficher ( -2 pour annuler )");
+		int toDisplay = -1;
+		while (toDisplay == -1) {
+			toDisplay = ScanCLI.scanInt(sc);
+		}
+		if (toDisplay != -2) {
+			System.out.println(computer.showDetails(toDisplay));
+	
+		}
 	}
 	
 	private static void MettreAJour() {
 		ComputerDAO computer = ComputerDAO.getInstance();
 		Computer aAjouter = new Computer();
-		aAjouter = ScanCLI.scanComputer();
-		computer.updateAComputer(aAjouter,sc.nextInt());
+		try {
+				aAjouter = ScanCLI.scanComputer();
+		} catch (IncoherentDates e) {
+				System.out.println("Les dates rentrées sont incohérentes");
+		}catch (InputMismatchException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (CompaniesIdIncorrect e) {
+			System.out.println("L'id de la compagnie que vous avez rentré ne correspond à aucune compagnie !");
+		}
+		System.out.println("Entrer l'Id de l'ordinateur a modifier");
+		int toUpdate = -1;
+		while (toUpdate == -1) {
+			toUpdate = ScanCLI.scanInt(sc);
+		}
+		if (toUpdate != -2) {
+			computer.updateAComputer(aAjouter,toUpdate);
+		}
+		
 	}
 }
