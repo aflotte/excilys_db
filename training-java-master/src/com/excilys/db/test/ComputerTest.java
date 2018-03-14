@@ -71,6 +71,6 @@ public class ComputerTest extends TestCase {
 		comp.setIntroduced(null);
 		comp.setDiscontinued(null);
 		comp.setCompanyId(10);
-		assertEquals(comp.toString()," name=Name introduced=null discontinued=null companyId=10");
+		assertEquals(comp.toString()," | name=Name | introduced=null | discontinued=null | companyId=10");
 	}
 }
