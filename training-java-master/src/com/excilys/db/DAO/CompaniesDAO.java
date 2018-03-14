@@ -14,7 +14,7 @@ public class CompaniesDAO{
 	private static Connection conn;
 	
 	private static void Init() {
-		DB_Connection.getInstance().Connection();
+		DB_Connection.getInstance().connect();
 		conn = DB_Connection.getConn();
 		
 	}
@@ -48,9 +48,9 @@ public class CompaniesDAO{
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			DB_Connection.getInstance().Disconnect();
+			DB_Connection.getInstance().disconnect();
 		}
-		DB_Connection.getInstance().Disconnect();
+		DB_Connection.getInstance().disconnect();
 		return false;
     }
 	
@@ -70,9 +70,9 @@ public class CompaniesDAO{
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			DB_Connection.getInstance().Disconnect();
+			DB_Connection.getInstance().disconnect();
 		}
-		DB_Connection.getInstance().Disconnect();
+		DB_Connection.getInstance().disconnect();
 		return listResult;
 	}
 

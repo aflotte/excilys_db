@@ -33,7 +33,7 @@ public class ComputerDAO {
 	private static Connection conn;
 	
 	private void Init() {
-		DB_Connection.getInstance().Connection();
+		DB_Connection.getInstance().connect();
 		conn = DB_Connection.getConn();
 		
 	}
@@ -60,10 +60,10 @@ public class ComputerDAO {
 				Computer toAdd = ResultToComputer(resultSet);
 				listResult.add(toAdd);
 			}
-			DB_Connection.getInstance().Disconnect();
+			DB_Connection.getInstance().disconnect();
 		} catch (SQLException e) {
 			e.printStackTrace();
-			DB_Connection.getInstance().Disconnect();
+			DB_Connection.getInstance().disconnect();
 		}
 		return listResult;
 	}
@@ -82,9 +82,9 @@ public class ComputerDAO {
 			
 		} catch (SQLException e) {
 			e.printStackTrace();
-			DB_Connection.getInstance().Disconnect();
+			DB_Connection.getInstance().disconnect();
 		}
-		DB_Connection.getInstance().Disconnect();
+		DB_Connection.getInstance().disconnect();
 		return result;
 	}
 
@@ -113,10 +113,10 @@ public class ComputerDAO {
 			ps.setInt(4, computer.getCompanyId());
 			ps.setInt(5,id);
 			ps.executeUpdate();
-			DB_Connection.getInstance().Disconnect();
+			DB_Connection.getInstance().disconnect();
 		} catch (SQLException e) {
 			e.printStackTrace();
-			DB_Connection.getInstance().Disconnect();
+			DB_Connection.getInstance().disconnect();
 		}
 	}
 
@@ -141,10 +141,10 @@ public class ComputerDAO {
 			}
 			ps.setInt(4, computer.getCompanyId());
 			ps.executeUpdate();
-			DB_Connection.getInstance().Disconnect();
+			DB_Connection.getInstance().disconnect();
 		} catch (SQLException e) {
 			e.printStackTrace();
-			DB_Connection.getInstance().Disconnect();
+			DB_Connection.getInstance().disconnect();
 		} catch (InputMismatchException e) {
 			System.out.println("Entrez un entier our le champ companie_Id!");
 		}
@@ -208,9 +208,9 @@ public class ComputerDAO {
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
-			DB_Connection.getInstance().Disconnect();
+			DB_Connection.getInstance().disconnect();
 		}
-		DB_Connection.getInstance().Disconnect();
+		DB_Connection.getInstance().disconnect();
 		return result;
 	
 	}
@@ -231,9 +231,9 @@ public class ComputerDAO {
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
-			DB_Connection.getInstance().Disconnect();
+			DB_Connection.getInstance().disconnect();
 		}
-		DB_Connection.getInstance().Disconnect();
+		DB_Connection.getInstance().disconnect();
 		return result;
 	
 	}
@@ -246,10 +246,10 @@ public class ComputerDAO {
 		try {
 			PreparedStatement prep1 = conn.prepareStatement(querry);
 			prep1.executeUpdate(querry);
-			DB_Connection.getInstance().Disconnect();
+			DB_Connection.getInstance().disconnect();
 		} catch (SQLException e) {
 			e.printStackTrace();
-			DB_Connection.getInstance().Disconnect();
+			DB_Connection.getInstance().disconnect();
 		}
 	}
 

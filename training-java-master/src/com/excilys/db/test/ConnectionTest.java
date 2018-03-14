@@ -1,14 +1,18 @@
 package com.excilys.db.test;
 
-import static org.junit.Assert.*;
 
 import org.junit.Test;
+import com.excilys.db.persistance.DB_Connection;
 
-public class ConnectionTest {
+import junit.framework.TestCase;
+
+public class ConnectionTest extends TestCase{
 
 	@Test
 	public void test() {
-		fail("Not yet implemented");
+		DB_Connection testConnection = DB_Connection.getInstance();
+		testConnection.connect();
+		testConnection.disconnect();
 	}
 
 }

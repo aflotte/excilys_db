@@ -32,7 +32,7 @@ public final class DB_Connection {
 	    
 	    
 	    
-	    public void Connection() {
+	    public void connect() {
 
 	    try {
 			conn = DriverManager.getConnection(PROPERTY_URL,PROPERTY_NOM_UTILISATEUR,PROPERTY_MOT_DE_PASSE);
@@ -42,7 +42,7 @@ public final class DB_Connection {
 		}
 	    }
 	    
-	    public void Disconnect() {
+	    public void disconnect() {
 	    	if ( conn != null) {
 	    		try {
 					conn.close();
