@@ -3,6 +3,8 @@ import com.excilys.db.DAO.CompaniesDAO;
 import com.excilys.db.DAO.ComputerDAO;
 import com.excilys.db.mapper.Companies;
 import com.excilys.db.mapper.Computer;
+import com.excilys.db.page.PageCompanies;
+import com.excilys.db.page.PageComputer;
 import com.excilys.db.cli.ScanCLI;
 import com.excilys.db.exception.CompaniesIdIncorrect;
 import com.excilys.db.exception.IncoherentDates;
@@ -79,19 +81,17 @@ public class CLI {
 	public static void AfficherCompagnies() {
 		CompaniesDAO companies = CompaniesDAO.getInstance();
 		List<Companies> listeCompanies =companies.listCompanies();
-		System.out.println("Voici la liste des compagnies : ");
-		for (int i = 0; i < listeCompanies.size();i++) {
-    		System.out.println(listeCompanies.get(i));
-    	}
+		PageCompanies page = new PageCompanies(listeCompanies,sc);
+		System.out.println("Voici la liste des ordinateurs ( Q to exit ): ");
+		page.afficher();
 	}
 	
 	public static void AfficherOrdinateurs() {
 		ComputerDAO computer = ComputerDAO.getInstance();
 		List<Computer> listeOrdinateur =computer.listComputer();
-		System.out.println("Voici la liste des ordinateurs : ");
-		for (int i = 0; i < listeOrdinateur.size();i++) {
-    		System.out.println(listeOrdinateur.get(i));
-    	}
+		PageComputer page = new PageComputer(listeOrdinateur,sc);
+		System.out.println("Voici la liste des ordinateurs ( Q to exit ): ");
+		page.afficher();
 	}
 	
 	public static void AjouterOrdinateur() {

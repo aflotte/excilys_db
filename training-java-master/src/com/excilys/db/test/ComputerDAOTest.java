@@ -1,6 +1,7 @@
 package com.excilys.db.test;
 
 import com.excilys.db.DAO.ComputerDAO;
+import com.excilys.db.mapper.Computer;
 import com.excilys.db.persistance.DB_Connection;
 
 import org.junit.After;
@@ -18,6 +19,7 @@ public class ComputerDAOTest extends TestCase {
 	@BeforeClass
 	public void init() {
 		instance = DB_Connection.getInstance();
+		computer = ComputerDAO.getInstance();
 	}
 	
 	@Before
@@ -30,9 +32,16 @@ public class ComputerDAOTest extends TestCase {
 		instance.disconnect();
 	}
 	
+	//Uniquement avec la base initiale ( McBook en 1 )
 	@Test
-	public void test() {
-		fail("Not yet implemented");
+	public void testListComputer() {
+		computer = ComputerDAO.getInstance();
+		Computer McBook = new Computer();
+		McBook.setName("MacBook Pro 15.4 inch");
+		McBook.setIntroduced(null);
+		McBook.setDiscontinued(null);
+		McBook.setCompanyId(1);
+		assertEquals(new Integer(1),ComputerDAO.getInstance().getId(McBook).get(0));
 	}
 
 	

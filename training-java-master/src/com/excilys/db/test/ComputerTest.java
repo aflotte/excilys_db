@@ -49,6 +49,7 @@ public class ComputerTest extends TestCase {
 		instance.disconnect();
 	}
 	
+	/*
 	@Test
 	public void testResultToComputer() {
 		try {
@@ -58,8 +59,11 @@ public class ComputerTest extends TestCase {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-	}
+	}*/
 	
+	
+	
+	//Test de non régression :
 	@Test
 	public void testToString() {
 		Computer comp = new Computer();

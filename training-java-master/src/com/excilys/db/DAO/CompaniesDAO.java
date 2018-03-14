@@ -10,19 +10,26 @@ import java.util.List;
 import com.excilys.db.mapper.Companies;
 import com.excilys.db.persistance.DB_Connection;
 
+/**
+ * La classe DAO de Companies
+ * @author flotte
+ *
+ */
 public class CompaniesDAO{
 	private static Connection conn;
+	private static CompaniesDAO instance;
 	
+	/**
+	 * Initialise la connection
+	 */
 	private static void Init() {
 		DB_Connection.getInstance().connect();
 		conn = DB_Connection.getConn();
 		
 	}
-	private static CompaniesDAO instance;
+	
     
     private CompaniesDAO() {
-    	
-    	
     }
     
     public static CompaniesDAO getInstance() {

@@ -14,8 +14,8 @@ public class Companies {
 	@Override
 	public String toString() {
 		StringBuilder sB = new StringBuilder(200);
-		sB.append(super.toString());
-		sB.append(" name=").append(this.getName());
+		// sB.append(super.toString());
+		sB.append(" | name=").append(this.getName());
 		return sB.toString();
 		
 	}

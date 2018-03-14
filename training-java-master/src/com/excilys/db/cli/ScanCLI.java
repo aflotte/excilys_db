@@ -6,7 +6,6 @@ import java.util.Date;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
-import com.excilys.db.DAO.CompaniesDAO;
 import com.excilys.db.exception.CompaniesIdIncorrect;
 import com.excilys.db.exception.IncoherentDates;
 import com.excilys.db.mapper.Computer;
