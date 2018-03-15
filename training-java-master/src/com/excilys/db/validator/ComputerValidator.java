@@ -4,11 +4,11 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Date;
+import java.time.LocalDate;
 
 import com.excilys.db.exception.CompaniesIdIncorrect;
 import com.excilys.db.exception.IncoherentDates;
-import com.excilys.db.moddel.Computer;
+import com.excilys.db.model.Computer;
 import com.excilys.db.persistance.DB_Connection;
 
 public class ComputerValidator {
@@ -25,7 +25,7 @@ public class ComputerValidator {
 		
 	}
 	
-	public static void init(Computer instance) {
+	public static void init(Computer instance) throws IncoherentDates, CompaniesIdIncorrect {
 		computer = instance;
 	}
 	
@@ -52,18 +52,18 @@ public class ComputerValidator {
 	
 	
 	public static boolean testDate() {
-		Date introduced = computer.getIntroduced();
-		Date discontinued = computer.getDiscontinued();
+		LocalDate introduced = computer.getIntroduced();
+		LocalDate discontinued = computer.getDiscontinued();
 		return ((introduced != null)&&(discontinued != null)&&(introduced.compareTo(discontinued)>0));
 	}
 	
 	public static boolean testIdCompanie() {
     	init();
 		ResultSet resultSet = null;
-		if (computer.getCompanyId()==null) {
+		if (computer.getCompanyId().getId()==null) {
 			return true;
 		}
-		String querry = "SELECT name FROM company WHERE id = " + computer.getCompanyId();
+		String querry = "SELECT name FROM company WHERE id = " + computer.getCompanyId().getId();
 		try {
 			PreparedStatement prep1 = conn.prepareStatement(querry);
 			resultSet = prep1.executeQuery();

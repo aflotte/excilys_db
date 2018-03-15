@@ -1,13 +1,23 @@
-package com.excilys.db.moddel;
+package com.excilys.db.model;
 
-import java.util.Date;
+import java.time.LocalDate;
+
+import com.excilys.db.exception.CompaniesIdIncorrect;
+import com.excilys.db.exception.CompaniesInexistant;
+import com.excilys.db.exception.IncoherentDates;
+import com.excilys.db.validator.ComputerValidator;
+
 
 public class Computer {
 	private Integer id;
 	private String name;
-	private Date introduced;
-	private Date discontinued;
-	private Integer companyId;
+	private LocalDate introduced;
+	private LocalDate discontinued;
+	private Companies companie;
+	
+	public Computer() {
+		companie = new Companies();
+	}
 	
 	
 	public Integer getId() {
@@ -22,25 +32,27 @@ public class Computer {
 	public void setName(String name) {
 		this.name = name;
 	}
-	public Date getIntroduced() {
+	public LocalDate getIntroduced() {
 		return introduced;
 	}
-	public void setIntroduced(Date date) {
+	public void setIntroduced(LocalDate date) {
 		this.introduced = date;
 	}
-	public Date getDiscontinued() {
+	public LocalDate getDiscontinued() {
 		return discontinued;
 	}
-	public void setDiscontinued(Date discontinued) {
+	public void setDiscontinued(LocalDate discontinued) {
 		this.discontinued = discontinued;
 	}
-	public Integer getCompanyId() {
-		return companyId;
+	public Companies getCompanyId() {
+		return companie;
 	}
-	public void setCompanyId(Integer companyId) {
-		this.companyId = companyId;
+	public void setCompanyId(Companies companie) throws IncoherentDates, CompaniesIdIncorrect, CompaniesInexistant {
+		setCompanyId(companie.getId());
 	}
-	
+	public void setCompanyId(int companyId) throws CompaniesInexistant {
+		this.companie = new Companies(companyId);
+	}
 	
 	@Override
 	public String toString() {
@@ -53,11 +65,11 @@ public class Computer {
 		sB.append(" | name=").append(this.getName());
 		sB.append(" | introduced=").append(this.getIntroduced());
 		sB.append(" | discontinued=").append(this.getDiscontinued());
-		Integer CompIdtoPrint;
-		if (this.getCompanyId() == 0) {
-			CompIdtoPrint = null;
+		String CompIdtoPrint;
+		if (this.getCompanyId() == null) {
+			CompIdtoPrint = "null";
 		}else {
-			CompIdtoPrint = this.getCompanyId();
+			CompIdtoPrint = this.getCompanyId().getName();
 		}
 		sB.append(" | companyId=").append(CompIdtoPrint); 
 		return sB.toString();

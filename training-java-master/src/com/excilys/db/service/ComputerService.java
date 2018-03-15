@@ -3,7 +3,8 @@ package com.excilys.db.service;
 import java.util.List;
 
 import com.excilys.db.DAO.ComputerDAO;
-import com.excilys.db.moddel.Computer;
+import com.excilys.db.exception.CompaniesInexistant;
+import com.excilys.db.model.Computer;
 
 public class ComputerService {
 	
@@ -11,7 +12,7 @@ public class ComputerService {
 	
 	private static ComputerDAO computer = ComputerDAO.getInstance();
 	
-	public static List<Computer> listComputer() {
+	public static List<Computer> listComputer() throws CompaniesInexistant {
 		return computer.listComputer();
 	}
 	
@@ -23,7 +24,7 @@ public class ComputerService {
 		computer.deleteAComputer(id);
 	}
 	
-	public static Computer showDetails(int id) {
+	public static Computer showDetails(int id) throws CompaniesInexistant {
 		return computer.showDetails(id);
 	}
 	

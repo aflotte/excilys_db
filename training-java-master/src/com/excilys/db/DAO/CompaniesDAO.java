@@ -7,7 +7,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.excilys.db.moddel.Companies;
+import com.excilys.db.exception.CompaniesInexistant;
+import com.excilys.db.model.Companies;
 import com.excilys.db.persistance.DB_Connection;
 
 /**
@@ -92,4 +93,27 @@ public class CompaniesDAO{
 		return listResult;
 	}
 
+	public Companies getCompanies(int id) throws CompaniesInexistant {
+		init();
+		ResultSet resultSet = null;
+		Companies Result = new Companies();
+		String querry = "SELECT name FROM company WHERE id = " + id;
+		try {
+			PreparedStatement prep1 = conn.prepareStatement(querry);
+			resultSet = prep1.executeQuery();
+			if (resultSet.next()) {
+				Companies toAdd = new Companies();
+				toAdd.setName(resultSet.getString(1));
+				toAdd.setId(id);
+				return toAdd;
+			
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			DB_Connection.getInstance().disconnect();
+		}
+		DB_Connection.getInstance().disconnect();
+		throw new CompaniesInexistant();
+	}
 }

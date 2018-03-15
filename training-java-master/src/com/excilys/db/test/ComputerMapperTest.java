@@ -9,7 +9,7 @@ import org.junit.Test;
 
 import com.excilys.db.DAO.ComputerDAO;
 import com.excilys.db.mapper.ComputerMapper;
-import com.excilys.db.moddel.Computer;
+import com.excilys.db.model.Computer;
 import com.excilys.db.persistance.DB_Connection;
 import com.excilys.db.service.ComputerService;
 

@@ -6,9 +6,10 @@ import com.excilys.db.service.ComputerService;
 import com.excilys.db.validator.ComputerValidator;
 import com.excilys.db.cli.ScanCLI;
 import com.excilys.db.exception.CompaniesIdIncorrect;
+import com.excilys.db.exception.CompaniesInexistant;
 import com.excilys.db.exception.IncoherentDates;
-import com.excilys.db.moddel.Companies;
-import com.excilys.db.moddel.Computer;
+import com.excilys.db.model.Companies;
+import com.excilys.db.model.Computer;
 
 import java.util.InputMismatchException;
 
@@ -27,7 +28,7 @@ public class CLI {
 	static Scanner sc;
 	
 	
-	public static void main(String[] args) {
+	public static void main(String[] args) throws CompaniesInexistant {
 		System.out.println("Bienvenue sur le CLI de la base de donnée");
 		sc = new Scanner(System.in);
 		boolean continu = true;
@@ -97,7 +98,7 @@ public class CLI {
 		page.afficher();
 	}
 	
-	public static void afficherOrdinateurs() {
+	public static void afficherOrdinateurs() throws CompaniesInexistant {
 		List<Computer> listeOrdinateur = ComputerService.listComputer();
 		PageComputer page = new PageComputer(listeOrdinateur,sc);
 		System.out.println("Voici la liste des ordinateurs ( Q to exit ): ");
@@ -115,6 +116,8 @@ public class CLI {
 			System.out.println("Entrez un entier !");
 		}catch (CompaniesIdIncorrect e) {
 			System.out.println("L'id de la compagnie que vous avez rentré ne correspond à aucune compagnie !");
+		} catch (CompaniesInexistant e) {
+			
 		}
 	}
 	
@@ -129,7 +132,7 @@ public class CLI {
 		}
 	}
 	
-	private static void afficherOrdinateur() {
+	private static void afficherOrdinateur() throws CompaniesInexistant {
 		System.out.println("Donner l'Id de l'ordinateur à afficher ( -2 pour annuler )");
 		int toDisplay = -1;
 		while (toDisplay == -1) {
@@ -155,6 +158,8 @@ public class CLI {
 			e.printStackTrace();
 		} catch (CompaniesIdIncorrect e) {
 			System.out.println("L'id de la compagnie que vous avez rentré ne correspond à aucune compagnie !");
+		} catch (CompaniesInexistant e) {
+
 		}
 		System.out.println("Entrer l'Id de l'ordinateur a modifier");
 		int toUpdate = -1;

@@ -4,13 +4,16 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.InputMismatchException;
 import java.util.List;
 
+import com.excilys.db.exception.CompaniesInexistant;
 import com.excilys.db.mapper.ComputerMapper;
-import com.excilys.db.moddel.Computer;
+import com.excilys.db.model.Companies;
+import com.excilys.db.model.Computer;
 import com.excilys.db.persistance.DB_Connection;
 import com.mysql.jdbc.Statement;
 
@@ -49,8 +52,9 @@ public class ComputerDAO {
 	/**
 	 * 
 	 * @return la liste des ordinateurs
+	 * @throws CompaniesInexistant 
 	 */
-	public List<Computer> listComputer() {
+	public List<Computer> listComputer() throws CompaniesInexistant {
 		init();
 		ResultSet resultSet = null;
 		List<Computer> listResult = new ArrayList<Computer>();
@@ -74,8 +78,9 @@ public class ComputerDAO {
 	 * 
 	 * @param id de l'ordinateur
 	 * @return l'ordinateur
+	 * @throws CompaniesInexistant 
 	 */
-	public Computer showDetails(int id) {
+	public Computer showDetails(int id) throws CompaniesInexistant {
 		init();
 		ResultSet resultSet = null;
 		Computer result = new Computer();
@@ -102,8 +107,8 @@ public class ComputerDAO {
 	 */
 	public void updateAComputer(Computer computer, int id) {	
 		init();
-		java.util.Date dateIntroduced = computer.getIntroduced();
-		java.util.Date dateDiscontinued = computer.getDiscontinued();
+		LocalDate dateIntroduced = computer.getIntroduced();
+		LocalDate dateDiscontinued = computer.getDiscontinued();
 		java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		String querry = "UPDATE computer SET name = ?, introduced = ?, discontinued = ?, company_id = ? WHERE id = ?";
 		try {
@@ -112,15 +117,15 @@ public class ComputerDAO {
 			if (dateIntroduced == null) {
 				ps.setNString(2,null);
 			}else {
-				ps.setString(2, sdf.format(dateIntroduced));
+				ps.setDate(2, java.sql.Date.valueOf(dateIntroduced));
 			}
 			if (dateDiscontinued == null) {
 				ps.setNString(3,null);
 			}else {
-				ps.setString(3, sdf.format(dateDiscontinued));
+				ps.setDate(3, java.sql.Date.valueOf(dateDiscontinued));
 			}
 			if (computer.getCompanyId() != null) {
-			ps.setInt(4, computer.getCompanyId());
+			ps.setInt(4, computer.getCompanyId().getId());
 			}else {
 				ps.setNull(4, java.sql.Types.INTEGER);
 			}
@@ -135,8 +140,8 @@ public class ComputerDAO {
 
 	public int createAComputer(Computer computer){
 		init();
-		java.util.Date dateIntroduced = computer.getIntroduced();
-		java.util.Date dateDiscontinued = computer.getDiscontinued();
+		LocalDate dateIntroduced = computer.getIntroduced();
+		LocalDate dateDiscontinued = computer.getDiscontinued();
 		java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		String querry = "INSERT INTO computer(name,introduced,discontinued,company_id) VALUES (?,?,?,?)";
 		try {
@@ -145,15 +150,15 @@ public class ComputerDAO {
 			if (dateIntroduced == null) {
 				ps.setNString(2,null);
 			}else {
-				ps.setString(2, sdf.format(dateIntroduced));
+				ps.setDate(2, java.sql.Date.valueOf(dateIntroduced));
 			}
 			if (dateDiscontinued == null) {
 				ps.setNString(3,null);
 			}else {
-				ps.setString(3, sdf.format(dateDiscontinued));
+				ps.setDate(3, java.sql.Date.valueOf(dateDiscontinued));
 			}
-			if (computer.getCompanyId() != null) {
-			ps.setInt(4, computer.getCompanyId());
+			if (computer.getCompanyId().getId() != null) {
+			ps.setInt(4, computer.getCompanyId().getId());
 			}else {
 				ps.setNull(4, java.sql.Types.INTEGER);
 			}
@@ -178,20 +183,20 @@ public class ComputerDAO {
 	
 	
 	
-	private String chooseTheQuerry(Date dateIntroduced,Date dateDiscontinued, Integer id ) {
-		String querryEnd = chooseTheQuerryCompanie(id);
+	private String chooseTheQuerry(LocalDate localDate,LocalDate localDate2, Companies companies ) {
+		String querryEnd = chooseTheQuerryCompanie(companies);
 		String querryNotNULL = "SELECT id FROM computer WHERE name = ? AND introduced = ? AND discontinued = ?"+querryEnd;
 		String querryIntroducedNULL = "SELECT id FROM computer WHERE name = ? AND introduced is ? AND discontinued = ?"+querryEnd;
 		String querryDiscontinuedNULL = "SELECT id FROM computer WHERE name = ? AND introduced = ? AND discontinued is ?"+querryEnd;
 		String querryBothNULL = "SELECT id FROM computer WHERE name = ? AND introduced is ? AND discontinued is ?"+querryEnd;
-		if(dateIntroduced == null) {
-			if(dateDiscontinued == null) {
+		if(localDate == null) {
+			if(localDate2 == null) {
 				return querryBothNULL;
 			}else {
 				return querryIntroducedNULL;
 			}
 		}else {
-			if(dateDiscontinued == null) {
+			if(localDate2 == null) {
 				return querryDiscontinuedNULL;
 				
 			}else {
@@ -200,8 +205,8 @@ public class ComputerDAO {
 		}
 	}
 	
-	private String chooseTheQuerryCompanie(Integer id) {
-		if (id == null) {
+	private String chooseTheQuerryCompanie(Companies comp) {
+		if (comp == null) {
 			return " AND company_id is ?";
 		}else {
 			return " AND company_id = ?";
@@ -210,22 +215,22 @@ public class ComputerDAO {
 	
 	private void fillGetIdStatement(PreparedStatement ps,Computer computer) throws SQLException {
 		java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-		java.util.Date dateIntroduced = computer.getIntroduced();
-		java.util.Date dateDiscontinued = computer.getDiscontinued();
+		LocalDate dateIntroduced = computer.getIntroduced();
+		LocalDate dateDiscontinued = computer.getDiscontinued();
 
 			ps.setString(1, computer.getName());
 			if (dateIntroduced == null) {
 				ps.setNString(2,null);
 			}else {
-				ps.setString(2, sdf.format(dateIntroduced));
+				ps.setDate(2, java.sql.Date.valueOf(dateIntroduced));
 			}
 			if (dateDiscontinued == null) {
 				ps.setNString(3,null);
 			}else {
-				ps.setString(3, sdf.format(dateDiscontinued));
+				ps.setDate(3, java.sql.Date.valueOf(dateDiscontinued));
 			}
-			if (computer.getCompanyId() != null) {
-			ps.setInt(4, computer.getCompanyId());
+			if (computer.getCompanyId().getId() != null) {
+			ps.setInt(4, computer.getCompanyId().getId());
 			}else {
 				ps.setNull(4, java.sql.Types.INTEGER);
 			}
@@ -240,15 +245,17 @@ public class ComputerDAO {
 		try {
 			PreparedStatement ps = conn.prepareStatement(querry);
 			fillGetIdStatement(ps,computer);
+			System.out.println(ps);
 			resultSet = ps.executeQuery();
 			while (resultSet.next()) {
 				result.add(resultSet.getInt(1));
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
+		}finally {
 			DB_Connection.getInstance().disconnect();
 		}
-		DB_Connection.getInstance().disconnect();
+
 		return result;
 	
 	}
@@ -269,9 +276,9 @@ public class ComputerDAO {
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
-			DB_Connection.getInstance().disconnect();
-		}
+		}finally {
 		DB_Connection.getInstance().disconnect();
+		}
 		return result;
 	
 	}
@@ -284,9 +291,10 @@ public class ComputerDAO {
 		try {
 			PreparedStatement prep1 = conn.prepareStatement(querry);
 			prep1.executeUpdate(querry);
-			DB_Connection.getInstance().disconnect();
 		} catch (SQLException e) {
 			e.printStackTrace();
+			
+		}finally {
 			DB_Connection.getInstance().disconnect();
 		}
 	}

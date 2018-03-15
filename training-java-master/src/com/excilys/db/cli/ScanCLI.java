@@ -2,6 +2,8 @@ package com.excilys.db.cli;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.Date;
 import java.util.InputMismatchException;
 import java.util.Scanner;
@@ -9,8 +11,10 @@ import java.util.Scanner;
 
 
 import com.excilys.db.exception.CompaniesIdIncorrect;
+import com.excilys.db.exception.CompaniesInexistant;
 import com.excilys.db.exception.IncoherentDates;
-import com.excilys.db.moddel.Computer;
+import com.excilys.db.model.Companies;
+import com.excilys.db.model.Computer;
 import com.excilys.db.validator.ComputerValidator;
 
 /**
@@ -44,8 +48,9 @@ public class ScanCLI {
 	 * @throws InputMismatchException
 	 * @throws CompaniesIdIncorrect
 	 * @throws IncoherentDates
+	 * @throws CompaniesInexistant 
 	 */
-	public static Computer scanComputer() throws InputMismatchException, CompaniesIdIncorrect, IncoherentDates{
+	public static Computer scanComputer() throws InputMismatchException, CompaniesIdIncorrect, IncoherentDates, CompaniesInexistant{
 		Computer aRetourner = new Computer(); 
 		Scanner sc = new Scanner(System.in);
 		System.out.println("Entrer le nom de l'ordinateur : ");
@@ -60,7 +65,7 @@ public class ScanCLI {
 		System.out.println("Entrer l'Id de la compagnie ( -2 pour laisser vide ) :");
 		int id_companie = sc.nextInt();
 		if (id_companie != -2) {
-		aRetourner.setCompanyId(id_companie);
+		aRetourner.setCompanyId(new Companies(id_companie));
 		}
 		ComputerValidator.init(aRetourner);
 		ComputerValidator.validate();
@@ -72,7 +77,7 @@ public class ScanCLI {
 	 * @param le scanner précédement ouvert
 	 * @return Une date rentré par l'utilisateur
 	 */
-	public static Date scanDate(Scanner used) {
+	public static LocalDate scanDate(Scanner used) {
 		SimpleDateFormat formatter = new SimpleDateFormat("yyyy/MM/dd");
         String stringDate = used.next();
         if ( stringDate.equals("null")) {
@@ -82,10 +87,10 @@ public class ScanCLI {
             Date date = formatter.parse(stringDate);
             System.out.println(date);
             System.out.println(formatter.format(date));
-            return date;
+            return date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
         } catch (ParseException e) {
             System.out.println("Comme la date entrée ne correspondait pas au format, aujourd'hui a été rentré par default !");
-            return new Date();
+            return new Date().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
         }	
 	}
 }

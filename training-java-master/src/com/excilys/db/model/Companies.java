@@ -1,6 +1,10 @@
-package com.excilys.db.moddel;
+package com.excilys.db.model;
+
+import com.excilys.db.exception.CompaniesInexistant;
+import com.excilys.db.service.CompaniesService;
 
 public class Companies {
+	private Integer id;
 	private String name;
 
 	public String getName() {
@@ -9,7 +13,14 @@ public class Companies {
 	public void setName(String name) {
 		this.name = name;
 	}
+	public Companies() {
+		super();
+	}
 	
+	public Companies(Integer tid) throws CompaniesInexistant {
+		id = tid;
+		name = CompaniesService.getCompanies(id).getName();
+	}
 	
 	@Override
 	public String toString() {
@@ -33,5 +44,11 @@ public class Companies {
 			return false;
 		}
 		return true;
+	}
+	public Integer getId() {
+		return id;
+	}
+	public void setId(Integer id) {
+		this.id = id;
 	}
 }

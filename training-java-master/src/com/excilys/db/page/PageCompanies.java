@@ -3,7 +3,7 @@ package com.excilys.db.page;
 import java.util.List;
 import java.util.Scanner;
 
-import com.excilys.db.moddel.Companies;
+import com.excilys.db.model.Companies;
 
 
 public class PageCompanies {
