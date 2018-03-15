@@ -11,6 +11,7 @@ import java.util.List;
 
 import com.excilys.db.mapper.Computer;
 import com.excilys.db.persistance.DB_Connection;
+import com.mysql.jdbc.Statement;
 
 /**
  * La classe DAO des ordinateurs
@@ -132,14 +133,14 @@ public class ComputerDAO {
 		}
 	}
 
-	public void createAComputer(Computer computer){
+	public int createAComputer(Computer computer){
 		init();
 		java.util.Date dateIntroduced = computer.getIntroduced();
 		java.util.Date dateDiscontinued = computer.getDiscontinued();
 		java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		String querry = "INSERT INTO computer(name,introduced,discontinued,company_id) VALUES (?,?,?,?)";
 		try {
-			PreparedStatement ps = conn.prepareStatement(querry);
+			PreparedStatement ps = conn.prepareStatement(querry,Statement.RETURN_GENERATED_KEYS);
 			ps.setString(1, computer.getName());
 			if (dateIntroduced == null) {
 				ps.setNString(2,null);
@@ -157,14 +158,21 @@ public class ComputerDAO {
 				ps.setNull(4, java.sql.Types.INTEGER);
 			}
 			ps.executeUpdate();
+			ResultSet key = ps.getGeneratedKeys();
+			int ikey = 0;
+			if (key.next()) {
+				ikey = key.getInt(1);
+			}
 			DB_Connection.getInstance().disconnect();
+			return ikey;
+			
 		} catch (SQLException e) {
 			e.printStackTrace();
 			DB_Connection.getInstance().disconnect();
 		} catch (InputMismatchException e) {
 			System.out.println("Entrez un entier our le champ companie_Id!");
 		}
-		
+		return 0;
 		
 	}
 	

@@ -13,8 +13,8 @@ public class ComputerService {
 		return computer.listComputer();
 	}
 	
-	public static void createComputer(Computer aAjouter){
-		computer.createAComputer(aAjouter);
+	public static int createComputer(Computer aAjouter){
+		return computer.createAComputer(aAjouter);
 	}
 	
 	public static void deleteComputer(int id) {
