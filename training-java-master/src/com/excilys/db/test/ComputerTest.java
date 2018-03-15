@@ -52,17 +52,7 @@ public class ComputerTest extends TestCase {
 		instance.disconnect();
 	}
 	
-	/*
-	@Test
-	public void testResultToComputer() {
-		try {
-			toUseForTest.next();
-			Computer comp = Computer.ResultToComputer(toUseForTest);
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}*/
+	
 	
 	
 	

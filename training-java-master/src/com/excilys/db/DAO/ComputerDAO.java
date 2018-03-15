@@ -9,6 +9,7 @@ import java.util.Date;
 import java.util.InputMismatchException;
 import java.util.List;
 
+import com.excilys.db.mapper.ComputerMapper;
 import com.excilys.db.moddel.Computer;
 import com.excilys.db.persistance.DB_Connection;
 import com.mysql.jdbc.Statement;
@@ -23,7 +24,6 @@ public class ComputerDAO {
 	
 	private static ComputerDAO instance;
 	private static Connection conn;
-    
     private ComputerDAO() {
     	
     	
@@ -59,7 +59,7 @@ public class ComputerDAO {
 			PreparedStatement prep1 = conn.prepareStatement(querry);
 			resultSet = prep1.executeQuery();
 			while (resultSet.next()) {
-				Computer toAdd = Computer.resultToComputer(resultSet);
+				Computer toAdd = ComputerMapper.resultToComputer(resultSet);
 				listResult.add(toAdd);
 			}
 			DB_Connection.getInstance().disconnect();
@@ -84,7 +84,7 @@ public class ComputerDAO {
 			PreparedStatement prep1 = conn.prepareStatement(querry);
 			resultSet = prep1.executeQuery();
 			if (resultSet.next()) {
-				result = Computer.resultToComputer(resultSet);
+				result = ComputerMapper.resultToComputer(resultSet);
 			}
 			
 		} catch (SQLException e) {
