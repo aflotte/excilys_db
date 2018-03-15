@@ -59,17 +59,6 @@ public class ComputerDAOTest extends TestCase {
 	
 	//Uniquement avec la base initiale ( McBook en 1 )
 	@Test
-	public void testGetIdComputer() {
-		Computer McBook = new Computer();
-		McBook.setName("MacBook Pro 15.4 inch");
-		McBook.setIntroduced(null);
-		McBook.setDiscontinued(null);
-		McBook.setCompanyId(1);
-		assertEquals(new Integer(1),computer.getId(McBook).get(0));
-	}
-	
-	//Uniquement avec la base initiale ( McBook en 1 )
-	@Test
 	public void testListComputer() {
 		Computer McBook = new Computer();
 		McBook.setName("MacBook Pro 15.4 inch");
@@ -142,17 +131,6 @@ public class ComputerDAOTest extends TestCase {
 	}
 	
 	@Test
-	public void testDelete() {
-		Computer Test = new Computer();
-		Test.setName("Test_Destruction");
-		Test.setIntroduced(null);
-		Test.setDiscontinued(null);
-		computer.createAComputer(Test);
-		List<Integer> testList = computer.getIdFromName("Test_Destruction");	
-		computer.deleteAComputer(testList.get(0));
-	}
-	
-	@Test
 	public void testUpdateAComputerDatesNullCompanieNull() {
 		Computer Test = new Computer();
 		Test.setName("Test_Computer");
@@ -213,6 +191,32 @@ public class ComputerDAOTest extends TestCase {
 		int id = computer.getId(Test).get(0);
 		computer.updateAComputer(Test, id);
 	}
-
 	
+	//Uniquement avec la base initiale ( McBook en 1 )
+	@Test
+	public void testGetIdComputer() {
+		Computer McBook = new Computer();
+		McBook.setName("MacBook Pro 15.4 inch");
+		McBook.setIntroduced(null);
+		McBook.setDiscontinued(null);
+		McBook.setCompanyId(1);
+		assertEquals(new Integer(1),computer.getId(McBook).get(0));
+	}
+
+	//Uniquement avec la base initiale ( McBook en 1 )
+	@Test
+	public void testGetIdFromName() {
+		assertEquals(new Integer(1),computer.getIdFromName("MacBook Pro 15.4 inch").get(0));
+	}
+	
+	@Test
+	public void testDelete() {
+		Computer Test = new Computer();
+		Test.setName("Test_Destruction");
+		Test.setIntroduced(null);
+		Test.setDiscontinued(null);
+		computer.createAComputer(Test);
+		List<Integer> testList = computer.getIdFromName("Test_Destruction");	
+		computer.deleteAComputer(testList.get(0));
+	}
 }
