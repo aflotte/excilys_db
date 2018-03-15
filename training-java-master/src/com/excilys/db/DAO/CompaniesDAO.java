@@ -7,7 +7,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.excilys.db.mapper.Companies;
+import com.excilys.db.moddel.Companies;
 import com.excilys.db.persistance.DB_Connection;
 
 /**

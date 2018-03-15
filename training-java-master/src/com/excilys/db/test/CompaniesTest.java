@@ -2,8 +2,8 @@ package com.excilys.db.test;
 
 import org.junit.Test;
 
-import com.excilys.db.mapper.Companies;
-import com.excilys.db.mapper.Computer;
+import com.excilys.db.moddel.Companies;
+import com.excilys.db.moddel.Computer;
 
 import junit.framework.TestCase;
 

@@ -1,6 +1,4 @@
 package com.excilys.db.cli;
-import com.excilys.db.mapper.Companies;
-import com.excilys.db.mapper.Computer;
 import com.excilys.db.page.PageCompanies;
 import com.excilys.db.page.PageComputer;
 import com.excilys.db.service.CompaniesService;
@@ -9,6 +7,8 @@ import com.excilys.db.validator.ComputerValidator;
 import com.excilys.db.cli.ScanCLI;
 import com.excilys.db.exception.CompaniesIdIncorrect;
 import com.excilys.db.exception.IncoherentDates;
+import com.excilys.db.moddel.Companies;
+import com.excilys.db.moddel.Computer;
 
 import java.util.InputMismatchException;
 

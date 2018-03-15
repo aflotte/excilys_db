@@ -8,7 +8,7 @@ import java.util.Date;
 
 import com.excilys.db.exception.CompaniesIdIncorrect;
 import com.excilys.db.exception.IncoherentDates;
-import com.excilys.db.mapper.Computer;
+import com.excilys.db.moddel.Computer;
 import com.excilys.db.persistance.DB_Connection;
 
 public class ComputerValidator {

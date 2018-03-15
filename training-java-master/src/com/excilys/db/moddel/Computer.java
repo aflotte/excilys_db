@@ -1,7 +1,5 @@
-package com.excilys.db.mapper;
+package com.excilys.db.moddel;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.Date;
 
 public class Computer {
@@ -89,17 +87,6 @@ public class Computer {
 		}
 		return true;
 		
-	}
-	
-	
-	public static Computer resultToComputer(ResultSet resultSet) throws SQLException {
-		Computer toReturn = new Computer();
-		toReturn.setName(resultSet.getString(1));
-		toReturn.setIntroduced(resultSet.getDate(2));
-		toReturn.setIntroduced(resultSet.getDate(3));
-		toReturn.setCompanyId(resultSet.getInt(4));
-		toReturn.setId(resultSet.getInt(5));
-		return toReturn;
 	}
 
 	

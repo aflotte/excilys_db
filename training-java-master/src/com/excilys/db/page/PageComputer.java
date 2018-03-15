@@ -1,10 +1,9 @@
 package com.excilys.db.page;
 
-import com.excilys.db.mapper.Computer;
-
-
 import java.util.List;
 import java.util.Scanner;
+
+import com.excilys.db.moddel.Computer;
 
 
 public class PageComputer {

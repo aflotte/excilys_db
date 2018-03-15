@@ -1,4 +1,4 @@
-package com.excilys.db.mapper;
+package com.excilys.db.moddel;
 
 public class Companies {
 	private String name;

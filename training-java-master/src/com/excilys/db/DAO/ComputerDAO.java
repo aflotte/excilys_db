@@ -9,7 +9,7 @@ import java.util.Date;
 import java.util.InputMismatchException;
 import java.util.List;
 
-import com.excilys.db.mapper.Computer;
+import com.excilys.db.moddel.Computer;
 import com.excilys.db.persistance.DB_Connection;
 import com.mysql.jdbc.Statement;
 

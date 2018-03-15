@@ -3,9 +3,11 @@ package com.excilys.db.service;
 import java.util.List;
 
 import com.excilys.db.DAO.ComputerDAO;
-import com.excilys.db.mapper.Computer;
+import com.excilys.db.moddel.Computer;
 
 public class ComputerService {
+	
+	
 	
 	private static ComputerDAO computer = ComputerDAO.getInstance();
 	
