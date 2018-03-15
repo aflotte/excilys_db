@@ -1,10 +1,10 @@
 package com.excilys.db.cli;
-import com.excilys.db.DAO.CompaniesDAO;
-import com.excilys.db.DAO.ComputerDAO;
 import com.excilys.db.mapper.Companies;
 import com.excilys.db.mapper.Computer;
 import com.excilys.db.page.PageCompanies;
 import com.excilys.db.page.PageComputer;
+import com.excilys.db.service.CompaniesService;
+import com.excilys.db.service.ComputerService;
 import com.excilys.db.validator.ComputerValidator;
 import com.excilys.db.cli.ScanCLI;
 import com.excilys.db.exception.CompaniesIdIncorrect;
@@ -32,27 +32,27 @@ public class CLI {
 		sc = new Scanner(System.in);
 		boolean continu = true;
 		while ( continu) {
-			MenuIntroduction();		
-			int choix = ChoixMenuIntroduction();
+			menuIntroduction();		
+			int choix = choixMenuIntroduction();
 			switch (choix) 
 			{
 				case 1:
-					AfficherCompagnies();
+					afficherCompagnies();
 					break;
 				case 2:
-					AfficherOrdinateurs();
+					afficherOrdinateurs();
 					break;
 				case 3:
-					AjouterOrdinateur();
+					ajouterOrdinateur();
 					break;
 				case 4:
-					SupprimerOrdinateur();
+					supprimerOrdinateur();
 					break;
 				case 5:
-					AfficherOrdinateur();
+					afficherOrdinateur();
 					break;
 				case 6:
-					MettreAJour();
+					mettreAJour();
 					break;
 				case 7:
 					continu = false;
@@ -63,7 +63,7 @@ public class CLI {
 		sc.close();
 	}	
 
-	public static void MenuIntroduction() {
+	public static void menuIntroduction() {
 		System.out.println("Liste des commandes :");
 		System.out.println("1 - Afficher la liste des compagnies");
 		System.out.println("2 - Afficher la liste des ordinateurs");
@@ -78,7 +78,7 @@ public class CLI {
 	 * 
 	 * @return Le choix de l'utilisateur, 0 si l'utilisateur rentre quelque chose d'incorrect
 	 */
-	public static int ChoixMenuIntroduction() {
+	public static int choixMenuIntroduction() {
 		int result = 0;
 		result = ScanCLI.scanInt(sc);
 		if ((result > 7)||(result<1) ){
@@ -90,28 +90,25 @@ public class CLI {
 		
 	}
 	
-	public static void AfficherCompagnies() {
-		CompaniesDAO companies = CompaniesDAO.getInstance();
-		List<Companies> listeCompanies =companies.listCompanies();
+	public static void afficherCompagnies() {
+		List<Companies> listeCompanies =CompaniesService.listCompanies();
 		PageCompanies page = new PageCompanies(listeCompanies,sc);
 		System.out.println("Voici la liste des ordinateurs ( Q to exit ): ");
 		page.afficher();
 	}
 	
-	public static void AfficherOrdinateurs() {
-		ComputerDAO computer = ComputerDAO.getInstance();
-		List<Computer> listeOrdinateur =computer.listComputer();
+	public static void afficherOrdinateurs() {
+		List<Computer> listeOrdinateur = ComputerService.listComputer();
 		PageComputer page = new PageComputer(listeOrdinateur,sc);
 		System.out.println("Voici la liste des ordinateurs ( Q to exit ): ");
 		page.afficher();
 	}
 	
-	public static void AjouterOrdinateur() {
-		ComputerDAO computer = ComputerDAO.getInstance();
+	public static void ajouterOrdinateur() {
 		Computer aAjouter = new Computer();
 		try {
 			aAjouter = ScanCLI.scanComputer();
-			computer.createAComputer(aAjouter);
+			ComputerService.createComputer(aAjouter);
 		} catch (IncoherentDates e) {
 			System.out.println("Les dates rentrées sont incohérentes");
 		}catch (InputMismatchException e){
@@ -121,20 +118,18 @@ public class CLI {
 		}
 	}
 	
-	private static void SupprimerOrdinateur() {
-		ComputerDAO computer = ComputerDAO.getInstance();
+	private static void supprimerOrdinateur() {
 		System.out.println("Donner l'Id de l'ordinateur à supprimer ( -2 pour annuler )");
 		int toDelete = -1;
 		while (toDelete == -1) {
 			toDelete = ScanCLI.scanInt(sc);
 		}
 		if (toDelete != -2) {
-			computer.deleteAComputer(toDelete);
+			ComputerService.deleteComputer(toDelete);
 		}
 	}
 	
-	private static void AfficherOrdinateur() {
-		ComputerDAO computer = ComputerDAO.getInstance();
+	private static void afficherOrdinateur() {
 		System.out.println("Donner l'Id de l'ordinateur à afficher ( -2 pour annuler )");
 		int toDisplay = -1;
 		while (toDisplay == -1) {
@@ -144,13 +139,12 @@ public class CLI {
 			}
 		}
 		if (toDisplay != -2) {
-			System.out.println(computer.showDetails(toDisplay));
+			System.out.println(ComputerService.showDetails(toDisplay));
 	
 		}
 	}
 	
-	private static void MettreAJour() {
-		ComputerDAO computer = ComputerDAO.getInstance();
+	private static void mettreAJour() {
 		Computer aAjouter = new Computer();
 		try {
 				aAjouter = ScanCLI.scanComputer();
@@ -168,7 +162,7 @@ public class CLI {
 			toUpdate = ScanCLI.scanInt(sc);
 		}
 		if (toUpdate != -2) {
-			computer.updateAComputer(aAjouter,toUpdate);
+			ComputerService.updateAComputer(aAjouter,toUpdate);
 		}
 		
 	}

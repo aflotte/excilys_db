@@ -48,9 +48,9 @@ public class Computer {
 	public String toString() {
 		StringBuilder sB = new StringBuilder(200);
 		//sB.append(super.toString());
-		if(this.getId()!= null) {
+		/*if(this.getId()!= null) {
 			sB.append(" | id=").append(this.getId());	
-		}
+		}*/
 		
 		sB.append(" | name=").append(this.getName());
 		sB.append(" | introduced=").append(this.getIntroduced());
@@ -63,6 +63,28 @@ public class Computer {
 		}
 		sB.append(" | companyId=").append(CompIdtoPrint); 
 		return sB.toString();
+		
+	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		if (super.equals(obj)) {
+			return true;
+		}
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		if (this.getIntroduced() != ((Computer) obj).getIntroduced()) {
+			return false;
+		}
+		if (this.getDiscontinued() != ((Computer) obj).getDiscontinued()) {
+			return false;
+		}
+		if (this.getCompanyId() != ((Computer) obj).getCompanyId()) {
+			return false;
+		}
+		return true;
 		
 	}
 	

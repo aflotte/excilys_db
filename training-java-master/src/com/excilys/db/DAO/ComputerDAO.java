@@ -103,11 +103,8 @@ public class ComputerDAO {
 		init();
 		java.util.Date dateIntroduced = computer.getIntroduced();
 		java.util.Date dateDiscontinued = computer.getDiscontinued();
-
 		java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		String querry = "UPDATE computer SET name = ?, introduced = ?, discontinued = ?, company_id = ? WHERE id = ?";
-
-		
 		try {
 			PreparedStatement ps = conn.prepareStatement(querry);
 			ps.setString(1, computer.getName());
@@ -173,11 +170,12 @@ public class ComputerDAO {
 	
 	
 	
-	private String chooseTheQuerry(Date dateIntroduced,Date dateDiscontinued ) {
-		String querryNotNULL = "SELECT id FROM computer WHERE name = ? AND introduced = ? AND discontinued = ? AND company_id = ?";
-		String querryIntroducedNULL = "SELECT id FROM computer WHERE name = ? AND introduced is ? AND discontinued = ? AND company_id = ?";
-		String querryDiscontinuedNULL = "SELECT id FROM computer WHERE name = ? AND introduced = ? AND discontinued is ? AND company_id = ?";
-		String querryBothNULL = "SELECT id FROM computer WHERE name = ? AND introduced is ? AND discontinued is ? AND company_id = ?";
+	private String chooseTheQuerry(Date dateIntroduced,Date dateDiscontinued, Integer id ) {
+		String querryEnd = chooseTheQuerryCompanie(id);
+		String querryNotNULL = "SELECT id FROM computer WHERE name = ? AND introduced = ? AND discontinued = ?"+querryEnd;
+		String querryIntroducedNULL = "SELECT id FROM computer WHERE name = ? AND introduced is ? AND discontinued = ?"+querryEnd;
+		String querryDiscontinuedNULL = "SELECT id FROM computer WHERE name = ? AND introduced = ? AND discontinued is ?"+querryEnd;
+		String querryBothNULL = "SELECT id FROM computer WHERE name = ? AND introduced is ? AND discontinued is ?"+querryEnd;
 		if(dateIntroduced == null) {
 			if(dateDiscontinued == null) {
 				return querryBothNULL;
@@ -186,10 +184,19 @@ public class ComputerDAO {
 			}
 		}else {
 			if(dateDiscontinued == null) {
-				return querryNotNULL;
-			}else {
 				return querryDiscontinuedNULL;
+				
+			}else {
+				return querryNotNULL;
 			}
+		}
+	}
+	
+	private String chooseTheQuerryCompanie(Integer id) {
+		if (id == null) {
+			return " AND company_id is ?";
+		}else {
+			return " AND company_id = ?";
 		}
 	}
 	
@@ -221,7 +228,7 @@ public class ComputerDAO {
 		init();
 		List<Integer> result = new ArrayList<Integer>();
 		ResultSet resultSet = null;
-		String querry = chooseTheQuerry(computer.getIntroduced(),computer.getDiscontinued());
+		String querry = chooseTheQuerry(computer.getIntroduced(),computer.getDiscontinued(),computer.getCompanyId());
 		try {
 			PreparedStatement ps = conn.prepareStatement(querry);
 			fillGetIdStatement(ps,computer);
