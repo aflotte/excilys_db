@@ -58,7 +58,7 @@ public class ComputerDAO {
 			PreparedStatement prep1 = conn.prepareStatement(querry);
 			resultSet = prep1.executeQuery();
 			while (resultSet.next()) {
-				Computer toAdd = Computer.ResultToComputer(resultSet);
+				Computer toAdd = Computer.resultToComputer(resultSet);
 				listResult.add(toAdd);
 			}
 			DB_Connection.getInstance().disconnect();
@@ -83,7 +83,7 @@ public class ComputerDAO {
 			PreparedStatement prep1 = conn.prepareStatement(querry);
 			resultSet = prep1.executeQuery();
 			if (resultSet.next()) {
-				result = Computer.ResultToComputer(resultSet);
+				result = Computer.resultToComputer(resultSet);
 			}
 			
 		} catch (SQLException e) {

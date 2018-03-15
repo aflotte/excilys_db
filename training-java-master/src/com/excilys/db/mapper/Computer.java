@@ -92,7 +92,7 @@ public class Computer {
 	}
 	
 	
-	public static Computer ResultToComputer(ResultSet resultSet) throws SQLException {
+	public static Computer resultToComputer(ResultSet resultSet) throws SQLException {
 		Computer toReturn = new Computer();
 		toReturn.setName(resultSet.getString(1));
 		toReturn.setIntroduced(resultSet.getDate(2));
