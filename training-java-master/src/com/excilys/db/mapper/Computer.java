@@ -75,7 +75,7 @@ public class Computer {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		if (this.getName() != ((Computer) obj).getName()) {
+		if (!this.getName().equals(((Computer) obj).getName())) {
 			return false;
 		}
 		if (this.getIntroduced() != ((Computer) obj).getIntroduced()) {

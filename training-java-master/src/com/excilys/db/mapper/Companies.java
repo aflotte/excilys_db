@@ -20,5 +20,18 @@ public class Companies {
 		
 	}
 	
-	
+	@Override
+	public boolean equals(Object obj) {
+		if (super.equals(obj)) {
+			return true;
+		}
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		if (!this.getName().equals(((Companies) obj).getName())) {
+			return false;
+		}
+		return true;
+	}
 }

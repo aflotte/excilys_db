@@ -78,6 +78,9 @@ public class ComputerDAOTest extends TestCase {
 		assertEquals(McBook,computer.showDetails(1));
 	}
 
+
+
+	
 	@Test
 	public void testCreateAComputerDatesNullCompanieNull() {
 		Computer Test = new Computer();
