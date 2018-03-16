@@ -5,8 +5,6 @@ import java.time.LocalDate;
 import com.excilys.db.exception.CompaniesIdIncorrect;
 import com.excilys.db.exception.CompaniesInexistant;
 import com.excilys.db.exception.IncoherentDates;
-import com.excilys.db.validator.ComputerValidator;
-
 
 public class Computer {
 	private Integer id;

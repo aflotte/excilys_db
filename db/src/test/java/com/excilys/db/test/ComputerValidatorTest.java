@@ -4,6 +4,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.ZoneId;
 import java.util.Date;
+import java.util.List;
 
 import org.junit.Test;
 
@@ -14,6 +15,7 @@ import com.excilys.db.exception.IncoherentDates;
 import com.excilys.db.model.Companies;
 import com.excilys.db.model.Computer;
 import com.excilys.db.persistance.DB_Connection;
+import com.excilys.db.validator.ComputerValidator;
 
 import junit.framework.TestCase;
 
@@ -31,6 +33,12 @@ public class ComputerValidatorTest extends TestCase {
 		Test.setDiscontinued(date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
 		Test.setCompanyId(new Companies(1));
 		int id = computer.createAComputer(Test);
+		assertEquals(true, ComputerValidator.exist(id));
+		List<Integer> testList2 = computer.getIdFromName("Test_Computer");	
+    	for (int i = 0; i < testList2.size(); i++) {
+    		computer.deleteAComputer(testList2.get(i));
+    	}
+		assertEquals(false, ComputerValidator.exist(id));
 	}
 	
 }

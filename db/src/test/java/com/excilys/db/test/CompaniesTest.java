@@ -3,7 +3,6 @@ package com.excilys.db.test;
 import org.junit.Test;
 
 import com.excilys.db.model.Companies;
-import com.excilys.db.model.Computer;
 
 import junit.framework.TestCase;
 

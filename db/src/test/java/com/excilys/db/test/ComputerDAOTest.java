@@ -170,7 +170,6 @@ public class ComputerDAOTest extends TestCase {
 		Date date = formatter.parse("1999/12/5");
 		Test.setDiscontinued(date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
 		Test.setCompanyId(2);
-		System.out.println("computer = " + Test);
 		computer.createAComputer(Test);
 		int id = computer.getId(Test).get(0);
 		computer.updateAComputer(Test, id);
@@ -210,7 +209,6 @@ public class ComputerDAOTest extends TestCase {
 		McBook.setIntroduced(null);
 		McBook.setDiscontinued(null);
 		McBook.setCompanyId(1);
-		System.out.println(computer.getId(McBook).get(0));
 		assertEquals(new Integer(1),computer.getId(McBook).get(0));
 	}
 

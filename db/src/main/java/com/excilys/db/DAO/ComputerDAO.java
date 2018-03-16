@@ -6,7 +6,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.InputMismatchException;
 import java.util.List;
 
@@ -15,10 +14,6 @@ import com.excilys.db.mapper.ComputerMapper;
 import com.excilys.db.model.Companies;
 import com.excilys.db.model.Computer;
 import com.excilys.db.persistance.DB_Connection;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.Statement;
 
 /**
@@ -129,7 +124,6 @@ public class ComputerDAO {
 		}
 		LocalDate dateIntroduced = computer.getIntroduced();
 		LocalDate dateDiscontinued = computer.getDiscontinued();
-		java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		String querry = "UPDATE computer SET name = ?, introduced = ?, discontinued = ?, company_id = ? WHERE id = ?";
 		try {
 			PreparedStatement ps = conn.prepareStatement(querry);
@@ -168,7 +162,6 @@ public class ComputerDAO {
 		}
 		LocalDate dateIntroduced = computer.getIntroduced();
 		LocalDate dateDiscontinued = computer.getDiscontinued();
-		java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		String querry = "INSERT INTO computer(name,introduced,discontinued,company_id) VALUES (?,?,?,?)";
 		try {
 			PreparedStatement ps = conn.prepareStatement(querry,Statement.RETURN_GENERATED_KEYS);
@@ -201,7 +194,7 @@ public class ComputerDAO {
 			e.printStackTrace();
 			DB_Connection.getInstance().disconnect();
 		} catch (InputMismatchException e) {
-			System.out.println("Entrez un entier our le champ companie_Id!");
+			System.out.println("Entrez un entier pour le champ companie_Id!");
 		}
 		return 0;
 		
@@ -240,7 +233,6 @@ public class ComputerDAO {
 	}
 	
 	private void fillGetIdStatement(PreparedStatement ps,Computer computer) throws SQLException {
-		java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		LocalDate dateIntroduced = computer.getIntroduced();
 		LocalDate dateDiscontinued = computer.getDiscontinued();
 
@@ -276,7 +268,6 @@ public class ComputerDAO {
 		try {
 			PreparedStatement ps = conn.prepareStatement(querry);
 			fillGetIdStatement(ps,computer);
-			System.out.println(ps);
 			resultSet = ps.executeQuery();
 			while (resultSet.next()) {
 				result.add(resultSet.getInt(1));

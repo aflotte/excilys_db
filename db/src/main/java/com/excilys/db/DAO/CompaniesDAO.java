@@ -96,12 +96,11 @@ public class CompaniesDAO{
 	public Companies getCompanies(Integer id) throws CompaniesInexistant {
 		init();
 		ResultSet resultSet = null;
-		Companies Result = new Companies();
+		Companies result = new Companies();
 		String querry;
 		if (id != null) {
 			querry = "SELECT name FROM company WHERE id = " + id;
 		}else {
-			Companies result = new Companies();
 			result.setId(null);
 			DB_Connection.getInstance().disconnect();
 			return result;
@@ -110,10 +109,9 @@ public class CompaniesDAO{
 			PreparedStatement prep1 = conn.prepareStatement(querry);
 			resultSet = prep1.executeQuery();
 			if (resultSet.next()) {
-				Companies toAdd = new Companies();
-				toAdd.setName(resultSet.getString(1));
-				toAdd.setId(id);
-				return toAdd;
+				result.setName(resultSet.getString(1));
+				result.setId(id);
+				return result;
 			
 			}
 		} catch (SQLException e) {
