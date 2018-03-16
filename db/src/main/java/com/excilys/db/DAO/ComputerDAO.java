@@ -82,15 +82,13 @@ public class ComputerDAO {
 		try {
 			initialisationConnection();
 		} catch (ClassNotFoundException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
-		ResultSet resultSet = null;
 		List<Computer> listResult = new ArrayList<Computer>();
 		try {
 			PreparedStatement prep1 = conn.prepareStatement(QUERRY_LIST_COMPUTERS);
 			logger.debug("Requête : " + prep1.toString());
-			resultSet = prep1.executeQuery();
+			ResultSet resultSet = prep1.executeQuery();
 			while (resultSet.next()) {
 				Computer toAdd = ComputerMapper.resultToComputer(resultSet);
 				listResult.add(toAdd);
@@ -109,12 +107,11 @@ public class ComputerDAO {
 		} catch (ClassNotFoundException e1) {
 			e1.printStackTrace();
 		}
-		ResultSet resultSet = null;
 		Computer result = new Computer();
 		try {
 			PreparedStatement prep1 = conn.prepareStatement(QUERRY_LIST_COMPUTERS_ID + id);
 			logger.debug("Requête : " + prep1.toString());
-			resultSet = prep1.executeQuery();
+			ResultSet resultSet = prep1.executeQuery();
 			if (resultSet.next()) {
 				result = ComputerMapper.resultToComputer(resultSet);
 			}
@@ -130,7 +127,6 @@ public class ComputerDAO {
 		try {
 			initialisationConnection();
 		} catch (ClassNotFoundException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 		LocalDate dateIntroduced = computer.getIntroduced();
@@ -168,7 +164,6 @@ public class ComputerDAO {
 		try {
 			initialisationConnection();
 		} catch (ClassNotFoundException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 		LocalDate dateIntroduced = computer.getIntroduced();
@@ -238,17 +233,15 @@ public class ComputerDAO {
 		try {
 			initialisationConnection();
 		} catch (ClassNotFoundException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 		List<Integer> result = new ArrayList<Integer>();
-		ResultSet resultSet = null;
 		String querry = chooseTheQuerry(computer.getIntroduced(),computer.getDiscontinued(),computer.getCompanyId());
 		try {
 			PreparedStatement ps = conn.prepareStatement(querry);
 			fillGetIdStatement(ps,computer);
 			logger.debug("Requête : " + ps.toString());
-			resultSet = ps.executeQuery();
+			ResultSet resultSet = ps.executeQuery();
 			while (resultSet.next()) {
 				result.add(resultSet.getInt(1));
 			}
@@ -266,16 +259,14 @@ public class ComputerDAO {
 		try {
 			initialisationConnection();
 		} catch (ClassNotFoundException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 		List<Integer> result = new ArrayList<Integer>();
-		ResultSet resultSet = null;
 		try {
 			PreparedStatement ps = conn.prepareStatement(QUERRY_LIST_COMPUTER_BY_NAME);
 			ps.setString(1, name);
 			logger.debug("Requête : " + ps.toString());
-			resultSet = ps.executeQuery();
+			ResultSet resultSet = ps.executeQuery();
 			while (resultSet.next()) {
 				result.add(resultSet.getInt(1));
 			}
@@ -292,7 +283,6 @@ public class ComputerDAO {
 		try {
 			initialisationConnection();
 		} catch (ClassNotFoundException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 		try {

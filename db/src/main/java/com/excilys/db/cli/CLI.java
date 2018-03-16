@@ -11,6 +11,7 @@ import com.excilys.db.exception.IncoherentDates;
 import com.excilys.db.model.Companies;
 import com.excilys.db.model.Computer;
 
+
 import java.util.InputMismatchException;
 
 import java.util.List;
@@ -35,27 +36,27 @@ public class CLI {
 		while ( continu) {
 			menuIntroduction();		
 			int choix = choixMenuIntroduction();
-			switch (choix) 
+			switch (Menu.values()[choix-1]) 
 			{
-				case 1:
+				case afficherCompagnie:
 					afficherCompagnies();
 					break;
-				case 2:
+				case afficherOrdinateurs:
 					afficherOrdinateurs();
 					break;
-				case 3:
+				case ajouterOrdinateur:
 					ajouterOrdinateur();
 					break;
-				case 4:
+				case supprimerOrdinateur:
 					supprimerOrdinateur();
 					break;
-				case 5:
+				case afficherOrdinateur:
 					afficherOrdinateur();
 					break;
-				case 6:
+				case mettreAJour:
 					mettreAJour();
 					break;
-				case 7:
+				case quitter:
 					continu = false;
 					break;
 					default:

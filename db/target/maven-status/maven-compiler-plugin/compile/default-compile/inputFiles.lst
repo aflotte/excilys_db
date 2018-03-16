@@ -7,6 +7,7 @@
 /home/excilys/Projects/db_maven/db/src/main/java/com/excilys/db/exception/DAOException.java
 /home/excilys/Projects/db_maven/db/src/main/java/com/excilys/db/DAO/CompaniesDAO.java
 /home/excilys/Projects/db_maven/db/src/main/java/com/excilys/db/exception/CompaniesInexistant.java
+/home/excilys/Projects/db_maven/db/src/main/java/com/excilys/db/cli/Menu.java
 /home/excilys/Projects/db_maven/db/src/main/java/com/excilys/db/cli/CLI.java
 /home/excilys/Projects/db_maven/db/src/main/java/com/excilys/db/model/Computer.java
 /home/excilys/Projects/db_maven/db/src/main/java/com/excilys/db/exception/CompaniesIdIncorrect.java
