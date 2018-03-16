@@ -22,7 +22,7 @@ import java.sql.Statement;
  *
  */
 public class ComputerDAO {
-
+	org.slf4j.Logger logger = org.slf4j.LoggerFactory.getLogger(ComputerDAO.class);
 
 	private static ComputerDAO instance;
 	private static Connection conn;
@@ -66,6 +66,7 @@ public class ComputerDAO {
 		String querry = "SELECT name, introduced, discontinued, company_id, id FROM computer";
 		try {
 			PreparedStatement prep1 = conn.prepareStatement(querry);
+			logger.debug("listComputer - Requête : " + prep1.toString());
 			resultSet = prep1.executeQuery();
 			while (resultSet.next()) {
 				Computer toAdd = ComputerMapper.resultToComputer(resultSet);

@@ -20,6 +20,7 @@ import com.excilys.db.validator.ComputerValidator;
 import junit.framework.TestCase;
 
 public class ComputerValidatorTest extends TestCase {
+
 	DB_Connection instance = DB_Connection.getInstance();
 	ComputerDAO computer = ComputerDAO.getInstance();
 	SimpleDateFormat formatter = new SimpleDateFormat("yyyy/MM/dd");
