@@ -33,13 +33,15 @@ public final class DB_Connection {
 	    
 	    
 	    public void connect() {
-
+	    	if (conn == null) {
+	    		
 	    try {
 			conn = DriverManager.getConnection(PROPERTY_URL,PROPERTY_NOM_UTILISATEUR,PROPERTY_MOT_DE_PASSE);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	    	}
 	    }
 	    
 	    public void disconnect() {

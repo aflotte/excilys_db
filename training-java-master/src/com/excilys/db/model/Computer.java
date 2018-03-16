@@ -50,7 +50,7 @@ public class Computer {
 	public void setCompanyId(Companies companie) throws IncoherentDates, CompaniesIdIncorrect, CompaniesInexistant {
 		setCompanyId(companie.getId());
 	}
-	public void setCompanyId(int companyId) throws CompaniesInexistant {
+	public void setCompanyId(Integer companyId) throws CompaniesInexistant {
 		this.companie = new Companies(companyId);
 	}
 	
@@ -94,7 +94,7 @@ public class Computer {
 		if (this.getDiscontinued() != ((Computer) obj).getDiscontinued()) {
 			return false;
 		}
-		if (this.getCompanyId() != ((Computer) obj).getCompanyId()) {
+		if (!this.getCompanyId().equals(((Computer) obj).getCompanyId())) {
 			return false;
 		}
 		return true;

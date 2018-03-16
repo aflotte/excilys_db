@@ -19,7 +19,11 @@ public class Companies {
 	
 	public Companies(Integer tid) throws CompaniesInexistant {
 		id = tid;
+		if ((id != null)&&(id != 0) ){
 		name = CompaniesService.getCompanies(id).getName();
+		}else {
+			id = null;
+		}
 	}
 	
 	@Override

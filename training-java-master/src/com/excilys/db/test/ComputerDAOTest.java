@@ -139,11 +139,12 @@ public class ComputerDAOTest extends TestCase {
 	}
 	
 	@Test
-	public void testUpdateAComputerDatesNullCompanieNull() {
+	public void testUpdateAComputerDatesNullCompanieNull() throws IncoherentDates, CompaniesIdIncorrect, CompaniesInexistant {
 		Computer Test = new Computer();
 		Test.setName("Test_Computer");
 		Test.setIntroduced(null);
 		Test.setDiscontinued(null);
+		Test.setCompanyId((Integer)null);
 		computer.createAComputer(Test);
 		int id = computer.getId(Test).get(0);
 		computer.updateAComputer(Test, id);

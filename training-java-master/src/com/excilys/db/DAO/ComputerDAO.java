@@ -124,7 +124,8 @@ public class ComputerDAO {
 			}else {
 				ps.setDate(3, java.sql.Date.valueOf(dateDiscontinued));
 			}
-			if (computer.getCompanyId() != null) {
+			if ((computer.getCompanyId() != null)&&(computer.getCompanyId().getId() != null)) {
+				
 			ps.setInt(4, computer.getCompanyId().getId());
 			}else {
 				ps.setNull(4, java.sql.Types.INTEGER);
@@ -206,7 +207,7 @@ public class ComputerDAO {
 	}
 	
 	private String chooseTheQuerryCompanie(Companies comp) {
-		if (comp == null) {
+		if (comp.getId() == null) {
 			return " AND company_id is ?";
 		}else {
 			return " AND company_id = ?";
