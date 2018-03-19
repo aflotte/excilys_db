@@ -1,6 +1,6 @@
 package com.excilys.db.exception;
 
-public class CompaniesIdIncorrect extends Exception {
+public class CompaniesIdIncorrectException extends Exception {
 
 	/**
 	 * 

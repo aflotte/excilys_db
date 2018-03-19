@@ -7,8 +7,9 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
-import com.excilys.db.exception.CompaniesInexistant;
+import com.excilys.db.exception.CompaniesInexistantException;
 import com.excilys.db.mapper.ComputerMapper;
 import com.excilys.db.model.Companies;
 import com.excilys.db.model.Computer;
@@ -70,7 +71,7 @@ public enum ComputerDAO {
 
 	}
 
-	public List<Computer> listComputer() throws CompaniesInexistant {
+	public List<Computer> listComputer() throws CompaniesInexistantException {
 
 		initialisationConnection();
 		List<Computer> listResult = new ArrayList<Computer>();
@@ -90,7 +91,7 @@ public enum ComputerDAO {
 		return listResult;
 	}
 
-	public Computer showDetails(int id) throws CompaniesInexistant {
+	public Optional<Computer> showDetails(int id) throws CompaniesInexistantException {
 		initialisationConnection();
 		Computer result = null;
 		try {
@@ -105,7 +106,7 @@ public enum ComputerDAO {
 		}finally {
 			DB_Connection.getInstance().disconnect();
 		}
-		return result;
+		return Optional.of(result);
 	}
 
 	public void updateAComputer(Computer computer, int id) {	

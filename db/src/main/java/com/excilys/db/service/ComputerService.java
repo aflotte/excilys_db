@@ -1,11 +1,12 @@
 package com.excilys.db.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import com.excilys.db.dao.ComputerDAO;
-import com.excilys.db.exception.CompaniesIdIncorrect;
-import com.excilys.db.exception.CompaniesInexistant;
-import com.excilys.db.exception.IncoherentDates;
+import com.excilys.db.exception.CompaniesIdIncorrectException;
+import com.excilys.db.exception.CompaniesInexistantException;
+import com.excilys.db.exception.IncoherentDatesException;
 import com.excilys.db.model.Computer;
 import com.excilys.db.validator.ComputerValidator;
 
@@ -15,7 +16,7 @@ public enum ComputerService {
 	static org.slf4j.Logger logger = org.slf4j.LoggerFactory.getLogger(ComputerService.class);
 	private ComputerDAO computer = ComputerDAO.INSTANCE;
 
-	public List<Computer> listComputer() throws CompaniesInexistant {
+	public List<Computer> listComputer() throws CompaniesInexistantException {
 		return computer.listComputer();
 	}
 
@@ -24,7 +25,7 @@ public enum ComputerService {
 			if (ComputerValidator.INSTANCE.validate(aAjouter)) {
 				return computer.createAComputer(aAjouter);
 			}
-		} catch (IncoherentDates | CompaniesIdIncorrect e) {
+		} catch (IncoherentDatesException | CompaniesIdIncorrectException e) {
 			logger.warn(e.getMessage());
 		}
 		return 0;
@@ -34,7 +35,7 @@ public enum ComputerService {
 			computer.deleteAComputer(id);
 		}
 
-		public Computer showDetails(int id) throws CompaniesInexistant {
+		public Optional<Computer> showDetails(int id) throws CompaniesInexistantException {
 			return computer.showDetails(id);
 		}
 
@@ -43,7 +44,7 @@ public enum ComputerService {
 				if (ComputerValidator.INSTANCE.validate(aAjouter)) {
 					computer.updateAComputer(aAjouter,toUpdate);
 				}
-			} catch (IncoherentDates | CompaniesIdIncorrect e) {
+			} catch (IncoherentDatesException | CompaniesIdIncorrectException e) {
 				logger.warn(e.getMessage());
 			}
 		}

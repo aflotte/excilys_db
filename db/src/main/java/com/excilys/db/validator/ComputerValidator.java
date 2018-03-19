@@ -6,8 +6,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
 
-import com.excilys.db.exception.CompaniesIdIncorrect;
-import com.excilys.db.exception.IncoherentDates;
+import com.excilys.db.exception.CompaniesIdIncorrectException;
+import com.excilys.db.exception.IncoherentDatesException;
 import com.excilys.db.model.Computer;
 import com.excilys.db.persistance.DB_Connection;
 
@@ -78,12 +78,12 @@ public enum ComputerValidator {
 		return false;
 	}
 
-	public boolean validate(Computer computer) throws IncoherentDates, CompaniesIdIncorrect {
+	public boolean validate(Computer computer) throws IncoherentDatesException, CompaniesIdIncorrectException {
 		if (testDate(computer)) {
-			throw new IncoherentDates();
+			throw new IncoherentDatesException();
 		}
 		if (!CompaniesValidator.INSTANCE.check(computer.getCompany())) {
-			throw new CompaniesIdIncorrect();
+			throw new CompaniesIdIncorrectException();
 		}
 		return true;
 	}

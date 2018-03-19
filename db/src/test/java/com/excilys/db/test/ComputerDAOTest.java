@@ -2,9 +2,9 @@ package com.excilys.db.test;
 
 import com.excilys.db.dao.CompaniesDAO;
 import com.excilys.db.dao.ComputerDAO;
-import com.excilys.db.exception.CompaniesIdIncorrect;
-import com.excilys.db.exception.CompaniesInexistant;
-import com.excilys.db.exception.IncoherentDates;
+import com.excilys.db.exception.CompaniesIdIncorrectException;
+import com.excilys.db.exception.CompaniesInexistantException;
+import com.excilys.db.exception.IncoherentDatesException;
 import com.excilys.db.model.Companies;
 import com.excilys.db.model.Computer;
 import com.excilys.db.persistance.DB_Connection;
@@ -46,7 +46,7 @@ public class ComputerDAOTest extends TestCase {
 	@AfterClass
 	public static void destroy() throws SQLException, ClassNotFoundException {
 		try (Connection connection = getConnection(); Statement statement = connection.createStatement();) {
-			statement.executeUpdate("DROP TABLE employee");
+			statement.executeUpdate("DROP TABLE computer");
 			connection.commit();
 		}
 	}
@@ -93,7 +93,7 @@ public class ComputerDAOTest extends TestCase {
 	 * @throws SQLException
 	 */
 	private static Connection getConnection() throws SQLException {
-		return DriverManager.getConnection("jdbc:hsqldb:mem:employees", "vinod", "vinod");
+		return DriverManager.getConnection("jdbc:hsqldb:mem:testjcdb", "sa", "");
 	}
 
 
@@ -110,7 +110,7 @@ public class ComputerDAOTest extends TestCase {
 
 	//Uniquement avec la base initiale ( McBook en 1 )
 	@Test
-	public void testListComputer() throws CompaniesInexistant, IncoherentDates, CompaniesIdIncorrect {
+	public void testListComputer() throws CompaniesInexistantException, IncoherentDatesException, CompaniesIdIncorrectException {
 		Computer McBook = new Computer();
 		McBook.setName("MacBook Pro 15.4 inch");
 		McBook.setIntroduced(null);
@@ -122,7 +122,7 @@ public class ComputerDAOTest extends TestCase {
 	}
 
 	@Test
-	public void testShowDetails() throws CompaniesInexistant, IncoherentDates, CompaniesIdIncorrect {
+	public void testShowDetails() throws CompaniesInexistantException, IncoherentDatesException, CompaniesIdIncorrectException {
 		Computer McBook = new Computer();
 		McBook.setName("MacBook Pro 15.4 inch");
 		McBook.setIntroduced(null);
@@ -130,7 +130,7 @@ public class ComputerDAOTest extends TestCase {
 		Companies companie = new Companies(1);
 		companie.setName("Apple Inc.");
 		McBook.setCompany(companie);
-		assertEquals(McBook,computer.showDetails(1));
+		assertEquals(McBook,computer.showDetails(1).get());
 	}
 
 
@@ -146,7 +146,7 @@ public class ComputerDAOTest extends TestCase {
 	}
 
 	@Test
-	public void testCreateAComputerDatesNull() throws CompaniesInexistant, IncoherentDates, CompaniesIdIncorrect {
+	public void testCreateAComputerDatesNull() throws CompaniesInexistantException, IncoherentDatesException, CompaniesIdIncorrectException {
 		Computer Test = new Computer();
 		Test.setName("Test_Computer");
 		Test.setIntroduced(null);
@@ -158,7 +158,7 @@ public class ComputerDAOTest extends TestCase {
 	}
 
 	@Test
-	public void testCreateAComputerDateIntroNull() throws ParseException, CompaniesInexistant, IncoherentDates, CompaniesIdIncorrect {
+	public void testCreateAComputerDateIntroNull() throws ParseException, CompaniesInexistantException, IncoherentDatesException, CompaniesIdIncorrectException {
 		Computer Test = new Computer();
 		Test.setName("Test_Computer");
 		Test.setIntroduced(null);
@@ -171,7 +171,7 @@ public class ComputerDAOTest extends TestCase {
 	}
 
 	@Test
-	public void testCreateAComputerDateDiscNull() throws ParseException, CompaniesInexistant, IncoherentDates, CompaniesIdIncorrect {
+	public void testCreateAComputerDateDiscNull() throws ParseException, CompaniesInexistantException, IncoherentDatesException, CompaniesIdIncorrectException {
 		Computer Test = new Computer();
 		Test.setName("Test_Computer");
 		Date date = formatter.parse("1999/12/5");
@@ -184,7 +184,7 @@ public class ComputerDAOTest extends TestCase {
 	}
 
 	@Test
-	public void testCreateAComputerDateNotNull() throws ParseException, CompaniesInexistant, IncoherentDates, CompaniesIdIncorrect {
+	public void testCreateAComputerDateNotNull() throws ParseException, CompaniesInexistantException, IncoherentDatesException, CompaniesIdIncorrectException {
 		Computer Test = new Computer();
 		Test.setName("Test_Computer");
 		Date date = formatter.parse("1999/12/5");
@@ -197,7 +197,7 @@ public class ComputerDAOTest extends TestCase {
 	}
 
 	@Test
-	public void testUpdateAComputerDatesNullCompanieNull() throws IncoherentDates, CompaniesIdIncorrect, CompaniesInexistant {
+	public void testUpdateAComputerDatesNullCompanieNull() throws IncoherentDatesException, CompaniesIdIncorrectException, CompaniesInexistantException {
 		Computer Test = new Computer();
 		Test.setName("Test_Computer");
 		Test.setIntroduced(null);
@@ -210,19 +210,19 @@ public class ComputerDAOTest extends TestCase {
 	}
 
 	@Test
-	public void testUpdateAComputerDatesNull() throws CompaniesInexistant, IncoherentDates, CompaniesIdIncorrect {
+	public void testUpdateAComputerDatesNull() throws CompaniesInexistantException, IncoherentDatesException, CompaniesIdIncorrectException {
 		Computer Test = new Computer();
 		Test.setName("Test_Computer");
 		Test.setIntroduced(null);
 		Test.setDiscontinued(null);
-		Test.setCompany(CompaniesDAO.INSTANCE.getCompanies(1));
+		Test.setCompany(CompaniesDAO.INSTANCE.getCompanies(1).get());
 		computer.createAComputer(Test);
 		int id = computer.getId(Test).get(0);
 		computer.updateAComputer(Test, id);
 	}
 
 	@Test
-	public void testUpdateAComputerDateIntroNull() throws ParseException, CompaniesInexistant, IncoherentDates, CompaniesIdIncorrect {
+	public void testUpdateAComputerDateIntroNull() throws ParseException, CompaniesInexistantException, IncoherentDatesException, CompaniesIdIncorrectException {
 		Computer Test = new Computer();
 		Test.setName("Test_Computer");
 		Test.setIntroduced(null);
@@ -237,7 +237,7 @@ public class ComputerDAOTest extends TestCase {
 	}
 
 	@Test
-	public void testUpdateAComputerDateDiscNull() throws ParseException, CompaniesInexistant, IncoherentDates, CompaniesIdIncorrect {
+	public void testUpdateAComputerDateDiscNull() throws ParseException, CompaniesInexistantException, IncoherentDatesException, CompaniesIdIncorrectException {
 		Computer Test = new Computer();
 		Test.setName("Test_Computer");
 		Date date = formatter.parse("1999/12/5");
@@ -252,7 +252,7 @@ public class ComputerDAOTest extends TestCase {
 	}
 
 	@Test
-	public void testUpdateAComputerDateNotNull() throws ParseException, CompaniesInexistant, IncoherentDates, CompaniesIdIncorrect {
+	public void testUpdateAComputerDateNotNull() throws ParseException, CompaniesInexistantException, IncoherentDatesException, CompaniesIdIncorrectException {
 		Computer Test = new Computer();
 		Test.setName("Test_Computer");
 		Date date = formatter.parse("1999/12/5");
@@ -268,7 +268,7 @@ public class ComputerDAOTest extends TestCase {
 
 	//Uniquement avec la base initiale ( McBook en 1 )
 	@Test
-	public void testGetIdComputer() throws CompaniesInexistant, IncoherentDates, CompaniesIdIncorrect {
+	public void testGetIdComputer() throws CompaniesInexistantException, IncoherentDatesException, CompaniesIdIncorrectException {
 		Computer McBook = new Computer();
 		McBook.setName("MacBook Pro 15.4 inch");
 		McBook.setIntroduced(null);
@@ -286,7 +286,7 @@ public class ComputerDAOTest extends TestCase {
 	}
 
 	@Test
-	public void testDelete() throws IncoherentDates, CompaniesIdIncorrect, CompaniesInexistant {
+	public void testDelete() throws IncoherentDatesException, CompaniesIdIncorrectException, CompaniesInexistantException {
 		Computer Test = new Computer();
 		Test.setName("Test_Destruction");
 		Test.setIntroduced(null);

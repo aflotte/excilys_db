@@ -1,6 +1,6 @@
 package com.excilys.db.exception;
 
-public class IncoherentDates extends Exception {
+public class IncoherentDatesException extends Exception {
 
 	/**
 	 * 

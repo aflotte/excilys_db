@@ -6,8 +6,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
-import com.excilys.db.exception.CompaniesInexistant;
+import com.excilys.db.exception.CompaniesInexistantException;
 import com.excilys.db.model.Companies;
 import com.excilys.db.persistance.DB_Connection;
 
@@ -88,7 +89,7 @@ public enum CompaniesDAO{
 		return listResult;
 	}
 
-	public Companies getCompanies(Integer id) throws CompaniesInexistant {
+	public Optional<Companies> getCompanies(Integer id) throws CompaniesInexistantException {
 		
 		ResultSet resultSet = null;
 		Companies result = new Companies();
@@ -104,16 +105,15 @@ public enum CompaniesDAO{
 					result.setName(resultSet.getString(1));
 					result.setId(id);
 				}else {
-					DB_Connection.getInstance().disconnect();
-					throw new CompaniesInexistant();
+					throw new CompaniesInexistantException();
 				}
 			} catch (SQLException e) {
+				logger.warn(e.getMessage());				
+			}finally {
 				DB_Connection.getInstance().disconnect();
-				logger.warn(e.getMessage());
-							
 			}
 		}
-		return result;
+		return Optional.ofNullable(result);
 	}
 
 }

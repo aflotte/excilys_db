@@ -9,9 +9,9 @@ import java.util.List;
 import org.junit.Test;
 
 import com.excilys.db.dao.ComputerDAO;
-import com.excilys.db.exception.CompaniesIdIncorrect;
-import com.excilys.db.exception.CompaniesInexistant;
-import com.excilys.db.exception.IncoherentDates;
+import com.excilys.db.exception.CompaniesIdIncorrectException;
+import com.excilys.db.exception.CompaniesInexistantException;
+import com.excilys.db.exception.IncoherentDatesException;
 import com.excilys.db.model.Companies;
 import com.excilys.db.model.Computer;
 import com.excilys.db.persistance.DB_Connection;
@@ -26,7 +26,7 @@ public class ComputerValidatorTest extends TestCase {
 	SimpleDateFormat formatter = new SimpleDateFormat("yyyy/MM/dd");
 
 	@Test
-	public void testExist() throws ParseException, IncoherentDates, CompaniesIdIncorrect, CompaniesInexistant {
+	public void testExist() throws ParseException, IncoherentDatesException, CompaniesIdIncorrectException, CompaniesInexistantException {
 		Computer Test = new Computer();
 		Test.setName("Test_Computer");
 		Date date = formatter.parse("1999/12/5");

@@ -5,9 +5,9 @@ import com.excilys.db.service.CompaniesService;
 import com.excilys.db.service.ComputerService;
 import com.excilys.db.validator.ComputerValidator;
 import com.excilys.db.cli.ScanCLI;
-import com.excilys.db.exception.CompaniesIdIncorrect;
-import com.excilys.db.exception.CompaniesInexistant;
-import com.excilys.db.exception.IncoherentDates;
+import com.excilys.db.exception.CompaniesIdIncorrectException;
+import com.excilys.db.exception.CompaniesInexistantException;
+import com.excilys.db.exception.IncoherentDatesException;
 import com.excilys.db.model.Companies;
 import com.excilys.db.model.Computer;
 
@@ -29,7 +29,7 @@ public class CLI {
 	static Scanner sc;
 
 
-	public static void main(String[] args) throws CompaniesInexistant {
+	public static void main(String[] args) throws CompaniesInexistantException {
 		System.out.println("Bienvenue sur le CLI de la base de donnée");
 		sc = new Scanner(System.in);
 		boolean continu = true;
@@ -99,7 +99,7 @@ public class CLI {
 		page.afficher();
 	}
 
-	public static void afficherOrdinateurs() throws CompaniesInexistant {
+	public static void afficherOrdinateurs() throws CompaniesInexistantException {
 		List<Computer> listeOrdinateur = ComputerService.INSTANCE.listComputer();
 		PageComputer page = new PageComputer(listeOrdinateur,sc);
 		System.out.println("Voici la liste des ordinateurs ( Q to exit ): ");
@@ -111,13 +111,13 @@ public class CLI {
 		try {
 			aAjouter = ScanCLI.scanComputer();
 			ComputerService.INSTANCE.createComputer(aAjouter);
-		} catch (IncoherentDates e) {
+		} catch (IncoherentDatesException e) {
 			System.out.println("Les dates rentrées sont incohérentes");
 		}catch (InputMismatchException e){
 			System.out.println("Entrez un entier !");
-		}catch (CompaniesIdIncorrect e) {
+		}catch (CompaniesIdIncorrectException e) {
 			System.out.println("L'id de la compagnie que vous avez rentré ne correspond à aucune compagnie !");
-		} catch (CompaniesInexistant e) {
+		} catch (CompaniesInexistantException e) {
 
 		}
 	}
@@ -133,7 +133,7 @@ public class CLI {
 		}
 	}
 
-	private static void afficherOrdinateur() throws CompaniesInexistant {
+	private static void afficherOrdinateur() throws CompaniesInexistantException {
 		System.out.println("Donner l'Id de l'ordinateur à afficher ( -2 pour annuler )");
 		int toDisplay = -1;
 		while (toDisplay == -1) {
@@ -143,9 +143,11 @@ public class CLI {
 			}
 		}
 		if (toDisplay != -2) {
-			
-			System.out.println(ComputerService.INSTANCE.showDetails(toDisplay));
-
+			if (ComputerService.INSTANCE.showDetails(toDisplay).isPresent()) {
+				System.out.println(ComputerService.INSTANCE.showDetails(toDisplay).get());
+			}else {
+				System.out.println("Aucun ordinateur correspondant à l'Id rentré n'a été trouvé !");
+			}
 		}
 	}
 
@@ -153,13 +155,13 @@ public class CLI {
 		Computer aAjouter = new Computer();
 		try {
 			aAjouter = ScanCLI.scanComputer();
-		} catch (IncoherentDates e) {
+		} catch (IncoherentDatesException e) {
 			System.out.println("Les dates rentrées sont incohérentes");
 		}catch (InputMismatchException e) {
 			System.out.println("Vous n'avez pas respecté le format des valeurs attendu");
-		} catch (CompaniesIdIncorrect e) {
+		} catch (CompaniesIdIncorrectException e) {
 			System.out.println("L'id de la compagnie que vous avez rentré ne correspond à aucune compagnie !");
-		} catch (CompaniesInexistant e) {
+		} catch (CompaniesInexistantException e) {
 
 		}
 		System.out.println("Entrer l'Id de l'ordinateur a modifier");

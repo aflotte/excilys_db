@@ -10,9 +10,9 @@ import java.util.Scanner;
 
 
 
-import com.excilys.db.exception.CompaniesIdIncorrect;
-import com.excilys.db.exception.CompaniesInexistant;
-import com.excilys.db.exception.IncoherentDates;
+import com.excilys.db.exception.CompaniesIdIncorrectException;
+import com.excilys.db.exception.CompaniesInexistantException;
+import com.excilys.db.exception.IncoherentDatesException;
 import com.excilys.db.model.Companies;
 import com.excilys.db.model.Computer;
 import com.excilys.db.validator.ComputerValidator;
@@ -46,11 +46,11 @@ public class ScanCLI {
 	 * 
 	 * @return L'ordinateur entrée par l'utilisateur
 	 * @throws InputMismatchException
-	 * @throws CompaniesIdIncorrect
-	 * @throws IncoherentDates
-	 * @throws CompaniesInexistant 
+	 * @throws CompaniesIdIncorrectException
+	 * @throws IncoherentDatesException
+	 * @throws CompaniesInexistantException 
 	 */
-	public static Computer scanComputer() throws InputMismatchException, CompaniesIdIncorrect, IncoherentDates, CompaniesInexistant{
+	public static Computer scanComputer() throws InputMismatchException, CompaniesIdIncorrectException, IncoherentDatesException, CompaniesInexistantException{
 		Computer aRetourner = new Computer(); 
 		Scanner sc = new Scanner(System.in);
 		System.out.println("Entrer le nom de l'ordinateur : ");
