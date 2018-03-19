@@ -55,11 +55,6 @@ public class Computer {
 	@Override
 	public String toString() {
 		StringBuilder sB = new StringBuilder(200);
-		//sB.append(super.toString());
-		/*if(this.getId()!= null) {
-			sB.append(" | id=").append(this.getId());	
-		}*/
-
 		sB.append(" | name=").append(this.getName());
 		sB.append(" | introduced=").append(this.getIntroduced());
 		sB.append(" | discontinued=").append(this.getDiscontinued());

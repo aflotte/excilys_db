@@ -63,11 +63,10 @@ public class CompaniesDAO{
 				return false;
 			}
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.warn(e.getMessage());
+		}finally {
 			DB_Connection.getInstance().disconnect();
 		}
-		DB_Connection.getInstance().disconnect();
 		return false;
 	}
 
@@ -89,40 +88,39 @@ public class CompaniesDAO{
 				listResult.add(toAdd);
 			}
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.warn(e.getMessage());
+		}finally {
 			DB_Connection.getInstance().disconnect();
 		}
-		DB_Connection.getInstance().disconnect();
 		return listResult;
 	}
 
 	public Companies getCompanies(Integer id) throws CompaniesInexistant {
-		init();
+		
 		ResultSet resultSet = null;
 		Companies result = new Companies();
 		if (id == null) {
 			result.setId(null);
-			DB_Connection.getInstance().disconnect();
-			return result;
-		}
-		try {
-			PreparedStatement prep1 = conn.prepareStatement(QUERRY_LIST_COMPANIES_ID + id);
-			logger.debug("Requête : " + prep1.toString());
-			resultSet = prep1.executeQuery();
-			if (resultSet.next()) {
-				result.setName(resultSet.getString(1));
-				result.setId(id);
-				return result;
-
+		}else {
+			try {
+				init();
+				PreparedStatement prep1 = conn.prepareStatement(QUERRY_LIST_COMPANIES_ID + id);
+				logger.debug("Requête : " + prep1.toString());
+				resultSet = prep1.executeQuery();
+				if (resultSet.next()) {
+					result.setName(resultSet.getString(1));
+					result.setId(id);
+				}else {
+					DB_Connection.getInstance().disconnect();
+					throw new CompaniesInexistant();
+				}
+			} catch (SQLException e) {
+				DB_Connection.getInstance().disconnect();
+				logger.warn(e.getMessage());
+							
 			}
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			DB_Connection.getInstance().disconnect();
 		}
-		DB_Connection.getInstance().disconnect();
-		throw new CompaniesInexistant();
+		return result;
 	}
 
 }

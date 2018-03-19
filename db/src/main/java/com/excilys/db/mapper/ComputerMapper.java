@@ -3,7 +3,9 @@ package com.excilys.db.mapper;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import com.excilys.db.exception.CompaniesIdIncorrect;
 import com.excilys.db.exception.CompaniesInexistant;
+import com.excilys.db.exception.IncoherentDates;
 import com.excilys.db.model.Computer;
 
 public class ComputerMapper {
@@ -20,8 +22,14 @@ public class ComputerMapper {
 		}else {
 			toReturn.setIntroduced(null);
 		}
-		toReturn.setCompanyId(resultSet.getInt(4));
+		try {
+			toReturn.setCompanyId(CompaniesMapper.computerResultToCompanies(resultSet));
+		} catch (IncoherentDates | CompaniesIdIncorrect e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		toReturn.setId(resultSet.getInt(5));
+		
 		return toReturn;
 	}
 }

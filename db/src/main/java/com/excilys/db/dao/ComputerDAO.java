@@ -6,7 +6,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.InputMismatchException;
 import java.util.List;
 
 import com.excilys.db.exception.CompaniesInexistant;
@@ -24,8 +23,8 @@ import java.sql.Statement;
 public class ComputerDAO {
 	org.slf4j.Logger logger = org.slf4j.LoggerFactory.getLogger(ComputerDAO.class);
 
-	private final static String QUERRY_LIST_COMPUTERS = "SELECT name, introduced, discontinued, company_id, id FROM computer";
-	private final static String QUERRY_LIST_COMPUTERS_ID = "SELECT name, introduced, discontinued, company_id, id FROM computer WHERE id = ";
+	private final static String QUERRY_LIST_COMPUTERS = "SELECT computer.name, introduced, discontinued, company.id, computer.id, company.name FROM computer LEFT JOIN company ON computer.id = company.id";
+	private final static String QUERRY_LIST_COMPUTERS_ID = "SELECT computer.name, introduced, discontinued, company.id, computer.id, company.name FROM computer LEFT JOIN company ON computer.id = company.id WHERE computer.id = ";
 	private final static String QUERRY_UPDATE_COMPUTER = "UPDATE computer SET name = ?, introduced = ?, discontinued = ?, company_id = ? WHERE id = ?";
 	private final static String QUERRY_CREATE_COMPUTER = "INSERT INTO computer(name,introduced,discontinued,company_id) VALUES (?,?,?,?)";
 	private final static String QUERRY_LIST_COMPUTER_BY_NAME = "SELECT id FROM computer WHERE name = ?";
@@ -72,18 +71,15 @@ public class ComputerDAO {
 
 	}
 
-	private void initialisationConnection() throws ClassNotFoundException {
+	private void initialisationConnection(){
 		DB_Connection.getInstance().connect();
 		conn = DB_Connection.getConn();
 
 	}
 
 	public List<Computer> listComputer() throws CompaniesInexistant {
-		try {
-			initialisationConnection();
-		} catch (ClassNotFoundException e1) {
-			e1.printStackTrace();
-		}
+
+		initialisationConnection();
 		List<Computer> listResult = new ArrayList<Computer>();
 		try {
 			PreparedStatement prep1 = conn.prepareStatement(QUERRY_LIST_COMPUTERS);
@@ -94,7 +90,7 @@ public class ComputerDAO {
 				listResult.add(toAdd);
 			}
 		} catch (SQLException e) {
-			e.printStackTrace();
+			logger.warn(e.getMessage());
 		}finally { 
 			DB_Connection.getInstance().disconnect();
 		}
@@ -102,12 +98,8 @@ public class ComputerDAO {
 	}
 
 	public Computer showDetails(int id) throws CompaniesInexistant {
-		try {
-			initialisationConnection();
-		} catch (ClassNotFoundException e1) {
-			e1.printStackTrace();
-		}
-		Computer result = new Computer();
+		initialisationConnection();
+		Computer result = null;
 		try {
 			PreparedStatement prep1 = conn.prepareStatement(QUERRY_LIST_COMPUTERS_ID + id);
 			logger.debug("Requête : " + prep1.toString());
@@ -116,7 +108,7 @@ public class ComputerDAO {
 				result = ComputerMapper.resultToComputer(resultSet);
 			}
 		} catch (SQLException e) {
-			e.printStackTrace();
+			logger.warn(e.getMessage());
 		}finally {
 			DB_Connection.getInstance().disconnect();
 		}
@@ -124,11 +116,7 @@ public class ComputerDAO {
 	}
 
 	public void updateAComputer(Computer computer, int id) {	
-		try {
-			initialisationConnection();
-		} catch (ClassNotFoundException e1) {
-			e1.printStackTrace();
-		}
+		initialisationConnection();
 		LocalDate dateIntroduced = computer.getIntroduced();
 		LocalDate dateDiscontinued = computer.getDiscontinued();
 		try {
@@ -153,19 +141,15 @@ public class ComputerDAO {
 			ps.setInt(5,id);
 			logger.debug("Requête : " + ps.toString());
 			ps.executeUpdate();
-			DB_Connection.getInstance().disconnect();
 		} catch (SQLException e) {
-			e.printStackTrace();
+			logger.warn(e.getMessage());
+		}finally {
 			DB_Connection.getInstance().disconnect();
 		}
 	}
 
 	public int createAComputer(Computer computer){
-		try {
-			initialisationConnection();
-		} catch (ClassNotFoundException e1) {
-			e1.printStackTrace();
-		}
+		initialisationConnection();
 		LocalDate dateIntroduced = computer.getIntroduced();
 		LocalDate dateDiscontinued = computer.getDiscontinued();
 		try {
@@ -193,14 +177,12 @@ public class ComputerDAO {
 			if (key.next()) {
 				ikey = key.getInt(1);
 			}
-			DB_Connection.getInstance().disconnect();
 			return ikey;
 
 		} catch (SQLException e) {
-			e.printStackTrace();
+			logger.warn(e.getMessage());
+		}finally{
 			DB_Connection.getInstance().disconnect();
-		} catch (InputMismatchException e) {
-			System.out.println("Entrez un entier pour le champ companie_Id!");
 		}
 		return 0;
 
@@ -230,11 +212,7 @@ public class ComputerDAO {
 	}
 
 	public List<Integer> getId(Computer computer) {
-		try {
-			initialisationConnection();
-		} catch (ClassNotFoundException e1) {
-			e1.printStackTrace();
-		}
+		initialisationConnection();
 		List<Integer> result = new ArrayList<Integer>();
 		String querry = chooseTheQuerry(computer.getIntroduced(),computer.getDiscontinued(),computer.getCompanyId());
 		try {
@@ -246,7 +224,7 @@ public class ComputerDAO {
 				result.add(resultSet.getInt(1));
 			}
 		} catch (SQLException e) {
-			e.printStackTrace();
+			logger.warn(e.getMessage());
 		}finally {
 			DB_Connection.getInstance().disconnect();
 		}
@@ -256,11 +234,7 @@ public class ComputerDAO {
 	}
 
 	public List<Integer> getIdFromName(String name) {
-		try {
-			initialisationConnection();
-		} catch (ClassNotFoundException e1) {
-			e1.printStackTrace();
-		}
+		initialisationConnection();
 		List<Integer> result = new ArrayList<Integer>();
 		try {
 			PreparedStatement ps = conn.prepareStatement(QUERRY_LIST_COMPUTER_BY_NAME);
@@ -271,7 +245,7 @@ public class ComputerDAO {
 				result.add(resultSet.getInt(1));
 			}
 		} catch (SQLException e) {
-			e.printStackTrace();
+			logger.warn(e.getMessage());
 		}finally {
 			DB_Connection.getInstance().disconnect();
 		}
@@ -280,18 +254,13 @@ public class ComputerDAO {
 	}
 
 	public void deleteAComputer(int id) {
-		try {
-			initialisationConnection();
-		} catch (ClassNotFoundException e1) {
-			e1.printStackTrace();
-		}
+		initialisationConnection();
 		try {
 			PreparedStatement prep1 = conn.prepareStatement(QUERRY_DELETE_COMPUTER + id);
 			logger.debug("Requête : " + prep1.toString());
 			prep1.executeUpdate(QUERRY_DELETE_COMPUTER + id);
 		} catch (SQLException e) {
-			e.printStackTrace();
-
+			logger.warn(e.getMessage());
 		}finally {
 			DB_Connection.getInstance().disconnect();
 		}

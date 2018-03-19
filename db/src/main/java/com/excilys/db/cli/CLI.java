@@ -143,6 +143,7 @@ public class CLI {
 			}
 		}
 		if (toDisplay != -2) {
+			
 			System.out.println(ComputerService.showDetails(toDisplay));
 
 		}
