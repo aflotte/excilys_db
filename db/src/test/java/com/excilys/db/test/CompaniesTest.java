@@ -14,7 +14,7 @@ public class CompaniesTest extends TestCase {
 		comp.setName("Name");
 		assertEquals(comp.toString()," | name=Name");
 	}
-	
+
 	@Test
 	public void testEqualsTrue() {
 		Companies comp = new Companies();
@@ -23,14 +23,14 @@ public class CompaniesTest extends TestCase {
 		comp2.setName("Name");
 		assertEquals(true,comp.equals(comp2));
 	}
-	
+
 	@Test
 	public void testEqualsSame() {
 		Companies comp = new Companies();
 		comp.setName("Name");
 		assertEquals(true,comp.equals(comp));
 	}
-	
+
 	@Test
 	public void testEqualsFalseClass() {
 		Companies comp = new Companies();
@@ -38,7 +38,7 @@ public class CompaniesTest extends TestCase {
 		Integer comp2 = new Integer(5);
 		assertEquals(false,comp.equals(comp2));
 	}
-	
+
 	@Test
 	public void testEqualsFalseName() {
 		Companies comp = new Companies();

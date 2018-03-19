@@ -27,8 +27,8 @@ import java.util.Scanner;
  */
 public class CLI {
 	static Scanner sc;
-	
-	
+
+
 	public static void main(String[] args) throws CompaniesInexistant {
 		System.out.println("Bienvenue sur le CLI de la base de donnée");
 		sc = new Scanner(System.in);
@@ -38,28 +38,28 @@ public class CLI {
 			int choix = choixMenuIntroduction();
 			switch (Menu.values()[choix-1]) 
 			{
-				case afficherCompagnie:
-					afficherCompagnies();
-					break;
-				case afficherOrdinateurs:
-					afficherOrdinateurs();
-					break;
-				case ajouterOrdinateur:
-					ajouterOrdinateur();
-					break;
-				case supprimerOrdinateur:
-					supprimerOrdinateur();
-					break;
-				case afficherOrdinateur:
-					afficherOrdinateur();
-					break;
-				case mettreAJour:
-					mettreAJour();
-					break;
-				case quitter:
-					continu = false;
-					break;
-					default:
+			case afficherCompagnie:
+				afficherCompagnies();
+				break;
+			case afficherOrdinateurs:
+				afficherOrdinateurs();
+				break;
+			case ajouterOrdinateur:
+				ajouterOrdinateur();
+				break;
+			case supprimerOrdinateur:
+				supprimerOrdinateur();
+				break;
+			case afficherOrdinateur:
+				afficherOrdinateur();
+				break;
+			case mettreAJour:
+				mettreAJour();
+				break;
+			case quitter:
+				continu = false;
+				break;
+			default:
 			}
 		}
 		sc.close();
@@ -89,23 +89,23 @@ public class CLI {
 		}
 		return result;
 
-		
+
 	}
-	
+
 	public static void afficherCompagnies() {
 		List<Companies> listeCompanies =CompaniesService.listCompanies();
 		PageCompanies page = new PageCompanies(listeCompanies,sc);
 		System.out.println("Voici la liste des compagnies ( Q to exit ): ");
 		page.afficher();
 	}
-	
+
 	public static void afficherOrdinateurs() throws CompaniesInexistant {
 		List<Computer> listeOrdinateur = ComputerService.listComputer();
 		PageComputer page = new PageComputer(listeOrdinateur,sc);
 		System.out.println("Voici la liste des ordinateurs ( Q to exit ): ");
 		page.afficher();
 	}
-	
+
 	public static void ajouterOrdinateur() {
 		Computer aAjouter = new Computer();
 		try {
@@ -118,10 +118,10 @@ public class CLI {
 		}catch (CompaniesIdIncorrect e) {
 			System.out.println("L'id de la compagnie que vous avez rentré ne correspond à aucune compagnie !");
 		} catch (CompaniesInexistant e) {
-			
+
 		}
 	}
-	
+
 	private static void supprimerOrdinateur() {
 		System.out.println("Donner l'Id de l'ordinateur à supprimer ( -2 pour annuler )");
 		int toDelete = -1;
@@ -132,7 +132,7 @@ public class CLI {
 			ComputerService.deleteComputer(toDelete);
 		}
 	}
-	
+
 	private static void afficherOrdinateur() throws CompaniesInexistant {
 		System.out.println("Donner l'Id de l'ordinateur à afficher ( -2 pour annuler )");
 		int toDisplay = -1;
@@ -144,16 +144,16 @@ public class CLI {
 		}
 		if (toDisplay != -2) {
 			System.out.println(ComputerService.showDetails(toDisplay));
-	
+
 		}
 	}
-	
+
 	private static void mettreAJour() {
 		Computer aAjouter = new Computer();
 		try {
-				aAjouter = ScanCLI.scanComputer();
+			aAjouter = ScanCLI.scanComputer();
 		} catch (IncoherentDates e) {
-				System.out.println("Les dates rentrées sont incohérentes");
+			System.out.println("Les dates rentrées sont incohérentes");
 		}catch (InputMismatchException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -170,6 +170,6 @@ public class CLI {
 		if (toUpdate != -2) {
 			ComputerService.updateAComputer(aAjouter,toUpdate);
 		}
-		
+
 	}
 }

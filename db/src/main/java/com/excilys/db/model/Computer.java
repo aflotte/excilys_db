@@ -12,12 +12,12 @@ public class Computer {
 	private LocalDate introduced;
 	private LocalDate discontinued;
 	private Companies companie;
-	
+
 	public Computer() {
 		companie = new Companies();
 	}
-	
-	
+
+
 	public Integer getId() {
 		return id;
 	}
@@ -51,7 +51,7 @@ public class Computer {
 	public void setCompanyId(Integer companyId) throws CompaniesInexistant {
 		this.companie = new Companies(companyId);
 	}
-	
+
 	@Override
 	public String toString() {
 		StringBuilder sB = new StringBuilder(200);
@@ -59,7 +59,7 @@ public class Computer {
 		/*if(this.getId()!= null) {
 			sB.append(" | id=").append(this.getId());	
 		}*/
-		
+
 		sB.append(" | name=").append(this.getName());
 		sB.append(" | introduced=").append(this.getIntroduced());
 		sB.append(" | discontinued=").append(this.getDiscontinued());
@@ -71,9 +71,9 @@ public class Computer {
 		}
 		sB.append(" | companyId=").append(CompIdtoPrint); 
 		return sB.toString();
-		
+
 	}
-	
+
 	@Override
 	public boolean equals(Object obj) {
 		if (super.equals(obj)) {
@@ -96,10 +96,10 @@ public class Computer {
 			return false;
 		}
 		return true;
-		
+
 	}
 
-	
-	
-	
+
+
+
 }

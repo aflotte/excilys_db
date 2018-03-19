@@ -9,18 +9,18 @@ import com.excilys.db.model.Computer;
 import com.excilys.db.persistance.DB_Connection;
 
 public class CompaniesValidator {
-private static Connection conn;
-	
-	
+	private static Connection conn;
+
+
 	static Computer computer;
-	
-	
+
+
 	private static void init() {
 		DB_Connection.getInstance().connect();
 		conn = DB_Connection.getConn();
-		
+
 	}
-	
+
 	public static boolean exist(int id) {
 		init();
 		ResultSet resultSet = null;

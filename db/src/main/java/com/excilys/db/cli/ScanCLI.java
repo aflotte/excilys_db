@@ -23,9 +23,9 @@ import com.excilys.db.validator.ComputerValidator;
  *
  */
 public class ScanCLI {
-	
-	
-		
+
+
+
 	/**
 	 * 
 	 * @param Le scanner précédement ouvert
@@ -34,14 +34,14 @@ public class ScanCLI {
 	public static int scanInt(Scanner used) {
 		int result;
 		try {
-		result = used.nextInt();
+			result = used.nextInt();
 		}catch (InputMismatchException e){
 			used.nextLine();
 			return -1;
 		}
 		return result;
 	}
-	
+
 	/**
 	 * 
 	 * @return L'ordinateur entrée par l'utilisateur
@@ -61,17 +61,17 @@ public class ScanCLI {
 		System.out.println("Entrer la date d'abandon de l'ordinateur (aaaa/mm/jj) : ");
 		System.out.println("rentrer null pour ne pas remplir le champ");
 		aRetourner.setDiscontinued(ScanCLI.scanDate(sc));
-		
+
 		System.out.println("Entrer l'Id de la compagnie ( -2 pour laisser vide ) :");
 		int id_companie = sc.nextInt();
 		if (id_companie != -2) {
-		aRetourner.setCompanyId(new Companies(id_companie));
+			aRetourner.setCompanyId(new Companies(id_companie));
 		}
 		ComputerValidator.init(aRetourner);
 		ComputerValidator.validate();
 		return aRetourner;
 	}
-	
+
 	/**
 	 * 
 	 * @param le scanner précédement ouvert
@@ -79,18 +79,18 @@ public class ScanCLI {
 	 */
 	public static LocalDate scanDate(Scanner used) {
 		SimpleDateFormat formatter = new SimpleDateFormat("yyyy/MM/dd");
-        String stringDate = used.next();
-        if ( stringDate.equals("null")) {
-        	return null;
-        }
-        try {
-            Date date = formatter.parse(stringDate);
-            System.out.println(date);
-            System.out.println(formatter.format(date));
-            return date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-        } catch (ParseException e) {
-            System.out.println("Comme la date entrée ne correspondait pas au format, aujourd'hui a été rentré par default !");
-            return new Date().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-        }	
+		String stringDate = used.next();
+		if ( stringDate.equals("null")) {
+			return null;
+		}
+		try {
+			Date date = formatter.parse(stringDate);
+			System.out.println(date);
+			System.out.println(formatter.format(date));
+			return date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+		} catch (ParseException e) {
+			System.out.println("Comme la date entrée ne correspondait pas au format, aujourd'hui a été rentré par default !");
+			return new Date().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+		}	
 	}
 }

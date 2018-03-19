@@ -1,4 +1,4 @@
-package com.excilys.db.DAO;
+package com.excilys.db.dao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -20,38 +20,38 @@ public class CompaniesDAO{
 	static org.slf4j.Logger logger = org.slf4j.LoggerFactory.getLogger(CompaniesDAO.class);
 	private static Connection conn;
 	private static CompaniesDAO instance;
-	
+
 	private final static String QUERRY_LIST_COMPANIES = "SELECT name FROM company";
 	private final static String QUERRY_LIST_COMPANIES_ID = "SELECT name FROM company WHERE id = ";
-	
+
 	/**
 	 * Initialise la connection
 	 */
 	private static void init() {
 		DB_Connection.getInstance().connect();
 		conn = DB_Connection.getConn();
-		
+
 	}
-	
-    
-    private CompaniesDAO() {
-    }
-    
-    public static CompaniesDAO getInstance() {
+
+
+	private CompaniesDAO() {
+	}
+
+	public static CompaniesDAO getInstance() {
 		if (null == instance) {
 			instance = new CompaniesDAO();
 		}
-    	return instance;
-    	
-    }
-    
-    /**
-     * 
-     * @param id d'une compagnie
-     * @return true si la compagnie exist, false sinon
-     */
-    public static boolean existCompanies(int id) {
-    	init();
+		return instance;
+
+	}
+
+	/**
+	 * 
+	 * @param id d'une compagnie
+	 * @return true si la compagnie exist, false sinon
+	 */
+	public static boolean existCompanies(int id) {
+		init();
 		ResultSet resultSet = null;
 		try {
 			PreparedStatement prep1 = conn.prepareStatement(QUERRY_LIST_COMPANIES_ID + id);
@@ -69,12 +69,12 @@ public class CompaniesDAO{
 		}
 		DB_Connection.getInstance().disconnect();
 		return false;
-    }
-	
-    /**
-     * 
-     * @return la liste des compagnies
-     */
+	}
+
+	/**
+	 * 
+	 * @return la liste des compagnies
+	 */
 	public List<Companies> listCompanies() {
 		init();
 		ResultSet resultSet = null;
@@ -114,7 +114,7 @@ public class CompaniesDAO{
 				result.setName(resultSet.getString(1));
 				result.setId(id);
 				return result;
-			
+
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -124,5 +124,5 @@ public class CompaniesDAO{
 		DB_Connection.getInstance().disconnect();
 		throw new CompaniesInexistant();
 	}
-	
+
 }

@@ -14,7 +14,7 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import com.excilys.db.DAO.ComputerDAO;
+import com.excilys.db.dao.ComputerDAO;
 import com.excilys.db.exception.CompaniesIdIncorrect;
 import com.excilys.db.exception.CompaniesInexistant;
 import com.excilys.db.exception.IncoherentDates;
@@ -31,7 +31,7 @@ public class ComputerTest extends TestCase {
 	static ResultSet toUseForTest;
 	static Connection conn;
 	SimpleDateFormat formatter = new SimpleDateFormat("yyyy/MM/dd");
-	
+
 	@BeforeClass
 	public void init() {
 		instance = DB_Connection.getInstance();
@@ -45,22 +45,22 @@ public class ComputerTest extends TestCase {
 			DB_Connection.getInstance().disconnect();
 		}
 	}
-	
+
 	@Before
 	public void connection() {
 		instance.connect();
 		conn = DB_Connection.getConn();
 	}
-	
+
 	@After
 	public void deconnection() {
 		instance.disconnect();
 	}
-	
-	
-	
-	
-	
+
+
+
+
+
 	//Test de non régression :
 	@Test
 	public void testToString() throws IncoherentDates, CompaniesIdIncorrect, CompaniesInexistant {
@@ -71,7 +71,7 @@ public class ComputerTest extends TestCase {
 		comp.setCompanyId(new Companies(10));
 		assertEquals(" | name=Name | introduced=null | discontinued=null | companyId=Digital Equipment Corporation",comp.toString());
 	}
-	
+
 	@Test
 	public void testEqualsTrue() throws IncoherentDates, CompaniesIdIncorrect, CompaniesInexistant {
 		Computer comp = new Computer();
@@ -86,7 +86,7 @@ public class ComputerTest extends TestCase {
 		comp2.setCompanyId(new Companies(10));
 		assertEquals(true,comp.equals(comp2));
 	}
-	
+
 	@Test
 	public void testEqualsSame() throws IncoherentDates, CompaniesIdIncorrect, CompaniesInexistant {
 		Computer comp = new Computer();
@@ -96,7 +96,7 @@ public class ComputerTest extends TestCase {
 		comp.setCompanyId(new Companies(10));
 		assertEquals(true,comp.equals(comp));
 	}
-	
+
 	@Test
 	public void testEqualsFalseClass() throws IncoherentDates, CompaniesIdIncorrect, CompaniesInexistant {
 		Computer comp = new Computer();
@@ -107,7 +107,7 @@ public class ComputerTest extends TestCase {
 		Integer comp2 = new Integer(5);
 		assertEquals(false,comp.equals(comp2));
 	}
-	
+
 	@Test
 	public void testEqualsFalseName() throws IncoherentDates, CompaniesIdIncorrect, CompaniesInexistant {
 		Computer comp = new Computer();
@@ -122,7 +122,7 @@ public class ComputerTest extends TestCase {
 		comp2.setCompanyId(new Companies(10));
 		assertEquals(false,comp.equals(comp2));
 	}
-	
+
 	@Test
 	public void testEqualsFalseIntroduced() throws ParseException, IncoherentDates, CompaniesIdIncorrect, CompaniesInexistant {
 		Computer comp = new Computer();
@@ -138,7 +138,7 @@ public class ComputerTest extends TestCase {
 		comp2.setCompanyId(new Companies(10));
 		assertEquals(false,comp.equals(comp2));
 	}
-	
+
 	@Test
 	public void testEqualsFalseDiscontinued() throws ParseException, IncoherentDates, CompaniesIdIncorrect, CompaniesInexistant {
 		Computer comp = new Computer();
@@ -154,7 +154,7 @@ public class ComputerTest extends TestCase {
 		comp2.setCompanyId(new Companies(10));
 		assertEquals(false,comp.equals(comp2));
 	}
-	
+
 	@Test
 	public void testEqualsFalseCompanyId() throws IncoherentDates, CompaniesIdIncorrect, CompaniesInexistant{
 		Computer comp = new Computer();
@@ -169,5 +169,5 @@ public class ComputerTest extends TestCase {
 		comp2.setCompanyId(new Companies(11));
 		assertEquals(false,comp.equals(comp2));
 	}
-	
+
 }

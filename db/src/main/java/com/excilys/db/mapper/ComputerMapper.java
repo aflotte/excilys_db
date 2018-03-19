@@ -11,12 +11,12 @@ public class ComputerMapper {
 		Computer toReturn = new Computer();
 		toReturn.setName(resultSet.getString(1));
 		if ( resultSet.getDate(2) != null) {
-		toReturn.setIntroduced(resultSet.getDate(2).toLocalDate());
+			toReturn.setIntroduced(resultSet.getDate(2).toLocalDate());
 		}else {
 			toReturn.setIntroduced(null);
 		}
 		if ( resultSet.getDate(3) != null) {
-		toReturn.setIntroduced(resultSet.getDate(3).toLocalDate());
+			toReturn.setIntroduced(resultSet.getDate(3).toLocalDate());
 		}else {
 			toReturn.setIntroduced(null);
 		}

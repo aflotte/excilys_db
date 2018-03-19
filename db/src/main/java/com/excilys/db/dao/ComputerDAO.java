@@ -1,4 +1,4 @@
-package com.excilys.db.DAO;
+package com.excilys.db.dao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -30,7 +30,7 @@ public class ComputerDAO {
 	private final static String QUERRY_CREATE_COMPUTER = "INSERT INTO computer(name,introduced,discontinued,company_id) VALUES (?,?,?,?)";
 	private final static String QUERRY_LIST_COMPUTER_BY_NAME = "SELECT id FROM computer WHERE name = ?";
 	private final static String QUERRY_DELETE_COMPUTER = "DELETE FROM computer WHERE id = ";
-	
+
 	private String chooseTheQuerryCompanie(Companies comp) {
 		if (comp.getId() == null) {
 			return " AND company_id is ?";
@@ -38,7 +38,7 @@ public class ComputerDAO {
 			return " AND company_id = ?";
 		}
 	}
-	
+
 	private String chooseTheQuerry(LocalDate localDate,LocalDate localDate2, Companies companies ) {
 		String querryEnd = chooseTheQuerryCompanie(companies);
 		String querryNotNULL = "SELECT id FROM computer WHERE name = ? AND introduced = ? AND discontinued = ?"+querryEnd;
@@ -54,30 +54,30 @@ public class ComputerDAO {
 		}else {
 			if(localDate2 == null) {
 				return querryDiscontinuedNULL;
-				
+
 			}else {
 				return querryNotNULL;
 			}
 		}
 	}
-	
+
 	private static ComputerDAO instance;
 	private static Connection conn;
-    
-    public static ComputerDAO getInstance() {
+
+	public static ComputerDAO getInstance() {
 		if (null == instance) {
 			instance = new ComputerDAO();
 		}
-    	return instance;
-    	
-    }
-	
+		return instance;
+
+	}
+
 	private void initialisationConnection() throws ClassNotFoundException {
 		DB_Connection.getInstance().connect();
 		conn = DB_Connection.getConn();
-		
+
 	}
-	
+
 	public List<Computer> listComputer() throws CompaniesInexistant {
 		try {
 			initialisationConnection();
@@ -145,8 +145,8 @@ public class ComputerDAO {
 				ps.setDate(3, java.sql.Date.valueOf(dateDiscontinued));
 			}
 			if ((computer.getCompanyId() != null)&&(computer.getCompanyId().getId() != null)) {
-				
-			ps.setInt(4, computer.getCompanyId().getId());
+
+				ps.setInt(4, computer.getCompanyId().getId());
 			}else {
 				ps.setNull(4, java.sql.Types.INTEGER);
 			}
@@ -182,7 +182,7 @@ public class ComputerDAO {
 				ps.setDate(3, java.sql.Date.valueOf(dateDiscontinued));
 			}
 			if (computer.getCompanyId().getId() != null) {
-			ps.setInt(4, computer.getCompanyId().getId());
+				ps.setInt(4, computer.getCompanyId().getId());
 			}else {
 				ps.setNull(4, java.sql.Types.INTEGER);
 			}
@@ -195,7 +195,7 @@ public class ComputerDAO {
 			}
 			DB_Connection.getInstance().disconnect();
 			return ikey;
-			
+
 		} catch (SQLException e) {
 			e.printStackTrace();
 			DB_Connection.getInstance().disconnect();
@@ -203,32 +203,32 @@ public class ComputerDAO {
 			System.out.println("Entrez un entier pour le champ companie_Id!");
 		}
 		return 0;
-		
+
 	}
-	
+
 	private void fillGetIdStatement(PreparedStatement ps,Computer computer) throws SQLException {
 		LocalDate dateIntroduced = computer.getIntroduced();
 		LocalDate dateDiscontinued = computer.getDiscontinued();
 
-			ps.setString(1, computer.getName());
-			if (dateIntroduced == null) {
-				ps.setNString(2,null);
-			}else {
-				ps.setDate(2, java.sql.Date.valueOf(dateIntroduced));
-			}
-			if (dateDiscontinued == null) {
-				ps.setNString(3,null);
-			}else {
-				ps.setDate(3, java.sql.Date.valueOf(dateDiscontinued));
-			}
-			if (computer.getCompanyId().getId() != null) {
+		ps.setString(1, computer.getName());
+		if (dateIntroduced == null) {
+			ps.setNString(2,null);
+		}else {
+			ps.setDate(2, java.sql.Date.valueOf(dateIntroduced));
+		}
+		if (dateDiscontinued == null) {
+			ps.setNString(3,null);
+		}else {
+			ps.setDate(3, java.sql.Date.valueOf(dateDiscontinued));
+		}
+		if (computer.getCompanyId().getId() != null) {
 			ps.setInt(4, computer.getCompanyId().getId());
-			}else {
-				ps.setNull(4, java.sql.Types.INTEGER);
-			}
+		}else {
+			ps.setNull(4, java.sql.Types.INTEGER);
+		}
 
 	}
-	
+
 	public List<Integer> getId(Computer computer) {
 		try {
 			initialisationConnection();
@@ -252,9 +252,9 @@ public class ComputerDAO {
 		}
 
 		return result;
-	
+
 	}
-	
+
 	public List<Integer> getIdFromName(String name) {
 		try {
 			initialisationConnection();
@@ -273,12 +273,12 @@ public class ComputerDAO {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}finally {
-		DB_Connection.getInstance().disconnect();
+			DB_Connection.getInstance().disconnect();
 		}
 		return result;
-	
+
 	}
-	
+
 	public void deleteAComputer(int id) {
 		try {
 			initialisationConnection();
@@ -291,7 +291,7 @@ public class ComputerDAO {
 			prep1.executeUpdate(QUERRY_DELETE_COMPUTER + id);
 		} catch (SQLException e) {
 			e.printStackTrace();
-			
+
 		}finally {
 			DB_Connection.getInstance().disconnect();
 		}

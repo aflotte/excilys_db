@@ -1,7 +1,7 @@
 package com.excilys.db.test;
 
-import com.excilys.db.DAO.CompaniesDAO;
-import com.excilys.db.DAO.ComputerDAO;
+import com.excilys.db.dao.CompaniesDAO;
+import com.excilys.db.dao.ComputerDAO;
 import com.excilys.db.exception.CompaniesIdIncorrect;
 import com.excilys.db.exception.CompaniesInexistant;
 import com.excilys.db.exception.IncoherentDates;
@@ -27,41 +27,41 @@ public class ComputerDAOTest extends TestCase {
 	DB_Connection instance = DB_Connection.getInstance();
 	ComputerDAO computer = ComputerDAO.getInstance();
 	SimpleDateFormat formatter = new SimpleDateFormat("yyyy/MM/dd");
-	
-	
+
+
 	@BeforeClass
 	public void init() {
 
 	}
-	
+
 	@Before
 	public void connection() {
 		instance.connect();
 	}
-	
+
 	@After
 	public void deconnection() {
 		List<Integer> testList2 = computer.getIdFromName("Test_Computer");	
-    	for (int i = 0; i < testList2.size(); i++) {
-    		computer.deleteAComputer(testList2.get(i));
-    	}
+		for (int i = 0; i < testList2.size(); i++) {
+			computer.deleteAComputer(testList2.get(i));
+		}
 		instance.disconnect();
 	}
-	
+
 	protected void tearDown() throws Exception {
 		super.tearDown();
 		List<Integer> testList2 = computer.getIdFromName("Test_Computer");	
-    	for (int i = 0; i < testList2.size(); i++) {
-    		computer.deleteAComputer(testList2.get(i));
-    	}
+		for (int i = 0; i < testList2.size(); i++) {
+			computer.deleteAComputer(testList2.get(i));
+		}
 		instance.disconnect();
 	}
-	
+
 	@AfterClass
 	public void delete() {
-		
+
 	}
-	
+
 	//Uniquement avec la base initiale ( McBook en 1 )
 	@Test
 	public void testListComputer() throws CompaniesInexistant, IncoherentDates, CompaniesIdIncorrect {
@@ -72,7 +72,7 @@ public class ComputerDAOTest extends TestCase {
 		McBook.setCompanyId(1);
 		assertEquals(McBook,computer.listComputer().get(0));
 	}
-	
+
 	@Test
 	public void testShowDetails() throws CompaniesInexistant, IncoherentDates, CompaniesIdIncorrect {
 		Computer McBook = new Computer();
@@ -85,7 +85,7 @@ public class ComputerDAOTest extends TestCase {
 
 
 
-	
+
 	@Test
 	public void testCreateAComputerDatesNullCompanieNull() {
 		Computer Test = new Computer();
@@ -94,7 +94,7 @@ public class ComputerDAOTest extends TestCase {
 		Test.setDiscontinued(null);
 		computer.createAComputer(Test);
 	}
-	
+
 	@Test
 	public void testCreateAComputerDatesNull() throws CompaniesInexistant, IncoherentDates, CompaniesIdIncorrect {
 		Computer Test = new Computer();
@@ -104,7 +104,7 @@ public class ComputerDAOTest extends TestCase {
 		Test.setCompanyId(1);
 		computer.createAComputer(Test);
 	}
-	
+
 	@Test
 	public void testCreateAComputerDateIntroNull() throws ParseException, CompaniesInexistant, IncoherentDates, CompaniesIdIncorrect {
 		Computer Test = new Computer();
@@ -115,7 +115,7 @@ public class ComputerDAOTest extends TestCase {
 		Test.setCompanyId(1);
 		computer.createAComputer(Test);
 	}
-	
+
 	@Test
 	public void testCreateAComputerDateDiscNull() throws ParseException, CompaniesInexistant, IncoherentDates, CompaniesIdIncorrect {
 		Computer Test = new Computer();
@@ -126,7 +126,7 @@ public class ComputerDAOTest extends TestCase {
 		Test.setCompanyId(1);
 		computer.createAComputer(Test);
 	}
-	
+
 	@Test
 	public void testCreateAComputerDateNotNull() throws ParseException, CompaniesInexistant, IncoherentDates, CompaniesIdIncorrect {
 		Computer Test = new Computer();
@@ -137,7 +137,7 @@ public class ComputerDAOTest extends TestCase {
 		Test.setCompanyId(1);
 		computer.createAComputer(Test);
 	}
-	
+
 	@Test
 	public void testUpdateAComputerDatesNullCompanieNull() throws IncoherentDates, CompaniesIdIncorrect, CompaniesInexistant {
 		Computer Test = new Computer();
@@ -149,7 +149,7 @@ public class ComputerDAOTest extends TestCase {
 		int id = computer.getId(Test).get(0);
 		computer.updateAComputer(Test, id);
 	}
-	
+
 	@Test
 	public void testUpdateAComputerDatesNull() throws CompaniesInexistant, IncoherentDates, CompaniesIdIncorrect {
 		Computer Test = new Computer();
@@ -161,7 +161,7 @@ public class ComputerDAOTest extends TestCase {
 		int id = computer.getId(Test).get(0);
 		computer.updateAComputer(Test, id);
 	}
-	
+
 	@Test
 	public void testUpdateAComputerDateIntroNull() throws ParseException, CompaniesInexistant, IncoherentDates, CompaniesIdIncorrect {
 		Computer Test = new Computer();
@@ -174,7 +174,7 @@ public class ComputerDAOTest extends TestCase {
 		int id = computer.getId(Test).get(0);
 		computer.updateAComputer(Test, id);
 	}
-	
+
 	@Test
 	public void testUpdateAComputerDateDiscNull() throws ParseException, CompaniesInexistant, IncoherentDates, CompaniesIdIncorrect {
 		Computer Test = new Computer();
@@ -187,7 +187,7 @@ public class ComputerDAOTest extends TestCase {
 		int id = computer.getId(Test).get(0);
 		computer.updateAComputer(Test, id);
 	}
-	
+
 	@Test
 	public void testUpdateAComputerDateNotNull() throws ParseException, CompaniesInexistant, IncoherentDates, CompaniesIdIncorrect {
 		Computer Test = new Computer();
@@ -200,7 +200,7 @@ public class ComputerDAOTest extends TestCase {
 		int id = computer.getId(Test).get(0);
 		computer.updateAComputer(Test, id);
 	}
-	
+
 	//Uniquement avec la base initiale ( McBook en 1 )
 	@Test
 	public void testGetIdComputer() throws CompaniesInexistant, IncoherentDates, CompaniesIdIncorrect {
@@ -217,7 +217,7 @@ public class ComputerDAOTest extends TestCase {
 	public void testGetIdFromName() {
 		assertEquals(new Integer(1),computer.getIdFromName("MacBook Pro 15.4 inch").get(0));
 	}
-	
+
 	@Test
 	public void testDelete() {
 		Computer Test = new Computer();

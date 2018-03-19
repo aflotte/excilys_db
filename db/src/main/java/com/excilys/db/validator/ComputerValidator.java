@@ -12,23 +12,23 @@ import com.excilys.db.model.Computer;
 import com.excilys.db.persistance.DB_Connection;
 
 public class ComputerValidator {
-	
+
 	private static Connection conn;
-	
-	
+
+
 	static Computer computer;
-	
-	
+
+
 	private static void init() {
 		DB_Connection.getInstance().connect();
 		conn = DB_Connection.getConn();
-		
+
 	}
-	
+
 	public static void init(Computer instance) throws IncoherentDates, CompaniesIdIncorrect {
 		computer = instance;
 	}
-	
+
 	public static boolean exist(int id) {
 		init();
 		ResultSet resultSet = null;
@@ -49,16 +49,16 @@ public class ComputerValidator {
 		DB_Connection.getInstance().disconnect();
 		return false;
 	}
-	
-	
+
+
 	public static boolean testDate() {
 		LocalDate introduced = computer.getIntroduced();
 		LocalDate discontinued = computer.getDiscontinued();
 		return ((introduced != null)&&(discontinued != null)&&(introduced.compareTo(discontinued)>0));
 	}
-	
+
 	public static boolean testIdCompanie() {
-    	init();
+		init();
 		ResultSet resultSet = null;
 		if (computer.getCompanyId().getId()==null) {
 			return true;
@@ -80,7 +80,7 @@ public class ComputerValidator {
 		DB_Connection.getInstance().disconnect();
 		return false;
 	}
-	
+
 	public static boolean validate() throws IncoherentDates, CompaniesIdIncorrect {
 		if (testDate()) {
 			throw new IncoherentDates();

@@ -8,7 +8,7 @@ import java.util.List;
 
 import org.junit.Test;
 
-import com.excilys.db.DAO.ComputerDAO;
+import com.excilys.db.dao.ComputerDAO;
 import com.excilys.db.exception.CompaniesIdIncorrect;
 import com.excilys.db.exception.CompaniesInexistant;
 import com.excilys.db.exception.IncoherentDates;
@@ -24,7 +24,7 @@ public class ComputerValidatorTest extends TestCase {
 	DB_Connection instance = DB_Connection.getInstance();
 	ComputerDAO computer = ComputerDAO.getInstance();
 	SimpleDateFormat formatter = new SimpleDateFormat("yyyy/MM/dd");
-	
+
 	@Test
 	public void testExist() throws ParseException, IncoherentDates, CompaniesIdIncorrect, CompaniesInexistant {
 		Computer Test = new Computer();
@@ -36,10 +36,10 @@ public class ComputerValidatorTest extends TestCase {
 		int id = computer.createAComputer(Test);
 		assertEquals(true, ComputerValidator.exist(id));
 		List<Integer> testList2 = computer.getIdFromName("Test_Computer");	
-    	for (int i = 0; i < testList2.size(); i++) {
-    		computer.deleteAComputer(testList2.get(i));
-    	}
+		for (int i = 0; i < testList2.size(); i++) {
+			computer.deleteAComputer(testList2.get(i));
+		}
 		assertEquals(false, ComputerValidator.exist(id));
 	}
-	
+
 }
