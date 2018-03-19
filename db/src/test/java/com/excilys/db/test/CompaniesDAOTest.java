@@ -13,7 +13,7 @@ import junit.framework.TestCase;
 
 public class CompaniesDAOTest extends TestCase {
 	DB_Connection instance = DB_Connection.getInstance();
-	CompaniesDAO companies = CompaniesDAO.getInstance();	
+	CompaniesDAO companies = CompaniesDAO.INSTANCE;	
 
 	@BeforeClass
 	public void init() {

@@ -2,10 +2,6 @@ package com.excilys.db.model;
 
 import java.time.LocalDate;
 
-import com.excilys.db.exception.CompaniesIdIncorrect;
-import com.excilys.db.exception.CompaniesInexistant;
-import com.excilys.db.exception.IncoherentDates;
-
 public class Computer {
 	private Integer id;
 	private String name;
@@ -42,14 +38,11 @@ public class Computer {
 	public void setDiscontinued(LocalDate discontinued) {
 		this.discontinued = discontinued;
 	}
-	public Companies getCompanyId() {
+	public Companies getCompany() {
 		return companie;
 	}
-	public void setCompanyId(Companies companie) throws IncoherentDates, CompaniesIdIncorrect, CompaniesInexistant {
+	public void setCompany(Companies companie){
 		this.companie = companie;
-	}
-	public void setCompanyId(Integer companyId) throws CompaniesInexistant {
-		this.companie = new Companies(companyId);
 	}
 
 	@Override
@@ -59,10 +52,10 @@ public class Computer {
 		sB.append(" | introduced=").append(this.getIntroduced());
 		sB.append(" | discontinued=").append(this.getDiscontinued());
 		String CompIdtoPrint;
-		if (this.getCompanyId() == null) {
+		if (this.getCompany() == null) {
 			CompIdtoPrint = "null";
 		}else {
-			CompIdtoPrint = this.getCompanyId().getName();
+			CompIdtoPrint = this.getCompany().getName();
 		}
 		sB.append(" | companyId=").append(CompIdtoPrint); 
 		return sB.toString();
@@ -87,7 +80,7 @@ public class Computer {
 		if (this.getDiscontinued() != ((Computer) obj).getDiscontinued()) {
 			return false;
 		}
-		if (!this.getCompanyId().equals(((Computer) obj).getCompanyId())) {
+		if (!this.getCompany().equals(((Computer) obj).getCompany())) {
 			return false;
 		}
 		return true;

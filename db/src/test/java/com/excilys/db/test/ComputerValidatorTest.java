@@ -22,7 +22,7 @@ import junit.framework.TestCase;
 public class ComputerValidatorTest extends TestCase {
 
 	DB_Connection instance = DB_Connection.getInstance();
-	ComputerDAO computer = ComputerDAO.getInstance();
+	ComputerDAO computer = ComputerDAO.INSTANCE;
 	SimpleDateFormat formatter = new SimpleDateFormat("yyyy/MM/dd");
 
 	@Test
@@ -32,7 +32,7 @@ public class ComputerValidatorTest extends TestCase {
 		Date date = formatter.parse("1999/12/5");
 		Test.setIntroduced(date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
 		Test.setDiscontinued(date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
-		Test.setCompanyId(new Companies(1));
+		Test.setCompany(new Companies(1));
 		int id = computer.createAComputer(Test);
 		assertEquals(true, ComputerValidator.INSTANCE.exist(id));
 		List<Integer> testList2 = computer.getIdFromName("Test_Computer");	

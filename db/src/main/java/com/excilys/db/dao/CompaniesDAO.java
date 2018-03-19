@@ -16,10 +16,10 @@ import com.excilys.db.persistance.DB_Connection;
  * @author flotte
  *
  */
-public class CompaniesDAO{
+public enum CompaniesDAO{
+	INSTANCE;
 	static org.slf4j.Logger logger = org.slf4j.LoggerFactory.getLogger(CompaniesDAO.class);
 	private static Connection conn;
-	private static CompaniesDAO instance;
 
 	private final static String QUERRY_LIST_COMPANIES = "SELECT name FROM company";
 	private final static String QUERRY_LIST_COMPANIES_ID = "SELECT name FROM company WHERE id = ";
@@ -27,7 +27,7 @@ public class CompaniesDAO{
 	/**
 	 * Initialise la connection
 	 */
-	private static void init() {
+	private void init() {
 		DB_Connection.getInstance().connect();
 		conn = DB_Connection.getConn();
 
@@ -37,20 +37,13 @@ public class CompaniesDAO{
 	private CompaniesDAO() {
 	}
 
-	public static CompaniesDAO getInstance() {
-		if (null == instance) {
-			instance = new CompaniesDAO();
-		}
-		return instance;
-
-	}
 
 	/**
 	 * 
 	 * @param id d'une compagnie
 	 * @return true si la compagnie exist, false sinon
 	 */
-	public static boolean existCompanies(int id) {
+	public boolean existCompanies(int id) {
 		init();
 		ResultSet resultSet = null;
 		try {

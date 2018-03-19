@@ -30,7 +30,7 @@ import junit.framework.TestCase;
 public class ComputerDAOTest extends TestCase {
 
 	DB_Connection instance = DB_Connection.getInstance();
-	ComputerDAO computer = ComputerDAO.getInstance();
+	ComputerDAO computer = ComputerDAO.INSTANCE;
 	SimpleDateFormat formatter = new SimpleDateFormat("yyyy/MM/dd");
 
 
@@ -117,7 +117,7 @@ public class ComputerDAOTest extends TestCase {
 		McBook.setDiscontinued(null);
 		Companies companie = new Companies(1);
 		companie.setName("Apple Inc.");
-		McBook.setCompanyId(companie);
+		McBook.setCompany(companie);
 		assertEquals(McBook,computer.listComputer().get(0));
 	}
 
@@ -129,7 +129,7 @@ public class ComputerDAOTest extends TestCase {
 		McBook.setDiscontinued(null);
 		Companies companie = new Companies(1);
 		companie.setName("Apple Inc.");
-		McBook.setCompanyId(companie);
+		McBook.setCompany(companie);
 		assertEquals(McBook,computer.showDetails(1));
 	}
 
@@ -151,7 +151,9 @@ public class ComputerDAOTest extends TestCase {
 		Test.setName("Test_Computer");
 		Test.setIntroduced(null);
 		Test.setDiscontinued(null);
-		Test.setCompanyId(1);
+		Companies companie = new Companies(1);
+		companie.setName("Apple Inc.");
+		Test.setCompany(companie);
 		computer.createAComputer(Test);
 	}
 
@@ -162,7 +164,9 @@ public class ComputerDAOTest extends TestCase {
 		Test.setIntroduced(null);
 		Date date = formatter.parse("1999/12/5");
 		Test.setDiscontinued(date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
-		Test.setCompanyId(1);
+		Companies companie = new Companies(1);
+		companie.setName("Apple Inc.");
+		Test.setCompany(companie);
 		computer.createAComputer(Test);
 	}
 
@@ -173,7 +177,9 @@ public class ComputerDAOTest extends TestCase {
 		Date date = formatter.parse("1999/12/5");
 		Test.setIntroduced(date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
 		Test.setDiscontinued(null);
-		Test.setCompanyId(1);
+		Companies companie = new Companies(1);
+		companie.setName("Apple Inc.");
+		Test.setCompany(companie);
 		computer.createAComputer(Test);
 	}
 
@@ -184,7 +190,9 @@ public class ComputerDAOTest extends TestCase {
 		Date date = formatter.parse("1999/12/5");
 		Test.setIntroduced(date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
 		Test.setDiscontinued(date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
-		Test.setCompanyId(1);
+		Companies companie = new Companies(1);
+		companie.setName("Apple Inc.");
+		Test.setCompany(companie);
 		computer.createAComputer(Test);
 	}
 
@@ -194,7 +202,8 @@ public class ComputerDAOTest extends TestCase {
 		Test.setName("Test_Computer");
 		Test.setIntroduced(null);
 		Test.setDiscontinued(null);
-		Test.setCompanyId((Integer)null);
+		Companies companie = new Companies();
+		Test.setCompany(companie);
 		computer.createAComputer(Test);
 		int id = computer.getId(Test).get(0);
 		computer.updateAComputer(Test, id);
@@ -206,7 +215,7 @@ public class ComputerDAOTest extends TestCase {
 		Test.setName("Test_Computer");
 		Test.setIntroduced(null);
 		Test.setDiscontinued(null);
-		Test.setCompanyId(CompaniesDAO.getInstance().getCompanies(1));
+		Test.setCompany(CompaniesDAO.INSTANCE.getCompanies(1));
 		computer.createAComputer(Test);
 		int id = computer.getId(Test).get(0);
 		computer.updateAComputer(Test, id);
@@ -219,7 +228,9 @@ public class ComputerDAOTest extends TestCase {
 		Test.setIntroduced(null);
 		Date date = formatter.parse("1999/12/5");
 		Test.setDiscontinued(date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
-		Test.setCompanyId(2);
+		Companies companie = new Companies(2);
+		companie.setName("Apple Inc.");
+		Test.setCompany(companie);
 		computer.createAComputer(Test);
 		int id = computer.getId(Test).get(0);
 		computer.updateAComputer(Test, id);
@@ -232,7 +243,9 @@ public class ComputerDAOTest extends TestCase {
 		Date date = formatter.parse("1999/12/5");
 		Test.setIntroduced(date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
 		Test.setDiscontinued(null);
-		Test.setCompanyId(1);
+		Companies companie = new Companies(1);
+		companie.setName("Apple Inc.");
+		Test.setCompany(companie);
 		computer.createAComputer(Test);
 		int id = computer.getId(Test).get(0);
 		computer.updateAComputer(Test, id);
@@ -245,7 +258,9 @@ public class ComputerDAOTest extends TestCase {
 		Date date = formatter.parse("1999/12/5");
 		Test.setIntroduced(date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
 		Test.setDiscontinued(date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
-		Test.setCompanyId(1);
+		Companies companie = new Companies(1);
+		companie.setName("Apple Inc.");
+		Test.setCompany(companie);
 		computer.createAComputer(Test);
 		int id = computer.getId(Test).get(0);
 		computer.updateAComputer(Test, id);
@@ -258,7 +273,9 @@ public class ComputerDAOTest extends TestCase {
 		McBook.setName("MacBook Pro 15.4 inch");
 		McBook.setIntroduced(null);
 		McBook.setDiscontinued(null);
-		McBook.setCompanyId(1);
+		Companies companie = new Companies(1);
+		companie.setName("Apple Inc.");
+		McBook.setCompany(companie);
 		assertEquals(new Integer(1),computer.getId(McBook).get(0));
 	}
 

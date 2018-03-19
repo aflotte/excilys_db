@@ -20,7 +20,8 @@ import java.sql.Statement;
  * @author flotte
  *
  */
-public class ComputerDAO {
+public enum ComputerDAO {
+	INSTANCE;
 	org.slf4j.Logger logger = org.slf4j.LoggerFactory.getLogger(ComputerDAO.class);
 
 	private final static String QUERRY_LIST_COMPUTERS = "SELECT computer.name, introduced, discontinued, company.id, computer.id, company.name FROM computer LEFT JOIN company ON computer.id = company.id";
@@ -59,17 +60,9 @@ public class ComputerDAO {
 			}
 		}
 	}
-
-	private static ComputerDAO instance;
+	
 	private static Connection conn;
 
-	public static ComputerDAO getInstance() {
-		if (null == instance) {
-			instance = new ComputerDAO();
-		}
-		return instance;
-
-	}
 
 	private void initialisationConnection(){
 		DB_Connection.getInstance().connect();
@@ -132,9 +125,9 @@ public class ComputerDAO {
 			}else {
 				ps.setDate(3, java.sql.Date.valueOf(dateDiscontinued));
 			}
-			if ((computer.getCompanyId() != null)&&(computer.getCompanyId().getId() != null)) {
+			if ((computer.getCompany() != null)&&(computer.getCompany().getId() != null)) {
 
-				ps.setInt(4, computer.getCompanyId().getId());
+				ps.setInt(4, computer.getCompany().getId());
 			}else {
 				ps.setNull(4, java.sql.Types.INTEGER);
 			}
@@ -165,8 +158,8 @@ public class ComputerDAO {
 			}else {
 				ps.setDate(3, java.sql.Date.valueOf(dateDiscontinued));
 			}
-			if (computer.getCompanyId().getId() != null) {
-				ps.setInt(4, computer.getCompanyId().getId());
+			if (computer.getCompany().getId() != null) {
+				ps.setInt(4, computer.getCompany().getId());
 			}else {
 				ps.setNull(4, java.sql.Types.INTEGER);
 			}
@@ -203,8 +196,8 @@ public class ComputerDAO {
 		}else {
 			ps.setDate(3, java.sql.Date.valueOf(dateDiscontinued));
 		}
-		if (computer.getCompanyId().getId() != null) {
-			ps.setInt(4, computer.getCompanyId().getId());
+		if (computer.getCompany().getId() != null) {
+			ps.setInt(4, computer.getCompany().getId());
 		}else {
 			ps.setNull(4, java.sql.Types.INTEGER);
 		}
@@ -214,7 +207,7 @@ public class ComputerDAO {
 	public List<Integer> getId(Computer computer) {
 		initialisationConnection();
 		List<Integer> result = new ArrayList<Integer>();
-		String querry = chooseTheQuerry(computer.getIntroduced(),computer.getDiscontinued(),computer.getCompanyId());
+		String querry = chooseTheQuerry(computer.getIntroduced(),computer.getDiscontinued(),computer.getCompany());
 		try {
 			PreparedStatement ps = conn.prepareStatement(querry);
 			fillGetIdStatement(ps,computer);

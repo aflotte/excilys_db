@@ -6,14 +6,15 @@ import com.excilys.db.dao.CompaniesDAO;
 import com.excilys.db.exception.CompaniesInexistant;
 import com.excilys.db.model.Companies;
 
-public class CompaniesService {
-	private static CompaniesDAO companies = CompaniesDAO.getInstance();
+public enum CompaniesService {
+	INSTANCE;
+	private CompaniesDAO companies = CompaniesDAO.INSTANCE;
 
-	public static List<Companies> listCompanies() {
+	public List<Companies> listCompanies() {
 		return companies.listCompanies();
 	}
 
-	public static Companies getCompanies(int id) throws CompaniesInexistant {
+	public Companies getCompanies(int id) throws CompaniesInexistant {
 		return companies.getCompanies(id);
 	}
 

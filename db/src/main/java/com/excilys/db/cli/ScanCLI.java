@@ -65,7 +65,7 @@ public class ScanCLI {
 		System.out.println("Entrer l'Id de la compagnie ( -2 pour laisser vide ) :");
 		int id_companie = sc.nextInt();
 		if (id_companie != -2) {
-			aRetourner.setCompanyId(new Companies(id_companie));
+			aRetourner.setCompany(new Companies(id_companie));
 		}
 		ComputerValidator.INSTANCE.validate(aRetourner);
 		return aRetourner;

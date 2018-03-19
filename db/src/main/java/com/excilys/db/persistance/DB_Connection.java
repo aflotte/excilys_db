@@ -5,7 +5,9 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 
+
 public final class DB_Connection {
+	static org.slf4j.Logger logger = org.slf4j.LoggerFactory.getLogger(DB_Connection.class);
 
 	private static final String PROPERTY_URL             = "jdbc:mysql://localhost:3306/computer-database-db?zeroDateTimeBehavior=convertToNull&autoReconnect=true&characterEncoding=UTF-8&characterSetResults=UTF-8";
 	private static final String PROPERTY_NOM_UTILISATEUR = "admincdb";
@@ -38,12 +40,10 @@ public final class DB_Connection {
 	
 	public void connect() {
 		if (conn == null) {
-
 			try {
 				conn = DriverManager.getConnection(PROPERTY_URL,PROPERTY_NOM_UTILISATEUR,PROPERTY_MOT_DE_PASSE);
 			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				logger.warn(e.getMessage());
 			}
 		}
 	}
@@ -53,8 +53,7 @@ public final class DB_Connection {
 			try {
 				conn.close();
 			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				logger.warn(e.getMessage());
 			}
 		}
 		conn = null;

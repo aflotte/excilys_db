@@ -93,14 +93,14 @@ public class CLI {
 	}
 
 	public static void afficherCompagnies() {
-		List<Companies> listeCompanies =CompaniesService.listCompanies();
+		List<Companies> listeCompanies =CompaniesService.INSTANCE.listCompanies();
 		PageCompanies page = new PageCompanies(listeCompanies,sc);
 		System.out.println("Voici la liste des compagnies ( Q to exit ): ");
 		page.afficher();
 	}
 
 	public static void afficherOrdinateurs() throws CompaniesInexistant {
-		List<Computer> listeOrdinateur = ComputerService.listComputer();
+		List<Computer> listeOrdinateur = ComputerService.INSTANCE.listComputer();
 		PageComputer page = new PageComputer(listeOrdinateur,sc);
 		System.out.println("Voici la liste des ordinateurs ( Q to exit ): ");
 		page.afficher();
@@ -110,7 +110,7 @@ public class CLI {
 		Computer aAjouter = new Computer();
 		try {
 			aAjouter = ScanCLI.scanComputer();
-			ComputerService.createComputer(aAjouter);
+			ComputerService.INSTANCE.createComputer(aAjouter);
 		} catch (IncoherentDates e) {
 			System.out.println("Les dates rentrées sont incohérentes");
 		}catch (InputMismatchException e){
@@ -129,7 +129,7 @@ public class CLI {
 			toDelete = ScanCLI.scanInt(sc);
 		}
 		if (toDelete != -2) {
-			ComputerService.deleteComputer(toDelete);
+			ComputerService.INSTANCE.deleteComputer(toDelete);
 		}
 	}
 
@@ -144,7 +144,7 @@ public class CLI {
 		}
 		if (toDisplay != -2) {
 			
-			System.out.println(ComputerService.showDetails(toDisplay));
+			System.out.println(ComputerService.INSTANCE.showDetails(toDisplay));
 
 		}
 	}
@@ -156,8 +156,7 @@ public class CLI {
 		} catch (IncoherentDates e) {
 			System.out.println("Les dates rentrées sont incohérentes");
 		}catch (InputMismatchException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			System.out.println("Vous n'avez pas respecté le format des valeurs attendu");
 		} catch (CompaniesIdIncorrect e) {
 			System.out.println("L'id de la compagnie que vous avez rentré ne correspond à aucune compagnie !");
 		} catch (CompaniesInexistant e) {
@@ -169,7 +168,7 @@ public class CLI {
 			toUpdate = ScanCLI.scanInt(sc);
 		}
 		if (toUpdate != -2) {
-			ComputerService.updateAComputer(aAjouter,toUpdate);
+			ComputerService.INSTANCE.updateAComputer(aAjouter,toUpdate);
 		}
 
 	}

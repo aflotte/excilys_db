@@ -12,7 +12,7 @@ import junit.framework.TestCase;
 public class ComputerMapperTest extends TestCase {
 
 	DB_Connection instance = DB_Connection.getInstance();
-	ComputerDAO computer = ComputerDAO.getInstance();
+	ComputerDAO computer = ComputerDAO.INSTANCE;
 	//	private static Connection conn;
 	//TODO:
 	@Test

@@ -70,7 +70,7 @@ public class ComputerTest extends TestCase {
 		comp.setDiscontinued(null);
 		Companies companie = new Companies(10);
 		companie.setName("Digital Equipment Corporation");
-		comp.setCompanyId(companie);
+		comp.setCompany(companie);
 		assertEquals(" | name=Name | introduced=null | discontinued=null | companyId=Digital Equipment Corporation",comp.toString());
 	}
 
@@ -80,12 +80,12 @@ public class ComputerTest extends TestCase {
 		comp.setName("Name");
 		comp.setIntroduced(null);
 		comp.setDiscontinued(null);
-		comp.setCompanyId(new Companies(10));
+		comp.setCompany(new Companies(10));
 		Computer comp2 = new Computer();
 		comp2.setName("Name");
 		comp2.setIntroduced(null);
 		comp2.setDiscontinued(null);
-		comp2.setCompanyId(new Companies(10));
+		comp2.setCompany(new Companies(10));
 		assertEquals(true,comp.equals(comp2));
 	}
 
@@ -95,7 +95,7 @@ public class ComputerTest extends TestCase {
 		comp.setName("Name");
 		comp.setIntroduced(null);
 		comp.setDiscontinued(null);
-		comp.setCompanyId(new Companies(10));
+		comp.setCompany(new Companies(10));
 		assertEquals(true,comp.equals(comp));
 	}
 
@@ -105,7 +105,7 @@ public class ComputerTest extends TestCase {
 		comp.setName("Name");
 		comp.setIntroduced(null);
 		comp.setDiscontinued(null);
-		comp.setCompanyId(new Companies(10));
+		comp.setCompany(new Companies(10));
 		Integer comp2 = new Integer(5);
 		assertEquals(false,comp.equals(comp2));
 	}
@@ -116,12 +116,12 @@ public class ComputerTest extends TestCase {
 		comp.setName("Name");
 		comp.setIntroduced(null);
 		comp.setDiscontinued(null);
-		comp.setCompanyId(new Companies(10));
+		comp.setCompany(new Companies(10));
 		Computer comp2 = new Computer();
 		comp2.setName("Name2");
 		comp2.setIntroduced(null);
 		comp2.setDiscontinued(null);
-		comp2.setCompanyId(new Companies(10));
+		comp2.setCompany(new Companies(10));
 		assertEquals(false,comp.equals(comp2));
 	}
 
@@ -131,13 +131,13 @@ public class ComputerTest extends TestCase {
 		comp.setName("Name");
 		comp.setIntroduced(null);
 		comp.setDiscontinued(null);
-		comp.setCompanyId(new Companies(10));
+		comp.setCompany(new Companies(10));
 		Computer comp2 = new Computer();
 		comp2.setName("Name2");
 		Date date = formatter.parse("1999/12/5");
 		comp2.setIntroduced(date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
 		comp2.setDiscontinued(null);
-		comp2.setCompanyId(new Companies(10));
+		comp2.setCompany(new Companies(10));
 		assertEquals(false,comp.equals(comp2));
 	}
 
@@ -147,13 +147,13 @@ public class ComputerTest extends TestCase {
 		comp.setName("Name");
 		comp.setIntroduced(null);
 		comp.setDiscontinued(null);
-		comp.setCompanyId(new Companies(10));
+		comp.setCompany(new Companies(10));
 		Computer comp2 = new Computer();
 		comp2.setName("Name2");
 		Date date = formatter.parse("1999/12/5");
 		comp2.setIntroduced(null);
 		comp2.setDiscontinued(date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
-		comp2.setCompanyId(new Companies(10));
+		comp2.setCompany(new Companies(10));
 		assertEquals(false,comp.equals(comp2));
 	}
 
@@ -163,12 +163,12 @@ public class ComputerTest extends TestCase {
 		comp.setName("Name");
 		comp.setIntroduced(null);
 		comp.setDiscontinued(null);
-		comp.setCompanyId(new Companies(10));
+		comp.setCompany(new Companies(10));
 		Computer comp2 = new Computer();
 		comp2.setName("Name2");
 		comp2.setIntroduced(null);
 		comp2.setDiscontinued(null);
-		comp2.setCompanyId(new Companies(11));
+		comp2.setCompany(new Companies(11));
 		assertEquals(false,comp.equals(comp2));
 	}
 
