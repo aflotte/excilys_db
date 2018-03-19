@@ -34,12 +34,12 @@ public class ComputerValidatorTest extends TestCase {
 		Test.setDiscontinued(date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
 		Test.setCompanyId(new Companies(1));
 		int id = computer.createAComputer(Test);
-		assertEquals(true, ComputerValidator.exist(id));
+		assertEquals(true, ComputerValidator.INSTANCE.exist(id));
 		List<Integer> testList2 = computer.getIdFromName("Test_Computer");	
 		for (int i = 0; i < testList2.size(); i++) {
 			computer.deleteAComputer(testList2.get(i));
 		}
-		assertEquals(false, ComputerValidator.exist(id));
+		assertEquals(false, ComputerValidator.INSTANCE.exist(id));
 	}
 
 }

@@ -9,6 +9,10 @@ import com.excilys.db.model.Companies;
 import com.excilys.db.model.Computer;
 import com.excilys.db.persistance.DB_Connection;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.ZoneId;
@@ -31,13 +35,25 @@ public class ComputerDAOTest extends TestCase {
 
 
 	@BeforeClass
-	public void init() {
+	public static void init() throws SQLException, ClassNotFoundException{
+		Class.forName("org.hsqldb.jdbc.JDBCDriver");
 
+		// initialize database
+		initDatabase();
+	}
+
+
+	@AfterClass
+	public static void destroy() throws SQLException, ClassNotFoundException {
+		try (Connection connection = getConnection(); Statement statement = connection.createStatement();) {
+			statement.executeUpdate("DROP TABLE employee");
+			connection.commit();
+		}
 	}
 
 	@Before
-	public void connection() {
-		instance.connect();
+	public void connection() throws SQLException {
+		Connection connection = getConnection();
 	}
 
 	@After
@@ -49,6 +65,40 @@ public class ComputerDAOTest extends TestCase {
 		instance.disconnect();
 	}
 
+	/**
+	 * Database initialization for testing i.e.
+	 * 
+	 * @throws SQLException
+	 */
+	private static void initDatabase() throws SQLException {
+		try (Connection connection = getConnection();
+				Statement statement = connection.createStatement();) {
+			statement.execute("create table company (id bigint not null auto_increment,name varchar(255), constraint pk_company primary key (id));");
+			statement.execute("create table computer (id bigint not null auto_increment, name varchar(255),introduced timestamp NULL,discontinued timestamp NULL,"
++" company_id bigint default NULL,constraint pk_computer primary key (id));");
+			statement.execute("alter table computer add constraint fk_computer_company_1 foreign key (company_id) references company (id) on delete restrict on update restrict;");
+			connection.commit();
+			statement.executeUpdate(
+					"insert into company (id,name) values (  1,'Apple Inc.');");
+			statement.executeUpdate("insert into computer (id,name,introduced,discontinued,company_id) values (  1,'MacBook Pro 15.4 inch',null,null,1);");
+			statement.executeUpdate("insert into computer (id,name,introduced,discontinued,company_id) values ( 16,'Apple II','1977-04-01','1993-10-01',1);");
+			connection.commit();
+		}
+	}
+
+	/**
+	 * Create a connection
+	 * 
+	 * @return connection object
+	 * @throws SQLException
+	 */
+	private static Connection getConnection() throws SQLException {
+		return DriverManager.getConnection("jdbc:hsqldb:mem:employees", "vinod", "vinod");
+	}
+
+
+
+
 	protected void tearDown() throws Exception {
 		super.tearDown();
 		List<Integer> testList2 = computer.getIdFromName("Test_Computer");	
@@ -56,11 +106,6 @@ public class ComputerDAOTest extends TestCase {
 			computer.deleteAComputer(testList2.get(i));
 		}
 		instance.disconnect();
-	}
-
-	@AfterClass
-	public void delete() {
-
 	}
 
 	//Uniquement avec la base initiale ( McBook en 1 )

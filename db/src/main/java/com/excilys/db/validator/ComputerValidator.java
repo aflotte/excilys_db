@@ -11,12 +11,13 @@ import com.excilys.db.exception.IncoherentDates;
 import com.excilys.db.model.Computer;
 import com.excilys.db.persistance.DB_Connection;
 
-public class ComputerValidator {
-
+public enum ComputerValidator {
+	INSTANCE;
+	
 	private static Connection conn;
-
-
-	static Computer computer;
+	private ComputerValidator() {
+	
+	}
 
 
 	private static void init() {
@@ -25,11 +26,8 @@ public class ComputerValidator {
 
 	}
 
-	public static void init(Computer instance) throws IncoherentDates, CompaniesIdIncorrect {
-		computer = instance;
-	}
 
-	public static boolean exist(int id) {
+	public boolean exist(int id) {
 		init();
 		ResultSet resultSet = null;
 		String querry = "SELECT name FROM computer WHERE id = " + id;
@@ -51,13 +49,13 @@ public class ComputerValidator {
 	}
 
 
-	public static boolean testDate() {
+	public boolean testDate(Computer computer) {
 		LocalDate introduced = computer.getIntroduced();
 		LocalDate discontinued = computer.getDiscontinued();
 		return ((introduced != null)&&(discontinued != null)&&(introduced.compareTo(discontinued)>0));
 	}
 
-	public static boolean testIdCompanie() {
+	public static boolean testIdCompanie(Computer computer) {
 		init();
 		ResultSet resultSet = null;
 		if (computer.getCompanyId().getId()==null) {
@@ -81,13 +79,13 @@ public class ComputerValidator {
 		return false;
 	}
 
-	public static boolean validate() throws IncoherentDates, CompaniesIdIncorrect {
-		if (testDate()) {
+	public boolean validate(Computer computer) throws IncoherentDates, CompaniesIdIncorrect {
+		if (testDate(computer)) {
 			throw new IncoherentDates();
 		}
-		if (!testIdCompanie()) {
+		if (!testIdCompanie(computer)) {
 			throw new CompaniesIdIncorrect();
 		}
-		return (testDate()&&testIdCompanie());
+		return true;
 	}
 }

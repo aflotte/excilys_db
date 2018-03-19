@@ -67,8 +67,7 @@ public class ScanCLI {
 		if (id_companie != -2) {
 			aRetourner.setCompanyId(new Companies(id_companie));
 		}
-		ComputerValidator.init(aRetourner);
-		ComputerValidator.validate();
+		ComputerValidator.INSTANCE.validate(aRetourner);
 		return aRetourner;
 	}
 

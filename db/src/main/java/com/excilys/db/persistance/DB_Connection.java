@@ -30,6 +30,12 @@ public final class DB_Connection {
 
 	}
 
+	public int executeQuery(String query) throws ClassNotFoundException, SQLException {
+		
+			    return conn.createStatement().executeUpdate(query);
+		
+			  }
+	
 	public void connect() {
 		if (conn == null) {
 

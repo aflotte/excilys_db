@@ -138,7 +138,7 @@ public class CLI {
 		int toDisplay = -1;
 		while (toDisplay == -1) {
 			toDisplay = ScanCLI.scanInt(sc);
-			if (!ComputerValidator.exist(toDisplay)) {
+			if (!ComputerValidator.INSTANCE.exist(toDisplay)) {
 				toDisplay = -1;
 			}
 		}
