@@ -29,7 +29,7 @@ import junit.framework.TestCase;
 
 public class ComputerDAOTest extends TestCase {
 
-	DB_Connection instance = DB_Connection.getInstance();
+	DB_Connection instance = DB_Connection.getInstance("jdbc:hsqldb:mem:testjcdb","sa","");
 	ComputerDAO computer = ComputerDAO.INSTANCE;
 	SimpleDateFormat formatter = new SimpleDateFormat("yyyy/MM/dd");
 
@@ -37,7 +37,6 @@ public class ComputerDAOTest extends TestCase {
 	@BeforeClass
 	public static void init() throws SQLException, ClassNotFoundException{
 		Class.forName("org.hsqldb.jdbc.JDBCDriver");
-
 		// initialize database
 		initDatabase();
 	}
@@ -47,6 +46,7 @@ public class ComputerDAOTest extends TestCase {
 	public static void destroy() throws SQLException, ClassNotFoundException {
 		try (Connection connection = getConnection(); Statement statement = connection.createStatement();) {
 			statement.executeUpdate("DROP TABLE computer");
+			statement.executeUpdate("DROP TABLE company");
 			connection.commit();
 		}
 	}
