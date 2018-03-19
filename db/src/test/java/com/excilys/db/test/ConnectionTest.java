@@ -40,14 +40,6 @@ public class ConnectionTest extends TestCase{
 
 	public void testMockDBConnection() throws Exception {
 
-		Mockito.when(mockConnection.createStatement()).thenReturn(mockStatement);
-
-		Mockito.when(mockConnection.createStatement().executeUpdate(Mockito.any())).thenReturn(1);
-
-		int value = dbConnection.executeQuery("");
-
-		Assert.assertEquals(value, 1);
-
-		Mockito.verify(mockConnection.createStatement(), Mockito.times(1));
+		
 	}
 }
