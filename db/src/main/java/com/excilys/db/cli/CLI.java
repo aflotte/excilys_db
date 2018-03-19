@@ -95,7 +95,7 @@ public class CLI {
 	public static void afficherCompagnies() {
 		List<Companies> listeCompanies =CompaniesService.listCompanies();
 		PageCompanies page = new PageCompanies(listeCompanies,sc);
-		System.out.println("Voici la liste des ordinateurs ( Q to exit ): ");
+		System.out.println("Voici la liste des compagnies ( Q to exit ): ");
 		page.afficher();
 	}
 	
