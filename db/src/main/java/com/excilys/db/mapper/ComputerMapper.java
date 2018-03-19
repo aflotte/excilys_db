@@ -9,6 +9,7 @@ import com.excilys.db.exception.IncoherentDates;
 import com.excilys.db.model.Computer;
 
 public class ComputerMapper {
+	static org.slf4j.Logger logger = org.slf4j.LoggerFactory.getLogger(ComputerMapper.class);
 	public static Computer resultToComputer(ResultSet resultSet) throws SQLException, CompaniesInexistant {
 		Computer toReturn = new Computer();
 		toReturn.setName(resultSet.getString(1));
@@ -25,8 +26,7 @@ public class ComputerMapper {
 		try {
 			toReturn.setCompanyId(CompaniesMapper.computerResultToCompanies(resultSet));
 		} catch (IncoherentDates | CompaniesIdIncorrect e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.warn(e.getMessage());
 		}
 		toReturn.setId(resultSet.getInt(5));
 		

@@ -12,7 +12,7 @@ public class CompaniesTest extends TestCase {
 	public void testToString() {
 		Companies comp = new Companies();
 		comp.setName("Name");
-		assertEquals(comp.toString()," | name=Name");
+		assertEquals(" | id=null | name=Name",comp.toString());
 	}
 
 	@Test

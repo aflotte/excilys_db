@@ -46,7 +46,7 @@ public class Computer {
 		return companie;
 	}
 	public void setCompanyId(Companies companie) throws IncoherentDates, CompaniesIdIncorrect, CompaniesInexistant {
-		setCompanyId(companie.getId());
+		this.companie = companie;
 	}
 	public void setCompanyId(Integer companyId) throws CompaniesInexistant {
 		this.companie = new Companies(companyId);

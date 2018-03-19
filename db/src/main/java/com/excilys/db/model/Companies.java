@@ -1,9 +1,7 @@
 package com.excilys.db.model;
 
-import com.excilys.db.exception.CompaniesInexistant;
-import com.excilys.db.service.CompaniesService;
-
 public class Companies {
+	static org.slf4j.Logger logger = org.slf4j.LoggerFactory.getLogger(Companies.class);
 	private Integer id;
 	private String name;
 
@@ -15,21 +13,20 @@ public class Companies {
 	}
 	public Companies() {
 		super();
+		name="";
+		id=null;
 	}
 
-	//TODO: sortir les tests
-	public Companies(Integer tid) throws CompaniesInexistant {
-		id = tid;
-		if ((id != null)&&(id != 0) ){
-			name = CompaniesService.getCompanies(id).getName();
-		}else {
-			id = null;
-		}
+
+	public Companies(Integer id){
+		this.id = id;
+		name = "";
 	}
 
 	@Override
 	public String toString() {
 		StringBuilder sB = new StringBuilder(200);
+		sB.append(" | id=").append(this.getId());
 		sB.append(" | name=").append(this.getName());
 		return sB.toString();
 
@@ -44,8 +41,17 @@ public class Companies {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		if (!this.getName().equals(((Companies) obj).getName())) {
+		if (!(this.getName().equals(((Companies) obj).getName()))) {
 			return false;
+		}
+		if (this.getId()==null) {
+			if (((Companies) obj).getId()!=null){
+				return false;
+			}
+		}else {
+			if((!this.getId().equals(((Companies) obj).getId()))) {
+				return false;
+			}
 		}
 		return true;
 	}

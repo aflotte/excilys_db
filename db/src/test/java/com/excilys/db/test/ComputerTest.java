@@ -68,7 +68,9 @@ public class ComputerTest extends TestCase {
 		comp.setName("Name");
 		comp.setIntroduced(null);
 		comp.setDiscontinued(null);
-		comp.setCompanyId(new Companies(10));
+		Companies companie = new Companies(10);
+		companie.setName("Digital Equipment Corporation");
+		comp.setCompanyId(companie);
 		assertEquals(" | name=Name | introduced=null | discontinued=null | companyId=Digital Equipment Corporation",comp.toString());
 	}
 

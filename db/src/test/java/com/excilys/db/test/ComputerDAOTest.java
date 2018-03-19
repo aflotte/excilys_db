@@ -5,6 +5,7 @@ import com.excilys.db.dao.ComputerDAO;
 import com.excilys.db.exception.CompaniesIdIncorrect;
 import com.excilys.db.exception.CompaniesInexistant;
 import com.excilys.db.exception.IncoherentDates;
+import com.excilys.db.model.Companies;
 import com.excilys.db.model.Computer;
 import com.excilys.db.persistance.DB_Connection;
 
@@ -69,7 +70,9 @@ public class ComputerDAOTest extends TestCase {
 		McBook.setName("MacBook Pro 15.4 inch");
 		McBook.setIntroduced(null);
 		McBook.setDiscontinued(null);
-		McBook.setCompanyId(1);
+		Companies companie = new Companies(1);
+		companie.setName("Apple Inc.");
+		McBook.setCompanyId(companie);
 		assertEquals(McBook,computer.listComputer().get(0));
 	}
 
@@ -79,7 +82,9 @@ public class ComputerDAOTest extends TestCase {
 		McBook.setName("MacBook Pro 15.4 inch");
 		McBook.setIntroduced(null);
 		McBook.setDiscontinued(null);
-		McBook.setCompanyId(1);
+		Companies companie = new Companies(1);
+		companie.setName("Apple Inc.");
+		McBook.setCompanyId(companie);
 		assertEquals(McBook,computer.showDetails(1));
 	}
 
@@ -219,7 +224,7 @@ public class ComputerDAOTest extends TestCase {
 	}
 
 	@Test
-	public void testDelete() {
+	public void testDelete() throws IncoherentDates, CompaniesIdIncorrect, CompaniesInexistant {
 		Computer Test = new Computer();
 		Test.setName("Test_Destruction");
 		Test.setIntroduced(null);

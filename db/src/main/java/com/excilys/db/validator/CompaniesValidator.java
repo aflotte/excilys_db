@@ -36,9 +36,10 @@ public class CompaniesValidator {
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			DB_Connection.getInstance().disconnect();
+		}finally {
+			DB_Connection.getInstance().disconnect();	
 		}
-		DB_Connection.getInstance().disconnect();
+		
 		return false;
 	}
 }
