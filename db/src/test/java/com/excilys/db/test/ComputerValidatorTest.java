@@ -12,16 +12,16 @@ import com.excilys.db.dao.ComputerDAO;
 import com.excilys.db.exception.CompaniesIdIncorrectException;
 import com.excilys.db.exception.CompaniesInexistantException;
 import com.excilys.db.exception.IncoherentDatesException;
-import com.excilys.db.model.Companies;
+import com.excilys.db.model.Company;
 import com.excilys.db.model.Computer;
-import com.excilys.db.persistance.DB_Connection;
+import com.excilys.db.persistance.DBConnection;
 import com.excilys.db.validator.ComputerValidator;
 
 import junit.framework.TestCase;
 
 public class ComputerValidatorTest extends TestCase {
 
-	DB_Connection instance = DB_Connection.getInstance();
+	DBConnection instance = DBConnection.getInstance();
 	ComputerDAO computer = ComputerDAO.INSTANCE;
 	SimpleDateFormat formatter = new SimpleDateFormat("yyyy/MM/dd");
 
@@ -32,7 +32,7 @@ public class ComputerValidatorTest extends TestCase {
 		Date date = formatter.parse("1999/12/5");
 		Test.setIntroduced(date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
 		Test.setDiscontinued(date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
-		Test.setCompany(new Companies(1));
+		Test.setCompany(new Company(1));
 		int id = computer.createAComputer(Test);
 		assertEquals(true, ComputerValidator.INSTANCE.exist(id));
 		List<Integer> testList2 = computer.getIdFromName("Test_Computer");	

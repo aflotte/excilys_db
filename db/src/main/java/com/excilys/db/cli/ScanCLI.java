@@ -13,12 +13,12 @@ import java.util.Scanner;
 import com.excilys.db.exception.CompaniesIdIncorrectException;
 import com.excilys.db.exception.CompaniesInexistantException;
 import com.excilys.db.exception.IncoherentDatesException;
-import com.excilys.db.model.Companies;
+import com.excilys.db.model.Company;
 import com.excilys.db.model.Computer;
 import com.excilys.db.validator.ComputerValidator;
 
 /**
- * L'implémentation des scans avec la gestion d'erreur qui convient pour la CLI
+ * L'implémentation des scans avec la gestion d'erreur qui convient pour la CLI.
  * @author flotte
  *
  */
@@ -26,70 +26,69 @@ public class ScanCLI {
 
 
 
-	/**
-	 * 
-	 * @param Le scanner précédement ouvert
-	 * @return ce qui est entrée par l'utilisateur, -1 en cas d'erreur
-	 */
-	public static int scanInt(Scanner used) {
-		int result;
-		try {
-			result = used.nextInt();
-		}catch (InputMismatchException e){
-			used.nextLine();
-			return -1;
-		}
-		return result;
-	}
+    /**
+     *
+     * @param used Le scanner précédement ouvert
+     * @return ce qui est entrée par l'utilisateur, -1 en cas d'erreur
+     */
+    public static int scanInt(Scanner used) {
+        int result;
+        try {
+            result = used.nextInt();
+        } catch (InputMismatchException e) {
+            used.nextLine();
+            return -1;
+        }
+        return result;
+    }
 
-	/**
-	 * 
-	 * @return L'ordinateur entrée par l'utilisateur
-	 * @throws InputMismatchException
-	 * @throws CompaniesIdIncorrectException
-	 * @throws IncoherentDatesException
-	 * @throws CompaniesInexistantException 
-	 */
-	public static Computer scanComputer() throws InputMismatchException, CompaniesIdIncorrectException, IncoherentDatesException, CompaniesInexistantException{
-		Computer aRetourner = new Computer(); 
-		Scanner sc = new Scanner(System.in);
-		System.out.println("Entrer le nom de l'ordinateur : ");
-		aRetourner.setName(sc.next());
-		System.out.println("Entrer la date d'introduction de l'ordinateur (aaaa/mm/jj) : ");
-		System.out.println("rentrer null pour ne pas remplir le champ");
-		aRetourner.setIntroduced(ScanCLI.scanDate(sc));
-		System.out.println("Entrer la date d'abandon de l'ordinateur (aaaa/mm/jj) : ");
-		System.out.println("rentrer null pour ne pas remplir le champ");
-		aRetourner.setDiscontinued(ScanCLI.scanDate(sc));
+    /**
+     *
+     * @return L'ordinateur entrée par l'utilisateur
+     * @throws InputMismatchException une erreur est survenue avec le scanner
+     * @throws CompaniesIdIncorrectException l'id de la compagnie est incorect
+     * @throws IncoherentDatesException les dates sont incohérentes
+     * @throws CompaniesInexistantException une erreur est survenue avec la compagnie
+     */
+    public static Computer scanComputer(Scanner sc) throws InputMismatchException, CompaniesIdIncorrectException, IncoherentDatesException, CompaniesInexistantException {
+        Computer aRetourner = new Computer();
+        System.out.println("Entrer le nom de l'ordinateur : ");
+        aRetourner.setName(sc.next());
+        System.out.println("Entrer la date d'introduction de l'ordinateur (aaaa/mm/jj) : ");
+        System.out.println("rentrer null pour ne pas remplir le champ");
+        aRetourner.setIntroduced(ScanCLI.scanDate(sc));
+        System.out.println("Entrer la date d'abandon de l'ordinateur (aaaa/mm/jj) : ");
+        System.out.println("rentrer null pour ne pas remplir le champ");
+        aRetourner.setDiscontinued(ScanCLI.scanDate(sc));
 
-		System.out.println("Entrer l'Id de la compagnie ( -2 pour laisser vide ) :");
-		int id_companie = sc.nextInt();
-		if (id_companie != -2) {
-			aRetourner.setCompany(new Companies(id_companie));
-		}
-		ComputerValidator.INSTANCE.validate(aRetourner);
-		return aRetourner;
-	}
+        System.out.println("Entrer l'Id de la compagnie ( -2 pour laisser vide ) :");
+        int idCompanie = sc.nextInt();
+        if (idCompanie != -2) {
+            aRetourner.setCompany(new Company(new Integer(idCompanie)));
+        }
+        ComputerValidator.INSTANCE.validate(aRetourner);
+        return aRetourner;
+    }
 
-	/**
-	 * 
-	 * @param le scanner précédement ouvert
-	 * @return Une date rentré par l'utilisateur
-	 */
-	public static LocalDate scanDate(Scanner used) {
-		SimpleDateFormat formatter = new SimpleDateFormat("yyyy/MM/dd");
-		String stringDate = used.next();
-		if ( stringDate.equals("null")) {
-			return null;
-		}
-		try {
-			Date date = formatter.parse(stringDate);
-			System.out.println(date);
-			System.out.println(formatter.format(date));
-			return date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-		} catch (ParseException e) {
-			System.out.println("Comme la date entrée ne correspondait pas au format, aujourd'hui a été rentré par default !");
-			return new Date().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-		}	
-	}
+    /**
+     *
+     * @param used le scanner précédement ouvert
+     * @return Une date rentré par l'utilisateur
+     */
+    public static LocalDate scanDate(Scanner used) {
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy/MM/dd");
+        String stringDate = used.next();
+        if (stringDate.equals("null")) {
+            return null;
+        }
+        try {
+            Date date = formatter.parse(stringDate);
+            System.out.println(date);
+            System.out.println(formatter.format(date));
+            return date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+        } catch (ParseException e) {
+            System.out.println("Comme la date entrée ne correspondait pas au format, aujourd'hui a été rentré par default !");
+            return new Date().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+        }
+    }
 }

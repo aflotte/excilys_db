@@ -9,7 +9,7 @@ import java.time.LocalDate;
 import com.excilys.db.exception.CompaniesIdIncorrectException;
 import com.excilys.db.exception.IncoherentDatesException;
 import com.excilys.db.model.Computer;
-import com.excilys.db.persistance.DB_Connection;
+import com.excilys.db.persistance.DBConnection;
 
 public enum ComputerValidator {
 	INSTANCE;
@@ -22,8 +22,8 @@ public enum ComputerValidator {
 
 
 	private static void init() {
-		DB_Connection.getInstance().connect();
-		conn = DB_Connection.getConn();
+		DBConnection.getInstance().connect();
+		conn = DBConnection.getConn();
 
 	}
 
@@ -42,9 +42,9 @@ public enum ComputerValidator {
 			}
 		} catch (SQLException e) {
 			logger.warn(e.getMessage());
-			DB_Connection.getInstance().disconnect();
+			DBConnection.getInstance().disconnect();
 		}
-		DB_Connection.getInstance().disconnect();
+		DBConnection.getInstance().disconnect();
 		return false;
 	}
 
@@ -72,9 +72,9 @@ public enum ComputerValidator {
 			}
 		} catch (SQLException e) {
 			logger.warn(e.getMessage());
-			DB_Connection.getInstance().disconnect();
+			DBConnection.getInstance().disconnect();
 		}
-		DB_Connection.getInstance().disconnect();
+		DBConnection.getInstance().disconnect();
 		return false;
 	}
 

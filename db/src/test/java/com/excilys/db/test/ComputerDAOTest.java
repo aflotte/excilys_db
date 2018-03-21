@@ -5,9 +5,9 @@ import com.excilys.db.dao.ComputerDAO;
 import com.excilys.db.exception.CompaniesIdIncorrectException;
 import com.excilys.db.exception.CompaniesInexistantException;
 import com.excilys.db.exception.IncoherentDatesException;
-import com.excilys.db.model.Companies;
+import com.excilys.db.model.Company;
 import com.excilys.db.model.Computer;
-import com.excilys.db.persistance.DB_Connection;
+import com.excilys.db.persistance.DBConnection;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -29,7 +29,7 @@ import junit.framework.TestCase;
 
 public class ComputerDAOTest extends TestCase {
 
-	DB_Connection instance = DB_Connection.getInstance();
+	DBConnection instance = DBConnection.getInstance();
 	ComputerDAO computer = ComputerDAO.INSTANCE;
 	SimpleDateFormat formatter = new SimpleDateFormat("yyyy/MM/dd");
 
@@ -92,7 +92,7 @@ public class ComputerDAOTest extends TestCase {
 		McBook.setName("MacBook Pro 15.4 inch");
 		McBook.setIntroduced(null);
 		McBook.setDiscontinued(null);
-		Companies companie = new Companies(1);
+		Company companie = new Company(1);
 		companie.setName("Apple Inc.");
 		McBook.setCompany(companie);
 		assertEquals(McBook,computer.listComputer().get(0));
@@ -104,7 +104,7 @@ public class ComputerDAOTest extends TestCase {
 		McBook.setName("MacBook Pro 15.4 inch");
 		McBook.setIntroduced(null);
 		McBook.setDiscontinued(null);
-		Companies companie = new Companies(1);
+		Company companie = new Company(1);
 		companie.setName("Apple Inc.");
 		McBook.setCompany(companie);
 		assertEquals(McBook,computer.showDetails(1).get());
@@ -128,7 +128,7 @@ public class ComputerDAOTest extends TestCase {
 		Test.setName("Test_Computer");
 		Test.setIntroduced(null);
 		Test.setDiscontinued(null);
-		Companies companie = new Companies(1);
+		Company companie = new Company(1);
 		companie.setName("Apple Inc.");
 		Test.setCompany(companie);
 		computer.createAComputer(Test);
@@ -141,7 +141,7 @@ public class ComputerDAOTest extends TestCase {
 		Test.setIntroduced(null);
 		Date date = formatter.parse("1999/12/5");
 		Test.setDiscontinued(date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
-		Companies companie = new Companies(1);
+		Company companie = new Company(1);
 		companie.setName("Apple Inc.");
 		Test.setCompany(companie);
 		computer.createAComputer(Test);
@@ -154,7 +154,7 @@ public class ComputerDAOTest extends TestCase {
 		Date date = formatter.parse("1999/12/5");
 		Test.setIntroduced(date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
 		Test.setDiscontinued(null);
-		Companies companie = new Companies(1);
+		Company companie = new Company(1);
 		companie.setName("Apple Inc.");
 		Test.setCompany(companie);
 		computer.createAComputer(Test);
@@ -167,7 +167,7 @@ public class ComputerDAOTest extends TestCase {
 		Date date = formatter.parse("1999/12/5");
 		Test.setIntroduced(date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
 		Test.setDiscontinued(date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
-		Companies companie = new Companies(1);
+		Company companie = new Company(1);
 		companie.setName("Apple Inc.");
 		Test.setCompany(companie);
 		computer.createAComputer(Test);
@@ -179,7 +179,7 @@ public class ComputerDAOTest extends TestCase {
 		Test.setName("Test_Computer");
 		Test.setIntroduced(null);
 		Test.setDiscontinued(null);
-		Companies companie = new Companies();
+		Company companie = new Company();
 		Test.setCompany(companie);
 		computer.createAComputer(Test);
 		int id = computer.getId(Test).get(0);
@@ -192,7 +192,7 @@ public class ComputerDAOTest extends TestCase {
 		Test.setName("Test_Computer");
 		Test.setIntroduced(null);
 		Test.setDiscontinued(null);
-		Test.setCompany(CompaniesDAO.INSTANCE.getCompanies(1).get());
+		Test.setCompany(CompaniesDAO.INSTANCE.getCompany(1).get());
 		computer.createAComputer(Test);
 		int id = computer.getId(Test).get(0);
 		computer.updateAComputer(Test, id);
@@ -205,7 +205,7 @@ public class ComputerDAOTest extends TestCase {
 		Test.setIntroduced(null);
 		Date date = formatter.parse("1999/12/5");
 		Test.setDiscontinued(date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
-		Companies companie = new Companies(2);
+		Company companie = new Company(2);
 		companie.setName("Apple Inc.");
 		Test.setCompany(companie);
 		computer.createAComputer(Test);
@@ -220,7 +220,7 @@ public class ComputerDAOTest extends TestCase {
 		Date date = formatter.parse("1999/12/5");
 		Test.setIntroduced(date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
 		Test.setDiscontinued(null);
-		Companies companie = new Companies(1);
+		Company companie = new Company(1);
 		companie.setName("Apple Inc.");
 		Test.setCompany(companie);
 		computer.createAComputer(Test);
@@ -235,7 +235,7 @@ public class ComputerDAOTest extends TestCase {
 		Date date = formatter.parse("1999/12/5");
 		Test.setIntroduced(date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
 		Test.setDiscontinued(date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
-		Companies companie = new Companies(1);
+		Company companie = new Company(1);
 		companie.setName("Apple Inc.");
 		Test.setCompany(companie);
 		computer.createAComputer(Test);
@@ -250,7 +250,7 @@ public class ComputerDAOTest extends TestCase {
 		McBook.setName("MacBook Pro 15.4 inch");
 		McBook.setIntroduced(null);
 		McBook.setDiscontinued(null);
-		Companies companie = new Companies(1);
+		Company companie = new Company(1);
 		companie.setName("Apple Inc.");
 		McBook.setCompany(companie);
 		assertEquals(new Integer(1),computer.getId(McBook).get(0));

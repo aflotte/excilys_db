@@ -6,13 +6,13 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.excilys.db.dao.CompaniesDAO;
-import com.excilys.db.model.Companies;
-import com.excilys.db.persistance.DB_Connection;
+import com.excilys.db.model.Company;
+import com.excilys.db.persistance.DBConnection;
 
 import junit.framework.TestCase;
 
 public class CompaniesDAOTest extends TestCase {
-	DB_Connection instance = DB_Connection.getInstance();
+	DBConnection instance = DBConnection.getInstance();
 	CompaniesDAO companies = CompaniesDAO.INSTANCE;	
 
 	@BeforeClass
@@ -33,7 +33,7 @@ public class CompaniesDAOTest extends TestCase {
 	//Uniquement avec la base initiale ( McBook en 1 )
 	@Test
 	public void testListCompanies() {
-		Companies Apple = new Companies();
+		Company Apple = new Company();
 		Apple.setName("Apple Inc.");
 		assertEquals(Apple,companies.listCompanies().get(0));
 	}

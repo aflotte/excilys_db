@@ -5,13 +5,13 @@ package com.excilys.db.test;
 import org.junit.Test;
 
 import com.excilys.db.dao.ComputerDAO;
-import com.excilys.db.persistance.DB_Connection;
+import com.excilys.db.persistance.DBConnection;
 
 import junit.framework.TestCase;
 
 public class ComputerMapperTest extends TestCase {
 
-	DB_Connection instance = DB_Connection.getInstance();
+	DBConnection instance = DBConnection.getInstance();
 	ComputerDAO computer = ComputerDAO.INSTANCE;
 	//	private static Connection conn;
 	//TODO:

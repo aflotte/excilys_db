@@ -18,15 +18,15 @@ import com.excilys.db.dao.ComputerDAO;
 import com.excilys.db.exception.CompaniesIdIncorrectException;
 import com.excilys.db.exception.CompaniesInexistantException;
 import com.excilys.db.exception.IncoherentDatesException;
-import com.excilys.db.model.Companies;
+import com.excilys.db.model.Company;
 import com.excilys.db.model.Computer;
-import com.excilys.db.persistance.DB_Connection;
+import com.excilys.db.persistance.DBConnection;
 
 import junit.framework.TestCase;
 
 public class ComputerTest extends TestCase {
 
-	static DB_Connection instance;
+	static DBConnection instance;
 	static ComputerDAO computer;
 	static ResultSet toUseForTest;
 	static Connection conn;
@@ -34,7 +34,7 @@ public class ComputerTest extends TestCase {
 
 	@BeforeClass
 	public void init() {
-		instance = DB_Connection.getInstance();
+		instance = DBConnection.getInstance();
 		String querry = "SELECT name, introduced, discontinued, company_id FROM computer";
 		try {
 			PreparedStatement prep1 = conn.prepareStatement(querry);
@@ -42,14 +42,14 @@ public class ComputerTest extends TestCase {
 			toUseForTest.next();
 		} catch (SQLException e) {
 			e.printStackTrace();
-			DB_Connection.getInstance().disconnect();
+			DBConnection.getInstance().disconnect();
 		}
 	}
 
 	@Before
 	public void connection() {
 		instance.connect();
-		conn = DB_Connection.getConn();
+		conn = DBConnection.getConn();
 	}
 
 	@After
@@ -68,7 +68,7 @@ public class ComputerTest extends TestCase {
 		comp.setName("Name");
 		comp.setIntroduced(null);
 		comp.setDiscontinued(null);
-		Companies companie = new Companies(10);
+		Company companie = new Company(10);
 		companie.setName("Digital Equipment Corporation");
 		comp.setCompany(companie);
 		assertEquals(" | name=Name | introduced=null | discontinued=null | companyId=Digital Equipment Corporation",comp.toString());
@@ -80,12 +80,12 @@ public class ComputerTest extends TestCase {
 		comp.setName("Name");
 		comp.setIntroduced(null);
 		comp.setDiscontinued(null);
-		comp.setCompany(new Companies(10));
+		comp.setCompany(new Company(10));
 		Computer comp2 = new Computer();
 		comp2.setName("Name");
 		comp2.setIntroduced(null);
 		comp2.setDiscontinued(null);
-		comp2.setCompany(new Companies(10));
+		comp2.setCompany(new Company(10));
 		assertEquals(true,comp.equals(comp2));
 	}
 
@@ -95,7 +95,7 @@ public class ComputerTest extends TestCase {
 		comp.setName("Name");
 		comp.setIntroduced(null);
 		comp.setDiscontinued(null);
-		comp.setCompany(new Companies(10));
+		comp.setCompany(new Company(10));
 		assertEquals(true,comp.equals(comp));
 	}
 
@@ -105,7 +105,7 @@ public class ComputerTest extends TestCase {
 		comp.setName("Name");
 		comp.setIntroduced(null);
 		comp.setDiscontinued(null);
-		comp.setCompany(new Companies(10));
+		comp.setCompany(new Company(10));
 		Integer comp2 = new Integer(5);
 		assertEquals(false,comp.equals(comp2));
 	}
@@ -116,12 +116,12 @@ public class ComputerTest extends TestCase {
 		comp.setName("Name");
 		comp.setIntroduced(null);
 		comp.setDiscontinued(null);
-		comp.setCompany(new Companies(10));
+		comp.setCompany(new Company(10));
 		Computer comp2 = new Computer();
 		comp2.setName("Name2");
 		comp2.setIntroduced(null);
 		comp2.setDiscontinued(null);
-		comp2.setCompany(new Companies(10));
+		comp2.setCompany(new Company(10));
 		assertEquals(false,comp.equals(comp2));
 	}
 
@@ -131,13 +131,13 @@ public class ComputerTest extends TestCase {
 		comp.setName("Name");
 		comp.setIntroduced(null);
 		comp.setDiscontinued(null);
-		comp.setCompany(new Companies(10));
+		comp.setCompany(new Company(10));
 		Computer comp2 = new Computer();
 		comp2.setName("Name2");
 		Date date = formatter.parse("1999/12/5");
 		comp2.setIntroduced(date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
 		comp2.setDiscontinued(null);
-		comp2.setCompany(new Companies(10));
+		comp2.setCompany(new Company(10));
 		assertEquals(false,comp.equals(comp2));
 	}
 
@@ -147,13 +147,13 @@ public class ComputerTest extends TestCase {
 		comp.setName("Name");
 		comp.setIntroduced(null);
 		comp.setDiscontinued(null);
-		comp.setCompany(new Companies(10));
+		comp.setCompany(new Company(10));
 		Computer comp2 = new Computer();
 		comp2.setName("Name2");
 		Date date = formatter.parse("1999/12/5");
 		comp2.setIntroduced(null);
 		comp2.setDiscontinued(date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
-		comp2.setCompany(new Companies(10));
+		comp2.setCompany(new Company(10));
 		assertEquals(false,comp.equals(comp2));
 	}
 
@@ -163,12 +163,12 @@ public class ComputerTest extends TestCase {
 		comp.setName("Name");
 		comp.setIntroduced(null);
 		comp.setDiscontinued(null);
-		comp.setCompany(new Companies(10));
+		comp.setCompany(new Company(10));
 		Computer comp2 = new Computer();
 		comp2.setName("Name2");
 		comp2.setIntroduced(null);
 		comp2.setDiscontinued(null);
-		comp2.setCompany(new Companies(11));
+		comp2.setCompany(new Company(11));
 		assertEquals(false,comp.equals(comp2));
 	}
 

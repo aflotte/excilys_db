@@ -4,12 +4,18 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import com.excilys.db.dto.CompanyDTO;
-import com.excilys.db.model.Companies;
+import com.excilys.db.model.Company;
 
 public class CompaniesMapper {
     static org.slf4j.Logger logger = org.slf4j.LoggerFactory.getLogger(CompaniesMapper.class);
-    public static Companies computerResultToCompanies(ResultSet rs) {
-        Companies result = new Companies(); 
+
+    /**
+     *
+     * @param rs le ResultSet a interpreter
+     * @return la compagnie
+     */
+    public static Company computerResultToCompanies(ResultSet rs) {
+        Company result = new Company();
         try {
             result.setId(rs.getInt("company.id"));
             result.setName(rs.getString("company.name"));
@@ -18,11 +24,13 @@ public class CompaniesMapper {
         }
         return result;
     }
-
-    public static CompanyDTO companyToDTO(Companies company) {
+    
+    public static CompanyDTO companyToDTO(Company company) {
         CompanyDTO toReturn = new CompanyDTO();
         toReturn.setId(company.getId());
         toReturn.setName(company.getName());
         return toReturn;
     }
 }
+
+

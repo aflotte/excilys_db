@@ -5,9 +5,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import com.excilys.db.model.Companies;
+import com.excilys.db.model.Company;
 import com.excilys.db.model.Computer;
-import com.excilys.db.persistance.DB_Connection;
+import com.excilys.db.persistance.DBConnection;
 
 public enum CompaniesValidator {
 	INSTANCE;
@@ -19,8 +19,8 @@ public enum CompaniesValidator {
 
 
 	private void init() {
-		DB_Connection.getInstance().connect();
-		conn = DB_Connection.getConn();
+		DBConnection.getInstance().connect();
+		conn = DBConnection.getConn();
 
 	}
 
@@ -39,13 +39,13 @@ public enum CompaniesValidator {
 		} catch (SQLException e) {
 			logger.warn(e.getMessage());
 		}finally {
-			DB_Connection.getInstance().disconnect();	
+			DBConnection.getInstance().disconnect();	
 		}
 		
 		return false;
 	}
 	
-	public boolean check(Companies companie) {
+	public boolean check(Company companie) {
 		init();
 		ResultSet resultSet = null;
 		if (companie.getId()==null) {
@@ -71,7 +71,7 @@ public enum CompaniesValidator {
 		} catch (SQLException e) {
 			logger.warn(e.getMessage());
 		}finally {
-			DB_Connection.getInstance().disconnect();	
+			DBConnection.getInstance().disconnect();	
 		}
 		
 		return false;

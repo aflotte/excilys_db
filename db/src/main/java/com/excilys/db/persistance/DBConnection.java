@@ -10,8 +10,8 @@ import java.sql.SQLException;
 
 
 
-public final class DB_Connection {
-	static org.slf4j.Logger logger = org.slf4j.LoggerFactory.getLogger(DB_Connection.class);
+public final class DBConnection {
+	static org.slf4j.Logger logger = org.slf4j.LoggerFactory.getLogger(DBConnection.class);
 
 	private static String PROPERTY_URL;
 	private static String PROPERTY_NOM_UTILISATEUR;
@@ -20,9 +20,9 @@ public final class DB_Connection {
 
 
 	private static Connection conn = null;
-	private static DB_Connection instance;
+	private static DBConnection instance;
 
-	private DB_Connection() {
+	private DBConnection() {
 		BufferedReader reader = null;
 		try {
 			reader = new BufferedReader(new FileReader("connection.properties"));
@@ -39,17 +39,17 @@ public final class DB_Connection {
 		}
 	}
 
-	public static DB_Connection getInstance() {
+	public static DBConnection getInstance() {
 		if (null == instance) {
-			instance = new DB_Connection();
+			instance = new DBConnection();
 		}
 		return instance;
 
 	}
 
-	public static DB_Connection getInstance(String url,String name,String password) {
+	public static DBConnection getInstance(String url,String name,String password) {
 		if (null == instance) {
-			instance = new DB_Connection();
+			instance = new DBConnection();
 		}
 		PROPERTY_URL =url;
 		PROPERTY_NOM_UTILISATEUR = name;

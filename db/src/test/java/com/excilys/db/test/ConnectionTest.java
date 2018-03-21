@@ -10,13 +10,13 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import com.excilys.db.persistance.DB_Connection;
+import com.excilys.db.persistance.DBConnection;
 
 import junit.framework.TestCase;
 
 public class ConnectionTest extends TestCase{
 
-	@InjectMocks private DB_Connection dbConnection;
+	@InjectMocks private DBConnection dbConnection;
 
 	@Mock private Connection mockConnection;
 

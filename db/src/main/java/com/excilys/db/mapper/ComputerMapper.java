@@ -9,17 +9,25 @@ import com.excilys.db.model.Computer;
 
 public class ComputerMapper {
     static org.slf4j.Logger logger = org.slf4j.LoggerFactory.getLogger(ComputerMapper.class);
-    public static Computer resultToComputer(ResultSet resultSet) throws SQLException, CompaniesInexistantException {
+
+    /**
+     *
+     * @param resultSet le ResultSet a interpreter
+     * @return l'ordinateur
+     * @throws SQLException en cas d'erreur de connection
+     * @throws CompaniesInexistantException si la compagnie n'existe pas
+     */
+    public static Computer resultToComputer(ResultSet resultSet) throws SQLException {
         Computer toReturn = new Computer();
         toReturn.setName(resultSet.getString(1));
-        if ( resultSet.getDate(2) != null) {
+        if (resultSet.getDate(2) != null) {
             toReturn.setIntroduced(resultSet.getDate(2).toLocalDate());
-        }else {
+        } else {
             toReturn.setIntroduced(null);
         }
-        if ( resultSet.getDate(3) != null) {
+        if (resultSet.getDate(3) != null) {
             toReturn.setIntroduced(resultSet.getDate(3).toLocalDate());
-        }else {
+        } else {
             toReturn.setIntroduced(null);
         }
         toReturn.setCompany(CompaniesMapper.computerResultToCompanies(resultSet));
@@ -36,5 +44,7 @@ public class ComputerMapper {
         toReturn.setIntroduced(computer.getIntroduced());
         return toReturn;
     }
-
 }
+
+
+
