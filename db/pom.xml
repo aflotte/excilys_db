@@ -5,7 +5,7 @@
 	<groupId>com.excilys</groupId>
 	<artifactId>db</artifactId>
 	<version>4.2.3-SNAPSHOT</version>
-	<packaging>jar</packaging>
+	<packaging>war</packaging>
 
 	<name>db</name>
 	<url>https://github.com/aflotte/excilys_db</url>
@@ -38,6 +38,16 @@
 				<configuration>
 					<source>${java.version}</source>
 					<target>${java.version}</target>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.tomcat.maven</groupId>
+				<artifactId>tomcat7-maven-plugin</artifactId>
+				<version>2.2</version>
+				<configuration>
+					<url>http://localhost:8080/manager/text</url>
+					<server>TomcatServer</server>
+					<path>/myapp</path>
 				</configuration>
 			</plugin>
 		</plugins>
@@ -86,4 +96,5 @@
 			<version>${myqsl-jdbc.version}</version>
 		</dependency>
 	</dependencies>
+
 </project>
