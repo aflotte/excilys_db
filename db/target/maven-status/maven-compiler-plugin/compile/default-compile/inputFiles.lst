@@ -22,6 +22,6 @@
 /home/excilys/Projects/project/excilys_db/db/src/main/java/com/excilys/db/dto/ComputerDTO.java
 /home/excilys/Projects/project/excilys_db/db/src/main/java/com/excilys/db/cli/ScanCLI.java
 /home/excilys/Projects/project/excilys_db/db/src/main/java/com/excilys/db/exception/CompaniesInexistantException.java
-/home/excilys/Projects/project/excilys_db/db/src/main/java/com/excilys/db/servlet/GetComputer.java
 /home/excilys/Projects/project/excilys_db/db/src/main/java/com/excilys/db/service/ComputerService.java
 /home/excilys/Projects/project/excilys_db/db/src/main/java/com/excilys/db/cli/Menu.java
+/home/excilys/Projects/project/excilys_db/db/src/main/java/com/excilys/db/servlet/Dashboard.java

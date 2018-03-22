@@ -23,6 +23,7 @@ public enum CompaniesDAO {
     static org.slf4j.Logger logger = org.slf4j.LoggerFactory.getLogger(CompaniesDAO.class);
     private static Connection conn;
 
+    private static final String QUERRY_LIST_COMPANIES_BY_NAME = "SELECT id FROM company WHERE name = ?";
     private static final String QUERRY_LIST_COMPANIES = "SELECT name FROM company";
     private static final String QUERRY_LIST_COMPANIES_ID = "SELECT name FROM company WHERE id = ";
     private static final String OFFSET_LIMIT = " LIMIT ? OFFSET ?";
@@ -176,4 +177,30 @@ public enum CompaniesDAO {
            DBConnection.getInstance().disconnect();
        }
    }
+   
+   /**
+   *
+   * @param name le nom de l'ordinateur
+   * @return la liste des Id
+   */
+  public List<Integer> getIdFromName(String name) {
+      initialisationConnection();
+      List<Integer> result = new ArrayList<Integer>();
+      try {
+          PreparedStatement ps = conn.prepareStatement(QUERRY_LIST_COMPANIES_BY_NAME);
+          ps.setString(1, name);
+          logger.debug("Requête : " + ps.toString());
+          ResultSet resultSet = ps.executeQuery();
+          while (resultSet.next()) {
+              result.add(new Integer(resultSet.getInt(1)));
+          }
+          resultSet.close();
+          ps.close();
+      } catch (SQLException e) {
+          logger.warn(e.getMessage());
+      } finally {
+          DBConnection.getInstance().disconnect();
+      }
+      return result;
+  }
 }

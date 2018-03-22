@@ -29,4 +29,9 @@ public enum CompaniesService {
         return companies.getCompany(id);
     }
 
+    
+    public Integer getCompagnyId(String name) {
+        //TODO: error case liste vide
+        return companies.getIdFromName(name).get(0);
+    }
 }

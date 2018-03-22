@@ -2,7 +2,9 @@ package com.excilys.db.servlet;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.List;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.ServletRequest;
@@ -12,19 +14,23 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.excilys.db.dto.ComputerDTO;
+import com.excilys.db.exception.CompaniesInexistantException;
+import com.excilys.db.mapper.ComputerMapper;
 import com.excilys.db.page.PageComputerDTO;
+import com.excilys.db.service.ComputerService;
 
 /**
  * Servlet implementation class GetComputer
  */
-@WebServlet("/GetComputer")
-public class GetComputer extends HttpServlet {
+@WebServlet("/dashboard")
+public class Dashboard extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public GetComputer() {
+    public Dashboard() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -33,8 +39,16 @@ public class GetComputer extends HttpServlet {
      * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
      */
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        // TODO Auto-generated method stub
-        ServletOutputStream out = response.getOutputStream();
+        try {
+        List<ComputerDTO> computers = getComputer();
+        request.setAttribute("computers", computers);
+        PageComputerDTO pageComputer = new PageComputerDTO();
+        request.setAttribute("number", pageComputer.getComputerMax());
+            RequestDispatcher rd =
+                 request.getRequestDispatcher("/WEB-INF/index.jsp");
+
+            rd.forward(request,response);
+       } catch (Exception e) { throw new ServletException(e); }
 
     }
 
@@ -43,20 +57,15 @@ public class GetComputer extends HttpServlet {
      */
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         // TODO Auto-generated method stub
-        PageComputerDTO pageComputer = new PageComputerDTO();
-        response.setContentType( "text/html" );
-        PrintWriter out = response.getWriter();
         doGet(request, response);
     }
 
 
-    public void service (ServletRequest req, ServletResponse res ) throws ServletException, IOException  {
-        res.setContentType( "text/html" );
-        PrintWriter out = res.getWriter();
 
-        out.println( "<HTML>" );
+    public List<ComputerDTO> getComputer() {
 
-        out.close();
+        return ComputerMapper.computerListToComputerDTO(ComputerService.INSTANCE.listComputer());
     }
+
 
 }

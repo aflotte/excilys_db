@@ -6,15 +6,17 @@ public class ComputerDTO {
 
     private Integer id;
     private String name;
+    private String company;
+    private String introduced;
+    private String discontinued;
+    
     public String getName() {
         return name;
     }
     public void setName(String name) {
         this.name = name;
     }
-    private String company;
-    private String introduced;
-    private String discontinued;
+
     
     public Integer getId() {
         return id;

@@ -20,7 +20,7 @@ public enum ComputerService {
      * @return la liste des ordinateurs
      * @throws CompaniesInexistantException un ordinateur a été mal formé
      */
-    public List<Computer> listComputer() throws CompaniesInexistantException {
+    public List<Computer> listComputer() {
         return computer.listComputer();
     }
 

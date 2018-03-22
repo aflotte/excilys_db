@@ -89,7 +89,7 @@ public enum ComputerDAO {
      * @return la liste des ordinateurs
      * @throws CompaniesInexistantException erreur sur la compagnie de l'ordinateur
      */
-    public List<Computer> listComputer() throws CompaniesInexistantException {
+    public List<Computer> listComputer() {
         initialisationConnection();
         List<Computer> listResult = new ArrayList<Computer>();
         try {
