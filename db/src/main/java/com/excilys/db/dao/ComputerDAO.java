@@ -356,18 +356,23 @@ public enum ComputerDAO {
     /**
      *
      */
-    public void getCount() {
+    public int getCount() {
         initialisationConnection();
+        int result = 0;
         try {
             PreparedStatement prep1 = conn.prepareStatement(QUERRY_COUNT);
             logger.debug("Requête : " + prep1.toString());
-            prep1.executeQuery();
+            ResultSet resultSet = prep1.executeQuery();
+            if (resultSet.next()) {
+                result = resultSet.getInt(1);
+            }
             prep1.close();
         } catch (SQLException e) {
             logger.warn(e.getMessage());
         } finally {
             DBConnection.getInstance().disconnect();
         }
+        return result;
     }
 
 }

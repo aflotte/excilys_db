@@ -10,7 +10,32 @@ public class Page {
     Properties prop = new Properties();
     protected int pageNumber;
     protected int pageSize;
-    protected final int pageMax;
+    protected int computerMax;
+    public int getComputerMax() {
+        return computerMax;
+    }
+    public void setComputerMax(int computerMax) {
+        this.computerMax = computerMax;
+    }
+    protected int pageMax;
+    public int getPageNumber() {
+        return pageNumber;
+    }
+    public void setPageNumber(int pageNumber) {
+        this.pageNumber = pageNumber;
+    }
+    public int getPageSize() {
+        return pageSize;
+    }
+    public void setPageSize(int pageSize) {
+        this.pageSize = pageSize;
+    }
+    public int getPageMax() {
+        return pageMax;
+    }
+    public void setPageMax(int pageMax) {
+        this.pageMax = pageMax;
+    }
     protected final int pageMin;
 
     public Page() {
@@ -23,7 +48,6 @@ public class Page {
             e.printStackTrace();
         }
         pageSize = Integer.parseInt(prop.getProperty("pageSize"));
-        pageMax = 5;
         pageMin = 1;
     }
     public void nextPage() {

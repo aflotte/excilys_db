@@ -13,8 +13,8 @@ public class ComputerDTO {
         this.name = name;
     }
     private String company;
-    private LocalDate introduced;
-    private LocalDate discontinued;
+    private String introduced;
+    private String discontinued;
     
     public Integer getId() {
         return id;
@@ -28,16 +28,16 @@ public class ComputerDTO {
     public void setCompany(String compagnie) {
         company = compagnie;
     }
-    public LocalDate getIntroduced() {
+    public String getIntroduced() {
         return introduced;
     }
-    public void setIntroduced(LocalDate introduced) {
+    public void setIntroduced(String introduced) {
         this.introduced = introduced;
     }
-    public LocalDate getDiscontinued() {
+    public String getDiscontinued() {
         return discontinued;
     }
-    public void setDiscontinued(LocalDate discontinued) {
+    public void setDiscontinued(String discontinued) {
         this.discontinued = discontinued;
     }
 }

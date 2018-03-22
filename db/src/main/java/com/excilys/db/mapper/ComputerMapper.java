@@ -40,8 +40,8 @@ public class ComputerMapper {
         toReturn.setId(computer.getId());
         toReturn.setCompany(computer.getCompany().getName());
         toReturn.setName(computer.getName());
-        toReturn.setDiscontinued(computer.getDiscontinued());
-        toReturn.setIntroduced(computer.getIntroduced());
+        toReturn.setDiscontinued(computer.getDiscontinued().toString());
+        toReturn.setIntroduced(computer.getIntroduced().toString());
         return toReturn;
     }
 }

@@ -12,6 +12,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.excilys.db.page.PageComputerDTO;
+
 /**
  * Servlet implementation class GetComputer
  */
@@ -41,6 +43,7 @@ public class GetComputer extends HttpServlet {
      */
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         // TODO Auto-generated method stub
+        PageComputerDTO pageComputer = new PageComputerDTO();
         response.setContentType( "text/html" );
         PrintWriter out = response.getWriter();
         doGet(request, response);

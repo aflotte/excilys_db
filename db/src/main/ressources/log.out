@@ -1,2 +1,4 @@
-2018-03-21 17:39:46,464 [DEBUG] (ComputerDAO.java:listComputer:97) Requête : com.mysql.cj.jdbc.PreparedStatement@42893bd6: SELECT computer.name, introduced, discontinued, company.id, computer.id, company.name FROM computer LEFT JOIN company ON computer.id = company.id
-2018-03-21 17:39:48,569 [DEBUG] (ComputerDAO.java:listComputer:97) Requête : com.mysql.cj.jdbc.PreparedStatement@22a99889: SELECT computer.name, introduced, discontinued, company.id, computer.id, company.name FROM computer LEFT JOIN company ON computer.id = company.id
+2018-03-22 10:24:32,156 [DEBUG] (ComputerDAO.java:getCount:364) Requête : com.mysql.cj.jdbc.PreparedStatement@fc49cd7: SELECT COUNT(*) FROM computer
+2018-03-22 10:24:32,162 [DEBUG] (ComputerDAO.java:listComputer:97) Requête : com.mysql.cj.jdbc.PreparedStatement@7178a49b: SELECT computer.name, introduced, discontinued, company.id, computer.id, company.name FROM computer LEFT JOIN company ON computer.id = company.id
+2018-03-22 10:24:59,472 [DEBUG] (ComputerDAO.java:getCount:364) Requête : com.mysql.cj.jdbc.PreparedStatement@3399db5c: SELECT COUNT(*) FROM computer
+2018-03-22 10:24:59,476 [DEBUG] (ComputerDAO.java:listComputer:97) Requête : com.mysql.cj.jdbc.PreparedStatement@d15470e: SELECT computer.name, introduced, discontinued, company.id, computer.id, company.name FROM computer LEFT JOIN company ON computer.id = company.id

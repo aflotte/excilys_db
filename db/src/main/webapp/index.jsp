@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<%@page import="com.excilys.db.page.PageComputerDTO"%>
 <%@page import="com.excilys.db.model.Computer"%>
 <%@page import="com.excilys.db.service.ComputerService"%>
 <html>
@@ -21,7 +22,9 @@
     <section id="main">
         <div class="container">
             <h1 id="homeTitle">
-                121 Computers found
+                <% PageComputerDTO pageDTO = new PageComputerDTO();
+                 out.println(pageDTO.getComputerMax());
+                %> Computers found
             </h1>
             <div id="actions" class="form-horizontal">
                 <div class="pull-left">

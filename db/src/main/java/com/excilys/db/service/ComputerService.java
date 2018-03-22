@@ -84,4 +84,8 @@ public enum ComputerService {
             logger.warn(e.getMessage());
         }
     }
+    
+    public int getCount() {
+        return computer.getCount();
+    }
 }
