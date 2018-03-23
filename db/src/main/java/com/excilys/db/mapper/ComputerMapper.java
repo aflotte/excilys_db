@@ -9,11 +9,9 @@ import java.util.List;
 import java.util.Locale;
 
 import com.excilys.db.dto.ComputerDTO;
-import com.excilys.db.exception.CompaniesInexistantException;
 import com.excilys.db.model.Company;
 import com.excilys.db.model.Computer;
 import com.excilys.db.service.CompaniesService;
-import com.excilys.db.test.CompaniesServiceTest;
 
 public class ComputerMapper {
     static org.slf4j.Logger logger = org.slf4j.LoggerFactory.getLogger(ComputerMapper.class);

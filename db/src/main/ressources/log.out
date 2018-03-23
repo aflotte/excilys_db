@@ -1,8 +1,8 @@
-2018-03-22 16:42:57,941 [DEBUG] (ComputerDAO.java:listComputer:97) Requête : com.mysql.cj.jdbc.PreparedStatement@28dde112: SELECT computer.name, introduced, discontinued, company.id, computer.id, company.name FROM computer LEFT JOIN company ON computer.id = company.id
-2018-03-22 16:42:57,987 [DEBUG] (ComputerDAO.java:getCount:364) Requête : com.mysql.cj.jdbc.PreparedStatement@50b51942: SELECT COUNT(*) FROM computer
-2018-03-22 17:09:41,608 [DEBUG] (ComputerDAO.java:listComputer:97) Requête : com.mysql.cj.jdbc.PreparedStatement@47ab4b01: SELECT computer.name, introduced, discontinued, company.id, computer.id, company.name FROM computer LEFT JOIN company ON computer.id = company.id
-2018-03-22 17:09:41,636 [DEBUG] (ComputerDAO.java:getCount:364) Requête : com.mysql.cj.jdbc.PreparedStatement@45aa349: SELECT COUNT(*) FROM computer
-2018-03-22 17:17:11,489 [DEBUG] (ComputerDAO.java:listComputer:97) Requête : com.mysql.cj.jdbc.PreparedStatement@9d6a9e7: SELECT computer.name, introduced, discontinued, company.id, computer.id, company.name FROM computer LEFT JOIN company ON computer.id = company.id
-2018-03-22 17:17:11,513 [DEBUG] (ComputerDAO.java:getCount:364) Requête : com.mysql.cj.jdbc.PreparedStatement@65b8c51a: SELECT COUNT(*) FROM computer
-2018-03-22 17:17:43,181 [DEBUG] (ComputerDAO.java:listComputer:97) Requête : com.mysql.cj.jdbc.PreparedStatement@74f42da4: SELECT computer.name, introduced, discontinued, company.id, computer.id, company.name FROM computer LEFT JOIN company ON computer.id = company.id
-2018-03-22 17:17:43,202 [DEBUG] (ComputerDAO.java:getCount:364) Requête : com.mysql.cj.jdbc.PreparedStatement@211503a1: SELECT COUNT(*) FROM computer
+2018-03-23 11:48:02,825 [DEBUG] (ComputerDAO.java:getCount:364) Requête : com.mysql.cj.jdbc.PreparedStatement@27c20538: SELECT COUNT(*) FROM computer
+2018-03-23 11:48:02,829 [DEBUG] (PageComputerDTO.java:<init>:38) 59
+2018-03-23 11:48:02,829 [DEBUG] (PageComputerDTOTest.java:testPageComputerDTO:19) 59
+2018-03-23 11:48:02,829 [DEBUG] (PageComputerDTOTest.java:testPageComputerDTO:20) 588
+2018-03-23 11:48:02,830 [DEBUG] (PageComputerDTOTest.java:testPageComputerDTO:22) 1
+2018-03-23 11:48:02,830 [DEBUG] (PageComputerDTOTest.java:testPageComputerDTO:22) 2
+2018-03-23 11:48:02,830 [DEBUG] (PageComputerDTOTest.java:testPageComputerDTO:22) 3
+2018-03-23 11:48:02,830 [DEBUG] (PageComputerDTOTest.java:testPageComputerDTO:22) 59

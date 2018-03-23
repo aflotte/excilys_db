@@ -272,4 +272,5 @@ public class ComputerDAOTest extends TestCase {
 		List<Integer> testList = computer.getIdFromName("Test_Destruction");	
 		computer.deleteAComputer(testList.get(0));
 	}
+	
 }

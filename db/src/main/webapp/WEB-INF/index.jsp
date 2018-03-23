@@ -14,14 +14,14 @@
 <body>
     <header class="navbar navbar-inverse navbar-fixed-top">
         <div class="container">
-            <a class="navbar-brand" href="dashboard.html"> Application - Computer Database </a>
+            <a class="navbar-brand" href="dashboard"> Application - Computer Database </a>
         </div>
     </header>
 
     <section id="main">
         <div class="container">
             <h1 id="homeTitle">
-    ${number} Computers found
+    ${page.getComputerMax()} Computers found
             </h1>
             <div id="actions" class="form-horizontal">
                 <div class="pull-left">
@@ -33,7 +33,7 @@
                     </form>
                 </div>
                 <div class="pull-right">
-                    <a class="btn btn-success" id="addComputer" href="addComputer.html">Add Computer</a> 
+                    <a class="btn btn-success" id="addComputer" href="addComputer">Add Computer</a> 
                     <a class="btn btn-default" id="editComputer" href="#" onclick="$.fn.toggleEditMode();">Edit</a>
                 </div>
             </div>
@@ -77,7 +77,7 @@
                 </thead>
                 <!-- Browse attribute computers -->
                 <tbody id="results">
-                <c:forEach var="computer" items="${computers}">
+                <c:forEach var="computer" items="${page.getPage()}">
             <tr>
             <td class='editMode'>
             <input type='checkbox' name='cb' class='cb' value='0'>
@@ -105,18 +105,18 @@
                     <a href="#" aria-label="Previous">
                       <span aria-hidden="true">&laquo;</span>
                   </a>
-              </li>
-              <li><a href="#">1</a></li>
-              <li><a href="#">2</a></li>
-              <li><a href="#">3</a></li>
-              <li><a href="#">4</a></li>
-              <li><a href="#">5</a></li>
+                  
+                  </li>
+                  <c:forEach var="pageToPrint" items="${page.getPagesToGo()}">
+                  <li><a href="?actualPage=${pageToPrint}">${pageToPrint}</a></li>
+                  </c:forEach>
               <li>
                 <a href="#" aria-label="Next">
                     <span aria-hidden="true">&raquo;</span>
                 </a>
             </li>
         </ul>
+        </div>
 
         <div class="btn-group btn-group-sm pull-right" role="group" >
             <button type="button" class="btn btn-default">10</button>
@@ -125,9 +125,9 @@
         </div>
 
     </footer>
-<script src="../js/jquery.min.js"></script>
-<script src="../js/bootstrap.min.js"></script>
-<script src="../js/dashboard.js"></script>
+<script src="js/jquery.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script src="js/dashboard.js"></script>
 
 </body>
 </html>

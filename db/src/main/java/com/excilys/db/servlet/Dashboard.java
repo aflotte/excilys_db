@@ -41,8 +41,20 @@ public class Dashboard extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
         List<ComputerDTO> computers = getComputer();
-        request.setAttribute("computers", computers);
-        PageComputerDTO pageComputer = new PageComputerDTO();
+        PageComputerDTO pageComputer;
+        if (request.getParameter("actualPage")==null) {
+            pageComputer = new PageComputerDTO();
+        }else {
+            if (request.getParameter("actualPage").isEmpty()) {
+                pageComputer = new PageComputerDTO();
+            }else {
+                int actualPage = Integer.parseInt(request.getParameter("actualPage"));
+                pageComputer = new PageComputerDTO(actualPage);
+            }
+        }
+        request.setAttribute("computers", pageComputer.getPage());
+        
+        request.setAttribute("page", pageComputer);
         request.setAttribute("number", pageComputer.getComputerMax());
             RequestDispatcher rd =
                  request.getRequestDispatcher("/WEB-INF/index.jsp");
@@ -64,7 +76,7 @@ public class Dashboard extends HttpServlet {
 
     public List<ComputerDTO> getComputer() {
 
-        return ComputerMapper.computerListToComputerDTO(ComputerService.INSTANCE.listComputer());
+        return ComputerMapper.computerListToComputerDTO(ComputerService.INSTANCE.listComputer(0,1));
     }
 
 
