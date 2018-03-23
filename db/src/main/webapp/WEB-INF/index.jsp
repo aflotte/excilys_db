@@ -83,7 +83,7 @@
             <input type='checkbox' name='cb' class='cb' value='0'>
             </td>
             <td>
-            <a href='editComputer.html' onclick=''>  ${computer.getName()} </a>
+            <a href='editComputer' onclick=''>  ${computer.getName()} </a>
             <td> ${computer.getIntroduced()} </td>
             <td> ${computer.getDiscontinued()} </td>
             <td> ${computer.getCompany()}</td>

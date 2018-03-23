@@ -65,9 +65,9 @@
   <testcase classname="com.excilys.db.test.ComputerTest" name="testEqualsFalseCompanyId" time="0"/>
   <testcase classname="com.excilys.db.test.ComputerTest" name="testEqualsFalseName" time="0"/>
   <testcase classname="com.excilys.db.test.ComputerTest" name="testToString" time="0"/>
-  <testcase classname="com.excilys.db.test.ComputerTest" name="testEqualsFalseIntroduced" time="0"/>
+  <testcase classname="com.excilys.db.test.ComputerTest" name="testEqualsFalseIntroduced" time="0.001"/>
   <testcase classname="com.excilys.db.test.ComputerTest" name="testEqualsSame" time="0"/>
   <testcase classname="com.excilys.db.test.ComputerTest" name="testEqualsTrue" time="0"/>
-  <testcase classname="com.excilys.db.test.ComputerTest" name="testEqualsFalseDiscontinued" time="0.001"/>
+  <testcase classname="com.excilys.db.test.ComputerTest" name="testEqualsFalseDiscontinued" time="0"/>
   <testcase classname="com.excilys.db.test.ComputerTest" name="testEqualsFalseClass" time="0"/>
 </testsuite>
