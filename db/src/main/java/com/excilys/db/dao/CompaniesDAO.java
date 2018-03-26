@@ -55,7 +55,6 @@ public enum CompaniesDAO {
             resultSet.close();
             prep1.close();
             return result;
-            
         } catch (SQLException e) {
             logger.warn(e.getMessage());
         } finally {

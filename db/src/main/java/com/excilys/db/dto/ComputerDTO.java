@@ -1,6 +1,5 @@
 package com.excilys.db.dto;
 
-import java.time.LocalDate;
 
 public class ComputerDTO {
 
