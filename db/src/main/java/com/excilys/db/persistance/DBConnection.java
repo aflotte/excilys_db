@@ -14,9 +14,10 @@ import java.util.Properties;
 public final class DBConnection {
 	static org.slf4j.Logger logger = org.slf4j.LoggerFactory.getLogger(DBConnection.class);
 
-	   private static String propertyUrl;
-	    private static String propertyNomUtilisateur;
-	private static String propertyMotDePasse;
+	   private static String propertyUrl = "jdbc:mysql://localhost:3306/computer-database-db?zeroDateTimeBehavior=convertToNull&autoReconnect=true&characterEncoding=UTF-8&characterSetResults=UTF-8&useSSL=FALSE&useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC";;
+	    private static String propertyNomUtilisateur="admincdb";
+	private static String propertyMotDePasse = "qwerty1234";
+	public static final String MYSQL_DRIVER = "com.mysql.cj.jdbc.Driver";
 
 
 
@@ -24,24 +25,7 @@ public final class DBConnection {
 	private static DBConnection instance;
 
 	private DBConnection() {
-	    Properties prop = new Properties();
-	    InputStream input = null;
 
-        try {
-            input = new FileInputStream("./src/main/ressources/properties/connection.properties");
-        } catch (FileNotFoundException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-        try {
-            prop.load(input);
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-        propertyUrl = prop.getProperty("database");
-        propertyNomUtilisateur = prop.getProperty("dbuser");
-propertyMotDePasse = prop.getProperty("dbpassword");
 	}
 
 	public static DBConnection getInstance() {
@@ -53,6 +37,12 @@ propertyMotDePasse = prop.getProperty("dbpassword");
 	}
 
 	public static DBConnection getInstance(String url,String name,String password) {
+	    try {
+            Class.forName(MYSQL_DRIVER);
+        } catch (ClassNotFoundException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
 		if (null == instance) {
 			instance = new DBConnection();
 		}
