@@ -18,6 +18,7 @@
 		<!-- test -->
 		<junit.version>4.12</junit.version>
 		<mockito.version>1.9.5</mockito.version>
+        <javaxserv.version>1.2</javaxserv.version>
 
 		<!-- compile -->
 		<!-- logs -->
@@ -52,20 +53,20 @@
 			</plugin>
 		</plugins>
 	</build>
-	
+
 	<reporting>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-checkstyle-plugin</artifactId>
-                <version>${checkstyle.version}</version>
-                <configuration>
-                    <configLocation>checkstyle.xml</configLocation>
-                    <suppressionsLocation>suppressions.xml</suppressionsLocation>
-                </configuration>
-            </plugin>
-        </plugins>
-</reporting>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-checkstyle-plugin</artifactId>
+				<version>${checkstyle.version}</version>
+				<configuration>
+					<configLocation>checkstyle.xml</configLocation>
+					<suppressionsLocation>suppressions.xml</suppressionsLocation>
+				</configuration>
+			</plugin>
+		</plugins>
+	</reporting>
 
 	<dependencies>
 		<!-- tests -->
@@ -113,11 +114,16 @@
 			<version>3.0.1</version>
 			<scope>provided</scope>
 		</dependency>
-<dependency>
-    <groupId>javax.servlet</groupId>
-    <artifactId>jstl</artifactId>
-    <version>1.2</version>
-</dependency>
+		<dependency>
+			<groupId>org.apache</groupId>
+			<artifactId>apache-jar-resource-bundle</artifactId>
+			<version>1.4</version>
+		</dependency>
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>jstl</artifactId>
+			<version>${javaxserv.version}</version>
+		</dependency>
 
 
 		<!-- https://mvnrepository.com/artifact/mysql/mysql-connector-java -->

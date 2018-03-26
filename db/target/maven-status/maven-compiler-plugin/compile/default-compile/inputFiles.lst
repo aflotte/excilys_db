@@ -5,6 +5,7 @@
 /home/excilys/Projects/project/excilys_db/db/src/main/java/com/excilys/db/exception/DAOException.java
 /home/excilys/Projects/project/excilys_db/db/src/main/java/com/excilys/db/validator/ComputerValidator.java
 /home/excilys/Projects/project/excilys_db/db/src/main/java/com/excilys/db/service/CompaniesService.java
+/home/excilys/Projects/project/excilys_db/db/src/main/java/com/excilys/db/exception/DisconnectionFailedExeption.java
 /home/excilys/Projects/project/excilys_db/db/src/main/java/com/excilys/db/exception/DAOConfigurationException.java
 /home/excilys/Projects/project/excilys_db/db/src/main/java/com/excilys/db/dao/CompaniesDAO.java
 /home/excilys/Projects/project/excilys_db/db/src/main/java/com/excilys/db/mapper/ComputerMapper.java
@@ -13,6 +14,7 @@
 /home/excilys/Projects/project/excilys_db/db/src/main/java/com/excilys/db/exception/CompaniesIdIncorrectException.java
 /home/excilys/Projects/project/excilys_db/db/src/main/java/com/excilys/db/page/PageComputerDTO.java
 /home/excilys/Projects/project/excilys_db/db/src/main/java/com/excilys/db/page/PageComputer.java
+/home/excilys/Projects/project/excilys_db/db/src/main/java/com/excilys/db/exception/ConnectionFailedException.java
 /home/excilys/Projects/project/excilys_db/db/src/main/java/com/excilys/db/dao/ComputerDAO.java
 /home/excilys/Projects/project/excilys_db/db/src/main/java/com/excilys/db/cli/CLI.java
 /home/excilys/Projects/project/excilys_db/db/src/main/java/com/excilys/db/validator/CompaniesValidator.java

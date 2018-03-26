@@ -104,7 +104,7 @@
             
             <c:forEach var="pagePrev" items="${page.getPrevious()}">
                   <li>
-                    <a href="?actualPage=${pagePrev}" aria-label="Previous">
+                    <a href="?actualPage=${pagePrev}&pageSize=${page.getPageSize()}" aria-label="Previous">
                       <span aria-hidden="true">&laquo;</span>
                   </a>
                   
@@ -113,7 +113,7 @@
             
                 
                   <c:forEach var="pageToPrint" items="${page.getPagesToGo()}">
-                  <li><a href="?actualPage=${pageToPrint}">${pageToPrint}</a></li>
+                  <li><a href="?actualPage=${pageToPrint}&pageSize=${page.getPageSize()}">${pageToPrint}</a></li>
                   </c:forEach>
                   
                   
@@ -121,7 +121,7 @@
                   
                   
               <li>
-                <a href="?actualPage=${pageNext}" aria-label="Next">
+                <a href="?actualPage=${pageNext}&pageSize=${page.getPageSize()}" aria-label="Next">
                     <span aria-hidden="true">&raquo;</span>
                 </a>
             </li>

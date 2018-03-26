@@ -9,7 +9,9 @@ com/excilys/db/exception/CompaniesIdIncorrectException.class
 com/excilys/db/model/Company.class
 com/excilys/db/model/Computer.class
 com/excilys/db/servlet/Dashboard.class
+com/excilys/db/exception/ConnectionFailedException.class
 com/excilys/db/exception/CompaniesInexistantException.class
+com/excilys/db/exception/DisconnectionFailedExeption.class
 com/excilys/db/cli/CLI$1.class
 com/excilys/db/page/PageComputer.class
 com/excilys/db/page/Page.class
