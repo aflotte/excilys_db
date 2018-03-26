@@ -101,20 +101,31 @@
     <footer class="navbar-fixed-bottom">
         <div class="container text-center">
             <ul class="pagination">
-                <li>
-                    <a href="#" aria-label="Previous">
+            
+            <c:forEach var="pagePrev" items="${page.getPrevious()}">
+                  <li>
+                    <a href="?actualPage=${pagePrev}" aria-label="Previous">
                       <span aria-hidden="true">&laquo;</span>
                   </a>
                   
                   </li>
+                  </c:forEach>
+            
+                
                   <c:forEach var="pageToPrint" items="${page.getPagesToGo()}">
                   <li><a href="?actualPage=${pageToPrint}">${pageToPrint}</a></li>
                   </c:forEach>
+                  
+                  
+             <c:forEach var="pageNext" items="${page.getNext()}">
+                  
+                  
               <li>
-                <a href="#" aria-label="Next">
+                <a href="?actualPage=${pageNext}" aria-label="Next">
                     <span aria-hidden="true">&raquo;</span>
                 </a>
             </li>
+            </c:forEach>
         </ul>
         </div>
 

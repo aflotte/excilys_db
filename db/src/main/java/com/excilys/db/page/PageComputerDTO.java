@@ -7,8 +7,6 @@ import java.util.Scanner;
 import com.excilys.db.dto.ComputerDTO;
 import com.excilys.db.exception.CompaniesInexistantException;
 import com.excilys.db.mapper.ComputerMapper;
-import com.excilys.db.model.Computer;
-import com.excilys.db.persistance.DBConnection;
 import com.excilys.db.service.ComputerService;
 
 public class PageComputerDTO extends Page {
@@ -18,8 +16,34 @@ public class PageComputerDTO extends Page {
     List<ComputerDTO> computers;
     int index;
     static int NOMBRE_AFFICHAGE = 10;
+    public static int getNOMBRE_AFFICHAGE() {
+        return NOMBRE_AFFICHAGE;
+    }
+
+    public static void setNOMBRE_AFFICHAGE(int nOMBRE_AFFICHAGE) {
+        NOMBRE_AFFICHAGE = nOMBRE_AFFICHAGE;
+    }
+
+    public List<Integer> getNext() {
+        return next;
+    }
+
+    public void setNext(List<Integer> next) {
+        this.next = next;
+    }
+
+    public List<Integer> getPrevious() {
+        return previous;
+    }
+
+    public void setPrevious(List<Integer> previous) {
+        this.previous = previous;
+    }
+
     public Scanner sc;
     public List<Integer> pagesToGo;
+    public List<Integer> next;
+    public List<Integer> previous;
 
 
     public List<Integer> getPagesToGo() {
@@ -44,6 +68,9 @@ public class PageComputerDTO extends Page {
             }
         }
         pagesToGo.add(this.pageMax);
+        this.previous = new ArrayList<Integer>();
+        this.next = new ArrayList<Integer>();
+        this.next.add(2);
     }
     
     public PageComputerDTO(int page) {
@@ -63,6 +90,14 @@ public class PageComputerDTO extends Page {
             }
         }
         pagesToGo.add(this.pageMax);
+        this.previous = new ArrayList<Integer>();
+        if (page > pageMin) {
+            this.previous.add(page - 1);
+        }
+        this.next = new ArrayList<Integer>();
+        if (page < pageMax) {
+            this.next.add(page + 1);
+        }
     }
 
     public void afficherNElements(int n) {
