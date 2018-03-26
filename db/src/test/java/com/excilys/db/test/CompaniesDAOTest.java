@@ -34,6 +34,7 @@ public class CompaniesDAOTest extends TestCase {
 	@Test
 	public void testListCompanies() {
 		Company Apple = new Company();
+		Apple.setId(1);
 		Apple.setName("Apple Inc.");
 		assertEquals(Apple,companies.listCompanies().get(0));
 	}

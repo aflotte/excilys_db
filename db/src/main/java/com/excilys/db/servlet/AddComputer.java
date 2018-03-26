@@ -12,7 +12,9 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.excilys.db.dto.ComputerDTO;
 import com.excilys.db.mapper.ComputerMapper;
+import com.excilys.db.model.Computer;
 import com.excilys.db.page.PageComputerDTO;
+import com.excilys.db.service.CompaniesService;
 import com.excilys.db.service.ComputerService;
 
 /**
@@ -35,10 +37,7 @@ public class AddComputer extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
-        List<ComputerDTO> computers = getComputer();
-        request.setAttribute("computers", computers);
-        PageComputerDTO pageComputer = new PageComputerDTO();
-        request.setAttribute("number", pageComputer.getComputerMax());
+        request.setAttribute("companies", CompaniesService.INSTANCE.listCompanies());
             RequestDispatcher rd =
                  request.getRequestDispatcher("/WEB-INF/addComputer.jsp");
 
@@ -50,8 +49,14 @@ public class AddComputer extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		doGet(request, response);
+	    ComputerDTO computerDTO = new ComputerDTO();
+        computerDTO.setCompany(request.getParameter("computerName"));
+        computerDTO.setIntroduced(request.getParameter("introduced"));
+        computerDTO.setDiscontinued(request.getParameter("discontinued"));
+        computerDTO.setCompany(request.getParameter("companyId"));
+        Computer computer = ComputerMapper.computerDTOToComputer(computerDTO);
+        ComputerService.INSTANCE.createComputer(computer);
+        doGet(request, response);
 	}
 
     public List<ComputerDTO> getComputer() {

@@ -24,7 +24,7 @@ public enum CompaniesDAO {
     private static Connection conn;
 
     private static final String QUERRY_LIST_COMPANIES_BY_NAME = "SELECT id FROM company WHERE name = ?";
-    private static final String QUERRY_LIST_COMPANIES = "SELECT name FROM company";
+    private static final String QUERRY_LIST_COMPANIES = "SELECT name, id FROM company";
     private static final String QUERRY_LIST_COMPANIES_ID = "SELECT name FROM company WHERE id = ";
     private static final String OFFSET_LIMIT = " LIMIT ? OFFSET ?";
     private static final String QUERRY_COUNT = "SELECT COUNT(*) FROM company";
@@ -78,6 +78,7 @@ public enum CompaniesDAO {
             resultSet = prep1.executeQuery();
             while (resultSet.next()) {
                 Company toAdd = new Company();
+                toAdd.setId(resultSet.getInt(2));
                 toAdd.setName(resultSet.getString(1));
                 listResult.add(toAdd);
             }

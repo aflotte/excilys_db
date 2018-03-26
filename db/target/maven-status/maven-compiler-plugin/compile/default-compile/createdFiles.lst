@@ -1,6 +1,7 @@
 com/excilys/db/service/CompaniesService.class
 com/excilys/db/validator/ComputerValidator.class
 com/excilys/db/mapper/ComputerMapper.class
+com/excilys/db/servlet/AddComputerDo.class
 com/excilys/db/App.class
 com/excilys/db/dao/ComputerDAO.class
 com/excilys/db/service/ComputerService.class

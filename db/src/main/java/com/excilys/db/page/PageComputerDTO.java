@@ -99,6 +99,36 @@ public class PageComputerDTO extends Page {
             this.next.add(page + 1);
         }
     }
+    
+    public PageComputerDTO(int page, int size) {
+        super();
+        this.setPageSize(size);
+        setComputerMax(ComputerService.INSTANCE.getCount());
+        if (page > 0) {
+            this.pageNumber = page;
+        }else {
+            this.pageNumber = 1;
+        }
+        this.setPageMax(this.computerMax/pageSize + 1);
+        pagesToGo = new ArrayList<Integer>();
+        pagesToGo.add(1);
+        for (int i = -3; i < 3; i++) {
+            if ((this.pageNumber + i > this.pageMin)&&(i!=0)&&(this.pageNumber + i < this.pageMax)) {
+                pagesToGo.add(this.pageNumber + i);
+            }
+        }
+        pagesToGo.add(this.pageMax);
+        this.previous = new ArrayList<Integer>();
+        if (page > pageMin) {
+            this.previous.add(page - 1);
+        }
+        this.next = new ArrayList<Integer>();
+        if (page < pageMax) {
+            this.next.add(page + 1);
+        }
+    }
+
+    
 
     public void afficherNElements(int n) {
         int end = index + n;

@@ -1,7 +1,6 @@
 package com.excilys.db.servlet;
 
 import java.io.IOException;
-import java.util.List;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -10,10 +9,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.excilys.db.dto.ComputerDTO;
-import com.excilys.db.mapper.ComputerMapper;
 import com.excilys.db.page.PageComputerDTO;
-import com.excilys.db.service.ComputerService;
 
 /**
  * Servlet implementation class GetComputer.
@@ -35,26 +31,36 @@ public class Dashboard extends HttpServlet {
      */
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
-        PageComputerDTO pageComputer;
-        if (request.getParameter("actualPage") == null) {
-            pageComputer = new PageComputerDTO();
-        } else {
-            if (request.getParameter("actualPage").isEmpty()) {
+            PageComputerDTO pageComputer;
+            int actualPage;
+            if (request.getParameter("actualPage") == null) {
+                actualPage = 1;
                 pageComputer = new PageComputerDTO();
             } else {
-                int actualPage = Integer.parseInt(request.getParameter("actualPage"));
-                pageComputer = new PageComputerDTO(actualPage);
+                if (request.getParameter("actualPage").isEmpty()) {
+                    actualPage = 1;
+                } else {
+                    actualPage = Integer.parseInt(request.getParameter("actualPage"));
+
+                }
             }
-        }
-        request.setAttribute("computers", pageComputer.getPage());
-        request.setAttribute("page", pageComputer);
-        request.setAttribute("number", pageComputer.getComputerMax());
+            int sizePage;
+            if ((request.getParameter("pageSize") == null) ||(request.getParameter("pageSize").isEmpty())) {
+                sizePage = 10;
+            } else {
+                sizePage = Integer.parseInt(request.getParameter("pageSize"));
+            }
+            sizePage = sizePage < 10 ? sizePage = 10 : sizePage;
+            pageComputer = new PageComputerDTO(actualPage,sizePage);
+            request.setAttribute("computers", pageComputer.getPage());
+            request.setAttribute("page", pageComputer);
+            request.setAttribute("number", pageComputer.getComputerMax());
             RequestDispatcher rd =
-                 request.getRequestDispatcher("/WEB-INF/index.jsp");
+                    request.getRequestDispatcher("/WEB-INF/index.jsp");
             rd.forward(request, response);
-       } catch (Exception e) {
-           throw new ServletException(e);
-       }
+        } catch (Exception e) {
+            throw new ServletException(e);
+        }
 
     }
 
@@ -68,11 +74,6 @@ public class Dashboard extends HttpServlet {
     }
 
 
-
-    public List<ComputerDTO> getComputer() {
-
-        return ComputerMapper.computerListToComputerDTO(ComputerService.INSTANCE.listComputer(0, 1));
-    }
 
 
 }
