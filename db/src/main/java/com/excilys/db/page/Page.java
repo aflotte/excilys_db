@@ -39,15 +39,7 @@ public class Page {
     protected final int pageMin;
 
     public Page() {
-        try {
-            input = new FileInputStream("./src/main/ressources/properties/page.properties");
-            prop.load(input);
-           
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-        pageSize = Integer.parseInt(prop.getProperty("pageSize"));
+        pageSize = 10;
         pageMin = 1;
     }
     public void nextPage() {

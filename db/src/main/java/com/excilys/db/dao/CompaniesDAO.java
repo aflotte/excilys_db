@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Optional;
 
 import com.excilys.db.exception.CompaniesInexistantException;
+import com.excilys.db.exception.DAOAccesExeption;
 import com.excilys.db.mapper.CompaniesMapper;
 import com.excilys.db.model.Company;
 import com.excilys.db.persistance.DBConnection;
@@ -23,7 +24,7 @@ public enum CompaniesDAO {
     static org.slf4j.Logger logger = org.slf4j.LoggerFactory.getLogger(CompaniesDAO.class);
     private static Connection conn;
 
-    private static final String QUERRY_LIST_COMPANIES_BY_NAME = "SELECT id FROM company WHERE name = ?";
+    private static final String QUERRY_LIST_COMPANIES_BY_NAME = "SELECT id FROM company WHERE name LIKE ?";
     private static final String QUERRY_LIST_COMPANIES = "SELECT name, id FROM company";
     private static final String QUERRY_LIST_COMPANIES_ID = "SELECT name FROM company WHERE id = ";
     private static final String OFFSET_LIMIT = " LIMIT ? OFFSET ?";
@@ -183,7 +184,7 @@ public enum CompaniesDAO {
    * @param name le nom de l'ordinateur
    * @return la liste des Id
    */
-  public List<Integer> getIdFromName(String name) {
+  public List<Integer> getIdFromName(String name) throws DAOAccesExeption {
       initialisationConnection();
       List<Integer> result = new ArrayList<Integer>();
       try {
@@ -197,7 +198,8 @@ public enum CompaniesDAO {
           resultSet.close();
           ps.close();
       } catch (SQLException e) {
-          logger.warn(e.getMessage());
+          logger.error("Erreur dans l'accès des données");
+          throw new DAOAccesExeption();
       } finally {
           DBConnection.getInstance().disconnect();
       }

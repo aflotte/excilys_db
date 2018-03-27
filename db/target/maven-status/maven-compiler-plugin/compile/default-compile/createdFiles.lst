@@ -1,7 +1,6 @@
 com/excilys/db/service/CompaniesService.class
 com/excilys/db/validator/ComputerValidator.class
 com/excilys/db/mapper/ComputerMapper.class
-com/excilys/db/servlet/AddComputerDo.class
 com/excilys/db/App.class
 com/excilys/db/dao/ComputerDAO.class
 com/excilys/db/service/ComputerService.class
@@ -20,6 +19,7 @@ com/excilys/db/dto/CompanyDTO.class
 com/excilys/db/dto/ComputerDTO.class
 com/excilys/db/servlet/AddComputer.class
 com/excilys/db/cli/ScanCLI.class
+com/excilys/db/exception/DAOAccesExeption.class
 com/excilys/db/validator/CompaniesValidator.class
 com/excilys/db/page/PageCompanies.class
 com/excilys/db/exception/IncoherentDatesException.class

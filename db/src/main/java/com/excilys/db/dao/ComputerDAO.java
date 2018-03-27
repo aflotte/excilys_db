@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Optional;
 
 import com.excilys.db.exception.CompaniesInexistantException;
+import com.excilys.db.exception.DAOAccesExeption;
 import com.excilys.db.mapper.ComputerMapper;
 import com.excilys.db.model.Company;
 import com.excilys.db.model.Computer;
@@ -89,7 +90,7 @@ public enum ComputerDAO {
      * @return la liste des ordinateurs
      * @throws CompaniesInexistantException erreur sur la compagnie de l'ordinateur
      */
-    public List<Computer> listComputer() {
+    public List<Computer> listComputer() throws DAOAccesExeption {
         initialisationConnection();
         List<Computer> listResult = new ArrayList<Computer>();
         try {
@@ -103,7 +104,8 @@ public enum ComputerDAO {
             resultSet.close();
             prep1.close();
         } catch (SQLException e) {
-            logger.warn(e.getMessage());
+            logger.error("Erreur dans l'accès des données");
+            throw new DAOAccesExeption();
         } finally {
             DBConnection.getInstance().disconnect();
         }
@@ -118,7 +120,7 @@ public enum ComputerDAO {
      * @return la liste des ordinateurs
      * @throws CompaniesInexistantException erreur sur la compagnie de l'ordinateur
      */
-    public List<Computer> listComputer(int offset, int limit) {
+    public List<Computer> listComputer(int offset, int limit) throws DAOAccesExeption {
         initialisationConnection();
         List<Computer> listResult = new ArrayList<Computer>();
         try {
@@ -134,7 +136,8 @@ public enum ComputerDAO {
             resultSet.close();
             prep1.close();
         } catch (SQLException e) {
-            logger.warn(e.getMessage());
+            logger.error("Erreur dans l'accès des données");
+            throw new DAOAccesExeption();
         } finally {
             DBConnection.getInstance().disconnect();
         }
@@ -147,7 +150,7 @@ public enum ComputerDAO {
      * @return un ordinateur
      * @throws CompaniesInexistantException si la compagnie de l'ordinateur est inexistante
      */
-    public Optional<Computer> showDetails(int id) throws CompaniesInexistantException {
+    public Optional<Computer> showDetails(int id) throws CompaniesInexistantException, DAOAccesExeption {
         initialisationConnection();
         Computer result = null;
         try {
@@ -160,7 +163,8 @@ public enum ComputerDAO {
             resultSet.close();
             prep1.close();
         } catch (SQLException e) {
-            logger.warn(e.getMessage());
+            logger.error("Erreur dans l'accès des données");
+            throw new DAOAccesExeption();
         } finally {
             DBConnection.getInstance().disconnect();
         }
@@ -172,7 +176,7 @@ public enum ComputerDAO {
      * @param computer l'ordinateur qui remplacera l'ancien
      * @param id de l'ordinateur a remplacer
      */
-    public void updateAComputer(Computer computer, int id) {
+    public void updateAComputer(Computer computer, int id) throws DAOAccesExeption {
         initialisationConnection();
         LocalDate dateIntroduced = computer.getIntroduced();
         LocalDate dateDiscontinued = computer.getDiscontinued();
@@ -200,7 +204,8 @@ public enum ComputerDAO {
             ps.executeUpdate();
             ps.close();
         } catch (SQLException e) {
-            logger.warn(e.getMessage());
+            logger.error("Erreur dans l'accès des données");
+            throw new DAOAccesExeption();
         } finally {
             DBConnection.getInstance().disconnect();
         }
@@ -211,7 +216,7 @@ public enum ComputerDAO {
      * @param computer l'ordinateur a ajouter
      * @return l'Id de l'ordinateur qui vient d'être ajouter
      */
-    public int createAComputer(Computer computer) {
+    public int createAComputer(Computer computer) throws DAOAccesExeption {
         initialisationConnection();
         LocalDate dateIntroduced = computer.getIntroduced();
         LocalDate dateDiscontinued = computer.getDiscontinued();
@@ -245,12 +250,11 @@ public enum ComputerDAO {
             return ikey;
 
         } catch (SQLException e) {
-            logger.warn(e.getMessage());
+            logger.error("Erreur dans l'accès des données");
+            throw new DAOAccesExeption();
         } finally {
             DBConnection.getInstance().disconnect();
         }
-        return 0;
-
     }
 
     /**
@@ -259,26 +263,32 @@ public enum ComputerDAO {
      * @param computer l'ordinateur
      * @throws SQLException une erreur lors du dialogue avec la base de donnée
      */
-    private void fillGetIdStatement(PreparedStatement ps, Computer computer) throws SQLException {
+    private void fillGetIdStatement(PreparedStatement ps, Computer computer) throws DAOAccesExeption {
         LocalDate dateIntroduced = computer.getIntroduced();
         LocalDate dateDiscontinued = computer.getDiscontinued();
+        try {
+            ps.setString(1, computer.getName());
+            if (dateIntroduced == null) {
+                ps.setNString(2, null);
+            } else {
+                ps.setDate(2, java.sql.Date.valueOf(dateIntroduced));
+            }
+            if (dateDiscontinued == null) {
+                ps.setNString(3, null);
+            } else {
+                ps.setDate(3, java.sql.Date.valueOf(dateDiscontinued));
+            }
+            if (computer.getCompany().getId() != null) {
+                ps.setInt(4, computer.getCompany().getId().intValue());
+            } else {
 
-        ps.setString(1, computer.getName());
-        if (dateIntroduced == null) {
-            ps.setNString(2, null);
-        } else {
-            ps.setDate(2, java.sql.Date.valueOf(dateIntroduced));
+                ps.setNull(4, java.sql.Types.INTEGER);
+            }
+        } catch (SQLException e) {
+            logger.error("Erreur dans l'accès des données");
+            throw new DAOAccesExeption();
         }
-        if (dateDiscontinued == null) {
-            ps.setNString(3, null);
-        } else {
-            ps.setDate(3, java.sql.Date.valueOf(dateDiscontinued));
-        }
-        if (computer.getCompany().getId() != null) {
-            ps.setInt(4, computer.getCompany().getId().intValue());
-        } else {
-            ps.setNull(4, java.sql.Types.INTEGER);
-        }
+
     }
 
     /**
@@ -286,7 +296,7 @@ public enum ComputerDAO {
      * @param computer l'ordinateur dont on veut l'Id
      * @return l'Id
      */
-    public List<Integer> getId(Computer computer) {
+    public List<Integer> getId(Computer computer) throws DAOAccesExeption {
         initialisationConnection();
         List<Integer> result = new ArrayList<Integer>();
         String querry = chooseTheQuerry(computer.getIntroduced(), computer.getDiscontinued(), computer.getCompany());
@@ -301,7 +311,8 @@ public enum ComputerDAO {
             resultSet.close();
             ps.close();
         } catch (SQLException e) {
-            logger.warn(e.getMessage());
+            logger.error("Erreur dans l'accès des données");
+            throw new DAOAccesExeption();
         } finally {
             DBConnection.getInstance().disconnect();
         }
@@ -314,7 +325,7 @@ public enum ComputerDAO {
      * @param name le nom de l'ordinateur
      * @return la liste des Id
      */
-    public List<Integer> getIdFromName(String name) {
+    public List<Integer> getIdFromName(String name) throws DAOAccesExeption {
         initialisationConnection();
         List<Integer> result = new ArrayList<Integer>();
         try {
@@ -328,7 +339,8 @@ public enum ComputerDAO {
             resultSet.close();
             ps.close();
         } catch (SQLException e) {
-            logger.warn(e.getMessage());
+            logger.error("Erreur dans l'accès des données");
+            throw new DAOAccesExeption();
         } finally {
             DBConnection.getInstance().disconnect();
         }
@@ -339,7 +351,7 @@ public enum ComputerDAO {
      *
      * @param id de l'ordinateur a supprimer
      */
-    public void deleteAComputer(int id) {
+    public void deleteAComputer(int id) throws DAOAccesExeption {
         initialisationConnection();
         try {
             PreparedStatement prep1 = conn.prepareStatement(QUERRY_DELETE_COMPUTER + id);
@@ -347,7 +359,8 @@ public enum ComputerDAO {
             prep1.executeUpdate(QUERRY_DELETE_COMPUTER + id);
             prep1.close();
         } catch (SQLException e) {
-            logger.warn(e.getMessage());
+            logger.error("Erreur dans l'accès des données");
+            throw new DAOAccesExeption();
         } finally {
             DBConnection.getInstance().disconnect();
         }
@@ -356,7 +369,7 @@ public enum ComputerDAO {
     /**
      *
      */
-    public int getCount() {
+    public int getCount() throws DAOAccesExeption {
         initialisationConnection();
         int result = 0;
         try {
@@ -368,7 +381,8 @@ public enum ComputerDAO {
             }
             prep1.close();
         } catch (SQLException e) {
-            logger.warn(e.getMessage());
+            logger.error("Erreur dans l'accès des données");
+            throw new DAOAccesExeption();
         } finally {
             DBConnection.getInstance().disconnect();
         }
