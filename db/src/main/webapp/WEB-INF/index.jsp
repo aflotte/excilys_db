@@ -34,7 +34,7 @@
                 </div>
                 <div class="pull-right">
                     <a class="btn btn-success" id="addComputer" href="addComputer">Add Computer</a> 
-                    <a class="btn btn-default" id="editComputer" href="#" onclick="$.fn.toggleEditMode();">Edit</a>
+                    <a class="btn btn-default" id="editComputer" href="#" onclick="$.fn.toggleEditMode();">Delete</a>
                 </div>
             </div>
         </div>
@@ -83,7 +83,7 @@
             <input type='checkbox' name='cb' class='cb' value='0'>
             </td>
             <td>
-            <a href='editComputer' onclick=''>  ${computer.getName()} </a>
+            <a href='editComputer?id=${computer.getId()}' onclick=''>  ${computer.getName()} </a>
             <td> ${computer.getIntroduced()} </td>
             <td> ${computer.getDiscontinued()} </td>
             <td> ${computer.getCompany()}</td>
@@ -135,9 +135,9 @@
         </div>
     </div>
     </footer>
-<script src="js/jquery.min.js"></script>
-<script src="js/bootstrap.min.js"></script>
-<script src="js/dashboard.js"></script>
+<script src="static/js/jquery.min.js"></script>
+<script src="static/js/bootstrap.min.js"></script>
+<script src="static/js/dashboard.js"></script>
 
 </body>
 </html>

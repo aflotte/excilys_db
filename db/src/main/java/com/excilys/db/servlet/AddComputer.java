@@ -11,14 +11,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.excilys.db.dto.ComputerDTO;
-import com.excilys.db.exception.CompaniesIdIncorrectException;
-import com.excilys.db.exception.IncoherentDatesException;
 import com.excilys.db.exception.ServiceException;
 import com.excilys.db.mapper.ComputerMapper;
 import com.excilys.db.model.Computer;
 import com.excilys.db.service.CompaniesService;
 import com.excilys.db.service.ComputerService;
-import com.excilys.db.validator.ComputerValidator;
 
 /**
  * Servlet implementation class AddComputer

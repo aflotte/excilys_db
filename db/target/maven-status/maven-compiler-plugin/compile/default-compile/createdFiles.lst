@@ -5,6 +5,7 @@ com/excilys/db/mapper/ComputerMapper.class
 com/excilys/db/App.class
 com/excilys/db/dao/ComputerDAO.class
 com/excilys/db/service/ComputerService.class
+com/excilys/db/servlet/EditComputer.class
 com/excilys/db/cli/Menu.class
 com/excilys/db/exception/CompaniesIdIncorrectException.class
 com/excilys/db/model/Company.class

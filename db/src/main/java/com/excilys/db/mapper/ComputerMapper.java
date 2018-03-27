@@ -79,10 +79,25 @@ public class ComputerMapper {
 
         toReturn.setCompany(company);
         toReturn.setName(computer.getName());
-        toReturn.setDiscontinued(LocalDate.parse(computer.getDiscontinued(),formatter));
-        toReturn.setIntroduced(LocalDate.parse(computer.getIntroduced(),formatter));
+        if (computer.getDiscontinued() != null) {
 
-
+            try {
+                toReturn.setDiscontinued(LocalDate.parse(computer.getDiscontinued(),formatter));
+            }catch (Exception e) {
+                toReturn.setDiscontinued(null);
+            }
+        }else {
+            toReturn.setDiscontinued(null);
+        }
+        if (computer.getIntroduced() != null) {
+            try {
+                toReturn.setIntroduced(LocalDate.parse(computer.getIntroduced(),formatter));
+            }catch (Exception e) {
+                toReturn.setIntroduced(null);
+            }
+        }else {
+            toReturn.setIntroduced(null);
+        }
         return toReturn;
     }
 
@@ -94,6 +109,3 @@ public class ComputerMapper {
         return toReturn;
     }
 }
-
-
-

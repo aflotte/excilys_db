@@ -1,8 +1,7 @@
-/home/excilys/Projects/project/excilys_db/db/src/test/java/com/excilys/db/test/ConnectionTest.java
 /home/excilys/Projects/project/excilys_db/db/src/test/java/com/excilys/db/test/CompaniesDAOTest.java
 /home/excilys/Projects/project/excilys_db/db/src/test/java/com/excilys/db/AppTest.java
 /home/excilys/Projects/project/excilys_db/db/src/test/java/com/excilys/db/test/CompaniesServiceTest.java
-/home/excilys/Projects/project/excilys_db/db/src/test/java/com/excilys/db/test/ComputerMapperTest.java
+/home/excilys/Projects/project/excilys_db/db/src/test/java/com/excilys/db/selenium/List.java
 /home/excilys/Projects/project/excilys_db/db/src/test/java/com/excilys/db/test/ComputerDAOTest.java
 /home/excilys/Projects/project/excilys_db/db/src/test/java/com/excilys/db/test/ComputerServiceTest.java
 /home/excilys/Projects/project/excilys_db/db/src/test/java/com/excilys/db/test/ComputerValidatorTest.java

@@ -18,6 +18,7 @@
         <servletapi.version>2.5</servletapi.version>
         <javaxservapi.version>3.0.1</javaxservapi.version>
         <maven.version>3.1</maven.version>
+        <slf4japi.version>1.7.2</slf4japi.version>
 
 		<!-- test -->
 		<junit.version>4.12</junit.version>
@@ -101,7 +102,7 @@
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-api</artifactId>
-			<version>1.7.2</version>
+			<version>${slf4japi.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>ch.qos.logback</groupId>

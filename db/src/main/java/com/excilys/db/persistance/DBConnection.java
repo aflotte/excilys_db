@@ -4,6 +4,7 @@ package com.excilys.db.persistance;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.ResourceBundle;
 
 import com.excilys.db.exception.ConnectionFailedException;
 import com.excilys.db.exception.DisconnectionFailedExeption;
@@ -24,7 +25,6 @@ public final class DBConnection {
     private static DBConnection instance;
 
     private DBConnection() {
-
     }
 
     public static DBConnection getInstance() {

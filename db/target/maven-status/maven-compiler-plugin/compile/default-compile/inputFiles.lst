@@ -30,3 +30,4 @@
 /home/excilys/Projects/project/excilys_db/db/src/main/java/com/excilys/db/service/ComputerService.java
 /home/excilys/Projects/project/excilys_db/db/src/main/java/com/excilys/db/cli/Menu.java
 /home/excilys/Projects/project/excilys_db/db/src/main/java/com/excilys/db/servlet/Dashboard.java
+/home/excilys/Projects/project/excilys_db/db/src/main/java/com/excilys/db/servlet/EditComputer.java
