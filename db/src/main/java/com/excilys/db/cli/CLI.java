@@ -25,6 +25,7 @@ import java.util.Scanner;
  *
  */
 public class CLI {
+    static org.slf4j.Logger logger = org.slf4j.LoggerFactory.getLogger(CLI.class);
     static Scanner sc;
 
     /**
@@ -116,6 +117,9 @@ public class CLI {
      */
     public static void afficherOrdinateurs() throws CompaniesInexistantException {
         List<Computer> listeOrdinateur = ComputerService.INSTANCE.listComputer();
+        for (int i = 0 ; i < listeOrdinateur.size(); i++) {
+            logger.debug(listeOrdinateur.get(i).toString());
+        }
         PageComputer page = new PageComputer(listeOrdinateur, sc);
         System.out.println("Voici la liste des ordinateurs ( Q to exit ): ");
         page.afficher();

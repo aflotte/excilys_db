@@ -28,7 +28,7 @@ public enum ComputerDAO {
     INSTANCE;
     org.slf4j.Logger logger = org.slf4j.LoggerFactory.getLogger(ComputerDAO.class);
 
-    private static final String QUERRY_LIST_COMPUTERS = "SELECT computer.name, introduced, discontinued, company.id, computer.id, company.name FROM computer LEFT JOIN company ON computer.id = company.id";
+    private static final String QUERRY_LIST_COMPUTERS = "SELECT computer.name, computer.introduced, computer.discontinued, company.id, computer.id, company.name FROM computer LEFT JOIN company ON computer.company_id = company.id";
     private static final String QUERRY_LIST_COMPUTERS_ID = "SELECT computer.name, introduced, discontinued, company.id, computer.id, company.name FROM computer LEFT JOIN company ON computer.id = company.id WHERE computer.id = ";
     private static final String QUERRY_UPDATE_COMPUTER = "UPDATE computer SET name = ?, introduced = ?, discontinued = ?, company_id = ? WHERE id = ?";
     private static final String QUERRY_CREATE_COMPUTER = "INSERT INTO computer(name,introduced,discontinued,company_id) VALUES (?,?,?,?)";
@@ -99,6 +99,7 @@ public enum ComputerDAO {
             ResultSet resultSet = prep1.executeQuery();
             while (resultSet.next()) {
                 Computer toAdd = ComputerMapper.resultToComputer(resultSet);
+                logger.debug("toComputer : " + toAdd.toString());
                 listResult.add(toAdd);
             }
             resultSet.close();

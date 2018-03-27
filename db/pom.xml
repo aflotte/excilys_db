@@ -14,11 +14,18 @@
 		<!-- sets the projects encoding to UTF-8 -->
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<java.version>1.8</java.version>
+		<tomcat.version>2.2</tomcat.version>
+        <servletapi.version>2.5</servletapi.version>
+        <javaxservapi.version>3.0.1</javaxservapi.version>
+        <maven.version>3.1</maven.version>
 
 		<!-- test -->
 		<junit.version>4.12</junit.version>
 		<mockito.version>1.9.5</mockito.version>
-        <javaxserv.version>1.2</javaxserv.version>
+		<javaxserv.version>1.2</javaxserv.version>
+		<selenium.version>2.45.0</selenium.version>
+		<testng.version>6.8</testng.version>
+		
 
 		<!-- compile -->
 		<!-- logs -->
@@ -28,6 +35,7 @@
 
 		<!-- runtime -->
 		<mysql.version>5.1.38</mysql.version>
+		<ressourcebundle.version>1.4</ressourcebundle.version>
 		<myqsl-jdbc.version>6.0.6</myqsl-jdbc.version>
 	</properties>
 	<build>
@@ -35,7 +43,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
-				<version>3.1</version>
+				<version>${maven.version}</version>
 				<configuration>
 					<source>${java.version}</source>
 					<target>${java.version}</target>
@@ -44,7 +52,7 @@
 			<plugin>
 				<groupId>org.apache.tomcat.maven</groupId>
 				<artifactId>tomcat7-maven-plugin</artifactId>
-				<version>2.2</version>
+				<version>${tomcat.version}</version>
 				<configuration>
 					<url>http://localhost:8080/manager/text</url>
 					<server>TomcatServer</server>
@@ -53,14 +61,14 @@
 			</plugin>
 		</plugins>
 		<resources>
-        <resource>
-            <directory>src/main/resources</directory>
-            <targetPath>${project.build.directory}</targetPath>
-            <includes>
-                <include>log4j.properties</include>
-            </includes>
-        </resource>
-    </resources>
+			<resource>
+				<directory>src/main/resources</directory>
+				<targetPath>${project.build.directory}</targetPath>
+				<includes>
+					<include>log4j.properties</include>
+				</includes>
+			</resource>
+		</resources>
 	</build>
 
 	<reporting>
@@ -79,6 +87,17 @@
 
 	<dependencies>
 		<!-- tests -->
+		<dependency>
+			<groupId>org.seleniumhq.selenium</groupId>
+			<artifactId>selenium-java</artifactId>
+			<version>${selenium.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.testng</groupId>
+			<artifactId>testng</artifactId>
+			<version>${testng.version}</version>
+			<scope>test</scope>
+		</dependency>
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-api</artifactId>
@@ -114,19 +133,19 @@
 		<dependency>
 			<groupId>javax.servlet</groupId>
 			<artifactId>servlet-api</artifactId>
-			<version>2.5</version>
+			<version>${servletapi.version}</version>
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>javax.servlet</groupId>
 			<artifactId>javax.servlet-api</artifactId>
-			<version>3.0.1</version>
+			<version>${javaxservapi.version}</version>
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.apache</groupId>
 			<artifactId>apache-jar-resource-bundle</artifactId>
-			<version>1.4</version>
+			<version>${ressourcebundle.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>javax.servlet</groupId>

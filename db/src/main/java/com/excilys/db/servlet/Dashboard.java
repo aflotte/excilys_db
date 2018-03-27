@@ -52,9 +52,7 @@ public class Dashboard extends HttpServlet {
             }
             sizePage = sizePage < 10 ? sizePage = 10 : sizePage;
             pageComputer = new PageComputerDTO(actualPage,sizePage);
-            request.setAttribute("computers", pageComputer.getPage());
             request.setAttribute("page", pageComputer);
-            request.setAttribute("number", pageComputer.getComputerMax());
             RequestDispatcher rd =
                     request.getRequestDispatcher("/WEB-INF/index.jsp");
             rd.forward(request, response);

@@ -31,9 +31,9 @@ public class ComputerMapper {
             toReturn.setIntroduced(null);
         }
         if (resultSet.getDate(3) != null) {
-            toReturn.setIntroduced(resultSet.getDate(3).toLocalDate());
+            toReturn.setDiscontinued(resultSet.getDate(3).toLocalDate());
         } else {
-            toReturn.setIntroduced(null);
+            toReturn.setDiscontinued(null);
         }
         toReturn.setCompany(CompaniesMapper.computerResultToCompanies(resultSet));
         toReturn.setId(resultSet.getInt(5));
@@ -50,7 +50,7 @@ public class ComputerMapper {
         }else {
             toReturn.setDiscontinued(computer.getDiscontinued().toString());
         }
-        if (computer.getDiscontinued()==null) {
+        if (computer.getIntroduced()==null) {
             toReturn.setIntroduced("");
         }else {
             toReturn.setIntroduced(computer.getIntroduced().toString());
