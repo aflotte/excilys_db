@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.excilys.db.dto.ComputerDTO;
+import com.excilys.db.exception.ServiceException;
 import com.excilys.db.mapper.ComputerMapper;
 import com.excilys.db.model.Computer;
 import com.excilys.db.service.CompaniesService;
@@ -60,7 +61,12 @@ public class AddComputer extends HttpServlet {
         System.out.println(request.getParameter("companyId"));
         System.out.println(computerDTO.getCompany());
         Computer computer = ComputerMapper.computerDTOToComputer(computerDTO);
-        ComputerService.INSTANCE.createComputer(computer);
+        try {
+            ComputerService.INSTANCE.createComputer(computer);
+        } catch (ServiceException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
         doGet(request, response);
 	}
 

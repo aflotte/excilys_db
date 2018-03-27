@@ -7,6 +7,7 @@ import com.excilys.db.validator.ComputerValidator;
 import com.excilys.db.exception.CompaniesIdIncorrectException;
 import com.excilys.db.exception.CompaniesInexistantException;
 import com.excilys.db.exception.IncoherentDatesException;
+import com.excilys.db.exception.ServiceException;
 import com.excilys.db.model.Company;
 import com.excilys.db.model.Computer;
 
@@ -52,7 +53,12 @@ public class CLI {
                 supprimerOrdinateur();
                 break;
             case afficherOrdinateur:
-                afficherOrdinateur();
+                try {
+                    afficherOrdinateur();
+                } catch (ServiceException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
                 break;
             case mettreAJour:
                 mettreAJour();
@@ -120,18 +126,19 @@ public class CLI {
      */
     public static void ajouterOrdinateur() {
         Computer aAjouter = new Computer();
-        try {
-            aAjouter = ScanCLI.scanComputer(sc);
-            ComputerService.INSTANCE.createComputer(aAjouter);
-        } catch (IncoherentDatesException e) {
-            System.out.println("Les dates rentrées sont incohérentes");
-        } catch (InputMismatchException e) {
-            System.out.println("Entrez un entier !");
-        } catch (CompaniesIdIncorrectException e) {
-            System.out.println("L'id de la compagnie que vous avez rentré ne correspond à aucune compagnie !");
-        } catch (CompaniesInexistantException e) {
-
-        }
+            try {
+                aAjouter = ScanCLI.scanComputer(sc);
+            } catch (InputMismatchException | CompaniesIdIncorrectException | IncoherentDatesException
+                    | CompaniesInexistantException e1) {
+                // TODO Auto-generated catch block
+                e1.printStackTrace();
+            }
+            try {
+                ComputerService.INSTANCE.createComputer(aAjouter);
+            } catch (ServiceException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
     }
 
     /**
@@ -151,8 +158,9 @@ public class CLI {
     /**
      *
      * @throws CompaniesInexistantException erreur avec les compagnies lors de la création de l'ordinateur
+     * @throws ServiceException 
      */
-    private static void afficherOrdinateur() throws CompaniesInexistantException {
+    private static void afficherOrdinateur() throws CompaniesInexistantException, ServiceException {
         System.out.println("Donner l'Id de l'ordinateur à afficher ( -2 pour annuler )");
         int toDisplay = -1;
         while (toDisplay == -1) {
@@ -171,6 +179,7 @@ public class CLI {
     }
 
     /**
+     * @throws ServiceException 
      *
      */
     private static void mettreAJour() {
@@ -192,7 +201,12 @@ public class CLI {
             toUpdate = ScanCLI.scanInt(sc);
         }
         if (toUpdate != -2) {
-            ComputerService.INSTANCE.updateAComputer(aAjouter, toUpdate);
+            try {
+                ComputerService.INSTANCE.updateAComputer(aAjouter, toUpdate);
+            } catch (ServiceException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
         }
 
     }
