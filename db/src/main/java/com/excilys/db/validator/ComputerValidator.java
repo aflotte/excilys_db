@@ -50,7 +50,7 @@ public enum ComputerValidator {
     /**
      *
      * @param computer test la cohérence des dates
-     * @return si les dates sont cohérentes
+     * @return si les dates sont cohérentes ( false = dates cohérentes )
      */
     public boolean testDate(Computer computer) {
         LocalDate introduced = computer.getIntroduced();

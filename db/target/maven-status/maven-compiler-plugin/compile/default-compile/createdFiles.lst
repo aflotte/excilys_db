@@ -1,4 +1,5 @@
 com/excilys/db/service/CompaniesService.class
+com/excilys/db/exception/ServiceException.class
 com/excilys/db/validator/ComputerValidator.class
 com/excilys/db/mapper/ComputerMapper.class
 com/excilys/db/App.class

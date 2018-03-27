@@ -13,6 +13,7 @@
 /home/excilys/Projects/project/excilys_db/db/src/main/java/com/excilys/db/exception/IncoherentDatesException.java
 /home/excilys/Projects/project/excilys_db/db/src/main/java/com/excilys/db/model/Company.java
 /home/excilys/Projects/project/excilys_db/db/src/main/java/com/excilys/db/exception/CompaniesIdIncorrectException.java
+/home/excilys/Projects/project/excilys_db/db/src/main/java/com/excilys/db/exception/ServiceException.java
 /home/excilys/Projects/project/excilys_db/db/src/main/java/com/excilys/db/page/PageComputerDTO.java
 /home/excilys/Projects/project/excilys_db/db/src/main/java/com/excilys/db/page/PageComputer.java
 /home/excilys/Projects/project/excilys_db/db/src/main/java/com/excilys/db/exception/ConnectionFailedException.java

@@ -11,11 +11,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.excilys.db.dto.ComputerDTO;
+import com.excilys.db.exception.CompaniesIdIncorrectException;
+import com.excilys.db.exception.IncoherentDatesException;
 import com.excilys.db.exception.ServiceException;
 import com.excilys.db.mapper.ComputerMapper;
 import com.excilys.db.model.Computer;
 import com.excilys.db.service.CompaniesService;
 import com.excilys.db.service.ComputerService;
+import com.excilys.db.validator.ComputerValidator;
 
 /**
  * Servlet implementation class AddComputer
@@ -50,16 +53,10 @@ public class AddComputer extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 	    ComputerDTO computerDTO = new ComputerDTO();
-	    System.out.println(request.getAttribute("computerName"));
-	    System.out.println(request.getParameter("introduced"));
-	    System.out.println(request.getParameter("discontinued"));
-	    computerDTO.setCompany(request.getParameter("computerName"));
+	    computerDTO.setName(request.getParameter("computerName"));
         computerDTO.setIntroduced(request.getParameter("introduced"));
         computerDTO.setDiscontinued(request.getParameter("discontinued"));
         computerDTO.setCompany(request.getParameter("companyId"));
-        
-        System.out.println(request.getParameter("companyId"));
-        System.out.println(computerDTO.getCompany());
         Computer computer = ComputerMapper.computerDTOToComputer(computerDTO);
         try {
             ComputerService.INSTANCE.createComputer(computer);

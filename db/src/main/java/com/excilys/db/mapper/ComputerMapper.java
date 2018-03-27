@@ -68,7 +68,7 @@ public class ComputerMapper {
     }
 
     public static Computer computerDTOToComputer(ComputerDTO computer) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MMM-dd");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         formatter = formatter.withLocale(Locale.FRANCE);
         Computer toReturn = new Computer();
         toReturn.setId(computer.getId());
