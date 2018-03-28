@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testng-results skipped="0" failed="0" total="35" passed="35">
+  <reporter-output>
+  </reporter-output>
+  <suite name="Command line suite" duration-ms="836" started-at="2018-03-28T12:47:01Z" finished-at="2018-03-28T12:47:02Z">
+    <groups>
+    </groups>
+    <test name="Command line test" duration-ms="836" started-at="2018-03-28T12:47:01Z" finished-at="2018-03-28T12:47:02Z">
+      <class name="com.excilys.db.test.ComputerDAOTest">
+        <test-method status="PASS" signature="testCreateAComputerDateNotNull()[pri:0, instance:testCreateAComputerDateNotNull(com.excilys.db.test.ComputerDAOTest)]" name="testCreateAComputerDateNotNull" duration-ms="18" started-at="2018-03-28T14:47:01Z" finished-at="2018-03-28T14:47:01Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- testCreateAComputerDateNotNull -->
+        <test-method status="PASS" signature="testUpdateAComputerDateIntroNull()[pri:0, instance:testUpdateAComputerDateIntroNull(com.excilys.db.test.ComputerDAOTest)]" name="testUpdateAComputerDateIntroNull" duration-ms="33" started-at="2018-03-28T14:47:01Z" finished-at="2018-03-28T14:47:01Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- testUpdateAComputerDateIntroNull -->
+        <test-method status="PASS" signature="testUpdateAComputerDateNotNull()[pri:0, instance:testUpdateAComputerDateNotNull(com.excilys.db.test.ComputerDAOTest)]" name="testUpdateAComputerDateNotNull" duration-ms="31" started-at="2018-03-28T14:47:01Z" finished-at="2018-03-28T14:47:01Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- testUpdateAComputerDateNotNull -->
+        <test-method status="PASS" signature="testCreateAComputerDatesNull()[pri:0, instance:testCreateAComputerDatesNull(com.excilys.db.test.ComputerDAOTest)]" name="testCreateAComputerDatesNull" duration-ms="17" started-at="2018-03-28T14:47:01Z" finished-at="2018-03-28T14:47:01Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- testCreateAComputerDatesNull -->
+        <test-method status="PASS" signature="testCreateAComputerDatesNullCompanieNull()[pri:0, instance:testCreateAComputerDatesNullCompanieNull(com.excilys.db.test.ComputerDAOTest)]" name="testCreateAComputerDatesNullCompanieNull" duration-ms="17" started-at="2018-03-28T14:47:01Z" finished-at="2018-03-28T14:47:01Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- testCreateAComputerDatesNullCompanieNull -->
+        <test-method status="PASS" signature="testUpdateAComputerDateDiscNull()[pri:0, instance:testUpdateAComputerDateDiscNull(com.excilys.db.test.ComputerDAOTest)]" name="testUpdateAComputerDateDiscNull" duration-ms="27" started-at="2018-03-28T14:47:01Z" finished-at="2018-03-28T14:47:01Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- testUpdateAComputerDateDiscNull -->
+        <test-method status="PASS" signature="testUpdateAComputerDatesNullCompanieNull()[pri:0, instance:testUpdateAComputerDatesNullCompanieNull(com.excilys.db.test.ComputerDAOTest)]" name="testUpdateAComputerDatesNullCompanieNull" duration-ms="28" started-at="2018-03-28T14:47:01Z" finished-at="2018-03-28T14:47:01Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- testUpdateAComputerDatesNullCompanieNull -->
+        <test-method status="PASS" signature="testCreateAComputerDateIntroNull()[pri:0, instance:testCreateAComputerDateIntroNull(com.excilys.db.test.ComputerDAOTest)]" name="testCreateAComputerDateIntroNull" duration-ms="17" started-at="2018-03-28T14:47:01Z" finished-at="2018-03-28T14:47:01Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- testCreateAComputerDateIntroNull -->
+        <test-method status="PASS" signature="testGetIdFromName()[pri:0, instance:testGetIdFromName(com.excilys.db.test.ComputerDAOTest)]" name="testGetIdFromName" duration-ms="5" started-at="2018-03-28T14:47:01Z" finished-at="2018-03-28T14:47:01Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- testGetIdFromName -->
+        <test-method status="PASS" signature="testDelete()[pri:0, instance:testDelete(com.excilys.db.test.ComputerDAOTest)]" name="testDelete" duration-ms="18" started-at="2018-03-28T14:47:01Z" finished-at="2018-03-28T14:47:01Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- testDelete -->
+        <test-method status="PASS" signature="testShowDetails()[pri:0, instance:testShowDetails(com.excilys.db.test.ComputerDAOTest)]" name="testShowDetails" duration-ms="6" started-at="2018-03-28T14:47:01Z" finished-at="2018-03-28T14:47:01Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- testShowDetails -->
+        <test-method status="PASS" signature="testUpdateAComputerDatesNull()[pri:0, instance:testUpdateAComputerDatesNull(com.excilys.db.test.ComputerDAOTest)]" name="testUpdateAComputerDatesNull" duration-ms="29" started-at="2018-03-28T14:47:01Z" finished-at="2018-03-28T14:47:01Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- testUpdateAComputerDatesNull -->
+        <test-method status="PASS" signature="testListComputer()[pri:0, instance:testListComputer(com.excilys.db.test.ComputerDAOTest)]" name="testListComputer" duration-ms="50" started-at="2018-03-28T14:47:01Z" finished-at="2018-03-28T14:47:02Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- testListComputer -->
+        <test-method status="PASS" signature="testGetIdComputer()[pri:0, instance:testGetIdComputer(com.excilys.db.test.ComputerDAOTest)]" name="testGetIdComputer" duration-ms="5" started-at="2018-03-28T14:47:02Z" finished-at="2018-03-28T14:47:02Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- testGetIdComputer -->
+        <test-method status="PASS" signature="testCreateAComputerDateDiscNull()[pri:0, instance:testCreateAComputerDateDiscNull(com.excilys.db.test.ComputerDAOTest)]" name="testCreateAComputerDateDiscNull" duration-ms="18" started-at="2018-03-28T14:47:02Z" finished-at="2018-03-28T14:47:02Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- testCreateAComputerDateDiscNull -->
+      </class> <!-- com.excilys.db.test.ComputerDAOTest -->
+      <class name="com.excilys.db.test.ComputerServiceTest">
+        <test-method status="PASS" signature="testCreateAComputer()[pri:0, instance:testCreateAComputer(com.excilys.db.test.ComputerServiceTest)]" name="testCreateAComputer" duration-ms="0" started-at="2018-03-28T14:47:02Z" finished-at="2018-03-28T14:47:02Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- testCreateAComputer -->
+      </class> <!-- com.excilys.db.test.ComputerServiceTest -->
+      <class name="com.excilys.db.test.ComputerValidatorTest">
+        <test-method status="PASS" signature="testExist()[pri:0, instance:testExist(com.excilys.db.test.ComputerValidatorTest)]" name="testExist" duration-ms="272" started-at="2018-03-28T14:47:01Z" finished-at="2018-03-28T14:47:01Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- testExist -->
+      </class> <!-- com.excilys.db.test.ComputerValidatorTest -->
+      <class name="com.excilys.db.test.CompaniesServiceTest">
+        <test-method status="PASS" signature="testGetCompanies()[pri:0, instance:testGetCompanies(com.excilys.db.test.CompaniesServiceTest)]" name="testGetCompanies" duration-ms="0" started-at="2018-03-28T14:47:02Z" finished-at="2018-03-28T14:47:02Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- testGetCompanies -->
+      </class> <!-- com.excilys.db.test.CompaniesServiceTest -->
+      <class name="com.excilys.db.test.ConnectionTest">
+        <test-method status="PASS" signature="testMockDBConnection()[pri:0, instance:testMockDBConnection(com.excilys.db.test.ConnectionTest)]" name="testMockDBConnection" duration-ms="90" started-at="2018-03-28T14:47:02Z" finished-at="2018-03-28T14:47:02Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- testMockDBConnection -->
+      </class> <!-- com.excilys.db.test.ConnectionTest -->
+      <class name="com.excilys.db.test.CompaniesTest">
+        <test-method status="PASS" signature="testEqualsFalseName()[pri:0, instance:testEqualsFalseName(com.excilys.db.test.CompaniesTest)]" name="testEqualsFalseName" duration-ms="1" started-at="2018-03-28T14:47:01Z" finished-at="2018-03-28T14:47:01Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- testEqualsFalseName -->
+        <test-method status="PASS" signature="testToString()[pri:0, instance:testToString(com.excilys.db.test.CompaniesTest)]" name="testToString" duration-ms="0" started-at="2018-03-28T14:47:01Z" finished-at="2018-03-28T14:47:01Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- testToString -->
+        <test-method status="PASS" signature="testEqualsSame()[pri:0, instance:testEqualsSame(com.excilys.db.test.CompaniesTest)]" name="testEqualsSame" duration-ms="0" started-at="2018-03-28T14:47:01Z" finished-at="2018-03-28T14:47:01Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- testEqualsSame -->
+        <test-method status="PASS" signature="testEqualsTrue()[pri:0, instance:testEqualsTrue(com.excilys.db.test.CompaniesTest)]" name="testEqualsTrue" duration-ms="0" started-at="2018-03-28T14:47:01Z" finished-at="2018-03-28T14:47:01Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- testEqualsTrue -->
+        <test-method status="PASS" signature="testEqualsFalseClass()[pri:0, instance:testEqualsFalseClass(com.excilys.db.test.CompaniesTest)]" name="testEqualsFalseClass" duration-ms="0" started-at="2018-03-28T14:47:01Z" finished-at="2018-03-28T14:47:01Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- testEqualsFalseClass -->
+      </class> <!-- com.excilys.db.test.CompaniesTest -->
+      <class name="com.excilys.db.AppTest">
+        <test-method status="PASS" signature="testApp()[pri:0, instance:testApp(com.excilys.db.AppTest)]" name="testApp" duration-ms="1" started-at="2018-03-28T14:47:01Z" finished-at="2018-03-28T14:47:01Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- testApp -->
+      </class> <!-- com.excilys.db.AppTest -->
+      <class name="com.excilys.db.test.ComputerTest">
+        <test-method status="PASS" signature="testEqualsFalseCompanyId()[pri:0, instance:testEqualsFalseCompanyId(com.excilys.db.test.ComputerTest)]" name="testEqualsFalseCompanyId" duration-ms="1" started-at="2018-03-28T14:47:01Z" finished-at="2018-03-28T14:47:01Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- testEqualsFalseCompanyId -->
+        <test-method status="PASS" signature="testToString()[pri:0, instance:testToString(com.excilys.db.test.ComputerTest)]" name="testToString" duration-ms="1" started-at="2018-03-28T14:47:01Z" finished-at="2018-03-28T14:47:01Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- testToString -->
+        <test-method status="PASS" signature="testEqualsFalseName()[pri:0, instance:testEqualsFalseName(com.excilys.db.test.ComputerTest)]" name="testEqualsFalseName" duration-ms="0" started-at="2018-03-28T14:47:01Z" finished-at="2018-03-28T14:47:01Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- testEqualsFalseName -->
+        <test-method status="PASS" signature="testEqualsFalseIntroduced()[pri:0, instance:testEqualsFalseIntroduced(com.excilys.db.test.ComputerTest)]" name="testEqualsFalseIntroduced" duration-ms="0" started-at="2018-03-28T14:47:01Z" finished-at="2018-03-28T14:47:01Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- testEqualsFalseIntroduced -->
+        <test-method status="PASS" signature="testEqualsTrue()[pri:0, instance:testEqualsTrue(com.excilys.db.test.ComputerTest)]" name="testEqualsTrue" duration-ms="0" started-at="2018-03-28T14:47:01Z" finished-at="2018-03-28T14:47:01Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- testEqualsTrue -->
+        <test-method status="PASS" signature="testEqualsSame()[pri:0, instance:testEqualsSame(com.excilys.db.test.ComputerTest)]" name="testEqualsSame" duration-ms="0" started-at="2018-03-28T14:47:01Z" finished-at="2018-03-28T14:47:01Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- testEqualsSame -->
+        <test-method status="PASS" signature="testEqualsFalseClass()[pri:0, instance:testEqualsFalseClass(com.excilys.db.test.ComputerTest)]" name="testEqualsFalseClass" duration-ms="1" started-at="2018-03-28T14:47:01Z" finished-at="2018-03-28T14:47:01Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- testEqualsFalseClass -->
+        <test-method status="PASS" signature="testEqualsFalseDiscontinued()[pri:0, instance:testEqualsFalseDiscontinued(com.excilys.db.test.ComputerTest)]" name="testEqualsFalseDiscontinued" duration-ms="0" started-at="2018-03-28T14:47:01Z" finished-at="2018-03-28T14:47:01Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- testEqualsFalseDiscontinued -->
+      </class> <!-- com.excilys.db.test.ComputerTest -->
+      <class name="com.excilys.db.test.ComputerMapperTest">
+        <test-method status="PASS" signature="testMapper()[pri:0, instance:testMapper(com.excilys.db.test.ComputerMapperTest)]" name="testMapper" duration-ms="0" started-at="2018-03-28T14:47:02Z" finished-at="2018-03-28T14:47:02Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- testMapper -->
+      </class> <!-- com.excilys.db.test.ComputerMapperTest -->
+      <class name="com.excilys.db.test.CompaniesDAOTest">
+        <test-method status="PASS" signature="testListCompanies()[pri:0, instance:testListCompanies(com.excilys.db.test.CompaniesDAOTest)]" name="testListCompanies" duration-ms="3" started-at="2018-03-28T14:47:02Z" finished-at="2018-03-28T14:47:02Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- testListCompanies -->
+      </class> <!-- com.excilys.db.test.CompaniesDAOTest -->
+    </test> <!-- Command line test -->
+  </suite> <!-- Command line suite -->
+</testng-results>

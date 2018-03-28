@@ -1,0 +1,65 @@
+2018-03-27 09:34:25,097 [DEBUG] (ComputerDAO.java:createAComputer:236) Requête : com.mysql.cj.jdbc.PreparedStatement@7f13d6e: INSERT INTO computer(name,introduced,discontinued,company_id) VALUES ('Test_Computer','1999-12-04','1999-12-04',1)
+2018-03-27 09:34:25,120 [DEBUG] (ComputerDAO.java:getIdFromName:323) Requête : com.mysql.cj.jdbc.PreparedStatement@394e1a0f: SELECT id FROM computer WHERE name = 'Test_Computer'
+2018-03-27 09:34:25,125 [DEBUG] (ComputerDAO.java:deleteAComputer:346) Requête : com.mysql.cj.jdbc.PreparedStatement@167fdd33: DELETE FROM computer WHERE id = 3174
+2018-03-27 09:34:25,134 [DEBUG] (ComputerDAO.java:createAComputer:236) Requête : com.mysql.cj.jdbc.PreparedStatement@74650e52: INSERT INTO computer(name,introduced,discontinued,company_id) VALUES ('Test_Computer',null,'1999-12-04',2)
+2018-03-27 09:34:25,142 [DEBUG] (ComputerDAO.java:getId:296) Requête : com.mysql.cj.jdbc.PreparedStatement@4d41cee: SELECT id FROM computer WHERE name = 'Test_Computer' AND introduced is null AND discontinued = '1999-12-04' AND company_id = 2
+2018-03-27 09:34:25,145 [DEBUG] (ComputerDAO.java:updateAComputer:199) Requête : com.mysql.cj.jdbc.PreparedStatement@27a8c74e: UPDATE computer SET name = 'Test_Computer', introduced = null, discontinued = '1999-12-04', company_id = 2 WHERE id = 3175
+2018-03-27 09:34:25,153 [DEBUG] (ComputerDAO.java:getIdFromName:323) Requête : com.mysql.cj.jdbc.PreparedStatement@59e5ddf: SELECT id FROM computer WHERE name = 'Test_Computer'
+2018-03-27 09:34:25,156 [DEBUG] (ComputerDAO.java:deleteAComputer:346) Requête : com.mysql.cj.jdbc.PreparedStatement@704a52ec: DELETE FROM computer WHERE id = 3175
+2018-03-27 09:34:25,165 [DEBUG] (ComputerDAO.java:createAComputer:236) Requête : com.mysql.cj.jdbc.PreparedStatement@57e1b0c: INSERT INTO computer(name,introduced,discontinued,company_id) VALUES ('Test_Computer','1999-12-04','1999-12-04',1)
+2018-03-27 09:34:25,173 [DEBUG] (ComputerDAO.java:getId:296) Requête : com.mysql.cj.jdbc.PreparedStatement@11438d26: SELECT id FROM computer WHERE name = 'Test_Computer' AND introduced = '1999-12-04' AND discontinued = '1999-12-04' AND company_id = 1
+2018-03-27 09:34:25,176 [DEBUG] (ComputerDAO.java:updateAComputer:199) Requête : com.mysql.cj.jdbc.PreparedStatement@528931cf: UPDATE computer SET name = 'Test_Computer', introduced = '1999-12-04', discontinued = '1999-12-04', company_id = 1 WHERE id = 3176
+2018-03-27 09:34:25,183 [DEBUG] (ComputerDAO.java:getIdFromName:323) Requête : com.mysql.cj.jdbc.PreparedStatement@30a3107a: SELECT id FROM computer WHERE name = 'Test_Computer'
+2018-03-27 09:34:25,186 [DEBUG] (ComputerDAO.java:deleteAComputer:346) Requête : com.mysql.cj.jdbc.PreparedStatement@7a765367: DELETE FROM computer WHERE id = 3176
+2018-03-27 09:34:25,194 [DEBUG] (ComputerDAO.java:createAComputer:236) Requête : com.mysql.cj.jdbc.PreparedStatement@78e67e0a: INSERT INTO computer(name,introduced,discontinued,company_id) VALUES ('Test_Computer',null,null,1)
+2018-03-27 09:34:25,198 [DEBUG] (ComputerDAO.java:getIdFromName:323) Requête : com.mysql.cj.jdbc.PreparedStatement@69a3d1d: SELECT id FROM computer WHERE name = 'Test_Computer'
+2018-03-27 09:34:25,202 [DEBUG] (ComputerDAO.java:deleteAComputer:346) Requête : com.mysql.cj.jdbc.PreparedStatement@3cb1ffe6: DELETE FROM computer WHERE id = 3177
+2018-03-27 09:34:25,207 [DEBUG] (ComputerDAO.java:createAComputer:236) Requête : com.mysql.cj.jdbc.PreparedStatement@6f195bc3: INSERT INTO computer(name,introduced,discontinued,company_id) VALUES ('Test_Computer',null,null,null)
+2018-03-27 09:34:25,211 [DEBUG] (ComputerDAO.java:getIdFromName:323) Requête : com.mysql.cj.jdbc.PreparedStatement@42f93a98: SELECT id FROM computer WHERE name = 'Test_Computer'
+2018-03-27 09:34:25,213 [DEBUG] (ComputerDAO.java:deleteAComputer:346) Requête : com.mysql.cj.jdbc.PreparedStatement@36b4cef0: DELETE FROM computer WHERE id = 3178
+2018-03-27 09:34:25,218 [DEBUG] (ComputerDAO.java:createAComputer:236) Requête : com.mysql.cj.jdbc.PreparedStatement@27808f31: INSERT INTO computer(name,introduced,discontinued,company_id) VALUES ('Test_Computer','1999-12-04',null,1)
+2018-03-27 09:34:25,222 [DEBUG] (ComputerDAO.java:getId:296) Requête : com.mysql.cj.jdbc.PreparedStatement@9a7504c: SELECT id FROM computer WHERE name = 'Test_Computer' AND introduced = '1999-12-04' AND discontinued is null AND company_id = 1
+2018-03-27 09:34:25,225 [DEBUG] (ComputerDAO.java:updateAComputer:199) Requête : com.mysql.cj.jdbc.PreparedStatement@6b57696f: UPDATE computer SET name = 'Test_Computer', introduced = '1999-12-04', discontinued = null, company_id = 1 WHERE id = 3179
+2018-03-27 09:34:25,228 [DEBUG] (ComputerDAO.java:getIdFromName:323) Requête : com.mysql.cj.jdbc.PreparedStatement@687080dc: SELECT id FROM computer WHERE name = 'Test_Computer'
+2018-03-27 09:34:25,231 [DEBUG] (ComputerDAO.java:deleteAComputer:346) Requête : com.mysql.cj.jdbc.PreparedStatement@4abdb505: DELETE FROM computer WHERE id = 3179
+2018-03-27 09:34:25,235 [DEBUG] (ComputerDAO.java:createAComputer:236) Requête : com.mysql.cj.jdbc.PreparedStatement@29b5cd00: INSERT INTO computer(name,introduced,discontinued,company_id) VALUES ('Test_Computer',null,null,null)
+2018-03-27 09:34:25,239 [DEBUG] (ComputerDAO.java:getId:296) Requête : com.mysql.cj.jdbc.PreparedStatement@6043cd28: SELECT id FROM computer WHERE name = 'Test_Computer' AND introduced is null AND discontinued is null AND company_id is null
+2018-03-27 09:34:25,242 [DEBUG] (ComputerDAO.java:updateAComputer:199) Requête : com.mysql.cj.jdbc.PreparedStatement@25af5db5: UPDATE computer SET name = 'Test_Computer', introduced = null, discontinued = null, company_id = null WHERE id = 3180
+2018-03-27 09:34:25,246 [DEBUG] (ComputerDAO.java:getIdFromName:323) Requête : com.mysql.cj.jdbc.PreparedStatement@27f723: SELECT id FROM computer WHERE name = 'Test_Computer'
+2018-03-27 09:34:25,250 [DEBUG] (ComputerDAO.java:deleteAComputer:346) Requête : com.mysql.cj.jdbc.PreparedStatement@7b69c6ba: DELETE FROM computer WHERE id = 3180
+2018-03-27 09:34:25,255 [DEBUG] (ComputerDAO.java:createAComputer:236) Requête : com.mysql.cj.jdbc.PreparedStatement@262b2c86: INSERT INTO computer(name,introduced,discontinued,company_id) VALUES ('Test_Computer',null,'1999-12-04',1)
+2018-03-27 09:34:25,260 [DEBUG] (ComputerDAO.java:getIdFromName:323) Requête : com.mysql.cj.jdbc.PreparedStatement@1e7c7811: SELECT id FROM computer WHERE name = 'Test_Computer'
+2018-03-27 09:34:25,264 [DEBUG] (ComputerDAO.java:deleteAComputer:346) Requête : com.mysql.cj.jdbc.PreparedStatement@77f99a05: DELETE FROM computer WHERE id = 3181
+2018-03-27 09:34:25,268 [DEBUG] (ComputerDAO.java:getIdFromName:323) Requête : com.mysql.cj.jdbc.PreparedStatement@4d3167f4: SELECT id FROM computer WHERE name = 'MacBook Pro 15.4 inch'
+2018-03-27 09:34:25,270 [DEBUG] (ComputerDAO.java:getIdFromName:323) Requête : com.mysql.cj.jdbc.PreparedStatement@4eb7f003: SELECT id FROM computer WHERE name = 'Test_Computer'
+2018-03-27 09:34:25,273 [DEBUG] (ComputerDAO.java:createAComputer:236) Requête : com.mysql.cj.jdbc.PreparedStatement@612679d6: INSERT INTO computer(name,introduced,discontinued,company_id) VALUES ('Test_Destruction',null,null,null)
+2018-03-27 09:34:25,276 [DEBUG] (ComputerDAO.java:getIdFromName:323) Requête : com.mysql.cj.jdbc.PreparedStatement@74ad1f1f: SELECT id FROM computer WHERE name = 'Test_Destruction'
+2018-03-27 09:34:25,278 [DEBUG] (ComputerDAO.java:deleteAComputer:346) Requête : com.mysql.cj.jdbc.PreparedStatement@757942a1: DELETE FROM computer WHERE id = 3182
+2018-03-27 09:34:25,282 [DEBUG] (ComputerDAO.java:getIdFromName:323) Requête : com.mysql.cj.jdbc.PreparedStatement@37374a5e: SELECT id FROM computer WHERE name = 'Test_Computer'
+2018-03-27 09:34:25,284 [DEBUG] (ComputerDAO.java:showDetails:155) Requête : com.mysql.cj.jdbc.PreparedStatement@b7dd107: SELECT computer.name, introduced, discontinued, company.id, computer.id, company.name FROM computer LEFT JOIN company ON computer.id = company.id WHERE computer.id = 1
+2018-03-27 09:34:25,288 [DEBUG] (ComputerDAO.java:getIdFromName:323) Requête : com.mysql.cj.jdbc.PreparedStatement@569cfc36: SELECT id FROM computer WHERE name = 'Test_Computer'
+2018-03-27 09:34:25,290 [DEBUG] (CompaniesDAO.java:getCompany:142) Requête : com.mysql.cj.jdbc.PreparedStatement@553a3d88: SELECT name FROM company WHERE id = 1
+2018-03-27 09:34:25,292 [DEBUG] (ComputerDAO.java:createAComputer:236) Requête : com.mysql.cj.jdbc.PreparedStatement@8e24743: INSERT INTO computer(name,introduced,discontinued,company_id) VALUES ('Test_Computer',null,null,1)
+2018-03-27 09:34:25,296 [DEBUG] (ComputerDAO.java:getId:296) Requête : com.mysql.cj.jdbc.PreparedStatement@4e718207: SELECT id FROM computer WHERE name = 'Test_Computer' AND introduced is null AND discontinued is null AND company_id = 1
+2018-03-27 09:34:25,298 [DEBUG] (ComputerDAO.java:updateAComputer:199) Requête : com.mysql.cj.jdbc.PreparedStatement@51c8530f: UPDATE computer SET name = 'Test_Computer', introduced = null, discontinued = null, company_id = 1 WHERE id = 3183
+2018-03-27 09:34:25,302 [DEBUG] (ComputerDAO.java:getIdFromName:323) Requête : com.mysql.cj.jdbc.PreparedStatement@1fc2b765: SELECT id FROM computer WHERE name = 'Test_Computer'
+2018-03-27 09:34:25,304 [DEBUG] (ComputerDAO.java:deleteAComputer:346) Requête : com.mysql.cj.jdbc.PreparedStatement@22eeefeb: DELETE FROM computer WHERE id = 3183
+2018-03-27 09:34:25,307 [DEBUG] (ComputerDAO.java:listComputer:97) Requête : com.mysql.cj.jdbc.PreparedStatement@2de8284b: SELECT computer.name, introduced, discontinued, company.id, computer.id, company.name FROM computer LEFT JOIN company ON computer.id = company.id
+2018-03-27 09:34:25,336 [DEBUG] (ComputerDAO.java:getIdFromName:323) Requête : com.mysql.cj.jdbc.PreparedStatement@365185bd: SELECT id FROM computer WHERE name = 'Test_Computer'
+2018-03-27 09:34:25,339 [DEBUG] (ComputerDAO.java:getId:296) Requête : com.mysql.cj.jdbc.PreparedStatement@782663d3: SELECT id FROM computer WHERE name = 'MacBook Pro 15.4 inch' AND introduced is null AND discontinued is null AND company_id = 1
+2018-03-27 09:34:25,341 [DEBUG] (ComputerDAO.java:getIdFromName:323) Requête : com.mysql.cj.jdbc.PreparedStatement@6ec8211c: SELECT id FROM computer WHERE name = 'Test_Computer'
+2018-03-27 09:34:25,345 [DEBUG] (ComputerDAO.java:createAComputer:236) Requête : com.mysql.cj.jdbc.PreparedStatement@150c158: INSERT INTO computer(name,introduced,discontinued,company_id) VALUES ('Test_Computer','1999-12-04',null,1)
+2018-03-27 09:34:25,349 [DEBUG] (ComputerDAO.java:getIdFromName:323) Requête : com.mysql.cj.jdbc.PreparedStatement@704d6e83: SELECT id FROM computer WHERE name = 'Test_Computer'
+2018-03-27 09:34:25,352 [DEBUG] (ComputerDAO.java:deleteAComputer:346) Requête : com.mysql.cj.jdbc.PreparedStatement@3578436e: DELETE FROM computer WHERE id = 3184
+2018-03-27 09:34:25,475 [DEBUG] (ComputerDAO.java:getCount:364) Requête : com.mysql.cj.jdbc.PreparedStatement@4e91d63f: SELECT COUNT(*) FROM computer
+2018-03-27 09:34:25,475 [DEBUG] (PageComputerDTO.java:<init>:62) 59
+2018-03-27 09:34:25,475 [DEBUG] (PageComputerDTOTest.java:testPageComputerDTO:19) 59
+2018-03-27 09:34:25,475 [DEBUG] (PageComputerDTOTest.java:testPageComputerDTO:20) 588
+2018-03-27 09:34:25,476 [DEBUG] (PageComputerDTOTest.java:testPageComputerDTO:22) 1
+2018-03-27 09:34:25,476 [DEBUG] (PageComputerDTOTest.java:testPageComputerDTO:22) 2
+2018-03-27 09:34:25,476 [DEBUG] (PageComputerDTOTest.java:testPageComputerDTO:22) 3
+2018-03-27 09:34:25,476 [DEBUG] (PageComputerDTOTest.java:testPageComputerDTO:22) 59
+2018-03-27 09:34:25,478 [DEBUG] (CompaniesDAO.java:listCompanies:77) Requête : com.mysql.cj.jdbc.PreparedStatement@56de5251: SELECT name, id FROM company
+2018-03-27 09:34:25,481 [DEBUG] (ComputerDAO.java:createAComputer:236) Requête : com.mysql.cj.jdbc.PreparedStatement@5276e6b0: INSERT INTO computer(name,introduced,discontinued,company_id) VALUES ('Test_Computer','1999-12-04','1999-12-04',1)
+2018-03-27 09:34:25,486 [DEBUG] (ComputerDAO.java:getIdFromName:323) Requête : com.mysql.cj.jdbc.PreparedStatement@78aab498: SELECT id FROM computer WHERE name = 'Test_Computer'
+2018-03-27 09:34:25,488 [DEBUG] (ComputerDAO.java:deleteAComputer:346) Requête : com.mysql.cj.jdbc.PreparedStatement@12e61fe6: DELETE FROM computer WHERE id = 3185
