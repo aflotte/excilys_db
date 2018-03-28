@@ -389,5 +389,53 @@ public enum ComputerDAO {
         }
         return result;
     }
+    
+    /**
+    *
+    */
+   public int getCount(String search) throws DAOAccesExeption {
+       initialisationConnection();
+       int result = 0;
+       try {
+           PreparedStatement prep1 = conn.prepareStatement(QUERRY_COUNT + " WHERE computer.name LIKE '%" + search + "%'");
+           logger.debug("Requête : " + prep1.toString());
+           ResultSet resultSet = prep1.executeQuery();
+           if (resultSet.next()) {
+               result = resultSet.getInt(1);
+           }
+           prep1.close();
+       } catch (SQLException e) {
+           logger.error("Erreur dans l'accès des données");
+           throw new DAOAccesExeption();
+       } finally {
+           DBConnection.getInstance().disconnect();
+       }
+       return result;
+   }
+    
+    
+    public List<Computer> listComputerLike(int offset, int limit, String name) {
+        initialisationConnection();
+        List<Computer> listResult = new ArrayList<Computer>();
+        try {
+            PreparedStatement prep1 = conn.prepareStatement(QUERRY_LIST_COMPUTERS + " WHERE computer.name LIKE '%"+name +"%' " + OFFSET_LIMIT);
+            prep1.setInt(1, limit);
+            prep1.setInt(2, offset);
+            logger.debug("Requête : " + prep1.toString());
+            ResultSet resultSet = prep1.executeQuery();
+            while (resultSet.next()) {
+                Computer toAdd = ComputerMapper.resultToComputer(resultSet);
+                listResult.add(toAdd);
+            }
+            resultSet.close();
+            prep1.close();
+        } catch (SQLException e) {
+            logger.error("Erreur dans l'accès des données");
+            throw new DAOAccesExeption();
+        } finally {
+            DBConnection.getInstance().disconnect();
+        }
+        return listResult;
+    }
 
 }

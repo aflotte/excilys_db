@@ -96,7 +96,7 @@ public class CLI {
         result = ScanCLI.scanInt(sc);
         if ((result > 7) || (result < 1)) {
             System.out.println("Veuillez entrer un nombre correct");
-            return 0;
+            return 8;
         }
         return result;
     }
@@ -117,9 +117,6 @@ public class CLI {
      */
     public static void afficherOrdinateurs() throws CompaniesInexistantException {
         List<Computer> listeOrdinateur = ComputerService.INSTANCE.listComputer();
-        for (int i = 0 ; i < listeOrdinateur.size(); i++) {
-            logger.debug(listeOrdinateur.get(i).toString());
-        }
         PageComputer page = new PageComputer(listeOrdinateur, sc);
         System.out.println("Voici la liste des ordinateurs ( Q to exit ): ");
         page.afficher();

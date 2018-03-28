@@ -1,0 +1,48 @@
+2018-03-28 14:36:48,494 [DEBUG] (HikariConfig.java:logConfiguration:841) HikariPool-1 - configuration:
+2018-03-28 14:36:48,503 [DEBUG] (HikariConfig.java:logConfiguration:857) allowPoolSuspension.............false
+2018-03-28 14:36:48,506 [DEBUG] (HikariConfig.java:logConfiguration:857) autoCommit......................true
+2018-03-28 14:36:48,506 [DEBUG] (HikariConfig.java:logConfiguration:857) catalog.........................null
+2018-03-28 14:36:48,506 [DEBUG] (HikariConfig.java:logConfiguration:857) connectionInitSql...............null
+2018-03-28 14:36:48,506 [DEBUG] (HikariConfig.java:logConfiguration:857) connectionTestQuery.............null
+2018-03-28 14:36:48,506 [DEBUG] (HikariConfig.java:logConfiguration:857) connectionTimeout...............30000
+2018-03-28 14:36:48,506 [DEBUG] (HikariConfig.java:logConfiguration:857) dataSource......................null
+2018-03-28 14:36:48,506 [DEBUG] (HikariConfig.java:logConfiguration:857) dataSourceClassName.............null
+2018-03-28 14:36:48,506 [DEBUG] (HikariConfig.java:logConfiguration:857) dataSourceJNDI..................null
+2018-03-28 14:36:48,555 [DEBUG] (HikariConfig.java:logConfiguration:857) dataSourceProperties............{password=<masked>}
+2018-03-28 14:36:48,556 [DEBUG] (HikariConfig.java:logConfiguration:857) driverClassName................."com.mysql.cj.jdbc.Driver"
+2018-03-28 14:36:48,556 [DEBUG] (HikariConfig.java:logConfiguration:857) healthCheckProperties...........{}
+2018-03-28 14:36:48,556 [DEBUG] (HikariConfig.java:logConfiguration:857) healthCheckRegistry.............null
+2018-03-28 14:36:48,556 [DEBUG] (HikariConfig.java:logConfiguration:857) idleTimeout.....................600000
+2018-03-28 14:36:48,556 [DEBUG] (HikariConfig.java:logConfiguration:857) initializationFailFast..........true
+2018-03-28 14:36:48,558 [DEBUG] (HikariConfig.java:logConfiguration:857) isolateInternalQueries..........false
+2018-03-28 14:36:48,558 [DEBUG] (HikariConfig.java:logConfiguration:857) jdbc4ConnectionTest.............false
+2018-03-28 14:36:48,558 [DEBUG] (HikariConfig.java:logConfiguration:857) jdbcUrl........................."jdbc:mysql://localhost:3306/computer-database-db?zeroDateTimeBehavior=convertToNull&autoReconnect=true&characterEncoding=UTF-8&characterSetResults=UTF-8&useSSL=FALSE&useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC"
+2018-03-28 14:36:48,558 [DEBUG] (HikariConfig.java:logConfiguration:857) leakDetectionThreshold..........0
+2018-03-28 14:36:48,558 [DEBUG] (HikariConfig.java:logConfiguration:857) maxLifetime.....................1800000
+2018-03-28 14:36:48,558 [DEBUG] (HikariConfig.java:logConfiguration:857) maximumPoolSize.................10
+2018-03-28 14:36:48,558 [DEBUG] (HikariConfig.java:logConfiguration:857) metricRegistry..................null
+2018-03-28 14:36:48,558 [DEBUG] (HikariConfig.java:logConfiguration:857) metricsTrackerFactory...........null
+2018-03-28 14:36:48,559 [DEBUG] (HikariConfig.java:logConfiguration:857) minimumIdle.....................10
+2018-03-28 14:36:48,559 [DEBUG] (HikariConfig.java:logConfiguration:857) password........................<masked>
+2018-03-28 14:36:48,559 [DEBUG] (HikariConfig.java:logConfiguration:857) poolName........................"HikariPool-1"
+2018-03-28 14:36:48,559 [DEBUG] (HikariConfig.java:logConfiguration:857) readOnly........................false
+2018-03-28 14:36:48,559 [DEBUG] (HikariConfig.java:logConfiguration:857) registerMbeans..................false
+2018-03-28 14:36:48,559 [DEBUG] (HikariConfig.java:logConfiguration:857) scheduledExecutorService........null
+2018-03-28 14:36:48,559 [DEBUG] (HikariConfig.java:logConfiguration:857) threadFactory...................null
+2018-03-28 14:36:48,559 [DEBUG] (HikariConfig.java:logConfiguration:857) transactionIsolation............null
+2018-03-28 14:36:48,559 [DEBUG] (HikariConfig.java:logConfiguration:857) username........................"admincdb"
+2018-03-28 14:36:48,559 [DEBUG] (HikariConfig.java:logConfiguration:857) validationTimeout...............5000
+2018-03-28 14:36:48,560 [INFO ] (HikariDataSource.java:getConnection:93) HikariPool-1 - Started.
+2018-03-28 14:36:48,768 [DEBUG] (HikariPool.java:createPoolEntry:445) HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@7826edce
+2018-03-28 14:36:48,780 [DEBUG] (CompaniesDAO.java:listCompanies:78) Requête : HikariProxyPreparedStatement@836514715 wrapping com.mysql.cj.jdbc.PreparedStatement@3c0f93f1: SELECT name, id FROM company
+2018-03-28 14:36:48,866 [DEBUG] (HikariPool.java:logPoolState:378) HikariPool-1 - Pool stats (total=1, active=0, idle=1, waiting=0)
+2018-03-28 14:36:48,877 [DEBUG] (HikariPool.java:createPoolEntry:445) HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@46f94290
+2018-03-28 14:36:48,881 [DEBUG] (HikariPool.java:createPoolEntry:445) HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@4c458c4e
+2018-03-28 14:36:48,885 [DEBUG] (HikariPool.java:createPoolEntry:445) HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@24017f32
+2018-03-28 14:36:48,888 [DEBUG] (HikariPool.java:createPoolEntry:445) HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@6614051c
+2018-03-28 14:36:48,890 [DEBUG] (HikariPool.java:createPoolEntry:445) HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@788c7f1
+2018-03-28 14:36:48,894 [DEBUG] (HikariPool.java:createPoolEntry:445) HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@4a851932
+2018-03-28 14:36:48,897 [DEBUG] (HikariPool.java:createPoolEntry:445) HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@1e2e680d
+2018-03-28 14:36:48,901 [DEBUG] (HikariPool.java:createPoolEntry:445) HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@140735b5
+2018-03-28 14:36:48,904 [DEBUG] (HikariPool.java:createPoolEntry:445) HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@3f67ac30
+2018-03-28 14:36:48,904 [DEBUG] (HikariPool.java:logPoolState:378) HikariPool-1 - After adding stats (total=10, active=0, idle=10, waiting=0)

@@ -25,7 +25,7 @@
             </h1>
             <div id="actions" class="form-horizontal">
                 <div class="pull-left">
-                    <form id="searchForm" action="#" method="GET" class="form-inline">
+                    <form id="searchForm" action="" method="GET" class="form-inline">
 
                         <input type="search" id="searchbox" name="search" class="form-control" placeholder="Search name" />
                         <input type="submit" id="searchsubmit" value="Filter by name"
@@ -104,7 +104,7 @@
             
             <c:forEach var="pagePrev" items="${page.getPrevious()}">
                   <li>
-                    <a href="?actualPage=${pagePrev}&pageSize=${page.getPageSize()}" aria-label="Previous">
+                    <a href="?actualPage=${pagePrev}&pageSize=${page.getPageSize()}${search}" aria-label="Previous">
                       <span aria-hidden="true">&laquo;</span>
                   </a>
                   
@@ -113,7 +113,7 @@
             
                 
                   <c:forEach var="pageToPrint" items="${page.getPagesToGo()}">
-                  <li><a href="?actualPage=${pageToPrint}&pageSize=${page.getPageSize()}">${pageToPrint}</a></li>
+                  <li><a href="?actualPage=${pageToPrint}&pageSize=${page.getPageSize()}${search}">${pageToPrint}</a></li>
                   </c:forEach>
                   
                   
@@ -121,7 +121,7 @@
                   
                   
               <li>
-                <a href="?actualPage=${pageNext}&pageSize=${page.getPageSize()}" aria-label="Next">
+                <a href="?actualPage=${pageNext}&pageSize=${page.getPageSize()}${search}" aria-label="Next">
                     <span aria-hidden="true">&raquo;</span>
                 </a>
             </li>
@@ -129,9 +129,9 @@
         </ul>
 
         <div class="btn-group btn-group-sm pull-right" role="group" >
-            <button type="button" class="btn btn-default" onclick="location.href='?actualPage=${page.getPageNumber()}&pageSize=10'">10</button>
-            <button type="button" class="btn btn-default" onclick="location.href='?actualPage=${page.getPageNumber()}&pageSize=50'">50</button>
-            <button type="button" class="btn btn-default" onclick="location.href='?actualPage=${page.getPageNumber()}&pageSize=100'">100</button>
+            <button type="button" class="btn btn-default" onclick="location.href='?actualPage=${page.getPageNumber()}&pageSize=10${search}'">10</button>
+            <button type="button" class="btn btn-default" onclick="location.href='?actualPage=${page.getPageNumber()}&pageSize=50${search}'">50</button>
+            <button type="button" class="btn btn-default" onclick="location.href='?actualPage=${page.getPageNumber()}&pageSize=100${search}'">100</button>
         </div>
     </div>
     </footer>

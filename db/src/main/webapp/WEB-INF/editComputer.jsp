@@ -30,19 +30,19 @@
                         <fieldset>
                             <div class="form-group">
                                 <label for="computerName">Computer name</label>
-                                <input type="text" class="form-control" id="computerName" name="computerName" placeholder="Computer name" value="${computer.getName()}">
+                                <input type="text" pattern="^[\wÀ-ÿ]+[\wÀ-ÿ_\-'\+\*. ]+$" class="form-control" id="computerName" name="computerName" placeholder="Computer name" value="${computer.getName()}">
                             </div>
                             <div class="form-group">
                                 <label for="introduced">Introduced date</label>
-                                <input type="date" class="form-control" id="introduced" name="introduced" placeholder="Introduced date" value="${computer.getIntroduced()}">
+                                <input type="date" pattern="(?:19|20)[0-9]{2}-(?:(?:0[1-9]|1[0-2])-(?:0[1-9]|1[0-9]|2[0-9])|(?:(?!02)(?:0[1-9]|1[0-2])-(?:30))|(?:(?:0[13578]|1[02])-31))" class="form-control" id="introduced" name="introduced" placeholder="aaaa-MM-jj" value="${computer.getIntroduced()}">
                             </div>
                             <div class="form-group">
                                 <label for="discontinued">Discontinued date</label>
-                                <input type="date" class="form-control" id="discontinued" name="discontinued" placeholder="Discontinued date" value="${computer.getDiscontinued()}">
+                                <input type="date" pattern="(?:19|20)[0-9]{2}-(?:(?:0[1-9]|1[0-2])-(?:0[1-9]|1[0-9]|2[0-9])|(?:(?!02)(?:0[1-9]|1[0-2])-(?:30))|(?:(?:0[13578]|1[02])-31))" class="form-control" id="discontinued" name="discontinued" placeholder="aaaa-MM-jj" value="${computer.getDiscontinued()}">
                             </div>
                             <div class="form-group">
                                 <label for="companyId">Company</label>
-                                <select class="form-control" id="companyId" name="companyId" value="${computer.getCompany()}">
+                                <select class="form-control" id="companyId" name="companyId">
                                     <c:forEach var="company" items="${companies}">
                                     <option value='${company.getName()}'>${company.getName()}</option>
                                     </c:forEach>
