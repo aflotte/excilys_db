@@ -16,7 +16,7 @@ import com.zaxxer.hikari.HikariDataSource;
 public final class DBConnection {
     static org.slf4j.Logger logger = org.slf4j.LoggerFactory.getLogger(DBConnection.class);
 
-    private static String propertyUrl = "jdbc:mysql://localhost:3306/computer-database-db?zeroDateTimeBehavior=convertToNull&autoReconnect=true&characterEncoding=UTF-8&characterSetResults=UTF-8&useSSL=FALSE&useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC";;
+    private static String propertyUrl = "jdbc:mysql://localhost:3306/computer-database-db?zeroDateTimeBehavior=convertToNull&autoReconnect=true&characterEncoding=UTF-8&characterSetResults=UTF-8&useSSL=FALSE&useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=CET";;
     private static String propertyNomUtilisateur = "admincdb";
     private static String propertyMotDePasse = "qwerty1234";
     public static final String MYSQL_DRIVER = "com.mysql.cj.jdbc.Driver";

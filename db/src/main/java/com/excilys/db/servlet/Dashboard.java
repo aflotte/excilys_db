@@ -54,7 +54,7 @@ public class Dashboard extends HttpServlet {
             String search;
             String searchJSP;
             if ((request.getParameter("search") == null) || (request.getParameter("search").isEmpty())) {
-                searchJSP="vide";
+                searchJSP="";
                 pageComputer = new PageComputerDTO(actualPage, sizePage);
             } else {
                 logger.debug("enter in search not empty");
