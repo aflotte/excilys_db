@@ -1,0 +1,8 @@
+2018-03-23 11:48:02,825 [DEBUG] (ComputerDAO.java:getCount:364) Requête : com.mysql.cj.jdbc.PreparedStatement@27c20538: SELECT COUNT(*) FROM computer
+2018-03-23 11:48:02,829 [DEBUG] (PageComputerDTO.java:<init>:38) 59
+2018-03-23 11:48:02,829 [DEBUG] (PageComputerDTOTest.java:testPageComputerDTO:19) 59
+2018-03-23 11:48:02,829 [DEBUG] (PageComputerDTOTest.java:testPageComputerDTO:20) 588
+2018-03-23 11:48:02,830 [DEBUG] (PageComputerDTOTest.java:testPageComputerDTO:22) 1
+2018-03-23 11:48:02,830 [DEBUG] (PageComputerDTOTest.java:testPageComputerDTO:22) 2
+2018-03-23 11:48:02,830 [DEBUG] (PageComputerDTOTest.java:testPageComputerDTO:22) 3
+2018-03-23 11:48:02,830 [DEBUG] (PageComputerDTOTest.java:testPageComputerDTO:22) 59
