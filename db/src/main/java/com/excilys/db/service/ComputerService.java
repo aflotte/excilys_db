@@ -108,4 +108,9 @@ public enum ComputerService {
     public List<Computer> listComputerLike(int offset, int limit, String name){
         return computer.listComputerLike(offset, limit, name);
     }
+    
+    public void deleteListComputer(int[] ids) {
+        computer.deleteListComputer(ids);
+    }
+    
 }

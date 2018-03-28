@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.excilys.db.dao.ComputerDAO;
+import com.excilys.db.service.ComputerService;
 
 /**
  * Servlet implementation class Delete
@@ -35,10 +36,13 @@ public class Delete extends HttpServlet {
 
         } else {
             String[] toDelete = (request.getParameterValues("selection")[0]).split(",");
-            Integer[] toDeleteId = new Integer[toDelete.length];
-            ComputerDAO.INSTANCE.deleteListComputer(toDeleteId);
+            int[] toDeleteId = new int[toDelete.length];
+            for (int i = 0; i < toDelete.length; i++) {
+                toDeleteId[i] = Integer.parseInt(toDelete[i]);
+            }
+            ComputerService.INSTANCE.deleteListComputer(toDeleteId);
         }
-        RequestDispatcher rd = request.getRequestDispatcher("Dashboard");
+        RequestDispatcher rd = request.getRequestDispatcher("/dashboard");
         rd.forward(request,response);
     }
 

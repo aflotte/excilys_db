@@ -356,17 +356,20 @@ public enum ComputerDAO {
     }
 
 
-    public void deleteListComputer(Integer[] ids) {
+    public void deleteListComputer(int[] ids) {
+        
         initialisationConnection();
         try(   AutoSetAutoCommit a = new AutoSetAutoCommit(conn,false);
                 AutoRollback tm = new AutoRollback(conn)) 
         {
-            for (int id : ids) {
+            
+            for (int i = 0; i < ids.length; i++) {
+                int id = ids[i];
                 PreparedStatement prep1 = conn.prepareStatement(QUERRY_DELETE_COMPUTER + id);
                 logger.debug("Requête : " + prep1.toString());
-                prep1.executeUpdate(QUERRY_DELETE_COMPUTER + id);
+                prep1.executeUpdate();
             }
-            //tm.commit();
+            tm.commit();
         }catch (Exception e) {
             logger.warn(e.getMessage());
         }
