@@ -1,0 +1,1 @@
+2018-03-27 13:59:35,762 [DEBUG] (CompaniesDAO.java:listCompanies:78) Requête : com.mysql.cj.jdbc.PreparedStatement@5dfcfece: SELECT name, id FROM company

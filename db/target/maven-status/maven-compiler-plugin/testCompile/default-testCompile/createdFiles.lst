@@ -1,0 +1,10 @@
+com/excilys/db/test/CompaniesDAOTest.class
+com/excilys/db/test/ComputerValidatorTest.class
+com/excilys/db/test/ComputerMapperTest.class
+com/excilys/db/AppTest.class
+com/excilys/db/test/CompaniesServiceTest.class
+com/excilys/db/test/ConnectionTest.class
+com/excilys/db/test/ComputerDAOTest.class
+com/excilys/db/test/ComputerTest.class
+com/excilys/db/test/ComputerServiceTest.class
+com/excilys/db/test/CompaniesTest.class
