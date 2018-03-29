@@ -14,6 +14,9 @@ import com.excilys.db.page.PageComputerDTO;
 /**
  * Servlet implementation class GetComputer.
  */
+
+
+//TODO: pass by StringUtils.isBlank
 @WebServlet("/dashboard")
 public class Dashboard extends HttpServlet {
     static org.slf4j.Logger logger = org.slf4j.LoggerFactory.getLogger(Dashboard.class);
@@ -34,6 +37,9 @@ public class Dashboard extends HttpServlet {
         try {
             PageComputerDTO pageComputer;
             int actualPage;
+            String[] preparedSort = prepareSort(request);
+            String toSort = preparedSort[0];
+            String orderBy = preparedSort[1];
             if (request.getParameter("actualPage") == null) {
                 actualPage = 1;
                 pageComputer = new PageComputerDTO();
@@ -62,6 +68,8 @@ public class Dashboard extends HttpServlet {
                 searchJSP="&search="+search;
                 pageComputer = new PageComputerDTO(actualPage, sizePage, search);
             }
+            pageComputer.setSortBy(toSort);
+            pageComputer.setOrderBy(orderBy);
             request.setAttribute("search", searchJSP);
             request.setAttribute("page", pageComputer);
             RequestDispatcher rd =
@@ -81,7 +89,77 @@ public class Dashboard extends HttpServlet {
         doGet(request, response);
     }
 
-
+    
+    
+    private String[] prepareSort(HttpServletRequest request) {
+        String toSort = "";
+        String preparation = "";
+        request.setAttribute("computerPath", "&sort=computer&orderBy=asc");
+        request.setAttribute("introducedPath", "&sort=introduced&orderBy=asc");
+        request.setAttribute("discontinuedPath", "&sort=discontinued&orderBy=asc");
+        request.setAttribute("companyPath", "&sort=company&orderBy=asc");
+        request.setAttribute("sortPath", "");
+        if (!((request.getParameter("sort") == null) || (request.getParameter("sort").isEmpty()))) {
+            toSort = request.getParameter("sort");
+            request.setAttribute("sortPath", "");
+            switch (toSort) {
+            case "computer":
+                preparation = "&sort=computer";
+                if ((request.getParameter("orderBy")!=null)&&(request.getParameter("orderBy").equals("asc"))) {
+                    request.setAttribute("computerPath", "&sort=computer&orderBy=desc");
+                    toSort = "computer.name";
+                }
+                break;
+            case "introduced":
+                preparation = "&sort=introduced";
+                if ((request.getParameter("orderBy")!=null)&&(request.getParameter("orderBy").equals("asc"))) {
+                    request.setAttribute("introducedPath", "&sort=introduced&orderBy=desc");
+                    toSort = "computer.introduced";
+                }
+                break;
+            case "discontinued":
+                preparation = "&sort=discontinued";
+                if ((request.getParameter("orderBy")!=null)&&(request.getParameter("orderBy").equals("asc"))) {
+                    request.setAttribute("discontinuedPath", "&sort=discontinued&orderBy=desc");
+                    toSort = "computer.discontinued";
+                }
+                break;
+            case "company":
+                preparation = "&sort=company";
+                if ((request.getParameter("orderBy")!=null)&&(request.getParameter("orderBy").equals("asc"))) {
+                    request.setAttribute("companyPath", "&sort=company&orderBy=desc");
+                    toSort = "company.name";
+                }
+                break;
+            default:
+                toSort="";
+                break;
+            }
+        }
+        String orderBy;
+        if (!((request.getParameter("orderBy") == null) || (request.getParameter("orderBy").isEmpty()))) {
+            if (!((preparation == null)||preparation.isEmpty())) {
+                switch(request.getParameter("orderBy")) {
+                case "desc":
+                    preparation += "&orderBy=desc";
+                    orderBy = "desc";
+                    break;
+                default:
+                    preparation += "&orderBy=asc";
+                    orderBy = "asc";
+                    break;
+                }
+            }else {
+                orderBy = "";
+            }
+        }else {
+            orderBy = "";
+        }
+        
+        request.setAttribute("sortPath", preparation);
+        String[] answer = {toSort,orderBy};
+        return answer;
+    }
 
 
 }

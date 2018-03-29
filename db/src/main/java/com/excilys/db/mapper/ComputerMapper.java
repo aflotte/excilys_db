@@ -74,7 +74,7 @@ public class ComputerMapper {
         toReturn.setId(computer.getId());
         Company company = new Company();
         company.setName(computer.getCompany());
-        int id = CompaniesService.INSTANCE.getCompagnyId(computer.getCompany());
+        Integer id = CompaniesService.INSTANCE.getCompagnyId(computer.getCompany());
         company.setId(id);
 
         toReturn.setCompany(company);

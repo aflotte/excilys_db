@@ -34,7 +34,6 @@ public class ComputerTest extends TestCase {
 
 	@BeforeClass
 	public void init() {
-		instance = DBConnection.getInstance();
 		String querry = "SELECT name, introduced, discontinued, company_id FROM computer";
 		try {
 			PreparedStatement prep1 = conn.prepareStatement(querry);
@@ -42,20 +41,29 @@ public class ComputerTest extends TestCase {
 			toUseForTest.next();
 		} catch (SQLException e) {
 			e.printStackTrace();
-			DBConnection.getInstance().disconnect();
+			try {
+                conn.close();
+            } catch (SQLException e1) {
+                // TODO Auto-generated catch block
+                e1.printStackTrace();
+            }
 		}
 	}
 
-	@Before
-	public void connection() {
-		instance.connect();
-		conn = DBConnection.getConn();
-	}
+    @Before
+    public void connection() {
+        conn = DBConnection.getConn();
+    }
 
-	@After
-	public void deconnection() {
-		instance.disconnect();
-	}
+    @After
+    public void deconnection() {
+        try {
+            conn.close();
+        } catch (SQLException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+    }
 
 
 

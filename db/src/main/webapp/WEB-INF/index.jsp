@@ -27,7 +27,7 @@
                 <div class="pull-left">
                     <form id="searchForm" action="" method="GET" class="form-inline">
 
-                        <input type="search" id="searchbox" name="search" class="form-control" placeholder="Search name" />
+                        <input type="search" id="searchbox" name="search" class="form-control" pattern="^[\wÀ-ÿ]+[\wÀ-ÿ_\-'\+\*. ]+$" placeholder="Search name" />
                         <input type="submit" id="searchsubmit" value="Filter by name"
                         class="btn btn-primary" />
                     </form>
@@ -59,18 +59,18 @@
                             </span>
                         </th>
                         <th>
-                            Computer name
+                            <a href="?actualPage=${page.getPageNumber()}&pageSize=${page.getPageSize()}${search}${computerPath}" >Computer name</a>
                         </th>
                         <th>
-                            Introduced date
+                            <a href="?actualPage=${page.getPageNumber()}&pageSize=${page.getPageSize()}${search}${introducedPath}" >Introduced date</a>
                         </th>
                         <!-- Table header for Discontinued Date -->
                         <th>
-                            Discontinued date
+                            <a href="?actualPage=${page.getPageNumber()}&pageSize=${page.getPageSize()}${search}${discontinuedPath}" >Discontinued date</a>
                         </th>
                         <!-- Table header for Company -->
                         <th>
-                            Company
+                            <a href="?actualPage=${page.getPageNumber()}&pageSize=${page.getPageSize()}${search}${companyPath}" >Company</a>
                         </th>
 
                     </tr>
@@ -104,7 +104,7 @@
             
             <c:forEach var="pagePrev" items="${page.getPrevious()}">
                   <li>
-                    <a href="?actualPage=${pagePrev}&pageSize=${page.getPageSize()}${search}" aria-label="Previous">
+                    <a href="?actualPage=${pagePrev}&pageSize=${page.getPageSize()}${search}${sortPath}" aria-label="Previous">
                       <span aria-hidden="true">&laquo;</span>
                   </a>
                   
@@ -113,7 +113,7 @@
             
                 
                   <c:forEach var="pageToPrint" items="${page.getPagesToGo()}">
-                  <li><a href="?actualPage=${pageToPrint}&pageSize=${page.getPageSize()}${search}">${pageToPrint}</a></li>
+                  <li><a href="?actualPage=${pageToPrint}&pageSize=${page.getPageSize()}${search}${sortPath}">${pageToPrint}</a></li>
                   </c:forEach>
                   
                   
@@ -121,7 +121,7 @@
                   
                   
               <li>
-                <a href="?actualPage=${pageNext}&pageSize=${page.getPageSize()}${search}" aria-label="Next">
+                <a href="?actualPage=${pageNext}&pageSize=${page.getPageSize()}${search}${sortPath}" aria-label="Next">
                     <span aria-hidden="true">&raquo;</span>
                 </a>
             </li>
@@ -129,9 +129,9 @@
         </ul>
 
         <div class="btn-group btn-group-sm pull-right" role="group" >
-            <button type="button" class="btn btn-default" onclick="location.href='?actualPage=${page.getPageNumber()}&pageSize=10${search}'">10</button>
-            <button type="button" class="btn btn-default" onclick="location.href='?actualPage=${page.getPageNumber()}&pageSize=50${search}'">50</button>
-            <button type="button" class="btn btn-default" onclick="location.href='?actualPage=${page.getPageNumber()}&pageSize=100${search}'">100</button>
+            <button type="button" class="btn btn-default" onclick="location.href='?actualPage=${page.getPageNumber()}&pageSize=10${search}${sortPath}'">10</button>
+            <button type="button" class="btn btn-default" onclick="location.href='?actualPage=${page.getPageNumber()}&pageSize=50${search}${sortPath}'">50</button>
+            <button type="button" class="btn btn-default" onclick="location.href='?actualPage=${page.getPageNumber()}&pageSize=100${search}${sortPath}'">100</button>
         </div>
     </div>
     </footer>

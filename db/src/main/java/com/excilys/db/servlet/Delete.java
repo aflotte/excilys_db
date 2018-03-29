@@ -42,8 +42,7 @@ public class Delete extends HttpServlet {
             }
             ComputerService.INSTANCE.deleteListComputer(toDeleteId);
         }
-        RequestDispatcher rd = request.getRequestDispatcher("/dashboard");
-        rd.forward(request,response);
+        response.sendRedirect(request.getContextPath() + "/dashboard");
     }
 
     /**
@@ -53,5 +52,4 @@ public class Delete extends HttpServlet {
         // TODO Auto-generated method stub
         doGet(request, response);
     }
-
 }

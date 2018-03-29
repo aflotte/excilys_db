@@ -2,10 +2,7 @@ package com.excilys.db.persistance;
 
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.util.Locale;
-import java.util.ResourceBundle;
 
 import com.excilys.db.exception.ConnectionFailedException;
 import com.excilys.db.exception.DisconnectionFailedExeption;
@@ -22,8 +19,6 @@ public final class DBConnection {
     public static final String MYSQL_DRIVER = "com.mysql.cj.jdbc.Driver";
 
 
-
-    private static Connection conn = null;
     private static DBConnection instance;
     private static HikariDataSource ds = new HikariDataSource();
 
@@ -72,40 +67,18 @@ public final class DBConnection {
         return instance;
     }
 
-    /**
-     *
-     */
-    public void connect() {
-        if (conn == null) {
-            try {
-                conn = ds.getConnection();
-            } catch (SQLException e) {
-                logger.warn(e.getMessage());
-                throw new ConnectionFailedException();
-            }
-        }
-    }
-
-    /**
-     *
-     */
-    public void disconnect() {
-        if (conn != null) {
-            try {
-                conn.close();
-            } catch (SQLException e) {
-                logger.warn(e.getMessage());
-                throw new DisconnectionFailedExeption();
-            }
-        }
-        conn = null;
-    }
-
     public static Connection getConn() {
+        Connection conn;
+        try {
+            ds.setJdbcUrl(propertyUrl);
+            ds.setUsername(propertyNomUtilisateur);
+            ds.setPassword(propertyMotDePasse);
+            ds.setDriverClassName(MYSQL_DRIVER);
+            conn = ds.getConnection();
+        } catch (SQLException e) {
+            logger.warn(e.getMessage());
+            throw new ConnectionFailedException();
+        }
         return conn;
     }
-
-
-
-
 }

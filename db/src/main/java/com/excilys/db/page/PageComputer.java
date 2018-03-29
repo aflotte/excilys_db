@@ -63,8 +63,8 @@ public class PageComputer extends Page{
      * @return 
      * @throws CompaniesInexistantException
      */
-    public List<Computer> getPage(int offset, int limit) {
-        List<Computer> list = ComputerService.INSTANCE.listComputer(offset, limit);
+    public List<Computer> getPage(int offset, int limit, String sortBy, String orderBy) {
+        List<Computer> list = ComputerService.INSTANCE.listComputer(offset, limit, sortBy, orderBy);
         return list;
     }
 
