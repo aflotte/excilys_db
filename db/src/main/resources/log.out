@@ -1,48 +1,102 @@
-2018-03-30 11:46:43,939 [DEBUG] (HikariConfig.java:logConfiguration:841) HikariPool-1 - configuration:
-2018-03-30 11:46:43,948 [DEBUG] (HikariConfig.java:logConfiguration:857) allowPoolSuspension.............false
-2018-03-30 11:46:43,950 [DEBUG] (HikariConfig.java:logConfiguration:857) autoCommit......................true
-2018-03-30 11:46:43,950 [DEBUG] (HikariConfig.java:logConfiguration:857) catalog.........................null
-2018-03-30 11:46:43,951 [DEBUG] (HikariConfig.java:logConfiguration:857) connectionInitSql...............null
-2018-03-30 11:46:43,951 [DEBUG] (HikariConfig.java:logConfiguration:857) connectionTestQuery.............null
-2018-03-30 11:46:43,951 [DEBUG] (HikariConfig.java:logConfiguration:857) connectionTimeout...............30000
-2018-03-30 11:46:43,951 [DEBUG] (HikariConfig.java:logConfiguration:857) dataSource......................null
-2018-03-30 11:46:43,951 [DEBUG] (HikariConfig.java:logConfiguration:857) dataSourceClassName.............null
-2018-03-30 11:46:43,951 [DEBUG] (HikariConfig.java:logConfiguration:857) dataSourceJNDI..................null
-2018-03-30 11:46:44,003 [DEBUG] (HikariConfig.java:logConfiguration:857) dataSourceProperties............{password=<masked>}
-2018-03-30 11:46:44,003 [DEBUG] (HikariConfig.java:logConfiguration:857) driverClassName................."com.mysql.cj.jdbc.Driver"
-2018-03-30 11:46:44,003 [DEBUG] (HikariConfig.java:logConfiguration:857) healthCheckProperties...........{}
-2018-03-30 11:46:44,004 [DEBUG] (HikariConfig.java:logConfiguration:857) healthCheckRegistry.............null
-2018-03-30 11:46:44,004 [DEBUG] (HikariConfig.java:logConfiguration:857) idleTimeout.....................600000
-2018-03-30 11:46:44,004 [DEBUG] (HikariConfig.java:logConfiguration:857) initializationFailFast..........true
-2018-03-30 11:46:44,005 [DEBUG] (HikariConfig.java:logConfiguration:857) isolateInternalQueries..........false
-2018-03-30 11:46:44,005 [DEBUG] (HikariConfig.java:logConfiguration:857) jdbc4ConnectionTest.............false
-2018-03-30 11:46:44,006 [DEBUG] (HikariConfig.java:logConfiguration:857) jdbcUrl........................."jdbc:mysql://localhost:3306/computer-database-db?zeroDateTimeBehavior=convertToNull&autoReconnect=true&characterEncoding=UTF-8&characterSetResults=UTF-8&useSSL=FALSE&useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=CET"
-2018-03-30 11:46:44,006 [DEBUG] (HikariConfig.java:logConfiguration:857) leakDetectionThreshold..........0
-2018-03-30 11:46:44,006 [DEBUG] (HikariConfig.java:logConfiguration:857) maxLifetime.....................1800000
-2018-03-30 11:46:44,006 [DEBUG] (HikariConfig.java:logConfiguration:857) maximumPoolSize.................10
-2018-03-30 11:46:44,006 [DEBUG] (HikariConfig.java:logConfiguration:857) metricRegistry..................null
-2018-03-30 11:46:44,006 [DEBUG] (HikariConfig.java:logConfiguration:857) metricsTrackerFactory...........null
-2018-03-30 11:46:44,006 [DEBUG] (HikariConfig.java:logConfiguration:857) minimumIdle.....................10
-2018-03-30 11:46:44,006 [DEBUG] (HikariConfig.java:logConfiguration:857) password........................<masked>
-2018-03-30 11:46:44,006 [DEBUG] (HikariConfig.java:logConfiguration:857) poolName........................"HikariPool-1"
-2018-03-30 11:46:44,007 [DEBUG] (HikariConfig.java:logConfiguration:857) readOnly........................false
-2018-03-30 11:46:44,007 [DEBUG] (HikariConfig.java:logConfiguration:857) registerMbeans..................false
-2018-03-30 11:46:44,007 [DEBUG] (HikariConfig.java:logConfiguration:857) scheduledExecutorService........null
-2018-03-30 11:46:44,007 [DEBUG] (HikariConfig.java:logConfiguration:857) threadFactory...................null
-2018-03-30 11:46:44,007 [DEBUG] (HikariConfig.java:logConfiguration:857) transactionIsolation............null
-2018-03-30 11:46:44,007 [DEBUG] (HikariConfig.java:logConfiguration:857) username........................"admincdb"
-2018-03-30 11:46:44,007 [DEBUG] (HikariConfig.java:logConfiguration:857) validationTimeout...............5000
-2018-03-30 11:46:44,007 [INFO ] (HikariDataSource.java:getConnection:93) HikariPool-1 - Started.
-2018-03-30 11:46:44,229 [DEBUG] (HikariPool.java:createPoolEntry:445) HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@1fe425aa
-2018-03-30 11:46:44,241 [DEBUG] (CompaniesDAO.java:listCompanies:63) Requête : HikariProxyPreparedStatement@836514715 wrapping com.mysql.cj.jdbc.PreparedStatement@3c0f93f1: SELECT name, id FROM company
-2018-03-30 11:46:44,327 [DEBUG] (HikariPool.java:logPoolState:378) HikariPool-1 - Pool stats (total=1, active=0, idle=1, waiting=0)
-2018-03-30 11:46:44,334 [DEBUG] (HikariPool.java:createPoolEntry:445) HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@1dd4fffc
-2018-03-30 11:46:44,337 [DEBUG] (HikariPool.java:createPoolEntry:445) HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@6aafa70c
-2018-03-30 11:46:44,340 [DEBUG] (HikariPool.java:createPoolEntry:445) HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@683c8b1f
-2018-03-30 11:46:44,342 [DEBUG] (HikariPool.java:createPoolEntry:445) HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@33c6615d
-2018-03-30 11:46:44,344 [DEBUG] (HikariPool.java:createPoolEntry:445) HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@634d4e7a
-2018-03-30 11:46:44,347 [DEBUG] (HikariPool.java:createPoolEntry:445) HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@6db9a945
-2018-03-30 11:46:44,350 [DEBUG] (HikariPool.java:createPoolEntry:445) HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@35e6a221
-2018-03-30 11:46:44,353 [DEBUG] (HikariPool.java:createPoolEntry:445) HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@736ae209
-2018-03-30 11:46:44,355 [DEBUG] (HikariPool.java:createPoolEntry:445) HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@293fb52b
-2018-03-30 11:46:44,355 [DEBUG] (HikariPool.java:logPoolState:378) HikariPool-1 - After adding stats (total=10, active=0, idle=10, waiting=0)
+2018-03-30 14:53:15,258 [DEBUG] (HikariConfig.java:logConfiguration:841) HikariPool-1 - configuration:
+2018-03-30 14:53:15,265 [DEBUG] (HikariConfig.java:logConfiguration:857) allowPoolSuspension.............false
+2018-03-30 14:53:15,265 [DEBUG] (HikariConfig.java:logConfiguration:857) autoCommit......................true
+2018-03-30 14:53:15,265 [DEBUG] (HikariConfig.java:logConfiguration:857) catalog.........................null
+2018-03-30 14:53:15,265 [DEBUG] (HikariConfig.java:logConfiguration:857) connectionInitSql...............null
+2018-03-30 14:53:15,265 [DEBUG] (HikariConfig.java:logConfiguration:857) connectionTestQuery.............null
+2018-03-30 14:53:15,266 [DEBUG] (HikariConfig.java:logConfiguration:857) connectionTimeout...............30000
+2018-03-30 14:53:15,266 [DEBUG] (HikariConfig.java:logConfiguration:857) dataSource......................null
+2018-03-30 14:53:15,266 [DEBUG] (HikariConfig.java:logConfiguration:857) dataSourceClassName.............null
+2018-03-30 14:53:15,266 [DEBUG] (HikariConfig.java:logConfiguration:857) dataSourceJNDI..................null
+2018-03-30 14:53:15,267 [DEBUG] (HikariConfig.java:logConfiguration:857) dataSourceProperties............{password=<masked>}
+2018-03-30 14:53:15,267 [DEBUG] (HikariConfig.java:logConfiguration:857) driverClassName................."com.mysql.cj.jdbc.Driver"
+2018-03-30 14:53:15,267 [DEBUG] (HikariConfig.java:logConfiguration:857) healthCheckProperties...........{}
+2018-03-30 14:53:15,268 [DEBUG] (HikariConfig.java:logConfiguration:857) healthCheckRegistry.............null
+2018-03-30 14:53:15,268 [DEBUG] (HikariConfig.java:logConfiguration:857) idleTimeout.....................600000
+2018-03-30 14:53:15,268 [DEBUG] (HikariConfig.java:logConfiguration:857) initializationFailFast..........true
+2018-03-30 14:53:15,269 [DEBUG] (HikariConfig.java:logConfiguration:857) isolateInternalQueries..........false
+2018-03-30 14:53:15,269 [DEBUG] (HikariConfig.java:logConfiguration:857) jdbc4ConnectionTest.............false
+2018-03-30 14:53:15,269 [DEBUG] (HikariConfig.java:logConfiguration:857) jdbcUrl........................."jdbc:mysql://localhost:3306/computer-database-db?zeroDateTimeBehavior=convertToNull&autoReconnect=true&characterEncoding=UTF-8&characterSetResults=UTF-8&useSSL=FALSE&useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=CET"
+2018-03-30 14:53:15,269 [DEBUG] (HikariConfig.java:logConfiguration:857) leakDetectionThreshold..........0
+2018-03-30 14:53:15,269 [DEBUG] (HikariConfig.java:logConfiguration:857) maxLifetime.....................1800000
+2018-03-30 14:53:15,270 [DEBUG] (HikariConfig.java:logConfiguration:857) maximumPoolSize.................10
+2018-03-30 14:53:15,270 [DEBUG] (HikariConfig.java:logConfiguration:857) metricRegistry..................null
+2018-03-30 14:53:15,270 [DEBUG] (HikariConfig.java:logConfiguration:857) metricsTrackerFactory...........null
+2018-03-30 14:53:15,270 [DEBUG] (HikariConfig.java:logConfiguration:857) minimumIdle.....................10
+2018-03-30 14:53:15,270 [DEBUG] (HikariConfig.java:logConfiguration:857) password........................<masked>
+2018-03-30 14:53:15,270 [DEBUG] (HikariConfig.java:logConfiguration:857) poolName........................"HikariPool-1"
+2018-03-30 14:53:15,270 [DEBUG] (HikariConfig.java:logConfiguration:857) readOnly........................false
+2018-03-30 14:53:15,271 [DEBUG] (HikariConfig.java:logConfiguration:857) registerMbeans..................false
+2018-03-30 14:53:15,271 [DEBUG] (HikariConfig.java:logConfiguration:857) scheduledExecutorService........null
+2018-03-30 14:53:15,271 [DEBUG] (HikariConfig.java:logConfiguration:857) threadFactory...................null
+2018-03-30 14:53:15,271 [DEBUG] (HikariConfig.java:logConfiguration:857) transactionIsolation............null
+2018-03-30 14:53:15,274 [DEBUG] (HikariConfig.java:logConfiguration:857) username........................"admincdb"
+2018-03-30 14:53:15,274 [DEBUG] (HikariConfig.java:logConfiguration:857) validationTimeout...............5000
+2018-03-30 14:53:15,274 [INFO ] (HikariDataSource.java:getConnection:93) HikariPool-1 - Started.
+2018-03-30 14:53:15,507 [DEBUG] (HikariPool.java:createPoolEntry:445) HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@35921237
+2018-03-30 14:53:15,523 [DEBUG] (ComputerDAO.java:createAComputer:210) Requête : HikariProxyPreparedStatement@603856241 wrapping com.mysql.cj.jdbc.PreparedStatement@74a10858: INSERT INTO computer(name,introduced,discontinued,company_id) VALUES ('Test_Computer','1999-12-05','1999-12-05',1)
+2018-03-30 14:53:15,534 [DEBUG] (ComputerDAO.java:getIdFromName:293) Requête : HikariProxyPreparedStatement@681384962 wrapping com.mysql.cj.jdbc.PreparedStatement@2a70a3d8: SELECT id FROM computer WHERE name = 'Test_Computer'
+2018-03-30 14:53:15,539 [DEBUG] (ComputerDAO.java:deleteAComputer:312) Requête : HikariProxyPreparedStatement@175408781 wrapping com.mysql.cj.jdbc.PreparedStatement@396e2f39: DELETE FROM computer WHERE id = 611
+2018-03-30 14:53:15,542 [DEBUG] (ComputerDAO.java:createAComputer:210) Requête : HikariProxyPreparedStatement@1337344609 wrapping com.mysql.cj.jdbc.PreparedStatement@18bf3d14: INSERT INTO computer(name,introduced,discontinued,company_id) VALUES ('Test_Computer',null,'1999-12-05',2)
+2018-03-30 14:53:15,550 [ERROR] (ComputerDAO.java:createAComputer:221) Erreur dans l'accès des données
+2018-03-30 14:53:15,551 [DEBUG] (ComputerDAO.java:getIdFromName:293) Requête : HikariProxyPreparedStatement@1209669119 wrapping com.mysql.cj.jdbc.PreparedStatement@646007f4: SELECT id FROM computer WHERE name = 'Test_Computer'
+2018-03-30 14:53:15,554 [DEBUG] (ComputerDAO.java:createAComputer:210) Requête : HikariProxyPreparedStatement@1883840933 wrapping com.mysql.cj.jdbc.PreparedStatement@727803de: INSERT INTO computer(name,introduced,discontinued,company_id) VALUES ('Test_Computer','1999-12-05','1999-12-05',1)
+2018-03-30 14:53:15,556 [DEBUG] (ComputerDAO.java:getId:270) Requête : HikariProxyPreparedStatement@789219251 wrapping com.mysql.cj.jdbc.PreparedStatement@16f7c8c1: SELECT id FROM computer WHERE name = 'Test_Computer' AND introduced = '1999-12-05' AND discontinued = '1999-12-05' AND company_id = 1
+2018-03-30 14:53:15,557 [DEBUG] (ComputerDAO.java:updateAComputer:177) Requête : HikariProxyPreparedStatement@668210649 wrapping com.mysql.cj.jdbc.PreparedStatement@fcd6521: UPDATE computer SET name = 'Test_Computer', introduced = '1999-12-05', discontinued = '1999-12-05', company_id = 1 WHERE id = 613
+2018-03-30 14:53:15,559 [DEBUG] (ComputerDAO.java:getIdFromName:293) Requête : HikariProxyPreparedStatement@1434041222 wrapping com.mysql.cj.jdbc.PreparedStatement@31f924f5: SELECT id FROM computer WHERE name = 'Test_Computer'
+2018-03-30 14:53:15,559 [DEBUG] (ComputerDAO.java:deleteAComputer:312) Requête : HikariProxyPreparedStatement@929776179 wrapping com.mysql.cj.jdbc.PreparedStatement@4fcd19b3: DELETE FROM computer WHERE id = 613
+2018-03-30 14:53:15,561 [DEBUG] (ComputerDAO.java:createAComputer:210) Requête : HikariProxyPreparedStatement@2050404090 wrapping com.mysql.cj.jdbc.PreparedStatement@5d11346a: INSERT INTO computer(name,introduced,discontinued,company_id) VALUES ('Test_Computer',null,null,1)
+2018-03-30 14:53:15,563 [DEBUG] (ComputerDAO.java:getIdFromName:293) Requête : HikariProxyPreparedStatement@282432134 wrapping com.mysql.cj.jdbc.PreparedStatement@5fdba6f9: SELECT id FROM computer WHERE name = 'Test_Computer'
+2018-03-30 14:53:15,563 [DEBUG] (ComputerDAO.java:deleteAComputer:312) Requête : HikariProxyPreparedStatement@1843289228 wrapping com.mysql.cj.jdbc.PreparedStatement@6fb0d3ed: DELETE FROM computer WHERE id = 614
+2018-03-30 14:53:15,565 [DEBUG] (ComputerDAO.java:createAComputer:210) Requête : HikariProxyPreparedStatement@615634843 wrapping com.mysql.cj.jdbc.PreparedStatement@3b94d659: INSERT INTO computer(name,introduced,discontinued,company_id) VALUES ('Test_Computer',null,null,null)
+2018-03-30 14:53:15,567 [DEBUG] (ComputerDAO.java:getIdFromName:293) Requête : HikariProxyPreparedStatement@520232556 wrapping com.mysql.cj.jdbc.PreparedStatement@35a50a4c: SELECT id FROM computer WHERE name = 'Test_Computer'
+2018-03-30 14:53:15,568 [DEBUG] (ComputerDAO.java:deleteAComputer:312) Requête : HikariProxyPreparedStatement@1159114532 wrapping com.mysql.cj.jdbc.PreparedStatement@587c290d: DELETE FROM computer WHERE id = 615
+2018-03-30 14:53:15,569 [DEBUG] (ComputerDAO.java:createAComputer:210) Requête : HikariProxyPreparedStatement@1832580921 wrapping com.mysql.cj.jdbc.PreparedStatement@543788f3: INSERT INTO computer(name,introduced,discontinued,company_id) VALUES ('Test_Computer','1999-12-05',null,1)
+2018-03-30 14:53:15,571 [DEBUG] (ComputerDAO.java:getId:270) Requête : HikariProxyPreparedStatement@1151593579 wrapping com.mysql.cj.jdbc.PreparedStatement@7e9a5fbe: SELECT id FROM computer WHERE name = 'Test_Computer' AND introduced = '1999-12-05' AND discontinued is null AND company_id = 1
+2018-03-30 14:53:15,572 [DEBUG] (ComputerDAO.java:updateAComputer:177) Requête : HikariProxyPreparedStatement@1514160588 wrapping com.mysql.cj.jdbc.PreparedStatement@768b970c: UPDATE computer SET name = 'Test_Computer', introduced = '1999-12-05', discontinued = null, company_id = 1 WHERE id = 616
+2018-03-30 14:53:15,573 [DEBUG] (ComputerDAO.java:getIdFromName:293) Requête : HikariProxyPreparedStatement@1263793464 wrapping com.mysql.cj.jdbc.PreparedStatement@61ca2dfa: SELECT id FROM computer WHERE name = 'Test_Computer'
+2018-03-30 14:53:15,574 [DEBUG] (ComputerDAO.java:deleteAComputer:312) Requête : HikariProxyPreparedStatement@2074185499 wrapping com.mysql.cj.jdbc.PreparedStatement@4bb4de6a: DELETE FROM computer WHERE id = 616
+2018-03-30 14:53:15,576 [DEBUG] (ComputerDAO.java:createAComputer:210) Requête : HikariProxyPreparedStatement@2109874862 wrapping com.mysql.cj.jdbc.PreparedStatement@1068e947: INSERT INTO computer(name,introduced,discontinued,company_id) VALUES ('Test_Computer',null,null,null)
+2018-03-30 14:53:15,577 [DEBUG] (ComputerDAO.java:getId:270) Requête : HikariProxyPreparedStatement@1686369710 wrapping com.mysql.cj.jdbc.PreparedStatement@8b87145: SELECT id FROM computer WHERE name = 'Test_Computer' AND introduced is null AND discontinued is null AND company_id is null
+2018-03-30 14:53:15,578 [DEBUG] (ComputerDAO.java:updateAComputer:177) Requête : HikariProxyPreparedStatement@1943325854 wrapping com.mysql.cj.jdbc.PreparedStatement@382db087: UPDATE computer SET name = 'Test_Computer', introduced = null, discontinued = null, company_id = null WHERE id = 617
+2018-03-30 14:53:15,580 [DEBUG] (ComputerDAO.java:getIdFromName:293) Requête : HikariProxyPreparedStatement@22805895 wrapping com.mysql.cj.jdbc.PreparedStatement@5427c60c: SELECT id FROM computer WHERE name = 'Test_Computer'
+2018-03-30 14:53:15,580 [DEBUG] (ComputerDAO.java:deleteAComputer:312) Requête : HikariProxyPreparedStatement@1024429571 wrapping com.mysql.cj.jdbc.PreparedStatement@57f23557: DELETE FROM computer WHERE id = 617
+2018-03-30 14:53:15,582 [DEBUG] (ComputerDAO.java:createAComputer:210) Requête : HikariProxyPreparedStatement@40472007 wrapping com.mysql.cj.jdbc.PreparedStatement@44f75083: INSERT INTO computer(name,introduced,discontinued,company_id) VALUES ('Test_Computer',null,'1999-12-05',1)
+2018-03-30 14:53:15,584 [DEBUG] (ComputerDAO.java:getIdFromName:293) Requête : HikariProxyPreparedStatement@670971910 wrapping com.mysql.cj.jdbc.PreparedStatement@69379752: SELECT id FROM computer WHERE name = 'Test_Computer'
+2018-03-30 14:53:15,584 [DEBUG] (ComputerDAO.java:deleteAComputer:312) Requête : HikariProxyPreparedStatement@1218593486 wrapping com.mysql.cj.jdbc.PreparedStatement@1d7acb34: DELETE FROM computer WHERE id = 618
+2018-03-30 14:53:15,586 [DEBUG] (ComputerDAO.java:getIdFromName:293) Requête : HikariProxyPreparedStatement@79290965 wrapping com.mysql.cj.jdbc.PreparedStatement@4f51b3e0: SELECT id FROM computer WHERE name = 'MacBook Pro 15.4 inch'
+2018-03-30 14:53:15,587 [DEBUG] (ComputerDAO.java:getIdFromName:293) Requête : HikariProxyPreparedStatement@1370651081 wrapping com.mysql.cj.jdbc.PreparedStatement@133e16fd: SELECT id FROM computer WHERE name = 'Test_Computer'
+2018-03-30 14:53:15,588 [DEBUG] (ComputerDAO.java:createAComputer:210) Requête : HikariProxyPreparedStatement@480971771 wrapping com.mysql.cj.jdbc.PreparedStatement@7f416310: INSERT INTO computer(name,introduced,discontinued,company_id) VALUES ('Test_Destruction',null,null,null)
+2018-03-30 14:53:15,589 [DEBUG] (ComputerDAO.java:getIdFromName:293) Requête : HikariProxyPreparedStatement@1615039080 wrapping com.mysql.cj.jdbc.PreparedStatement@2473b9ce: SELECT id FROM computer WHERE name = 'Test_Destruction'
+2018-03-30 14:53:15,590 [DEBUG] (ComputerDAO.java:deleteAComputer:312) Requête : HikariProxyPreparedStatement@230528013 wrapping com.mysql.cj.jdbc.PreparedStatement@3439f68d: DELETE FROM computer WHERE id = 619
+2018-03-30 14:53:15,591 [DEBUG] (ComputerDAO.java:getIdFromName:293) Requête : HikariProxyPreparedStatement@1822383117 wrapping com.mysql.cj.jdbc.PreparedStatement@17695df3: SELECT id FROM computer WHERE name = 'Test_Computer'
+2018-03-30 14:53:15,592 [DEBUG] (ComputerDAO.java:showDetails:137) Requête : HikariProxyPreparedStatement@736778932 wrapping com.mysql.cj.jdbc.PreparedStatement@76b10754: SELECT computer.name, introduced, discontinued, company.id, computer.id, company.name FROM computer LEFT JOIN company ON computer.company_id = company.id WHERE computer.id = 1
+2018-03-30 14:53:15,594 [DEBUG] (ComputerDAO.java:getIdFromName:293) Requête : HikariProxyPreparedStatement@255944888 wrapping com.mysql.cj.jdbc.PreparedStatement@2a40cd94: SELECT id FROM computer WHERE name = 'Test_Computer'
+2018-03-30 14:53:15,595 [DEBUG] (CompaniesDAO.java:getCompany:161) Requête : HikariProxyPreparedStatement@1948863195 wrapping com.mysql.cj.jdbc.PreparedStatement@58a90037: SELECT name FROM company WHERE id = 1
+2018-03-30 14:53:15,596 [DEBUG] (ComputerDAO.java:createAComputer:210) Requête : HikariProxyPreparedStatement@294184992 wrapping com.mysql.cj.jdbc.PreparedStatement@130f889: INSERT INTO computer(name,introduced,discontinued,company_id) VALUES ('Test_Computer',null,null,1)
+2018-03-30 14:53:15,598 [DEBUG] (ComputerDAO.java:getId:270) Requête : HikariProxyPreparedStatement@1089504328 wrapping com.mysql.cj.jdbc.PreparedStatement@166fa74d: SELECT id FROM computer WHERE name = 'Test_Computer' AND introduced is null AND discontinued is null AND company_id = 1
+2018-03-30 14:53:15,598 [DEBUG] (ComputerDAO.java:updateAComputer:177) Requête : HikariProxyPreparedStatement@867398280 wrapping com.mysql.cj.jdbc.PreparedStatement@588df31b: UPDATE computer SET name = 'Test_Computer', introduced = null, discontinued = null, company_id = 1 WHERE id = 620
+2018-03-30 14:53:15,600 [DEBUG] (ComputerDAO.java:getIdFromName:293) Requête : HikariProxyPreparedStatement@1176735295 wrapping com.mysql.cj.jdbc.PreparedStatement@7181ae3f: SELECT id FROM computer WHERE name = 'Test_Computer'
+2018-03-30 14:53:15,601 [DEBUG] (ComputerDAO.java:deleteAComputer:312) Requête : HikariProxyPreparedStatement@1313532469 wrapping com.mysql.cj.jdbc.PreparedStatement@32464a14: DELETE FROM computer WHERE id = 620
+2018-03-30 14:53:15,603 [DEBUG] (ComputerDAO.java:listComputer:86) Requête : HikariProxyPreparedStatement@518522822 wrapping com.mysql.cj.jdbc.PreparedStatement@1efee8e7: SELECT computer.name, computer.introduced, computer.discontinued, company.id, computer.id, company.name FROM computer LEFT JOIN company ON computer.company_id = company.id
+2018-03-30 14:53:15,604 [DEBUG] (HikariPool.java:logPoolState:378) HikariPool-1 - Pool stats (total=1, active=1, idle=0, waiting=0)
+2018-03-30 14:53:15,608 [DEBUG] (HikariPool.java:createPoolEntry:445) HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@7d3676b6
+2018-03-30 14:53:15,611 [DEBUG] (HikariPool.java:createPoolEntry:445) HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@51ff5ebd
+2018-03-30 14:53:15,614 [DEBUG] (HikariPool.java:createPoolEntry:445) HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@7ac43d5
+2018-03-30 14:53:15,617 [DEBUG] (HikariPool.java:createPoolEntry:445) HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@23367d29
+2018-03-30 14:53:15,620 [DEBUG] (HikariPool.java:createPoolEntry:445) HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@5c06eccc
+2018-03-30 14:53:15,625 [DEBUG] (HikariPool.java:createPoolEntry:445) HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@5ad2d8d5
+2018-03-30 14:53:15,627 [DEBUG] (HikariPool.java:createPoolEntry:445) HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@774ad46
+2018-03-30 14:53:15,630 [DEBUG] (HikariPool.java:createPoolEntry:445) HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@441aaf71
+2018-03-30 14:53:15,632 [DEBUG] (HikariPool.java:createPoolEntry:445) HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@44b43a61
+2018-03-30 14:53:15,633 [DEBUG] (HikariPool.java:logPoolState:378) HikariPool-1 - After adding stats (total=10, active=1, idle=9, waiting=0)
+2018-03-30 14:53:15,643 [DEBUG] (ComputerDAO.java:getIdFromName:293) Requête : HikariProxyPreparedStatement@1825027294 wrapping com.mysql.cj.jdbc.PreparedStatement@517cd4b: SELECT id FROM computer WHERE name = 'Test_Computer'
+2018-03-30 14:53:15,644 [DEBUG] (ComputerDAO.java:getId:270) Requête : HikariProxyPreparedStatement@1558021762 wrapping com.mysql.cj.jdbc.PreparedStatement@679b62af: SELECT id FROM computer WHERE name = 'MacBook Pro 15.4 inch' AND introduced is null AND discontinued is null AND company_id = 1
+2018-03-30 14:53:15,645 [DEBUG] (ComputerDAO.java:getIdFromName:293) Requête : HikariProxyPreparedStatement@2040352617 wrapping com.mysql.cj.jdbc.PreparedStatement@45afc369: SELECT id FROM computer WHERE name = 'Test_Computer'
+2018-03-30 14:53:15,646 [DEBUG] (ComputerDAO.java:createAComputer:210) Requête : HikariProxyPreparedStatement@302155142 wrapping com.mysql.cj.jdbc.PreparedStatement@290dbf45: INSERT INTO computer(name,introduced,discontinued,company_id) VALUES ('Test_Computer','1999-12-05',null,1)
+2018-03-30 14:53:15,648 [DEBUG] (ComputerDAO.java:getIdFromName:293) Requête : HikariProxyPreparedStatement@733672688 wrapping com.mysql.cj.jdbc.PreparedStatement@2d127a61: SELECT id FROM computer WHERE name = 'Test_Computer'
+2018-03-30 14:53:15,649 [DEBUG] (ComputerDAO.java:deleteAComputer:312) Requête : HikariProxyPreparedStatement@1312884893 wrapping com.mysql.cj.jdbc.PreparedStatement@70beb599: DELETE FROM computer WHERE id = 621
+2018-03-30 14:53:15,652 [DEBUG] (CompaniesDAO.java:listCompanies:87) Requête : HikariProxyPreparedStatement@1095293768 wrapping com.mysql.cj.jdbc.PreparedStatement@701fc37a: SELECT name, id FROM company
+2018-03-30 14:53:15,654 [DEBUG] (ComputerDAO.java:createAComputer:210) Requête : HikariProxyPreparedStatement@1906808037 wrapping com.mysql.cj.jdbc.PreparedStatement@7fad8c79: INSERT INTO computer(name,introduced,discontinued,company_id) VALUES ('Test_Computer','1999-12-05','1999-12-05',1)
+2018-03-30 14:53:15,657 [DEBUG] (ComputerDAO.java:getIdFromName:293) Requête : HikariProxyPreparedStatement@1660794022 wrapping com.mysql.cj.jdbc.PreparedStatement@b59d31: SELECT id FROM computer WHERE name = 'Test_Computer'
+2018-03-30 14:53:15,657 [DEBUG] (ComputerDAO.java:deleteAComputer:312) Requête : HikariProxyPreparedStatement@824208363 wrapping com.mysql.cj.jdbc.PreparedStatement@1dd02175: DELETE FROM computer WHERE id = 622

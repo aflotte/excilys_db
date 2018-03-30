@@ -28,7 +28,7 @@ public enum CompaniesDAO {
     private static final String QUERRY_LIST_COMPANIES_BY_NAME = "SELECT id FROM company WHERE name LIKE ?";
     private static final String QUERRY_LIST_COMPANIES = "SELECT name, id FROM company";
     private static final String QUERRY_LIST_COMPANIES_ID = "SELECT name FROM company WHERE id = ";
-    private static final String QUERRY_LIST_COMPUTER = "SELECT computer.id FROM computer LEFT JOIN company ON computer.id = company.id ";
+    private static final String QUERRY_LIST_COMPUTER = "SELECT computer.id FROM computer RIGHT JOIN company ON computer.company_id = ";
     private static final String OFFSET_LIMIT = " LIMIT ? OFFSET ?";
     private static final String DELETE_COMPANY = "DELETE FROM company WHERE id = ?";
     private static final String QUERRY_COUNT = "SELECT COUNT(*) FROM company";
@@ -38,7 +38,7 @@ public enum CompaniesDAO {
         List<Integer> result = new ArrayList<Integer>();
         ResultSet resultSet = null;
         try (Connection conn = DBConnection.getConn();){
-            PreparedStatement prep1 = conn.prepareStatement(QUERRY_LIST_COMPUTER);
+            PreparedStatement prep1 = conn.prepareStatement(QUERRY_LIST_COMPUTER + id);
             logger.debug("Requête : " + prep1.toString());
             resultSet = prep1.executeQuery();
             while (resultSet.next()) {
@@ -113,8 +113,7 @@ public enum CompaniesDAO {
             prep1.executeUpdate();
             tm.commit();
         } catch (SQLException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            logger.warn(e.getMessage());
         }
     }
 
@@ -216,4 +215,5 @@ public enum CompaniesDAO {
       }
       return result;
   }
+  
 }

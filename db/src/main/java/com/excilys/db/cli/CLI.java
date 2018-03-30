@@ -3,7 +3,9 @@ import com.excilys.db.page.PageCompanies;
 import com.excilys.db.page.PageComputer;
 import com.excilys.db.service.CompaniesService;
 import com.excilys.db.service.ComputerService;
+import com.excilys.db.validator.CompaniesValidator;
 import com.excilys.db.validator.ComputerValidator;
+import com.excilys.db.dao.CompaniesDAO;
 import com.excilys.db.exception.CompaniesIdIncorrectException;
 import com.excilys.db.exception.CompaniesInexistantException;
 import com.excilys.db.exception.IncoherentDatesException;
@@ -64,6 +66,9 @@ public class CLI {
             case mettreAJour:
                 mettreAJour();
                 break;
+            case supprimerCompagnie:
+                supprimerCompagnie();
+                break;
             case quitter:
                 continu = false;
                 break;
@@ -71,6 +76,20 @@ public class CLI {
             }
         }
         sc.close();
+    }
+
+    private static void supprimerCompagnie() {
+        System.out.println("Entrer l'id de la compagnie a supprimer !");
+        int idCompany = 0;
+        idCompany = ScanCLI.scanInt(sc);
+        try {
+            CompaniesValidator.INSTANCE.exist(idCompany);
+            CompaniesDAO.INSTANCE.deleteCompany(idCompany);
+        }catch (Exception e){
+            System.out.println("La compagnie a supprimer n'existe pas");
+        }
+        
+        
     }
 
     /**
@@ -84,7 +103,8 @@ public class CLI {
         System.out.println("4 - Supprimer un ordinateur");
         System.out.println("5 - Voir les details d'un ordinateur");
         System.out.println("6 - Mettre à jour un ordinateur");
-        System.out.println("7 - Quitter le CLI");
+        System.out.println("7 - Supprimer une compagnie");
+        System.out.println("8 - Quitter le CLI");
     }
 
     /**

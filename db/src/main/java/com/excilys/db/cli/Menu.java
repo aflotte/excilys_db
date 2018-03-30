@@ -2,7 +2,7 @@ package com.excilys.db.cli;
 
 public enum Menu {
 	afficherCompagnie(1),afficherOrdinateurs(2),ajouterOrdinateur(3),supprimerOrdinateur(4),
-	afficherOrdinateur(5),mettreAJour(6),quitter(7),defaut(8);
+	afficherOrdinateur(5),mettreAJour(6),supprimerCompagnie(7),quitter(8),defaut(9);
 	private final int value;
 
 	public int getValue() {
