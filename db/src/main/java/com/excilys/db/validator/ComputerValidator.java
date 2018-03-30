@@ -17,7 +17,7 @@ public enum ComputerValidator {
     static org.slf4j.Logger logger = org.slf4j.LoggerFactory.getLogger(ComputerValidator.class);
     private static Connection conn;
 
-
+//TODO:check les formats des données
 
 
 /**

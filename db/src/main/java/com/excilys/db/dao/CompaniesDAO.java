@@ -12,6 +12,7 @@ import com.excilys.db.exception.CompaniesInexistantException;
 import com.excilys.db.exception.DAOAccesExeption;
 import com.excilys.db.mapper.CompaniesMapper;
 import com.excilys.db.model.Company;
+import com.excilys.db.model.Computer;
 import com.excilys.db.persistance.DBConnection;
 
 /**
@@ -27,9 +28,32 @@ public enum CompaniesDAO {
     private static final String QUERRY_LIST_COMPANIES_BY_NAME = "SELECT id FROM company WHERE name LIKE ?";
     private static final String QUERRY_LIST_COMPANIES = "SELECT name, id FROM company";
     private static final String QUERRY_LIST_COMPANIES_ID = "SELECT name FROM company WHERE id = ";
+    private static final String QUERRY_LIST_COMPUTER = "SELECT computer.id FROM computer LEFT JOIN company ON computer.id = company.id ";
     private static final String OFFSET_LIMIT = " LIMIT ? OFFSET ?";
+    private static final String DELETE_COMPANY = "DELETE FROM company WHERE id = ?";
     private static final String QUERRY_COUNT = "SELECT COUNT(*) FROM company";
 
+    
+    public List<Integer> computerFromCompany(int id){
+        List<Integer> result = new ArrayList<Integer>();
+        ResultSet resultSet = null;
+        try (Connection conn = DBConnection.getConn();){
+            PreparedStatement prep1 = conn.prepareStatement(QUERRY_LIST_COMPUTER);
+            logger.debug("Requête : " + prep1.toString());
+            resultSet = prep1.executeQuery();
+            while (resultSet.next()) {
+                result.add(resultSet.getInt(1));
+            }
+            resultSet.close();
+            prep1.close();
+            return result;
+        } catch (SQLException e) {
+            logger.warn(e.getMessage());
+        }
+        return result;
+    }
+    
+    
     /**
      *
      * @param id d'une compagnie
@@ -76,6 +100,23 @@ public enum CompaniesDAO {
         return listResult;
     }
 
+    
+    public void deleteCompany(int id) {
+        List<Integer> computerIds = computerFromCompany(id);
+        try(   Connection conn = DBConnection.getConn();
+                AutoSetAutoCommit a = new AutoSetAutoCommit(conn,false);
+                AutoRollback tm = new AutoRollback(conn)) 
+        {
+            ComputerDAO.INSTANCE.deleteListComputer(conn, computerIds);
+            PreparedStatement prep1 = conn.prepareStatement(DELETE_COMPANY);
+            prep1.setInt(1, id);
+            prep1.executeUpdate();
+            tm.commit();
+        } catch (SQLException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+    }
 
     /**
     *

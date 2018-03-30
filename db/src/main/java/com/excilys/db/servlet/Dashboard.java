@@ -107,34 +107,36 @@ public class Dashboard extends HttpServlet {
                 preparation = "&sort=computer";
                 if ((request.getParameter("orderBy")!=null)&&(request.getParameter("orderBy").equals("asc"))) {
                     request.setAttribute("computerPath", "&sort=computer&orderBy=desc");
-                    toSort = "computer.name";
                 }
+                toSort = "computer.name";
                 break;
             case "introduced":
                 preparation = "&sort=introduced";
                 if ((request.getParameter("orderBy")!=null)&&(request.getParameter("orderBy").equals("asc"))) {
                     request.setAttribute("introducedPath", "&sort=introduced&orderBy=desc");
-                    toSort = "computer.introduced";
                 }
+                toSort = "computer.introduced";
                 break;
             case "discontinued":
                 preparation = "&sort=discontinued";
                 if ((request.getParameter("orderBy")!=null)&&(request.getParameter("orderBy").equals("asc"))) {
                     request.setAttribute("discontinuedPath", "&sort=discontinued&orderBy=desc");
-                    toSort = "computer.discontinued";
                 }
+                toSort = "computer.discontinued";
                 break;
             case "company":
                 preparation = "&sort=company";
                 if ((request.getParameter("orderBy")!=null)&&(request.getParameter("orderBy").equals("asc"))) {
                     request.setAttribute("companyPath", "&sort=company&orderBy=desc");
-                    toSort = "company.name";
                 }
+                toSort = "company.name";
                 break;
             default:
-                toSort="";
+                toSort="computer.id";
                 break;
             }
+        }else {
+            toSort="computer.id";
         }
         String orderBy;
         if (!((request.getParameter("orderBy") == null) || (request.getParameter("orderBy").isEmpty()))) {
@@ -150,10 +152,10 @@ public class Dashboard extends HttpServlet {
                     break;
                 }
             }else {
-                orderBy = "";
+                orderBy = "asc";
             }
         }else {
-            orderBy = "";
+            orderBy = "asc";
         }
         
         request.setAttribute("sortPath", preparation);

@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -106,13 +107,11 @@ public enum ComputerDAO {
      */
     public List<Computer> listComputer(int offset, int limit,String sortBy, String orderBy ) throws DAOAccesExeption {
         List<Computer> listResult = new ArrayList<Computer>();
-        try (Connection conn = DBConnection.getConn();PreparedStatement prep1 = conn.prepareStatement(QUERRY_LIST_COMPUTERS + OFFSET_LIMIT + ORDER_BY + sortBy + " " + orderBy );){
-
+        try (Connection conn = DBConnection.getConn();PreparedStatement prep1 = conn.prepareStatement(QUERRY_LIST_COMPUTERS + ORDER_BY + sortBy + " " + orderBy  + OFFSET_LIMIT );){
+            
             prep1.setInt(1, limit);
             prep1.setInt(2, offset);
             logger.debug("Requête : " + prep1.toString());
-            System.out.println(sortBy + orderBy);
-            System.out.println(prep1.toString());
             ResultSet resultSet = prep1.executeQuery();
             while (resultSet.next()) {
                 Computer toAdd = ComputerMapper.resultToComputer(resultSet);
@@ -321,23 +320,30 @@ public enum ComputerDAO {
 
 
     public void deleteListComputer(int[] ids) {
+        List<Integer> listId = new ArrayList<Integer>();
+        for (int i=0;i < ids.length;i++) {
+            listId.add(ids[i]);
+        }
         try(   Connection conn = DBConnection.getConn();
                 AutoSetAutoCommit a = new AutoSetAutoCommit(conn,false);
                 AutoRollback tm = new AutoRollback(conn)) 
         {
-            
-            for (int i = 0; i < ids.length; i++) {
-                int id = ids[i];
-                PreparedStatement prep1 = conn.prepareStatement(QUERRY_DELETE_COMPUTER + id);
-                logger.debug("Requête : " + prep1.toString());
-                prep1.executeUpdate();
-            }
+            deleteListComputer(conn, listId);
             tm.commit();
         }catch (Exception e) {
             logger.warn(e.getMessage());
         }
     }
 
+    public void deleteListComputer(Connection conn, List<Integer> ids) throws SQLException {
+        for (int i = 0; i < ids.size(); i++) {
+            int id = ids.get(i);
+            PreparedStatement prep1 = conn.prepareStatement(QUERRY_DELETE_COMPUTER + id);
+            logger.debug("Requête : " + prep1.toString());
+            prep1.executeUpdate();
+        }
+    }
+    
     /**
      *
      */
@@ -380,7 +386,7 @@ public enum ComputerDAO {
 
     public List<Computer> listComputerLike(int offset, int limit, String name, String sortBy, String orderBy) {
         List<Computer> listResult = new ArrayList<Computer>();
-        try (Connection conn = DBConnection.getConn();PreparedStatement prep1 = conn.prepareStatement(QUERRY_LIST_COMPUTERS + " WHERE computer.name LIKE '%"+name +"%' " + OFFSET_LIMIT + sortBy + " " + orderBy );){
+        try (Connection conn = DBConnection.getConn();PreparedStatement prep1 = conn.prepareStatement(QUERRY_LIST_COMPUTERS + " WHERE computer.name LIKE '%"+name +"%' " + ORDER_BY + sortBy + " " + orderBy + OFFSET_LIMIT );){
             prep1.setInt(1, limit);
             prep1.setInt(2, offset);
             logger.debug("Requête : " + prep1.toString());
