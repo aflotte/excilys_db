@@ -12,8 +12,8 @@ import com.excilys.db.exception.CompaniesInexistantException;
 import com.excilys.db.exception.DAOAccesExeption;
 import com.excilys.db.mapper.CompaniesMapper;
 import com.excilys.db.model.Company;
-import com.excilys.db.model.Computer;
 import com.excilys.db.persistance.DBConnection;
+import com.excilys.db.utils.Close;
 
 /**
  * La classe DAO de Companies.
@@ -23,7 +23,7 @@ import com.excilys.db.persistance.DBConnection;
 public enum CompaniesDAO {
     INSTANCE;
     static org.slf4j.Logger logger = org.slf4j.LoggerFactory.getLogger(CompaniesDAO.class);
-    private static Connection conn;
+    private static final String DEBUG_REQUEST = "Requête : {0}";
 
     private static final String QUERRY_LIST_COMPANIES_BY_NAME = "SELECT id FROM company WHERE name LIKE ?";
     private static final String QUERRY_LIST_COMPANIES = "SELECT name, id FROM company";
@@ -33,27 +33,31 @@ public enum CompaniesDAO {
     private static final String DELETE_COMPANY = "DELETE FROM company WHERE id = ?";
     private static final String QUERRY_COUNT = "SELECT COUNT(*) FROM company";
 
-    
+
+
+
     public List<Integer> computerFromCompany(int id){
-        List<Integer> result = new ArrayList<Integer>();
+        List<Integer> result = new ArrayList<>();
         ResultSet resultSet = null;
-        try (Connection conn = DBConnection.getConn();){
-            PreparedStatement prep1 = conn.prepareStatement(QUERRY_LIST_COMPUTER + id);
-            logger.debug("Requête : " + prep1.toString());
+        try (Connection conn = DBConnection.getConn();PreparedStatement prep1 = conn.prepareStatement(QUERRY_LIST_COMPUTER + id);){
+            if (logger.isDebugEnabled()) {
+                logger.debug(DEBUG_REQUEST, prep1.toString());
+            }
             resultSet = prep1.executeQuery();
             while (resultSet.next()) {
                 result.add(resultSet.getInt(1));
             }
-            resultSet.close();
-            prep1.close();
+
             return result;
         } catch (SQLException e) {
             logger.warn(e.getMessage());
+        } finally {
+            Close.closeQuietly(resultSet);
         }
         return result;
     }
-    
-    
+
+
     /**
      *
      * @param id d'une compagnie
@@ -61,16 +65,16 @@ public enum CompaniesDAO {
      */
     public boolean existCompanies(int id) {
         ResultSet resultSet = null;
-        try (Connection conn = DBConnection.getConn();){
-            PreparedStatement prep1 = conn.prepareStatement(QUERRY_LIST_COMPANIES_ID + id);
-            logger.debug("Requête : " + prep1.toString());
+        try (Connection conn = DBConnection.getConn();PreparedStatement prep1 = conn.prepareStatement(QUERRY_LIST_COMPANIES_ID + id);){
+            if (logger.isDebugEnabled()) {
+                logger.debug(DEBUG_REQUEST, prep1.toString());
+            }
             resultSet = prep1.executeQuery();
-            boolean result = resultSet.next();
-            resultSet.close();
-            prep1.close();
-            return result;
+            return resultSet.next();
         } catch (SQLException e) {
             logger.warn(e.getMessage());
+        } finally {
+            Close.closeQuietly(resultSet);
         }
         return false;
     }
@@ -81,10 +85,11 @@ public enum CompaniesDAO {
      */
     public List<Company> listCompanies() {
         ResultSet resultSet = null;
-        List<Company> listResult = new ArrayList<Company>();
-        try (Connection conn = DBConnection.getConn();){
-            PreparedStatement prep1 = conn.prepareStatement(QUERRY_LIST_COMPANIES);
-            logger.debug("Requête : " + prep1.toString());
+        List<Company> listResult = new ArrayList<>();
+        try (Connection conn = DBConnection.getConn();PreparedStatement prep1 = conn.prepareStatement(QUERRY_LIST_COMPANIES);){
+            if (logger.isDebugEnabled()) {
+                logger.debug(DEBUG_REQUEST, prep1.toString());
+            }
             resultSet = prep1.executeQuery();
             while (resultSet.next()) {
                 Company toAdd = new Company();
@@ -92,23 +97,24 @@ public enum CompaniesDAO {
                 toAdd.setName(resultSet.getString(1));
                 listResult.add(toAdd);
             }
-            prep1.close();
-            resultSet.close();
         } catch (SQLException e) {
             logger.warn(e.getMessage());
+        } finally {
+            Close.closeQuietly(resultSet);
         }
         return listResult;
     }
 
-    
+
     public void deleteCompany(int id) {
         List<Integer> computerIds = computerFromCompany(id);
         try(   Connection conn = DBConnection.getConn();
                 AutoSetAutoCommit a = new AutoSetAutoCommit(conn,false);
-                AutoRollback tm = new AutoRollback(conn)) 
+                AutoRollback tm = new AutoRollback(conn);
+                PreparedStatement prep1 = conn.prepareStatement(DELETE_COMPANY);)
         {
             ComputerDAO.INSTANCE.deleteListComputer(conn, computerIds);
-            PreparedStatement prep1 = conn.prepareStatement(DELETE_COMPANY);
+
             prep1.setInt(1, id);
             prep1.executeUpdate();
             tm.commit();
@@ -118,31 +124,34 @@ public enum CompaniesDAO {
     }
 
     /**
-    *
-    * @param offset l'offset
-    * @param limit le nombre a afficher
-    * @return la liste des compagnies
-    * @throws CompaniesInexistantException erreur sur la compagnie de l'ordinateur
-    */
-   public List<Company> listComputer(int offset, int limit) throws CompaniesInexistantException {
-       List<Company> listResult = new ArrayList<Company>();
-       try (Connection conn = DBConnection.getConn();){
-           PreparedStatement prep1 = conn.prepareStatement(QUERRY_LIST_COMPANIES + OFFSET_LIMIT);
-           prep1.setInt(1, limit);
-           prep1.setInt(2, offset);
-           logger.debug("Requête : " + prep1.toString());
-           ResultSet resultSet = prep1.executeQuery();
-           while (resultSet.next()) {
-               Company toAdd = CompaniesMapper.computerResultToCompanies(resultSet);
-               listResult.add(toAdd);
-           }
-           prep1.close();
-           resultSet.close();
-       } catch (SQLException e) {
-           logger.warn(e.getMessage());
-       }
-       return listResult;
-   }
+     *
+     * @param offset l'offset
+     * @param limit le nombre a afficher
+     * @return la liste des compagnies
+     * @throws CompaniesInexistantException erreur sur la compagnie de l'ordinateur
+     */
+    public List<Company> listComputer(int offset, int limit) {
+        List<Company> listResult = new ArrayList<>();
+        ResultSet resultSet = null;
+        try (Connection conn = DBConnection.getConn();PreparedStatement prep1 = conn.prepareStatement(QUERRY_LIST_COMPANIES + OFFSET_LIMIT);){
+
+            prep1.setInt(1, limit);
+            prep1.setInt(2, offset);
+            if (logger.isDebugEnabled()) {
+                logger.debug(DEBUG_REQUEST, prep1.toString());
+            }
+                resultSet = prep1.executeQuery();
+            while (resultSet.next()) {
+                Company toAdd = CompaniesMapper.computerResultToCompanies(resultSet);
+                listResult.add(toAdd);
+            }
+        } catch (SQLException e) {
+            logger.warn(e.getMessage());
+        } finally {
+            Close.closeQuietly(resultSet);
+        }
+        return listResult;
+    }
 
     /**
      *
@@ -156,64 +165,68 @@ public enum CompaniesDAO {
         if (id == null) {
             result.setId(null);
         } else {
-            try (Connection conn = DBConnection.getConn();){
-                PreparedStatement prep1 = conn.prepareStatement(QUERRY_LIST_COMPANIES_ID + id);
-                logger.debug("Requête : " + prep1.toString());
+            try (Connection conn = DBConnection.getConn();PreparedStatement prep1 = conn.prepareStatement(QUERRY_LIST_COMPANIES_ID + id);){
+                if (logger.isDebugEnabled()) {
+                    logger.debug(DEBUG_REQUEST, prep1.toString());
+                }
                 resultSet = prep1.executeQuery();
                 if (resultSet.next()) {
                     result.setName(resultSet.getString(1));
                     result.setId(id);
                 } else {
                     resultSet.close();
-                    prep1.close();
                     throw new CompaniesInexistantException();
                 }
-                resultSet.close();
-                prep1.close();
             } catch (SQLException e) {
                 logger.warn(e.getMessage());
+            } finally {
+                Close.closeQuietly(resultSet);
             }
         }
         return Optional.ofNullable(result);
     }
-    
-    
+
+
     /**
-    *
-    */
-   public void getCount() {
-       try (Connection conn = DBConnection.getConn();){
-           PreparedStatement prep1 = conn.prepareStatement(QUERRY_COUNT);
-           logger.debug("Requête : " + prep1.toString());
-           prep1.executeQuery();
-           prep1.close();
-       } catch (SQLException e) {
-           logger.warn(e.getMessage());
-       }
-   }
-   
-   /**
-   *
-   * @param name le nom de l'ordinateur
-   * @return la liste des Id
-   */
-  public List<Integer> getIdFromName(String name) throws DAOAccesExeption {
-      List<Integer> result = new ArrayList<Integer>();
-      try (Connection conn = DBConnection.getConn();){
-          PreparedStatement ps = conn.prepareStatement(QUERRY_LIST_COMPANIES_BY_NAME);
-          ps.setString(1, name);
-          logger.debug("Requête : " + ps.toString());
-          ResultSet resultSet = ps.executeQuery();
-          while (resultSet.next()) {
-              result.add(new Integer(resultSet.getInt(1)));
-          }
-          resultSet.close();
-          ps.close();
-      } catch (SQLException e) {
-          logger.error("Erreur dans l'accès des données");
-          throw new DAOAccesExeption();
-      }
-      return result;
-  }
-  
+     *
+     */
+    public void getCount() {
+        try (Connection conn = DBConnection.getConn();PreparedStatement prep1 = conn.prepareStatement(QUERRY_COUNT);){
+            if (logger.isDebugEnabled()) {
+                logger.debug(DEBUG_REQUEST, prep1.toString());
+            }
+            prep1.executeQuery();
+        } catch (SQLException e) {
+            logger.warn(e.getMessage());
+        }
+    }
+
+    /**
+     *
+     * @param name le nom de l'ordinateur
+     * @return la liste des Id
+     */
+    public List<Integer> getIdFromName(String name) {
+        List<Integer> result = new ArrayList<>();
+        ResultSet resultSet = null;
+        try (Connection conn = DBConnection.getConn();PreparedStatement ps = conn.prepareStatement(QUERRY_LIST_COMPANIES_BY_NAME);){
+
+            ps.setString(1, name);
+            if (logger.isDebugEnabled()) {
+                logger.debug(DEBUG_REQUEST, ps.toString());
+            }
+            resultSet = ps.executeQuery();
+            while (resultSet.next()) {
+                result.add(Integer.valueOf(resultSet.getInt(1)));
+            }
+        } catch (SQLException e) {
+            String error = "Erreur dans l'accès des données";
+            logger.error(error);
+            throw new DAOAccesExeption();
+        } finally {
+            Close.closeQuietly(resultSet);
+        }
+        return result;
+    }
+
 }

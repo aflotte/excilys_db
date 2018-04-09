@@ -1,6 +1,7 @@
 package com.excilys.db.servlet;
 
 import java.io.IOException;
+import java.util.Optional;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -9,6 +10,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.excilys.db.dao.ComputerDAO;
 import com.excilys.db.dto.ComputerDTO;
 import com.excilys.db.exception.ServiceException;
 import com.excilys.db.mapper.ComputerMapper;
@@ -22,6 +24,7 @@ import com.excilys.db.validator.ComputerValidator;
  */
 @WebServlet("/editComputer")
 public class EditComputer extends HttpServlet {
+    
     private static final long serialVersionUID = 1L;
 
     /**
@@ -35,31 +38,46 @@ public class EditComputer extends HttpServlet {
     /**
      * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
      */
+    @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        // TODO Auto-generated method stub
+        org.slf4j.Logger logger = org.slf4j.LoggerFactory.getLogger(EditComputer.class);
         int id = 0;
         if (request.getParameter("id") == null) {
             RequestDispatcher rd =
                     request.getRequestDispatcher("/WEB-INF/index.jsp");
-            rd.forward(request, response);
+            try {
+                rd.forward(request, response);
+            } catch ( Exception e) {
+                logger.warn(e.getMessage());
+            }
         } else {
             if (request.getParameter("id").isEmpty()) {
                 RequestDispatcher rd =
                         request.getRequestDispatcher("/WEB-INF/index.jsp");
-                rd.forward(request, response);
+                try {
+                    rd.forward(request, response);
+                } catch ( Exception e) {
+                    logger.warn(e.getMessage());
+                }
             } else {
                 id = Integer.parseInt(request.getParameter("id"));
                 if (!ComputerValidator.INSTANCE.exist(id)) {
                     RequestDispatcher rd =
                             request.getRequestDispatcher("/WEB-INF/404.jsp");
-                    rd.forward(request, response);
+                    try {
+                        rd.forward(request, response);
+                    }catch (Exception e) {
+                        logger.warn(e.getMessage());
+                    }
                 }else {
                     ComputerDTO computerDTO = null;
                     try {
-                        computerDTO = ComputerMapper.computerToDTO(ComputerService.INSTANCE.showDetails(id).get());
+                        Optional<Computer> computer = ComputerService.INSTANCE.showDetails(id);
+                        if (computer.isPresent()) {
+                        computerDTO = ComputerMapper.computerToDTO(computer.get());
+                        }
                     } catch (ServiceException e) {
-                        // TODO Auto-generated catch block
-                        e.printStackTrace();
+                        logger.warn(e.getMessage());
                         RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/index.jsp");
                         rd.forward(request, response);
                     }
@@ -68,7 +86,11 @@ public class EditComputer extends HttpServlet {
                     request.setAttribute("companies", CompaniesService.INSTANCE.listCompanies());
                     RequestDispatcher rd =
                             request.getRequestDispatcher("/WEB-INF/editComputer.jsp");
-                    rd.forward(request, response);
+                    try {
+                        rd.forward(request, response);
+                    } catch ( Exception e) {
+                        logger.warn(e.getMessage());
+                    }
                 }
             }
         }
@@ -77,23 +99,31 @@ public class EditComputer extends HttpServlet {
     /**
      * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
      */
+    @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        // TODO Auto-generated method stub
+        org.slf4j.Logger logger = org.slf4j.LoggerFactory.getLogger(EditComputer.class);
         int id = Integer.parseInt(request.getParameter("id"));
         Computer computer = postComputer(request);
         computer.setId(id);
         try {
             ComputerService.INSTANCE.updateAComputer(computer, id);
         } catch (ServiceException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            logger.warn(e.getMessage());
             RequestDispatcher rd =
                     request.getRequestDispatcher("/WEB-INF/index.jsp");
-            rd.forward(request, response);
+            try {
+                rd.forward(request, response);
+            } catch ( Exception e1) {
+                logger.warn(e1.getMessage());
+            }
         }
         RequestDispatcher rd =
                 request.getRequestDispatcher("/WEB-INF/index.jsp");
-        rd.forward(request, response);
+        try {
+            rd.forward(request, response);
+        } catch ( Exception e) {
+            logger.warn(e.getMessage());
+        }
     }
 
     /**

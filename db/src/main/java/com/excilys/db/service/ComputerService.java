@@ -80,7 +80,7 @@ public enum ComputerService {
     public Optional<Computer> showDetails(int id) throws ServiceException {
         try {
             return computer.showDetails(id);
-        } catch (DAOAccesExeption | CompaniesInexistantException e) {
+        } catch (DAOAccesExeption e) {
             logger.warn(e.getMessage());
             throw new ServiceException();
         }

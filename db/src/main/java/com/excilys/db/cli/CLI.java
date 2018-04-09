@@ -16,6 +16,7 @@ import com.excilys.db.model.Computer;
 import java.util.InputMismatchException;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Scanner;
 
 
@@ -43,33 +44,32 @@ public class CLI {
             menuIntroduction();
             int choix = choixMenuIntroduction();
             switch (Menu.values()[choix - 1]) {
-            case afficherCompagnie:
+            case AFFICHER_COMPAGNIE:
                 afficherCompagnies();
                 break;
-            case afficherOrdinateurs:
+            case AFFICHER_ORDINATEURS:
                 afficherOrdinateurs();
                 break;
-            case ajouterOrdinateur:
+            case AJOUTER_ORDINATEUR:
                 ajouterOrdinateur();
                 break;
-            case supprimerOrdinateur:
+            case SUPPRIMER_ORDINATEUR:
                 supprimerOrdinateur();
                 break;
-            case afficherOrdinateur:
+            case AFFICHER_ORDINATEUR:
                 try {
                     afficherOrdinateur();
                 } catch (ServiceException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
+                    logger.warn(e.getMessage());
                 }
                 break;
-            case mettreAJour:
+            case METTRE_A_JOUR:
                 mettreAJour();
                 break;
-            case supprimerCompagnie:
+            case SUPPRIMER_COMPAGNIE:
                 supprimerCompagnie();
                 break;
-            case quitter:
+            case QUITTER:
                 continu = false;
                 break;
             default:
@@ -135,7 +135,7 @@ public class CLI {
      *
      * @throws CompaniesInexistantException erreur avec les compagnies lkors de la création de l'ordinateur
      */
-    public static void afficherOrdinateurs() throws CompaniesInexistantException {
+    public static void afficherOrdinateurs() {
         List<Computer> listeOrdinateur = ComputerService.INSTANCE.listComputer();
         PageComputer page = new PageComputer(listeOrdinateur, sc);
         System.out.println("Voici la liste des ordinateurs ( Q to exit ): ");
@@ -149,16 +149,13 @@ public class CLI {
         Computer aAjouter = new Computer();
             try {
                 aAjouter = ScanCLI.scanComputer(sc);
-            } catch (InputMismatchException | CompaniesIdIncorrectException | IncoherentDatesException
-                    | CompaniesInexistantException e1) {
-                // TODO Auto-generated catch block
-                e1.printStackTrace();
+            } catch (InputMismatchException | CompaniesIdIncorrectException | IncoherentDatesException e1) {
+                logger.warn(e1.getMessage());
             }
             try {
                 ComputerService.INSTANCE.createComputer(aAjouter);
             } catch (ServiceException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
+                logger.warn(e.getMessage());
             }
     }
 
@@ -181,7 +178,7 @@ public class CLI {
      * @throws CompaniesInexistantException erreur avec les compagnies lors de la création de l'ordinateur
      * @throws ServiceException 
      */
-    private static void afficherOrdinateur() throws CompaniesInexistantException, ServiceException {
+    private static void afficherOrdinateur() throws ServiceException {
         System.out.println("Donner l'Id de l'ordinateur à afficher ( -2 pour annuler )");
         int toDisplay = -1;
         while (toDisplay == -1) {
@@ -191,8 +188,9 @@ public class CLI {
             }
         }
         if (toDisplay != -2) {
-            if (ComputerService.INSTANCE.showDetails(toDisplay).isPresent()) {
-                System.out.println(ComputerService.INSTANCE.showDetails(toDisplay).get());
+            Optional<Computer> computer = ComputerService.INSTANCE.showDetails(toDisplay);
+            if (computer.isPresent()) {
+                System.out.println(computer.get());
             } else {
                 System.out.println("Aucun ordinateur correspondant à l'Id rentré n'a été trouvé !");
             }
@@ -213,8 +211,6 @@ public class CLI {
             System.out.println("Vous n'avez pas respecté le format des valeurs attendu");
         } catch (CompaniesIdIncorrectException e) {
             System.out.println("L'id de la compagnie que vous avez rentré ne correspond à aucune compagnie !");
-        } catch (CompaniesInexistantException e) {
-
         }
         System.out.println("Entrer l'Id de l'ordinateur a modifier");
         int toUpdate = -1;
@@ -225,8 +221,7 @@ public class CLI {
             try {
                 ComputerService.INSTANCE.updateAComputer(aAjouter, toUpdate);
             } catch (ServiceException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
+                logger.warn(e.getMessage());
             }
         }
 

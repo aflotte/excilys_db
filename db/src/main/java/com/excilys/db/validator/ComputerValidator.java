@@ -17,21 +17,20 @@ public enum ComputerValidator {
     static org.slf4j.Logger logger = org.slf4j.LoggerFactory.getLogger(ComputerValidator.class);
     private static Connection conn;
 
-//TODO:check les formats des données
+    //TODO:check les formats des données
 
 
-/**
- *
- * @param id dont on test l'existance
- * @return l'existance
- */
+    /**
+     *
+     * @param id dont on test l'existance
+     * @return l'existance
+     */
     public boolean exist(int id) {
-        ResultSet resultSet = null;
         String querry = "SELECT name FROM computer WHERE id = " + id;
-        try (Connection conn = DBConnection.getConn();){
-            PreparedStatement prep1 = conn.prepareStatement(querry);
-            resultSet = prep1.executeQuery();
-            return resultSet.next();
+        try (Connection conn = DBConnection.getConn();PreparedStatement prep1 = conn.prepareStatement(querry);){
+            try (ResultSet resultSet = prep1.executeQuery();){
+                return resultSet.next();
+            }
         } catch (SQLException e) {
             logger.warn(e.getMessage());
         }
@@ -55,15 +54,14 @@ public enum ComputerValidator {
      * @return si l'id de la compagnie est correct
      */
     public static boolean testIdCompany(Computer computer) {
-        ResultSet resultSet = null;
         if (computer.getCompany().getId() == null) {
             return true;
         }
         String querry = "SELECT name FROM company WHERE id = " + computer.getCompany().getId();
-        try (Connection conn = DBConnection.getConn();){
-            PreparedStatement prep1 = conn.prepareStatement(querry);
-            resultSet = prep1.executeQuery();
-            return resultSet.next();
+        try (Connection conn = DBConnection.getConn();PreparedStatement prep1 = conn.prepareStatement(querry);){
+            try (ResultSet resultSet = prep1.executeQuery();){
+                return resultSet.next();
+            }
         } catch (SQLException e) {
             logger.warn(e.getMessage());
         }

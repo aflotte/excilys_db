@@ -51,7 +51,7 @@ public class ScanCLI {
      * @throws IncoherentDatesException les dates sont incohérentes
      * @throws CompaniesInexistantException une erreur est survenue avec la compagnie
      */
-    public static Computer scanComputer(Scanner sc) throws InputMismatchException, CompaniesIdIncorrectException, IncoherentDatesException, CompaniesInexistantException {
+    public static Computer scanComputer(Scanner sc) throws CompaniesIdIncorrectException, IncoherentDatesException {
         Computer aRetourner = new Computer();
         System.out.println("Entrer le nom de l'ordinateur : ");
         aRetourner.setName(sc.next());

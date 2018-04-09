@@ -26,12 +26,11 @@ public enum CompaniesValidator {
      * @throws ValidatorException 
      */
     public boolean exist(int id) throws ValidatorException {
-        ResultSet resultSet = null;
         String querry = "SELECT name FROM company WHERE id = " + id;
-        try (Connection conn = DBConnection.getConn();){
-            PreparedStatement prep1 = conn.prepareStatement(querry);
-            resultSet = prep1.executeQuery();
-            return (resultSet.next());
+        try (Connection conn = DBConnection.getConn();PreparedStatement prep1 = conn.prepareStatement(querry);){
+            try (ResultSet resultSet = prep1.executeQuery();){
+                return (resultSet.next());
+            }
         } catch (SQLException e) {
             logger.warn(e.getMessage());
             throw new ValidatorException();
@@ -45,25 +44,24 @@ public enum CompaniesValidator {
      * @throws ValidatorException 
      */
     public boolean check(Company company) throws ValidatorException {
-        ResultSet resultSet = null;
         if (company.getId() == null) {
-            company.getName().equals("");
+            company.setName("");
             return true;
         }else {
             String querry = "SELECT name FROM company WHERE id = " + company.getId();
-            try (Connection conn = DBConnection.getConn();){
-                PreparedStatement prep1 = conn.prepareStatement(querry);
-                resultSet = prep1.executeQuery();
-                if (resultSet.next()) {
-                    return resultSet.getString(1).equals(company.getName());
-                } else {
-                    return false;
+            try (Connection conn = DBConnection.getConn();PreparedStatement prep1 = conn.prepareStatement(querry);){
+                try (ResultSet resultSet = prep1.executeQuery();){
+                    if (resultSet.next()) {
+                        return resultSet.getString(1).equals(company.getName());
+                    } else {
+                        return false;
+                    }
                 }
             } catch (SQLException e) {
                 logger.warn(e.getMessage());
                 throw new ValidatorException();
             }
         }
-        
+
     }
 }
