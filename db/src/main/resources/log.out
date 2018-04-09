@@ -1,0 +1,99 @@
+2018-04-09 11:11:56,585 [DEBUG] (HikariConfig.java:logConfiguration:841) HikariPool-1 - configuration:
+2018-04-09 11:11:56,591 [DEBUG] (HikariConfig.java:logConfiguration:857) allowPoolSuspension.............false
+2018-04-09 11:11:56,592 [DEBUG] (HikariConfig.java:logConfiguration:857) autoCommit......................true
+2018-04-09 11:11:56,592 [DEBUG] (HikariConfig.java:logConfiguration:857) catalog.........................null
+2018-04-09 11:11:56,592 [DEBUG] (HikariConfig.java:logConfiguration:857) connectionInitSql...............null
+2018-04-09 11:11:56,592 [DEBUG] (HikariConfig.java:logConfiguration:857) connectionTestQuery.............null
+2018-04-09 11:11:56,592 [DEBUG] (HikariConfig.java:logConfiguration:857) connectionTimeout...............30000
+2018-04-09 11:11:56,592 [DEBUG] (HikariConfig.java:logConfiguration:857) dataSource......................null
+2018-04-09 11:11:56,592 [DEBUG] (HikariConfig.java:logConfiguration:857) dataSourceClassName.............null
+2018-04-09 11:11:56,593 [DEBUG] (HikariConfig.java:logConfiguration:857) dataSourceJNDI..................null
+2018-04-09 11:11:56,594 [DEBUG] (HikariConfig.java:logConfiguration:857) dataSourceProperties............{password=<masked>}
+2018-04-09 11:11:56,594 [DEBUG] (HikariConfig.java:logConfiguration:857) driverClassName................."com.mysql.cj.jdbc.Driver"
+2018-04-09 11:11:56,594 [DEBUG] (HikariConfig.java:logConfiguration:857) healthCheckProperties...........{}
+2018-04-09 11:11:56,594 [DEBUG] (HikariConfig.java:logConfiguration:857) healthCheckRegistry.............null
+2018-04-09 11:11:56,594 [DEBUG] (HikariConfig.java:logConfiguration:857) idleTimeout.....................600000
+2018-04-09 11:11:56,594 [DEBUG] (HikariConfig.java:logConfiguration:857) initializationFailFast..........true
+2018-04-09 11:11:56,595 [DEBUG] (HikariConfig.java:logConfiguration:857) isolateInternalQueries..........false
+2018-04-09 11:11:56,596 [DEBUG] (HikariConfig.java:logConfiguration:857) jdbc4ConnectionTest.............false
+2018-04-09 11:11:56,596 [DEBUG] (HikariConfig.java:logConfiguration:857) jdbcUrl........................."jdbc:mysql://localhost:3306/computer-database-db?zeroDateTimeBehavior=convertToNull&autoReconnect=true&characterEncoding=UTF-8&characterSetResults=UTF-8&useSSL=FALSE&useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=CET"
+2018-04-09 11:11:56,596 [DEBUG] (HikariConfig.java:logConfiguration:857) leakDetectionThreshold..........0
+2018-04-09 11:11:56,596 [DEBUG] (HikariConfig.java:logConfiguration:857) maxLifetime.....................1800000
+2018-04-09 11:11:56,596 [DEBUG] (HikariConfig.java:logConfiguration:857) maximumPoolSize.................10
+2018-04-09 11:11:56,596 [DEBUG] (HikariConfig.java:logConfiguration:857) metricRegistry..................null
+2018-04-09 11:11:56,596 [DEBUG] (HikariConfig.java:logConfiguration:857) metricsTrackerFactory...........null
+2018-04-09 11:11:56,596 [DEBUG] (HikariConfig.java:logConfiguration:857) minimumIdle.....................10
+2018-04-09 11:11:56,596 [DEBUG] (HikariConfig.java:logConfiguration:857) password........................<masked>
+2018-04-09 11:11:56,597 [DEBUG] (HikariConfig.java:logConfiguration:857) poolName........................"HikariPool-1"
+2018-04-09 11:11:56,597 [DEBUG] (HikariConfig.java:logConfiguration:857) readOnly........................false
+2018-04-09 11:11:56,597 [DEBUG] (HikariConfig.java:logConfiguration:857) registerMbeans..................false
+2018-04-09 11:11:56,597 [DEBUG] (HikariConfig.java:logConfiguration:857) scheduledExecutorService........null
+2018-04-09 11:11:56,597 [DEBUG] (HikariConfig.java:logConfiguration:857) threadFactory...................null
+2018-04-09 11:11:56,597 [DEBUG] (HikariConfig.java:logConfiguration:857) transactionIsolation............null
+2018-04-09 11:11:56,597 [DEBUG] (HikariConfig.java:logConfiguration:857) username........................"admincdb"
+2018-04-09 11:11:56,597 [DEBUG] (HikariConfig.java:logConfiguration:857) validationTimeout...............5000
+2018-04-09 11:11:56,601 [INFO ] (HikariDataSource.java:getConnection:93) HikariPool-1 - Started.
+2018-04-09 11:11:56,803 [DEBUG] (HikariPool.java:createPoolEntry:445) HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@fece51
+2018-04-09 11:11:56,817 [DEBUG] (ComputerDAO.java:createAComputer:199) Requête : %s
+2018-04-09 11:11:56,828 [DEBUG] (ComputerDAO.java:getIdFromName:282) Requête : %s
+2018-04-09 11:11:56,832 [DEBUG] (ComputerDAO.java:deleteAComputer:301) Requête : %s
+2018-04-09 11:11:56,835 [DEBUG] (ComputerDAO.java:createAComputer:199) Requête : %s
+2018-04-09 11:11:56,837 [DEBUG] (ComputerDAO.java:getId:259) Requête : %s
+2018-04-09 11:11:56,837 [DEBUG] (ComputerDAO.java:updateAComputer:182) Requête : %s
+2018-04-09 11:11:56,839 [DEBUG] (ComputerDAO.java:getIdFromName:282) Requête : %s
+2018-04-09 11:11:56,840 [DEBUG] (ComputerDAO.java:deleteAComputer:301) Requête : %s
+2018-04-09 11:11:56,841 [DEBUG] (ComputerDAO.java:createAComputer:199) Requête : %s
+2018-04-09 11:11:56,843 [DEBUG] (ComputerDAO.java:getIdFromName:282) Requête : %s
+2018-04-09 11:11:56,844 [DEBUG] (ComputerDAO.java:deleteAComputer:301) Requête : %s
+2018-04-09 11:11:56,845 [DEBUG] (ComputerDAO.java:createAComputer:199) Requête : %s
+2018-04-09 11:11:56,847 [DEBUG] (ComputerDAO.java:getIdFromName:282) Requête : %s
+2018-04-09 11:11:56,848 [DEBUG] (ComputerDAO.java:deleteAComputer:301) Requête : %s
+2018-04-09 11:11:56,849 [DEBUG] (ComputerDAO.java:createAComputer:199) Requête : %s
+2018-04-09 11:11:56,851 [DEBUG] (ComputerDAO.java:getId:259) Requête : %s
+2018-04-09 11:11:56,851 [DEBUG] (ComputerDAO.java:updateAComputer:182) Requête : %s
+2018-04-09 11:11:56,852 [DEBUG] (ComputerDAO.java:getIdFromName:282) Requête : %s
+2018-04-09 11:11:56,853 [DEBUG] (ComputerDAO.java:deleteAComputer:301) Requête : %s
+2018-04-09 11:11:56,855 [DEBUG] (ComputerDAO.java:createAComputer:199) Requête : %s
+2018-04-09 11:11:56,856 [DEBUG] (ComputerDAO.java:getId:259) Requête : %s
+2018-04-09 11:11:56,857 [DEBUG] (ComputerDAO.java:updateAComputer:182) Requête : %s
+2018-04-09 11:11:56,859 [DEBUG] (ComputerDAO.java:getIdFromName:282) Requête : %s
+2018-04-09 11:11:56,859 [DEBUG] (ComputerDAO.java:deleteAComputer:301) Requête : %s
+2018-04-09 11:11:56,861 [DEBUG] (ComputerDAO.java:createAComputer:199) Requête : %s
+2018-04-09 11:11:56,863 [DEBUG] (ComputerDAO.java:getIdFromName:282) Requête : %s
+2018-04-09 11:11:56,863 [DEBUG] (ComputerDAO.java:deleteAComputer:301) Requête : %s
+2018-04-09 11:11:56,865 [DEBUG] (ComputerDAO.java:getIdFromName:282) Requête : %s
+2018-04-09 11:11:56,865 [DEBUG] (ComputerDAO.java:getIdFromName:282) Requête : %s
+2018-04-09 11:11:56,866 [DEBUG] (ComputerDAO.java:createAComputer:199) Requête : %s
+2018-04-09 11:11:56,868 [DEBUG] (ComputerDAO.java:getIdFromName:282) Requête : %s
+2018-04-09 11:11:56,869 [DEBUG] (ComputerDAO.java:deleteAComputer:301) Requête : %s
+2018-04-09 11:11:56,871 [DEBUG] (ComputerDAO.java:getIdFromName:282) Requête : %s
+2018-04-09 11:11:56,871 [DEBUG] (ComputerDAO.java:requestToComputer:92) Requête : %s
+2018-04-09 11:11:56,873 [DEBUG] (ComputerDAO.java:getIdFromName:282) Requête : %s
+2018-04-09 11:11:56,874 [DEBUG] (CompaniesDAO.java:getCompany:172) Requête : HikariProxyPreparedStatement@1475491159 wrapping com.mysql.cj.jdbc.PreparedStatement@543e710e: SELECT name FROM company WHERE id = 1
+2018-04-09 11:11:56,875 [DEBUG] (ComputerDAO.java:createAComputer:199) Requête : %s
+2018-04-09 11:11:56,877 [DEBUG] (ComputerDAO.java:getId:259) Requête : %s
+2018-04-09 11:11:56,878 [DEBUG] (ComputerDAO.java:updateAComputer:182) Requête : %s
+2018-04-09 11:11:56,880 [DEBUG] (ComputerDAO.java:getIdFromName:282) Requête : %s
+2018-04-09 11:11:56,880 [DEBUG] (ComputerDAO.java:deleteAComputer:301) Requête : %s
+2018-04-09 11:11:56,882 [DEBUG] (ComputerDAO.java:requestToListComputer:81) Requête : %s
+2018-04-09 11:11:56,901 [DEBUG] (HikariPool.java:logPoolState:378) HikariPool-1 - Pool stats (total=1, active=1, idle=0, waiting=0)
+2018-04-09 11:11:56,905 [DEBUG] (HikariPool.java:createPoolEntry:445) HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@1ead6cd5
+2018-04-09 11:11:56,909 [DEBUG] (HikariPool.java:createPoolEntry:445) HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@3684e318
+2018-04-09 11:11:56,912 [DEBUG] (HikariPool.java:createPoolEntry:445) HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@35ee542e
+2018-04-09 11:11:56,914 [DEBUG] (ComputerDAO.java:getIdFromName:282) Requête : %s
+2018-04-09 11:11:56,914 [DEBUG] (HikariPool.java:createPoolEntry:445) HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@269814c8
+2018-04-09 11:11:56,915 [DEBUG] (ComputerDAO.java:getId:259) Requête : %s
+2018-04-09 11:11:56,916 [DEBUG] (ComputerDAO.java:getIdFromName:282) Requête : %s
+2018-04-09 11:11:56,917 [DEBUG] (ComputerDAO.java:createAComputer:199) Requête : %s
+2018-04-09 11:11:56,918 [DEBUG] (HikariPool.java:createPoolEntry:445) HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@33e93562
+2018-04-09 11:11:56,919 [DEBUG] (ComputerDAO.java:getIdFromName:282) Requête : %s
+2018-04-09 11:11:56,920 [DEBUG] (ComputerDAO.java:deleteAComputer:301) Requête : %s
+2018-04-09 11:11:56,922 [DEBUG] (HikariPool.java:createPoolEntry:445) HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@39d361cc
+2018-04-09 11:11:56,923 [DEBUG] (CompaniesDAO.java:listCompanies:91) Requête : HikariProxyPreparedStatement@294184992 wrapping com.mysql.cj.jdbc.PreparedStatement@130f889: SELECT name, id FROM company
+2018-04-09 11:11:56,925 [DEBUG] (ComputerDAO.java:createAComputer:199) Requête : %s
+2018-04-09 11:11:56,925 [DEBUG] (HikariPool.java:createPoolEntry:445) HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@11c7e87d
+2018-04-09 11:11:56,928 [DEBUG] (ComputerDAO.java:getIdFromName:282) Requête : %s
+2018-04-09 11:11:56,928 [DEBUG] (HikariPool.java:createPoolEntry:445) HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@57e7c991
+2018-04-09 11:11:56,928 [DEBUG] (ComputerDAO.java:deleteAComputer:301) Requête : %s
+2018-04-09 11:11:56,931 [DEBUG] (HikariPool.java:createPoolEntry:445) HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@57ca6462
+2018-04-09 11:11:56,931 [DEBUG] (HikariPool.java:logPoolState:378) HikariPool-1 - After adding stats (total=10, active=0, idle=10, waiting=0)

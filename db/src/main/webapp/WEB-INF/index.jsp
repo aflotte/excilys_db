@@ -25,21 +25,21 @@
             </h1>
             <div id="actions" class="form-horizontal">
                 <div class="pull-left">
-                    <form id="searchForm" action="#" method="GET" class="form-inline">
+                    <form id="searchForm" action="" method="GET" class="form-inline">
 
-                        <input type="search" id="searchbox" name="search" class="form-control" placeholder="Search name" />
+                        <input type="search" id="searchbox" name="search" class="form-control" pattern="^[\wÀ-ÿ]+[\wÀ-ÿ_\-'\+\*. ]+$" placeholder="Search name" />
                         <input type="submit" id="searchsubmit" value="Filter by name"
                         class="btn btn-primary" />
                     </form>
                 </div>
                 <div class="pull-right">
                     <a class="btn btn-success" id="addComputer" href="addComputer">Add Computer</a> 
-                    <a class="btn btn-default" id="editComputer" href="#" onclick="$.fn.toggleEditMode();">Edit</a>
+                    <a class="btn btn-default" id="editComputer" href="#" onclick="$.fn.toggleEditMode();">Delete</a>
                 </div>
             </div>
         </div>
 
-        <form id="deleteForm" action="#" method="POST">
+        <form id="deleteForm" action="delete" method="POST">
             <input type="hidden" name="selection" value="">
         </form>
 
@@ -59,18 +59,18 @@
                             </span>
                         </th>
                         <th>
-                            Computer name
+                            <a href="?actualPage=${page.getPageNumber()}&pageSize=${page.getPageSize()}${search}${computerPath}" >Computer name</a>
                         </th>
                         <th>
-                            Introduced date
+                            <a href="?actualPage=${page.getPageNumber()}&pageSize=${page.getPageSize()}${search}${introducedPath}" >Introduced date</a>
                         </th>
                         <!-- Table header for Discontinued Date -->
                         <th>
-                            Discontinued date
+                            <a href="?actualPage=${page.getPageNumber()}&pageSize=${page.getPageSize()}${search}${discontinuedPath}" >Discontinued date</a>
                         </th>
                         <!-- Table header for Company -->
                         <th>
-                            Company
+                            <a href="?actualPage=${page.getPageNumber()}&pageSize=${page.getPageSize()}${search}${companyPath}" >Company</a>
                         </th>
 
                     </tr>
@@ -80,10 +80,10 @@
                 <c:forEach var="computer" items="${page.getPage()}">
             <tr>
             <td class='editMode'>
-            <input type='checkbox' name='cb' class='cb' value='0'>
+            <input type='checkbox' name='cb' class='cb' value='${computer.getId()}'>
             </td>
             <td>
-            <a href='editComputer' onclick=''>  ${computer.getName()} </a>
+            <a href='editComputer?id=${computer.getId()}' onclick=''>  ${computer.getName()} </a>
             <td> ${computer.getIntroduced()} </td>
             <td> ${computer.getDiscontinued()} </td>
             <td> ${computer.getCompany()}</td>
@@ -104,7 +104,7 @@
             
             <c:forEach var="pagePrev" items="${page.getPrevious()}">
                   <li>
-                    <a href="?actualPage=${pagePrev}&pageSize=${page.getPageSize()}" aria-label="Previous">
+                    <a href="?actualPage=${pagePrev}&pageSize=${page.getPageSize()}${search}${sortPath}" aria-label="Previous">
                       <span aria-hidden="true">&laquo;</span>
                   </a>
                   
@@ -113,7 +113,7 @@
             
                 
                   <c:forEach var="pageToPrint" items="${page.getPagesToGo()}">
-                  <li><a href="?actualPage=${pageToPrint}&pageSize=${page.getPageSize()}">${pageToPrint}</a></li>
+                  <li><a href="?actualPage=${pageToPrint}&pageSize=${page.getPageSize()}${search}${sortPath}">${pageToPrint}</a></li>
                   </c:forEach>
                   
                   
@@ -121,7 +121,7 @@
                   
                   
               <li>
-                <a href="?actualPage=${pageNext}&pageSize=${page.getPageSize()}" aria-label="Next">
+                <a href="?actualPage=${pageNext}&pageSize=${page.getPageSize()}${search}${sortPath}" aria-label="Next">
                     <span aria-hidden="true">&raquo;</span>
                 </a>
             </li>
@@ -129,15 +129,15 @@
         </ul>
 
         <div class="btn-group btn-group-sm pull-right" role="group" >
-            <button type="button" class="btn btn-default" onclick="location.href='?actualPage=${page.getPageNumber()}&pageSize=10'">10</button>
-            <button type="button" class="btn btn-default" onclick="location.href='?actualPage=${page.getPageNumber()}&pageSize=50'">50</button>
-            <button type="button" class="btn btn-default" onclick="location.href='?actualPage=${page.getPageNumber()}&pageSize=100'">100</button>
+            <button type="button" class="btn btn-default" onclick="location.href='?actualPage=${page.getPageNumber()}&pageSize=10${search}${sortPath}'">10</button>
+            <button type="button" class="btn btn-default" onclick="location.href='?actualPage=${page.getPageNumber()}&pageSize=50${search}${sortPath}'">50</button>
+            <button type="button" class="btn btn-default" onclick="location.href='?actualPage=${page.getPageNumber()}&pageSize=100${search}${sortPath}'">100</button>
         </div>
     </div>
     </footer>
-<script src="js/jquery.min.js"></script>
-<script src="js/bootstrap.min.js"></script>
-<script src="js/dashboard.js"></script>
+<script src="static/js/jquery.min.js"></script>
+<script src="static/js/bootstrap.min.js"></script>
+<script src="static/js/dashboard.js"></script>
 
 </body>
 </html>

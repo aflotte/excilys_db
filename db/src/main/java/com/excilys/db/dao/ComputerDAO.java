@@ -17,9 +17,6 @@ import com.excilys.db.model.Computer;
 import com.excilys.db.persistance.DBConnection;
 import java.sql.Statement;
 
-//TODO: lever des exceptions pour cacher celle de sql
-//TODO: limit et offset
-
 /**
  *
  * @author flotte
@@ -29,12 +26,13 @@ public enum ComputerDAO {
     org.slf4j.Logger logger = org.slf4j.LoggerFactory.getLogger(ComputerDAO.class);
 
     private static final String QUERRY_LIST_COMPUTERS = "SELECT computer.name, computer.introduced, computer.discontinued, company.id, computer.id, company.name FROM computer LEFT JOIN company ON computer.company_id = company.id";
-    private static final String QUERRY_LIST_COMPUTERS_ID = "SELECT computer.name, introduced, discontinued, company.id, computer.id, company.name FROM computer LEFT JOIN company ON computer.id = company.id WHERE computer.id = ";
+    private static final String QUERRY_LIST_COMPUTERS_ID = "SELECT computer.name, introduced, discontinued, company.id, computer.id, company.name FROM computer LEFT JOIN company ON computer.company_id = company.id WHERE computer.id = ";
     private static final String QUERRY_UPDATE_COMPUTER = "UPDATE computer SET name = ?, introduced = ?, discontinued = ?, company_id = ? WHERE id = ?";
     private static final String QUERRY_CREATE_COMPUTER = "INSERT INTO computer(name,introduced,discontinued,company_id) VALUES (?,?,?,?)";
     private static final String QUERRY_LIST_COMPUTER_BY_NAME = "SELECT id FROM computer WHERE name = ?";
     private static final String QUERRY_DELETE_COMPUTER = "DELETE FROM computer WHERE id = ";
     private static final String OFFSET_LIMIT = " LIMIT ? OFFSET ?";
+    private static final String ORDER_BY = " ORDER BY ";
     private static final String QUERRY_COUNT = "SELECT COUNT(*) FROM computer";
 
     /**
@@ -74,15 +72,32 @@ public enum ComputerDAO {
         return querryNotNULL;
     }
 
-    private static Connection conn;
 
-    /**
-     *
-     */
-    private void initialisationConnection() {
-        DBConnection.getInstance().connect();
-        conn = DBConnection.getConn();
 
+
+
+    private List<Computer> requestToListComputer(PreparedStatement prep1) throws SQLException {
+        List<Computer> listResult = new ArrayList<>();
+        logger.debug("Requête : %s", prep1.toString());
+        try (ResultSet resultSet = prep1.executeQuery();){
+            while (resultSet.next()) {
+                Computer toAdd = ComputerMapper.resultToComputer(resultSet);
+                listResult.add(toAdd);
+            }
+        }
+        return listResult;
+    }
+
+    private Optional<Computer> requestToComputer(Connection conn, PreparedStatement prep1) throws SQLException{
+        logger.debug("Requête : %s", prep1.toString());
+        Computer result = null;
+        try (ResultSet resultSet = prep1.executeQuery();){
+            if (resultSet.next()) {
+                result = ComputerMapper.resultToComputer(resultSet);
+            }
+        }
+
+        return Optional.of(result);
     }
 
     /**
@@ -90,25 +105,13 @@ public enum ComputerDAO {
      * @return la liste des ordinateurs
      * @throws CompaniesInexistantException erreur sur la compagnie de l'ordinateur
      */
-    public List<Computer> listComputer() throws DAOAccesExeption {
-        initialisationConnection();
-        List<Computer> listResult = new ArrayList<Computer>();
-        try {
-            PreparedStatement prep1 = conn.prepareStatement(QUERRY_LIST_COMPUTERS);
-            logger.debug("Requête : " + prep1.toString());
-            ResultSet resultSet = prep1.executeQuery();
-            while (resultSet.next()) {
-                Computer toAdd = ComputerMapper.resultToComputer(resultSet);
-                logger.debug("toComputer : " + toAdd.toString());
-                listResult.add(toAdd);
-            }
-            resultSet.close();
-            prep1.close();
+    public List<Computer> listComputer() {
+        List<Computer> listResult;
+        try (Connection conn = DBConnection.getConn();PreparedStatement prep1 = conn.prepareStatement(QUERRY_LIST_COMPUTERS);){
+            listResult = requestToListComputer(prep1);
         } catch (SQLException e) {
             logger.error("Erreur dans l'accès des données");
             throw new DAOAccesExeption();
-        } finally {
-            DBConnection.getInstance().disconnect();
         }
         return listResult;
     }
@@ -121,26 +124,13 @@ public enum ComputerDAO {
      * @return la liste des ordinateurs
      * @throws CompaniesInexistantException erreur sur la compagnie de l'ordinateur
      */
-    public List<Computer> listComputer(int offset, int limit) throws DAOAccesExeption {
-        initialisationConnection();
-        List<Computer> listResult = new ArrayList<Computer>();
-        try {
-            PreparedStatement prep1 = conn.prepareStatement(QUERRY_LIST_COMPUTERS + OFFSET_LIMIT);
-            prep1.setInt(1, limit);
-            prep1.setInt(2, offset);
-            logger.debug("Requête : " + prep1.toString());
-            ResultSet resultSet = prep1.executeQuery();
-            while (resultSet.next()) {
-                Computer toAdd = ComputerMapper.resultToComputer(resultSet);
-                listResult.add(toAdd);
-            }
-            resultSet.close();
-            prep1.close();
+    public List<Computer> listComputer(int offset, int limit,String sortBy, String orderBy ) {
+        List<Computer> listResult;
+        try (Connection conn = DBConnection.getConn();PreparedStatement prep1 = conn.prepareStatement(QUERRY_LIST_COMPUTERS + ORDER_BY + sortBy + " " + orderBy  + OFFSET_LIMIT );){
+            listResult = requestToListComputer(prep1);
         } catch (SQLException e) {
             logger.error("Erreur dans l'accès des données");
             throw new DAOAccesExeption();
-        } finally {
-            DBConnection.getInstance().disconnect();
         }
         return listResult;
     }
@@ -151,25 +141,16 @@ public enum ComputerDAO {
      * @return un ordinateur
      * @throws CompaniesInexistantException si la compagnie de l'ordinateur est inexistante
      */
-    public Optional<Computer> showDetails(int id) throws CompaniesInexistantException, DAOAccesExeption {
-        initialisationConnection();
-        Computer result = null;
-        try {
-            PreparedStatement prep1 = conn.prepareStatement(QUERRY_LIST_COMPUTERS_ID + id);
-            logger.debug("Requête : " + prep1.toString());
-            ResultSet resultSet = prep1.executeQuery();
-            if (resultSet.next()) {
-                result = ComputerMapper.resultToComputer(resultSet);
-            }
-            resultSet.close();
-            prep1.close();
+    public Optional<Computer> showDetails(int id) {
+        Optional<Computer> result = null;
+        try (Connection conn = DBConnection.getConn();PreparedStatement prep1 = conn.prepareStatement(QUERRY_LIST_COMPUTERS_ID + id);){
+            result = requestToComputer(conn, prep1);
+
         } catch (SQLException e) {
             logger.error("Erreur dans l'accès des données");
             throw new DAOAccesExeption();
-        } finally {
-            DBConnection.getInstance().disconnect();
         }
-        return Optional.of(result);
+        return result;
     }
 
     /**
@@ -177,12 +158,10 @@ public enum ComputerDAO {
      * @param computer l'ordinateur qui remplacera l'ancien
      * @param id de l'ordinateur a remplacer
      */
-    public void updateAComputer(Computer computer, int id) throws DAOAccesExeption {
-        initialisationConnection();
+    public void updateAComputer(Computer computer, int id) {
         LocalDate dateIntroduced = computer.getIntroduced();
         LocalDate dateDiscontinued = computer.getDiscontinued();
-        try {
-            PreparedStatement ps = conn.prepareStatement(QUERRY_UPDATE_COMPUTER);
+        try (Connection conn = DBConnection.getConn();PreparedStatement ps = conn.prepareStatement(QUERRY_UPDATE_COMPUTER);){
             ps.setString(1, computer.getName());
             if (dateIntroduced == null) {
                 ps.setNString(2, null);
@@ -201,14 +180,11 @@ public enum ComputerDAO {
                 ps.setNull(4, java.sql.Types.INTEGER);
             }
             ps.setInt(5, id);
-            logger.debug("Requête : " + ps.toString());
+            logger.debug("Requête : %s", ps.toString());
             ps.executeUpdate();
-            ps.close();
         } catch (SQLException e) {
             logger.error("Erreur dans l'accès des données");
             throw new DAOAccesExeption();
-        } finally {
-            DBConnection.getInstance().disconnect();
         }
     }
 
@@ -217,44 +193,24 @@ public enum ComputerDAO {
      * @param computer l'ordinateur a ajouter
      * @return l'Id de l'ordinateur qui vient d'être ajouter
      */
-    public int createAComputer(Computer computer) throws DAOAccesExeption {
-        initialisationConnection();
-        LocalDate dateIntroduced = computer.getIntroduced();
-        LocalDate dateDiscontinued = computer.getDiscontinued();
-        try {
-            PreparedStatement ps = conn.prepareStatement(QUERRY_CREATE_COMPUTER, Statement.RETURN_GENERATED_KEYS);
-            ps.setString(1, computer.getName());
-            if (dateIntroduced == null) {
-                ps.setNString(2, null);
-            } else {
-                ps.setDate(2, java.sql.Date.valueOf(dateIntroduced));
-            }
-            if (dateDiscontinued == null) {
-                ps.setNString(3, null);
-            } else {
-                ps.setDate(3, java.sql.Date.valueOf(dateDiscontinued));
-            }
-            if (computer.getCompany().getId() != null) {
-                ps.setInt(4, computer.getCompany().getId().intValue());
-            } else {
-                ps.setNull(4, java.sql.Types.INTEGER);
-            }
-            logger.debug("Requête : " + ps.toString());
+    public int createAComputer(Computer computer) {
+
+        try (Connection conn = DBConnection.getConn();PreparedStatement ps = conn.prepareStatement(QUERRY_CREATE_COMPUTER, Statement.RETURN_GENERATED_KEYS);){
+            fillGetIdStatement(ps, computer);
+            logger.debug("Requête : %s", ps.toString());
             ps.executeUpdate();
-            ResultSet key = ps.getGeneratedKeys();
-            int ikey = 0;
-            if (key.next()) {
-                ikey = key.getInt(1);
+            try (ResultSet key = ps.getGeneratedKeys();){
+                int ikey = 0;
+                if (key.next()) {
+                    ikey = key.getInt(1);
+                }
+                key.close();
+                return ikey;
             }
-            ps.close();
-            key.close();
-            return ikey;
 
         } catch (SQLException e) {
             logger.error("Erreur dans l'accès des données");
             throw new DAOAccesExeption();
-        } finally {
-            DBConnection.getInstance().disconnect();
         }
     }
 
@@ -264,7 +220,7 @@ public enum ComputerDAO {
      * @param computer l'ordinateur
      * @throws SQLException une erreur lors du dialogue avec la base de donnée
      */
-    private void fillGetIdStatement(PreparedStatement ps, Computer computer) throws DAOAccesExeption {
+    private void fillGetIdStatement(PreparedStatement ps, Computer computer) {
         LocalDate dateIntroduced = computer.getIntroduced();
         LocalDate dateDiscontinued = computer.getDiscontinued();
         try {
@@ -297,25 +253,20 @@ public enum ComputerDAO {
      * @param computer l'ordinateur dont on veut l'Id
      * @return l'Id
      */
-    public List<Integer> getId(Computer computer) throws DAOAccesExeption {
-        initialisationConnection();
-        List<Integer> result = new ArrayList<Integer>();
+    public List<Integer> getId(Computer computer) {
+        List<Integer> result = new ArrayList<>();
         String querry = chooseTheQuerry(computer.getIntroduced(), computer.getDiscontinued(), computer.getCompany());
-        try {
-            PreparedStatement ps = conn.prepareStatement(querry);
+        try (Connection conn = DBConnection.getConn();PreparedStatement ps = conn.prepareStatement(querry);){
             fillGetIdStatement(ps, computer);
-            logger.debug("Requête : " + ps.toString());
-            ResultSet resultSet = ps.executeQuery();
-            while (resultSet.next()) {
-                result.add(new Integer(resultSet.getInt(1)));
+            logger.debug("Requête : %s", ps.toString());
+            try (ResultSet resultSet = ps.executeQuery();){
+                while (resultSet.next()) {
+                    result.add(new Integer(resultSet.getInt(1)));
+                }
             }
-            resultSet.close();
-            ps.close();
         } catch (SQLException e) {
             logger.error("Erreur dans l'accès des données");
             throw new DAOAccesExeption();
-        } finally {
-            DBConnection.getInstance().disconnect();
         }
         return result;
 
@@ -326,24 +277,19 @@ public enum ComputerDAO {
      * @param name le nom de l'ordinateur
      * @return la liste des Id
      */
-    public List<Integer> getIdFromName(String name) throws DAOAccesExeption {
-        initialisationConnection();
-        List<Integer> result = new ArrayList<Integer>();
-        try {
-            PreparedStatement ps = conn.prepareStatement(QUERRY_LIST_COMPUTER_BY_NAME);
+    public List<Integer> getIdFromName(String name) {
+        List<Integer> result = new ArrayList<>();
+        try (Connection conn = DBConnection.getConn();PreparedStatement ps = conn.prepareStatement(QUERRY_LIST_COMPUTER_BY_NAME);){
             ps.setString(1, name);
-            logger.debug("Requête : " + ps.toString());
-            ResultSet resultSet = ps.executeQuery();
-            while (resultSet.next()) {
-                result.add(new Integer(resultSet.getInt(1)));
+            logger.debug("Requête : %s", ps.toString());
+            try (ResultSet resultSet = ps.executeQuery();){
+                while (resultSet.next()) {
+                    result.add(new Integer(resultSet.getInt(1)));
+                }
             }
-            resultSet.close();
-            ps.close();
         } catch (SQLException e) {
             logger.error("Erreur dans l'accès des données");
             throw new DAOAccesExeption();
-        } finally {
-            DBConnection.getInstance().disconnect();
         }
         return result;
     }
@@ -352,42 +298,101 @@ public enum ComputerDAO {
      *
      * @param id de l'ordinateur a supprimer
      */
-    public void deleteAComputer(int id) throws DAOAccesExeption {
-        initialisationConnection();
-        try {
-            PreparedStatement prep1 = conn.prepareStatement(QUERRY_DELETE_COMPUTER + id);
-            logger.debug("Requête : " + prep1.toString());
+    public void deleteAComputer(int id) {
+        try (Connection conn = DBConnection.getConn();PreparedStatement prep1 = conn.prepareStatement(QUERRY_DELETE_COMPUTER + id);){
+            logger.debug("Requête : %s", prep1.toString());
             prep1.executeUpdate(QUERRY_DELETE_COMPUTER + id);
-            prep1.close();
         } catch (SQLException e) {
             logger.error("Erreur dans l'accès des données");
             throw new DAOAccesExeption();
-        } finally {
-            DBConnection.getInstance().disconnect();
+        }
+    }
+
+
+    public void deleteListComputer(int[] ids) {
+        List<Integer> listId = new ArrayList<>();
+        for (int i=0;i < ids.length;i++) {
+            listId.add(ids[i]);
+        }
+        try(   Connection conn = DBConnection.getConn();
+                AutoSetAutoCommit a = new AutoSetAutoCommit(conn,false);
+                AutoRollback tm = new AutoRollback(conn)) 
+        {
+            deleteListComputer(conn, listId);
+            tm.commit();
+        }catch (Exception e) {
+            logger.warn(e.getMessage());
+            throw new DAOAccesExeption();
+        }
+    }
+
+    public void deleteListComputer(Connection conn, List<Integer> ids) throws SQLException {
+        for (int i = 0; i < ids.size(); i++) {
+            int id = ids.get(i);
+            try (PreparedStatement prep1 = conn.prepareStatement(QUERRY_DELETE_COMPUTER + id);){
+                logger.debug("Requête : %s", prep1.toString());
+                prep1.executeUpdate();
+            }
         }
     }
 
     /**
      *
      */
-    public int getCount() throws DAOAccesExeption {
-        initialisationConnection();
+    public int getCount() {
         int result = 0;
-        try {
-            PreparedStatement prep1 = conn.prepareStatement(QUERRY_COUNT);
-            logger.debug("Requête : " + prep1.toString());
-            ResultSet resultSet = prep1.executeQuery();
-            if (resultSet.next()) {
-                result = resultSet.getInt(1);
+        try (Connection conn = DBConnection.getConn();PreparedStatement prep1 = conn.prepareStatement(QUERRY_COUNT);){
+
+            logger.debug("Requête : %s", prep1.toString());
+            try (ResultSet resultSet = prep1.executeQuery();){
+                if (resultSet.next()) {
+                    result = resultSet.getInt(1);
+                }
             }
-            prep1.close();
         } catch (SQLException e) {
             logger.error("Erreur dans l'accès des données");
             throw new DAOAccesExeption();
-        } finally {
-            DBConnection.getInstance().disconnect();
         }
         return result;
+    }
+
+    /**
+     *
+     */
+    public int getCount(String search) {
+        int result = 0;
+        try (Connection conn = DBConnection.getConn();PreparedStatement prep1 = conn.prepareStatement(QUERRY_COUNT + " WHERE computer.name LIKE '%" + search + "%'");){
+            logger.debug("Requête : {0}", prep1.toString());
+            try (ResultSet resultSet = prep1.executeQuery();){
+                if (resultSet.next()) {
+                    result = resultSet.getInt(1);
+                }
+            }
+        } catch (SQLException e) {
+            logger.error("Erreur dans l'accès des données");
+            throw new DAOAccesExeption();
+        }
+        return result;
+    }
+
+
+    public List<Computer> listComputerLike(int offset, int limit, String name, String sortBy, String orderBy) {
+        List<Computer> listResult = new ArrayList<>();
+        try (Connection conn = DBConnection.getConn();PreparedStatement prep1 = conn.prepareStatement(QUERRY_LIST_COMPUTERS + " WHERE computer.name LIKE '%"+name +"%' " + ORDER_BY + sortBy + " " + orderBy + OFFSET_LIMIT );){
+            prep1.setInt(1, limit);
+            prep1.setInt(2, offset);
+            logger.debug("Requête : %s", prep1.toString());
+            try (ResultSet resultSet = prep1.executeQuery();){
+                while (resultSet.next()) {
+                    Computer toAdd = ComputerMapper.resultToComputer(resultSet);
+                    listResult.add(toAdd);
+                }
+            }
+        } catch (SQLException e) {
+            logger.error("Erreur dans l'accès des données");
+            throw new DAOAccesExeption();
+        }
+        return listResult;
     }
 
 }

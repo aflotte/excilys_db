@@ -9,6 +9,7 @@ import com.excilys.db.exception.CompaniesInexistantException;
 import com.excilys.db.exception.DAOAccesExeption;
 import com.excilys.db.exception.IncoherentDatesException;
 import com.excilys.db.exception.ServiceException;
+import com.excilys.db.exception.ValidatorException;
 import com.excilys.db.model.Computer;
 import com.excilys.db.validator.ComputerValidator;
 
@@ -27,28 +28,33 @@ public enum ComputerService {
     }
 
     /**
-     * 
+     *
      * @param offset l'offset
      * @param limit la limite
      * @return la liste des ordinateurs
      * @throws CompaniesInexistantException erreurs lors de la création de l'ordinateur
      */
+    public List<Computer> listComputer(int offset, int limit, String sortBy, String orderBy) {
+        return computer.listComputer(offset, limit, sortBy, orderBy);
+    }
+    
     public List<Computer> listComputer(int offset, int limit) {
-        return computer.listComputer(offset, limit);
+        return computer.listComputer(offset, limit, "computer.id", "asc");
     }
 
     /**
      *
      * @param aAjouter ordinateur à ajouter
      * @return l'id de l'ordinateur
-     * @throws ServiceException 
+     * @throws ServiceException
      */
     public int createComputer(Computer aAjouter) throws ServiceException {
         try {
             if (ComputerValidator.INSTANCE.validate(aAjouter)) {
+                System.out.println("Here");
                 return computer.createAComputer(aAjouter);
             }
-        } catch (IncoherentDatesException | CompaniesIdIncorrectException e) {
+        } catch (IncoherentDatesException | CompaniesIdIncorrectException | DAOAccesExeption | ValidatorException e) {
             logger.warn(e.getMessage());
             throw new ServiceException();
         }
@@ -68,15 +74,13 @@ public enum ComputerService {
      *
      * @param id de l'ordinateur dont on veut les informations
      * @return l'ordinateur
-     * @throws ServiceException 
+     * @throws ServiceException
      * @throws CompaniesInexistantException l'ordinateur a été mal formé au niveau de sa compagnie
      */
     public Optional<Computer> showDetails(int id) throws ServiceException {
-        
         try {
             return computer.showDetails(id);
-        } catch (DAOAccesExeption | CompaniesInexistantException e) {
-            // TODO Auto-generated catch block
+        } catch (DAOAccesExeption e) {
             logger.warn(e.getMessage());
             throw new ServiceException();
         }
@@ -86,20 +90,36 @@ public enum ComputerService {
      *
      * @param aAjouter l'ordinateur a ajouter dans la base de donnée
      * @param toUpdate l'id de l'ordinateur à mettre à jour
-     * @throws ServiceException 
+     * @throws ServiceException
      */
     public void updateAComputer(Computer aAjouter, int toUpdate) throws ServiceException {
         try {
             if (ComputerValidator.INSTANCE.validate(aAjouter)) {
                 computer.updateAComputer(aAjouter, toUpdate);
             }
-        } catch (IncoherentDatesException | CompaniesIdIncorrectException e) {
+        } catch (IncoherentDatesException | CompaniesIdIncorrectException | DAOAccesExeption | ValidatorException e) {
             logger.warn(e.getMessage());
             throw new ServiceException();
         }
     }
-    
     public int getCount() {
         return computer.getCount();
     }
+    
+    public int getCount(String search) {
+        return computer.getCount(search);
+    }
+    
+    public List<Computer> listComputerLike(int offset, int limit, String name, String sortBy, String orderBy){
+        return computer.listComputerLike(offset, limit, name, sortBy, orderBy);
+    }
+    
+    public List<Computer> listComputerLike(int offset, int limit, String name){
+        return computer.listComputerLike(offset, limit, name, "computer.id", "asc");
+    }
+    
+    public void deleteListComputer(int[] ids) {
+        computer.deleteListComputer(ids);
+    }
+    
 }

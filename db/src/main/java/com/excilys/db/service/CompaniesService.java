@@ -29,9 +29,17 @@ public enum CompaniesService {
         return companies.getCompany(id);
     }
 
-    
+    /**
+     *
+     * @param name le nom de la compagnie
+     * @return l'id de la compagnie
+     */
     public Integer getCompagnyId(String name) {
-        //TODO: error case liste vide
-        return companies.getIdFromName(name).get(0);
+        //TODO:passer en Optional
+        if (companies.getIdFromName(name).size()>0) {
+            return companies.getIdFromName(name).get(0);
+        }else {
+            return null;
+        }
     }
 }

@@ -11,22 +11,18 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.excilys.db.dto.ComputerDTO;
-import com.excilys.db.exception.CompaniesIdIncorrectException;
-import com.excilys.db.exception.IncoherentDatesException;
 import com.excilys.db.exception.ServiceException;
 import com.excilys.db.mapper.ComputerMapper;
 import com.excilys.db.model.Computer;
 import com.excilys.db.service.CompaniesService;
 import com.excilys.db.service.ComputerService;
-import com.excilys.db.validator.ComputerValidator;
 
 /**
- * Servlet implementation class AddComputer
+ * Servlet implementation class AddComputer.
  */
 @WebServlet("/addComputer")
 public class AddComputer extends HttpServlet {
-	private static final long serialVersionUID = 1L;
-       
+    private static final long serialVersionUID = 1L;
     /**
      * @see HttpServlet#HttpServlet()
      */
@@ -35,25 +31,27 @@ public class AddComputer extends HttpServlet {
         // TODO Auto-generated constructor stub
     }
 
-	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
-	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    /**
+     * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+     */
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
-        request.setAttribute("companies", CompaniesService.INSTANCE.listCompanies());
+            request.setAttribute("companies", CompaniesService.INSTANCE.listCompanies());
             RequestDispatcher rd =
-                 request.getRequestDispatcher("/WEB-INF/addComputer.jsp");
+                    request.getRequestDispatcher("/WEB-INF/addComputer.jsp");
 
-            rd.forward(request,response);
-       } catch (Exception e) { throw new ServletException(e); }
-	}
+            rd.forward(request, response);
+        } catch (Exception e) {
+            throw new ServletException(e);
+        }
+    }
 
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-	    ComputerDTO computerDTO = new ComputerDTO();
-	    computerDTO.setName(request.getParameter("computerName"));
+    /**
+     * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+     */
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        ComputerDTO computerDTO = new ComputerDTO();
+        computerDTO.setName(request.getParameter("computerName"));
         computerDTO.setIntroduced(request.getParameter("introduced"));
         computerDTO.setDiscontinued(request.getParameter("discontinued"));
         computerDTO.setCompany(request.getParameter("companyId"));
@@ -65,11 +63,10 @@ public class AddComputer extends HttpServlet {
             e.printStackTrace();
         }
         doGet(request, response);
-	}
+    }
 
     public List<ComputerDTO> getComputer() {
 
         return ComputerMapper.computerListToComputerDTO(ComputerService.INSTANCE.listComputer());
     }
-	
 }

@@ -13,6 +13,7 @@ import java.util.Scanner;
 import com.excilys.db.exception.CompaniesIdIncorrectException;
 import com.excilys.db.exception.CompaniesInexistantException;
 import com.excilys.db.exception.IncoherentDatesException;
+import com.excilys.db.exception.ValidatorException;
 import com.excilys.db.model.Company;
 import com.excilys.db.model.Computer;
 import com.excilys.db.validator.ComputerValidator;
@@ -50,7 +51,7 @@ public class ScanCLI {
      * @throws IncoherentDatesException les dates sont incohérentes
      * @throws CompaniesInexistantException une erreur est survenue avec la compagnie
      */
-    public static Computer scanComputer(Scanner sc) throws InputMismatchException, CompaniesIdIncorrectException, IncoherentDatesException, CompaniesInexistantException {
+    public static Computer scanComputer(Scanner sc) throws CompaniesIdIncorrectException, IncoherentDatesException {
         Computer aRetourner = new Computer();
         System.out.println("Entrer le nom de l'ordinateur : ");
         aRetourner.setName(sc.next());
@@ -66,7 +67,11 @@ public class ScanCLI {
         if (idCompanie != -2) {
             aRetourner.setCompany(new Company(new Integer(idCompanie)));
         }
-        ComputerValidator.INSTANCE.validate(aRetourner);
+        try {
+            ComputerValidator.INSTANCE.validate(aRetourner);
+        } catch (ValidatorException e) {
+            System.out.println("Erreur lors de la validation de l'ordinateur");
+        }
         return aRetourner;
     }
 

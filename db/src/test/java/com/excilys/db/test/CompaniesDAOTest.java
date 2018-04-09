@@ -1,5 +1,8 @@
 package com.excilys.db.test;
 
+import java.sql.Connection;
+import java.sql.SQLException;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -14,19 +17,21 @@ import junit.framework.TestCase;
 public class CompaniesDAOTest extends TestCase {
 	DBConnection instance = DBConnection.getInstance();
 	CompaniesDAO companies = CompaniesDAO.INSTANCE;	
-
-	@BeforeClass
-	public void init() {
-	}
+	Connection conn;
 
 	@Before
 	public void connection() {
-		instance.connect();
+	    conn = DBConnection.getConn();
 	}
 
 	@After
 	public void deconnection() {
-		instance.disconnect();
+		try {
+            conn.close();
+        } catch (SQLException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
 	}
 
 
