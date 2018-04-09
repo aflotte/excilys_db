@@ -9,6 +9,10 @@ import com.excilys.db.model.Company;
 public class CompaniesMapper {
     static org.slf4j.Logger logger = org.slf4j.LoggerFactory.getLogger(CompaniesMapper.class);
 
+    private CompaniesMapper() {
+
+    }
+
     /**
      *
      * @param rs le ResultSet a interpreter
@@ -24,7 +28,7 @@ public class CompaniesMapper {
         }
         return result;
     }
-    
+
     public static CompanyDTO companyToDTO(Company company) {
         CompanyDTO toReturn = new CompanyDTO();
         toReturn.setId(company.getId());

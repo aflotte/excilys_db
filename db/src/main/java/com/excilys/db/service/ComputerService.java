@@ -51,14 +51,12 @@ public enum ComputerService {
     public int createComputer(Computer aAjouter) throws ServiceException {
         try {
             if (ComputerValidator.INSTANCE.validate(aAjouter)) {
-                System.out.println("Here");
                 return computer.createAComputer(aAjouter);
             }
         } catch (IncoherentDatesException | CompaniesIdIncorrectException | DAOAccesExeption | ValidatorException e) {
             logger.warn(e.getMessage());
             throw new ServiceException();
         }
-        //TODO: lever une exeption
         return 0;
     }
 

@@ -12,7 +12,7 @@ public class PageComputer extends Page{
 
     List<Computer> computers;
     int index;
-    public Scanner sc;
+    private Scanner sc;
     
     public PageComputer() {
         super();
@@ -64,8 +64,7 @@ public class PageComputer extends Page{
      * @throws CompaniesInexistantException
      */
     public List<Computer> getPage(int offset, int limit, String sortBy, String orderBy) {
-        List<Computer> list = ComputerService.INSTANCE.listComputer(offset, limit, sortBy, orderBy);
-        return list;
+        return ComputerService.INSTANCE.listComputer(offset, limit, sortBy, orderBy);
     }
 
     /**

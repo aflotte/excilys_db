@@ -34,9 +34,8 @@ public enum CompaniesService {
      * @param name le nom de la compagnie
      * @return l'id de la compagnie
      */
-    public Integer getCompagnyId(String name) {
-        //TODO:passer en Optional
-        if (companies.getIdFromName(name).size()>0) {
+    public Integer getCompagnyId(String name) { 
+        if (!companies.getIdFromName(name).isEmpty()) {
             return companies.getIdFromName(name).get(0);
         }else {
             return null;

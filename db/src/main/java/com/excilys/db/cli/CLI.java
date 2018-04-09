@@ -36,7 +36,7 @@ public class CLI {
      * @param args aucun attendu
      * @throws CompaniesInexistantException erreur lors de la création d'une compagnie
      */
-    public static void main(String[] args) throws CompaniesInexistantException {
+    public static void main(String[] args) {
         System.out.println("Bienvenue sur le CLI de la base de donnée");
         sc = new Scanner(System.in);
         boolean continu = true;

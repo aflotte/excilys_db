@@ -15,8 +15,6 @@ import com.excilys.db.persistance.DBConnection;
 public enum ComputerValidator {
     INSTANCE;
     static org.slf4j.Logger logger = org.slf4j.LoggerFactory.getLogger(ComputerValidator.class);
-    private static Connection conn;
-
     //TODO:check les formats des données
 
 
@@ -26,8 +24,9 @@ public enum ComputerValidator {
      * @return l'existance
      */
     public boolean exist(int id) {
-        String querry = "SELECT name FROM computer WHERE id = " + id;
+        String querry = "SELECT name FROM computer WHERE id = ?";
         try (Connection conn = DBConnection.getConn();PreparedStatement prep1 = conn.prepareStatement(querry);){
+            prep1.setInt(1, id);
             try (ResultSet resultSet = prep1.executeQuery();){
                 return resultSet.next();
             }

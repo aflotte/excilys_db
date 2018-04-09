@@ -10,7 +10,7 @@ public class PageCompanies {
     List<Company> companies;
     int index;
     static final int NOMBRE_AFFICHAGE = 10;
-    public Scanner sc;
+    private Scanner sc;
 
     /**
      *

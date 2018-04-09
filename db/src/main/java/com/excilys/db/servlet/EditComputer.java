@@ -10,7 +10,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.excilys.db.dao.ComputerDAO;
 import com.excilys.db.dto.ComputerDTO;
 import com.excilys.db.exception.ServiceException;
 import com.excilys.db.mapper.ComputerMapper;
@@ -24,15 +23,55 @@ import com.excilys.db.validator.ComputerValidator;
  */
 @WebServlet("/editComputer")
 public class EditComputer extends HttpServlet {
-    
+
     private static final long serialVersionUID = 1L;
+    private static final String INDEX = "/WEB-INF/index.jsp";
 
     /**
      * @see HttpServlet#HttpServlet()
      */
     public EditComputer() {
         super();
-        // TODO Auto-generated constructor stub
+    }
+
+    private boolean testNullEmpty(HttpServletRequest request, HttpServletResponse response) {
+        org.slf4j.Logger logger = org.slf4j.LoggerFactory.getLogger(EditComputer.class);
+        if (request.getParameter("id") == null) {
+            RequestDispatcher rd =
+                    request.getRequestDispatcher(INDEX);
+            try {
+                rd.forward(request, response);
+                return true;
+            } catch ( Exception e) {
+                logger.warn(e.getMessage());
+            }
+        }
+        if (request.getParameter("id").isEmpty()) {
+            RequestDispatcher rd =
+                    request.getRequestDispatcher(INDEX);
+            try {
+                rd.forward(request, response);
+                return true;
+            } catch ( Exception e) {
+                logger.warn(e.getMessage());
+            }
+        }
+        return false;
+    }
+
+    private boolean testComputerNotExist(HttpServletRequest request, HttpServletResponse response, int id) {
+        org.slf4j.Logger logger = org.slf4j.LoggerFactory.getLogger(EditComputer.class);
+        if (!ComputerValidator.INSTANCE.exist(id)) {
+            RequestDispatcher rd =
+                    request.getRequestDispatcher("/WEB-INF/404.jsp");
+            try {
+                rd.forward(request, response);
+                return true;
+            }catch (Exception e) {
+                logger.warn(e.getMessage());
+            }
+        }
+        return false;
     }
 
     /**
@@ -42,57 +81,41 @@ public class EditComputer extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         org.slf4j.Logger logger = org.slf4j.LoggerFactory.getLogger(EditComputer.class);
         int id = 0;
-        if (request.getParameter("id") == null) {
-            RequestDispatcher rd =
-                    request.getRequestDispatcher("/WEB-INF/index.jsp");
+        if (testNullEmpty(request, response)) {
+            return;
+        }
+        try {
+            id = Integer.parseInt(request.getParameter("id"));
+        } catch (Exception e) {
+            logger.warn(e.getMessage());
+        }
+        if (testComputerNotExist(request, response, id)) {
+            return;
+        }
+        ComputerDTO computerDTO = null;
+        try {
+            Optional<Computer> computer = ComputerService.INSTANCE.showDetails(id);
+            if (computer.isPresent()) {
+                computerDTO = ComputerMapper.computerToDTO(computer.get());
+            }
+        } catch (ServiceException e) {
+            logger.warn(e.getMessage());
+            RequestDispatcher rd = request.getRequestDispatcher(INDEX);
             try {
                 rd.forward(request, response);
-            } catch ( Exception e) {
+            } catch (Exception e1) {
                 logger.warn(e.getMessage());
             }
-        } else {
-            if (request.getParameter("id").isEmpty()) {
-                RequestDispatcher rd =
-                        request.getRequestDispatcher("/WEB-INF/index.jsp");
-                try {
-                    rd.forward(request, response);
-                } catch ( Exception e) {
-                    logger.warn(e.getMessage());
-                }
-            } else {
-                id = Integer.parseInt(request.getParameter("id"));
-                if (!ComputerValidator.INSTANCE.exist(id)) {
-                    RequestDispatcher rd =
-                            request.getRequestDispatcher("/WEB-INF/404.jsp");
-                    try {
-                        rd.forward(request, response);
-                    }catch (Exception e) {
-                        logger.warn(e.getMessage());
-                    }
-                }else {
-                    ComputerDTO computerDTO = null;
-                    try {
-                        Optional<Computer> computer = ComputerService.INSTANCE.showDetails(id);
-                        if (computer.isPresent()) {
-                        computerDTO = ComputerMapper.computerToDTO(computer.get());
-                        }
-                    } catch (ServiceException e) {
-                        logger.warn(e.getMessage());
-                        RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/index.jsp");
-                        rd.forward(request, response);
-                    }
-                    request.setAttribute("id", id);
-                    request.setAttribute("computer", computerDTO);
-                    request.setAttribute("companies", CompaniesService.INSTANCE.listCompanies());
-                    RequestDispatcher rd =
-                            request.getRequestDispatcher("/WEB-INF/editComputer.jsp");
-                    try {
-                        rd.forward(request, response);
-                    } catch ( Exception e) {
-                        logger.warn(e.getMessage());
-                    }
-                }
-            }
+        }
+        request.setAttribute("id", id);
+        request.setAttribute("computer", computerDTO);
+        request.setAttribute("companies", CompaniesService.INSTANCE.listCompanies());
+        try {
+            RequestDispatcher rd =
+                    request.getRequestDispatcher("/WEB-INF/editComputer.jsp");
+            rd.forward(request, response);
+        } catch ( Exception e) {
+            logger.warn(e.getMessage());
         }
     }
 
@@ -102,27 +125,28 @@ public class EditComputer extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         org.slf4j.Logger logger = org.slf4j.LoggerFactory.getLogger(EditComputer.class);
-        int id = Integer.parseInt(request.getParameter("id"));
+        int id = 0;
+        try {
+            id = Integer.parseInt(request.getParameter("id"));
+        } catch (Exception e) {
+            logger.debug(e.getMessage());
+        }
         Computer computer = postComputer(request);
         computer.setId(id);
         try {
             ComputerService.INSTANCE.updateAComputer(computer, id);
         } catch (ServiceException e) {
             logger.warn(e.getMessage());
-            RequestDispatcher rd =
-                    request.getRequestDispatcher("/WEB-INF/index.jsp");
             try {
-                rd.forward(request, response);
-            } catch ( Exception e1) {
-                logger.warn(e1.getMessage());
+                response.sendRedirect(request.getContextPath() + "/dashboard");
+            } catch (Exception e1) {
+                logger.debug(e1.getMessage());
             }
         }
-        RequestDispatcher rd =
-                request.getRequestDispatcher("/WEB-INF/index.jsp");
         try {
-            rd.forward(request, response);
-        } catch ( Exception e) {
-            logger.warn(e.getMessage());
+            response.sendRedirect(request.getContextPath() + "/dashboard");
+        } catch (Exception e) {
+            logger.debug(e.getMessage());
         }
     }
 

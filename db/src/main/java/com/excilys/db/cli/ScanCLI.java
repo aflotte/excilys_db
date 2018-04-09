@@ -25,7 +25,9 @@ import com.excilys.db.validator.ComputerValidator;
  */
 public class ScanCLI {
 
-
+    private ScanCLI() {
+        
+    }
 
     /**
      *
@@ -65,7 +67,7 @@ public class ScanCLI {
         System.out.println("Entrer l'Id de la compagnie ( -2 pour laisser vide ) :");
         int idCompanie = sc.nextInt();
         if (idCompanie != -2) {
-            aRetourner.setCompany(new Company(new Integer(idCompanie)));
+            aRetourner.setCompany(new Company(Integer.valueOf(idCompanie)));
         }
         try {
             ComputerValidator.INSTANCE.validate(aRetourner);

@@ -14,4 +14,11 @@ public class Debugging {
             logger.debug(toDebug);
         }
     }
+    
+    public static void simpleDebugInt(org.slf4j.Logger logger, String message, int toPrint) {
+        if (logger.isDebugEnabled()) {
+            String toDebug = MessageFormat.format(message, toPrint);
+            logger.debug(toDebug);
+        }
+    }
 }

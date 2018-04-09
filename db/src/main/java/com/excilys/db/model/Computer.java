@@ -86,10 +86,7 @@ public class Computer {
         if (this.getDiscontinued() != ((Computer) obj).getDiscontinued()) {
             return false;
         }
-        if (!this.getCompany().equals(((Computer) obj).getCompany())) {
-            return false;
-        }
-        return true;
+        return this.getCompany().equals(((Computer) obj).getCompany());
 
     }
 

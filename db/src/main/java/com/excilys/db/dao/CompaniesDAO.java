@@ -14,6 +14,7 @@ import com.excilys.db.mapper.CompaniesMapper;
 import com.excilys.db.model.Company;
 import com.excilys.db.persistance.DBConnection;
 import com.excilys.db.utils.Close;
+import com.excilys.db.utils.Debugging;
 
 /**
  * La classe DAO de Companies.
@@ -23,12 +24,11 @@ import com.excilys.db.utils.Close;
 public enum CompaniesDAO {
     INSTANCE;
     static org.slf4j.Logger logger = org.slf4j.LoggerFactory.getLogger(CompaniesDAO.class);
-    private static final String DEBUG_REQUEST = "Requête : {0}";
 
     private static final String QUERRY_LIST_COMPANIES_BY_NAME = "SELECT id FROM company WHERE name LIKE ?";
     private static final String QUERRY_LIST_COMPANIES = "SELECT name, id FROM company";
-    private static final String QUERRY_LIST_COMPANIES_ID = "SELECT name FROM company WHERE id = ";
-    private static final String QUERRY_LIST_COMPUTER = "SELECT computer.id FROM computer RIGHT JOIN company ON computer.company_id = ";
+    private static final String QUERRY_LIST_COMPANIES_ID = "SELECT name FROM company WHERE id = ?";
+    private static final String QUERRY_LIST_COMPUTER = "SELECT computer.id FROM computer RIGHT JOIN company ON computer.company_id = ?";
     private static final String OFFSET_LIMIT = " LIMIT ? OFFSET ?";
     private static final String DELETE_COMPANY = "DELETE FROM company WHERE id = ?";
     private static final String QUERRY_COUNT = "SELECT COUNT(*) FROM company";
@@ -39,10 +39,9 @@ public enum CompaniesDAO {
     public List<Integer> computerFromCompany(int id){
         List<Integer> result = new ArrayList<>();
         ResultSet resultSet = null;
-        try (Connection conn = DBConnection.getConn();PreparedStatement prep1 = conn.prepareStatement(QUERRY_LIST_COMPUTER + id);){
-            if (logger.isDebugEnabled()) {
-                logger.debug(DEBUG_REQUEST, prep1.toString());
-            }
+        try (Connection conn = DBConnection.getConn();PreparedStatement prep1 = conn.prepareStatement(QUERRY_LIST_COMPUTER);){
+            prep1.setInt(1, id);
+            Debugging.requestDebug(logger, prep1.toString());
             resultSet = prep1.executeQuery();
             while (resultSet.next()) {
                 result.add(resultSet.getInt(1));
@@ -65,10 +64,9 @@ public enum CompaniesDAO {
      */
     public boolean existCompanies(int id) {
         ResultSet resultSet = null;
-        try (Connection conn = DBConnection.getConn();PreparedStatement prep1 = conn.prepareStatement(QUERRY_LIST_COMPANIES_ID + id);){
-            if (logger.isDebugEnabled()) {
-                logger.debug(DEBUG_REQUEST, prep1.toString());
-            }
+        try (Connection conn = DBConnection.getConn();PreparedStatement prep1 = conn.prepareStatement(QUERRY_LIST_COMPANIES_ID);){
+            prep1.setInt(1, id);
+            Debugging.requestDebug(logger, prep1.toString());
             resultSet = prep1.executeQuery();
             return resultSet.next();
         } catch (SQLException e) {
@@ -87,9 +85,7 @@ public enum CompaniesDAO {
         ResultSet resultSet = null;
         List<Company> listResult = new ArrayList<>();
         try (Connection conn = DBConnection.getConn();PreparedStatement prep1 = conn.prepareStatement(QUERRY_LIST_COMPANIES);){
-            if (logger.isDebugEnabled()) {
-                logger.debug(DEBUG_REQUEST, prep1.toString());
-            }
+            Debugging.requestDebug(logger, prep1.toString());
             resultSet = prep1.executeQuery();
             while (resultSet.next()) {
                 Company toAdd = new Company();
@@ -137,9 +133,7 @@ public enum CompaniesDAO {
 
             prep1.setInt(1, limit);
             prep1.setInt(2, offset);
-            if (logger.isDebugEnabled()) {
-                logger.debug(DEBUG_REQUEST, prep1.toString());
-            }
+            Debugging.requestDebug(logger,prep1.toString());
                 resultSet = prep1.executeQuery();
             while (resultSet.next()) {
                 Company toAdd = CompaniesMapper.computerResultToCompanies(resultSet);
@@ -165,10 +159,9 @@ public enum CompaniesDAO {
         if (id == null) {
             result.setId(null);
         } else {
-            try (Connection conn = DBConnection.getConn();PreparedStatement prep1 = conn.prepareStatement(QUERRY_LIST_COMPANIES_ID + id);){
-                if (logger.isDebugEnabled()) {
-                    logger.debug(DEBUG_REQUEST, prep1.toString());
-                }
+            try (Connection conn = DBConnection.getConn();PreparedStatement prep1 = conn.prepareStatement(QUERRY_LIST_COMPANIES_ID);){
+                prep1.setInt(1, id);
+                Debugging.requestDebug(logger, prep1.toString());
                 resultSet = prep1.executeQuery();
                 if (resultSet.next()) {
                     result.setName(resultSet.getString(1));
@@ -192,9 +185,7 @@ public enum CompaniesDAO {
      */
     public void getCount() {
         try (Connection conn = DBConnection.getConn();PreparedStatement prep1 = conn.prepareStatement(QUERRY_COUNT);){
-            if (logger.isDebugEnabled()) {
-                logger.debug(DEBUG_REQUEST, prep1.toString());
-            }
+            Debugging.requestDebug(logger, prep1.toString());
             prep1.executeQuery();
         } catch (SQLException e) {
             logger.warn(e.getMessage());
@@ -212,9 +203,7 @@ public enum CompaniesDAO {
         try (Connection conn = DBConnection.getConn();PreparedStatement ps = conn.prepareStatement(QUERRY_LIST_COMPANIES_BY_NAME);){
 
             ps.setString(1, name);
-            if (logger.isDebugEnabled()) {
-                logger.debug(DEBUG_REQUEST, ps.toString());
-            }
+            Debugging.requestDebug(logger, ps.toString());
             resultSet = ps.executeQuery();
             while (resultSet.next()) {
                 result.add(Integer.valueOf(resultSet.getInt(1)));

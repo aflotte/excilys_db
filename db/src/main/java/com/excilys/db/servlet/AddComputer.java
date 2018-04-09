@@ -28,13 +28,14 @@ public class AddComputer extends HttpServlet {
      */
     public AddComputer() {
         super();
-        // TODO Auto-generated constructor stub
     }
 
     /**
      * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
      */
+    @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        org.slf4j.Logger logger = org.slf4j.LoggerFactory.getLogger(AddComputer.class);
         try {
             request.setAttribute("companies", CompaniesService.INSTANCE.listCompanies());
             RequestDispatcher rd =
@@ -42,14 +43,16 @@ public class AddComputer extends HttpServlet {
 
             rd.forward(request, response);
         } catch (Exception e) {
-            throw new ServletException(e);
+            logger.debug(e.getMessage());
         }
     }
 
     /**
      * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
      */
+    @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        org.slf4j.Logger logger = org.slf4j.LoggerFactory.getLogger(AddComputer.class);
         ComputerDTO computerDTO = new ComputerDTO();
         computerDTO.setName(request.getParameter("computerName"));
         computerDTO.setIntroduced(request.getParameter("introduced"));
@@ -59,10 +62,13 @@ public class AddComputer extends HttpServlet {
         try {
             ComputerService.INSTANCE.createComputer(computer);
         } catch (ServiceException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            logger.debug(e.getMessage());
         }
-        doGet(request, response);
+        try {
+            doGet(request, response);
+        } catch (Exception e) {
+            logger.debug(e.getMessage());
+        }
     }
 
     public List<ComputerDTO> getComputer() {

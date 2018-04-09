@@ -6,6 +6,10 @@ import java.sql.SQLException;
 public class Close {
     static org.slf4j.Logger logger = org.slf4j.LoggerFactory.getLogger(Close.class);
     
+    private Close() {
+        
+    }
+    
     public static void closeQuietly(ResultSet resultSet)
     {
       try

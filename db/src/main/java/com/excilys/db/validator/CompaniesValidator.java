@@ -13,9 +13,6 @@ import com.excilys.db.persistance.DBConnection;
 public enum CompaniesValidator {
     INSTANCE;
     static org.slf4j.Logger logger = org.slf4j.LoggerFactory.getLogger(CompaniesValidator.class);
-    private static Connection conn;
-
-
     static Computer computer;
 
 
@@ -26,8 +23,9 @@ public enum CompaniesValidator {
      * @throws ValidatorException 
      */
     public boolean exist(int id) throws ValidatorException {
-        String querry = "SELECT name FROM company WHERE id = " + id;
+        String querry = "SELECT name FROM company WHERE id = ?";
         try (Connection conn = DBConnection.getConn();PreparedStatement prep1 = conn.prepareStatement(querry);){
+            prep1.setInt(1, id);
             try (ResultSet resultSet = prep1.executeQuery();){
                 return (resultSet.next());
             }

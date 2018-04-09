@@ -16,6 +16,10 @@ import com.excilys.db.service.CompaniesService;
 public class ComputerMapper {
     static org.slf4j.Logger logger = org.slf4j.LoggerFactory.getLogger(ComputerMapper.class);
 
+    private ComputerMapper() {
+        
+    }
+
     /**
      *
      * @param resultSet le ResultSet a interpreter
@@ -60,7 +64,7 @@ public class ComputerMapper {
     }
 
     public static List<ComputerDTO> computerListToComputerDTO(List<Computer> computer) {
-        List<ComputerDTO> toReturn = new ArrayList<ComputerDTO>();
+        List<ComputerDTO> toReturn = new ArrayList<>();
         for (int i = 0; i < computer.size(); i++  ) {
             toReturn.add(computerToDTO(computer.get(i)));
         }
@@ -102,7 +106,7 @@ public class ComputerMapper {
     }
 
     public static List<Computer> computerDTOListToComputer(List<ComputerDTO> computer) {
-        List<Computer> toReturn = new ArrayList<Computer>();
+        List<Computer> toReturn = new ArrayList<>();
         for (int i = 0; i < computer.size(); i++  ) {
             toReturn.add(computerDTOToComputer(computer.get(i)));
         }
