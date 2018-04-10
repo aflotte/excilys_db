@@ -25,9 +25,9 @@ public enum ComputerValidator {
      */
     public boolean exist(int id) {
         String querry = "SELECT name FROM computer WHERE id = ?";
-        try (Connection conn = DBConnection.getConn();PreparedStatement prep1 = conn.prepareStatement(querry);){
+        try (Connection conn = DBConnection.getConn(); PreparedStatement prep1 = conn.prepareStatement(querry);) {
             prep1.setInt(1, id);
-            try (ResultSet resultSet = prep1.executeQuery();){
+            try (ResultSet resultSet = prep1.executeQuery();) {
                 return resultSet.next();
             }
         } catch (SQLException e) {
@@ -57,8 +57,8 @@ public enum ComputerValidator {
             return true;
         }
         String querry = "SELECT name FROM company WHERE id = " + computer.getCompany().getId();
-        try (Connection conn = DBConnection.getConn();PreparedStatement prep1 = conn.prepareStatement(querry);){
-            try (ResultSet resultSet = prep1.executeQuery();){
+        try (Connection conn = DBConnection.getConn(); PreparedStatement prep1 = conn.prepareStatement(querry);) {
+            try (ResultSet resultSet = prep1.executeQuery();) {
                 return resultSet.next();
             }
         } catch (SQLException e) {
@@ -73,7 +73,7 @@ public enum ComputerValidator {
      * @return if the computer is valid
      * @throws IncoherentDatesException error with dates
      * @throws CompaniesIdIncorrectException error with companies
-     * @throws ValidatorException 
+     * @throws ValidatorException exception levé par le validateur
      */
     public boolean validate(Computer computer) throws IncoherentDatesException, CompaniesIdIncorrectException, ValidatorException {
         if (testDate(computer)) {

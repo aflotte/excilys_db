@@ -8,12 +8,15 @@ import com.excilys.db.model.Computer;
 import com.excilys.db.service.ComputerService;
 
 
-public class PageComputer extends Page{
+public class PageComputer extends Page {
 
     List<Computer> computers;
     int index;
     private Scanner sc;
-    
+
+    /**
+     *
+     */
     public PageComputer() {
         super();
     }
@@ -60,7 +63,9 @@ public class PageComputer extends Page{
      *
      * @param offset l'offset
      * @param limit la limit
-     * @return 
+     * @param sortBy sortBy
+     * @param orderBy l'ordre
+     * @return la liste des ordinateurs
      * @throws CompaniesInexistantException
      */
     public List<Computer> getPage(int offset, int limit, String sortBy, String orderBy) {
@@ -71,7 +76,7 @@ public class PageComputer extends Page{
      *
      */
     public void updateComputer() {
-        computers = ComputerService.INSTANCE.listComputer(this.pageNumber,this.pageSize);
+        computers = ComputerService.INSTANCE.listComputer(this.pageNumber, this.pageSize);
     }
 
 }

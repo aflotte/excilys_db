@@ -26,7 +26,6 @@ public class Dashboard extends HttpServlet {
     private static final String PAGE_SIZE = "pageSize";
     private static final String SEARCH = "search";
     private static final String SORT_PATH = "sortPath";
-    
     /**
      * @see HttpServlet#HttpServlet()
      */
@@ -66,13 +65,13 @@ public class Dashboard extends HttpServlet {
             String search;
             String searchJSP;
             if ((request.getParameter(SEARCH) == null) || (request.getParameter(SEARCH).isEmpty())) {
-                searchJSP="";
+                searchJSP = "";
                 pageComputer = new PageComputerDTO(actualPage, sizePage);
             } else {
                 String debug = "enter in search not empty";
                 logger.debug(debug);
                 search = request.getParameter(SEARCH);
-                searchJSP="&search="+search;
+                searchJSP = "&search=" + search;
                 pageComputer = new PageComputerDTO(actualPage, sizePage, search);
             }
             pageComputer.setSortBy(toSort);
@@ -100,14 +99,25 @@ public class Dashboard extends HttpServlet {
         }
     }
 
+    /**
+     *
+     * @param request la requete
+     * @param tested la colonne servant pour sort
+     * @return la string de l'url
+     */
     private String casePrepareSort(HttpServletRequest request, String tested) {
-        String preparation = MessageFormat.format("&sort={0}",tested);
-        if ((request.getParameter(ORDER_BY)!=null)&&(request.getParameter(ORDER_BY).equals("asc"))) {
-            request.setAttribute("computerPath", MessageFormat.format("&sort={0}&orderBy=desc",tested));
+        String preparation = MessageFormat.format("&sort={0}", tested);
+        if ((request.getParameter(ORDER_BY) != null) && (request.getParameter(ORDER_BY).equals("asc"))) {
+            request.setAttribute("computerPath", MessageFormat.format("&sort={0}&orderBy=desc", tested));
         }
         return preparation;
     }
 
+    /**
+     *
+     * @param request la requete
+     * @return { Sort, OrderBy }
+     */
     private String[] prepareSort(HttpServletRequest request) {
         String toSort = "";
         String preparation = "";
@@ -137,11 +147,11 @@ public class Dashboard extends HttpServlet {
                 toSort = "company.name";
                 break;
             default:
-                toSort="computer.id";
+                toSort = "computer.id";
                 break;
             }
-        }else {
-            toSort="computer.id";
+        } else {
+            toSort = "computer.id";
         }
         String orderBy;
         if (!((request.getParameter(ORDER_BY) == null) || (request.getParameter(ORDER_BY).isEmpty()))) {
@@ -153,15 +163,15 @@ public class Dashboard extends HttpServlet {
                     preparation += "&orderBy=asc";
                     orderBy = "asc";
                 }
-            }else {
+            } else {
                 orderBy = "asc";
             }
-        }else {
+        } else {
             orderBy = "asc";
         }
 
         request.setAttribute(SORT_PATH, preparation);
-        return new String[]{toSort,orderBy};
+        return new String[]{toSort, orderBy};
     }
 
 

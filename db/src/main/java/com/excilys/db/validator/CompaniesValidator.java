@@ -20,13 +20,13 @@ public enum CompaniesValidator {
      *
      * @param id dont on test l'existance
      * @return l'existance
-     * @throws ValidatorException 
+     * @throws ValidatorException une exception du validateur
      */
     public boolean exist(int id) throws ValidatorException {
         String querry = "SELECT name FROM company WHERE id = ?";
-        try (Connection conn = DBConnection.getConn();PreparedStatement prep1 = conn.prepareStatement(querry);){
+        try (Connection conn = DBConnection.getConn(); PreparedStatement prep1 = conn.prepareStatement(querry);) {
             prep1.setInt(1, id);
-            try (ResultSet resultSet = prep1.executeQuery();){
+            try (ResultSet resultSet = prep1.executeQuery();) {
                 return (resultSet.next());
             }
         } catch (SQLException e) {
@@ -39,16 +39,16 @@ public enum CompaniesValidator {
      *
      * @param company la compagnie a tester
      * @return si elle est correct
-     * @throws ValidatorException 
+     * @throws ValidatorException une exception du validateur
      */
     public boolean check(Company company) throws ValidatorException {
         if (company.getId() == null) {
             company.setName("");
             return true;
-        }else {
+        } else {
             String querry = "SELECT name FROM company WHERE id = " + company.getId();
-            try (Connection conn = DBConnection.getConn();PreparedStatement prep1 = conn.prepareStatement(querry);){
-                try (ResultSet resultSet = prep1.executeQuery();){
+            try (Connection conn = DBConnection.getConn(); PreparedStatement prep1 = conn.prepareStatement(querry);) {
+                try (ResultSet resultSet = prep1.executeQuery();) {
                     if (resultSet.next()) {
                         return resultSet.getString(1).equals(company.getName());
                     } else {

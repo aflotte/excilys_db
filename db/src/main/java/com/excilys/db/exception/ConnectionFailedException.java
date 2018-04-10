@@ -10,6 +10,5 @@ public class ConnectionFailedException extends RuntimeException {
     @Override
     public String getMessage() {
         return "Une erreur est survenue lors de la connection";
-    }  
-    
+    }
 }

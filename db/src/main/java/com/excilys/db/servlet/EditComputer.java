@@ -34,6 +34,12 @@ public class EditComputer extends HttpServlet {
         super();
     }
 
+    /**
+     *
+     * @param request la requête
+     * @param response la réponse
+     * @return si il est null
+     */
     private boolean testNullEmpty(HttpServletRequest request, HttpServletResponse response) {
         org.slf4j.Logger logger = org.slf4j.LoggerFactory.getLogger(EditComputer.class);
         if (request.getParameter("id") == null) {
@@ -42,7 +48,7 @@ public class EditComputer extends HttpServlet {
             try {
                 rd.forward(request, response);
                 return true;
-            } catch ( Exception e) {
+            } catch (Exception e) {
                 logger.warn(e.getMessage());
             }
         }
@@ -52,13 +58,20 @@ public class EditComputer extends HttpServlet {
             try {
                 rd.forward(request, response);
                 return true;
-            } catch ( Exception e) {
+            } catch (Exception e) {
                 logger.warn(e.getMessage());
             }
         }
         return false;
     }
 
+    /**
+     *
+     * @param request la requête
+     * @param response la réponse
+     * @param id l'id de l'ordinateur
+     * @return si il existe
+     */
     private boolean testComputerNotExist(HttpServletRequest request, HttpServletResponse response, int id) {
         org.slf4j.Logger logger = org.slf4j.LoggerFactory.getLogger(EditComputer.class);
         if (!ComputerValidator.INSTANCE.exist(id)) {
@@ -67,7 +80,7 @@ public class EditComputer extends HttpServlet {
             try {
                 rd.forward(request, response);
                 return true;
-            }catch (Exception e) {
+            } catch (Exception e) {
                 logger.warn(e.getMessage());
             }
         }
@@ -114,7 +127,7 @@ public class EditComputer extends HttpServlet {
             RequestDispatcher rd =
                     request.getRequestDispatcher("/WEB-INF/editComputer.jsp");
             rd.forward(request, response);
-        } catch ( Exception e) {
+        } catch (Exception e) {
             logger.warn(e.getMessage());
         }
     }

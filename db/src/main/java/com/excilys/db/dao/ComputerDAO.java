@@ -389,7 +389,7 @@ public enum ComputerDAO {
             prep1.setInt(1, limit);
             prep1.setInt(2, offset);
             Debugging.requestDebug(logger, prep1.toString());
-            try (ResultSet resultSet = prep1.executeQuery();){
+            try (ResultSet resultSet = prep1.executeQuery();) {
                 while (resultSet.next()) {
                     Computer toAdd = ComputerMapper.resultToComputer(resultSet);
                     listResult.add(toAdd);

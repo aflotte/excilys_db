@@ -16,8 +16,11 @@ import com.excilys.db.service.CompaniesService;
 public class ComputerMapper {
     static org.slf4j.Logger logger = org.slf4j.LoggerFactory.getLogger(ComputerMapper.class);
 
+    /**
+     *
+     */
     private ComputerMapper() {
-        
+
     }
 
     /**
@@ -44,33 +47,48 @@ public class ComputerMapper {
         return toReturn;
     }
 
+    /**
+     *
+     * @param computer l'ordinateur
+     * @return l'ordinateur DTO
+     */
     public static ComputerDTO computerToDTO(Computer computer) {
         ComputerDTO toReturn = new ComputerDTO();
         toReturn.setId(computer.getId());
         toReturn.setCompany(computer.getCompany().getName());
         toReturn.setName(computer.getName());
-        if (computer.getDiscontinued()==null) {
+        if (computer.getDiscontinued() == null) {
             toReturn.setDiscontinued("");
-        }else {
+        } else {
             toReturn.setDiscontinued(computer.getDiscontinued().toString());
         }
-        if (computer.getIntroduced()==null) {
+        if (computer.getIntroduced() == null) {
             toReturn.setIntroduced("");
-        }else {
+        } else {
             toReturn.setIntroduced(computer.getIntroduced().toString());
         }
 
         return toReturn;
     }
 
+    /**
+     *
+     * @param computer la liste des ordinateurs
+     * @return la liste des ordinateurs DTO
+     */
     public static List<ComputerDTO> computerListToComputerDTO(List<Computer> computer) {
         List<ComputerDTO> toReturn = new ArrayList<>();
-        for (int i = 0; i < computer.size(); i++  ) {
+        for (int i = 0; i < computer.size(); i++) {
             toReturn.add(computerToDTO(computer.get(i)));
         }
         return toReturn;
     }
 
+    /**
+     *
+     * @param computer l'ordinateur DTO
+     * @return l'ordinateur
+     */
     public static Computer computerDTOToComputer(ComputerDTO computer) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         formatter = formatter.withLocale(Locale.FRANCE);
@@ -86,28 +104,33 @@ public class ComputerMapper {
         if (computer.getDiscontinued() != null) {
 
             try {
-                toReturn.setDiscontinued(LocalDate.parse(computer.getDiscontinued(),formatter));
-            }catch (Exception e) {
+                toReturn.setDiscontinued(LocalDate.parse(computer.getDiscontinued(), formatter));
+            } catch (Exception e) {
                 toReturn.setDiscontinued(null);
             }
-        }else {
+        } else {
             toReturn.setDiscontinued(null);
         }
         if (computer.getIntroduced() != null) {
             try {
-                toReturn.setIntroduced(LocalDate.parse(computer.getIntroduced(),formatter));
-            }catch (Exception e) {
+                toReturn.setIntroduced(LocalDate.parse(computer.getIntroduced(), formatter));
+            } catch (Exception e) {
                 toReturn.setIntroduced(null);
             }
-        }else {
+        } else {
             toReturn.setIntroduced(null);
         }
         return toReturn;
     }
 
+    /**
+     *
+     * @param computer la liste des ordinateurs DTO
+     * @return la liste des ordinateurs
+     */
     public static List<Computer> computerDTOListToComputer(List<ComputerDTO> computer) {
         List<Computer> toReturn = new ArrayList<>();
-        for (int i = 0; i < computer.size(); i++  ) {
+        for (int i = 0; i < computer.size(); i++) {
             toReturn.add(computerDTOToComputer(computer.get(i)));
         }
         return toReturn;

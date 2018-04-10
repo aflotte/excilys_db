@@ -37,6 +37,10 @@ public final class DBConnection {
 
     }
 
+    /**
+     *
+     * @return la connection
+     */
     public static Connection getConn() {
         DBConnection.getInstance();
         Connection conn;

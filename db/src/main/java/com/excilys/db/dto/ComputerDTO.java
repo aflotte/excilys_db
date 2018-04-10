@@ -8,15 +8,13 @@ public class ComputerDTO {
     private String company;
     private String introduced;
     private String discontinued;
-    
+
     public String getName() {
         return name;
     }
     public void setName(String name) {
         this.name = name;
     }
-
-    
     public Integer getId() {
         return id;
     }

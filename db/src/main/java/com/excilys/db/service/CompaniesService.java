@@ -34,10 +34,10 @@ public enum CompaniesService {
      * @param name le nom de la compagnie
      * @return l'id de la compagnie
      */
-    public Integer getCompagnyId(String name) { 
+    public Integer getCompagnyId(String name) {
         if (!companies.getIdFromName(name).isEmpty()) {
             return companies.getIdFromName(name).get(0);
-        }else {
+        } else {
             return null;
         }
     }

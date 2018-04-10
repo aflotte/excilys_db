@@ -30,8 +30,8 @@
         </encoder>
     </appender>
 
-    <logger name="com.zaxxer.hikari" additivity="false">
-        <level value="debug"/>
+    <logger name="com.zaxxer.hikari">
+        <level value="error"/>
 	<appender-ref ref="FILE" />
     </logger>
 

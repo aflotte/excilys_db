@@ -63,16 +63,19 @@ public class PageComputerDTO extends Page {
         this.pagesToGo = pagesToGo;
     }
 
+    /**
+     *
+     */
     public PageComputerDTO() {
         super();
         setComputerMax(ComputerService.INSTANCE.getCount());
         this.pageNumber = 1;
-        this.setPageMax(this.computerMax/pageSize + 1);
-        Debugging.simpleDebugInt(logger,"PageMax : {0}", this.getPageMax());
+        this.setPageMax(this.computerMax / pageSize + 1);
+        Debugging.simpleDebugInt(logger, "PageMax : {0}", this.getPageMax());
         pagesToGo = new ArrayList<>();
         pagesToGo.add(1);
         for (int i = -3; i < 3; i++) {
-            if ((this.pageNumber + i > this.pageMin)&&(i!=0)&&(this.pageNumber + i < this.pageMax)) {
+            if ((this.pageNumber + i > this.pageMin) && (i != 0) && (this.pageNumber + i < this.pageMax)) {
                 pagesToGo.add(this.pageNumber + i);
             }
         }
@@ -82,24 +85,39 @@ public class PageComputerDTO extends Page {
         this.next.add(2);
     }
 
+    /**
+     *
+     * @param page numéro de page
+     */
     public PageComputerDTO(int page) {
         super();
         setComputerMax(ComputerService.INSTANCE.getCount());
         if (page > 0) {
             this.pageNumber = page;
-        }else {
+        } else {
             this.pageNumber = 1;
         }
-        this.setPageMax(this.computerMax/pageSize + 1);
+        this.setPageMax(this.computerMax / pageSize + 1);
         initPages(page);
     }
 
+    /**
+     *
+     * @param page numéro de page
+     * @param size taille de la page
+     */
     public PageComputerDTO(int page, int size) {
         super();
         setComputerMax(ComputerService.INSTANCE.getCount());
         pageSizeInit(page, size);
     }
 
+    /**
+     *
+     * @param page numéro de la page
+     * @param size taille de la page
+     * @param name nom de la recherche
+     */
     public PageComputerDTO(int page, int size, String name) {
         super();
         setComputerMax(ComputerService.INSTANCE.getCount(name));
@@ -107,27 +125,36 @@ public class PageComputerDTO extends Page {
         search = name;
     }
 
-    
+
+    /**
+     *
+     * @param page numéro de page
+     * @param size taille de la page
+     */
     private void pageSizeInit(int page, int size) {
         this.setPageSize(size);
-        this.setPageMax(this.computerMax/pageSize + 1);
+        this.setPageMax(this.computerMax / pageSize + 1);
         if (page > 0) {
             if (page < this.getPageMax()) {
                 this.pageNumber = page;
-            }else {
+            } else {
                 this.pageNumber = this.getPageMax();
             }
-        }else {
+        } else {
             this.pageNumber = 1;
         }
         initPages(page);
     }
-    
+
+    /**
+     *
+     * @param page numéro de la page
+     */
     private void initPages(int page) {
         pagesToGo = new ArrayList<>();
         pagesToGo.add(1);
         for (int i = -3; i < 3; i++) {
-            if ((this.pageNumber + i > this.pageMin)&&(i!=0)&&(this.pageNumber + i < this.pageMax)) {
+            if ((this.pageNumber + i > this.pageMin) && (i != 0) && (this.pageNumber + i < this.pageMax)) {
                 pagesToGo.add(this.pageNumber + i);
             }
         }
@@ -146,23 +173,19 @@ public class PageComputerDTO extends Page {
 
     /**
      *
-     * @param offset l'offset
-     * @param limit la limit
      * @return la liste des ComputerDTO
-     * @throws CompaniesInexistantException
      */
     public List<ComputerDTO> getPage() {
         if (search.isEmpty()) {
             return ComputerMapper.computerListToComputerDTO(ComputerService.INSTANCE.listComputer((this.pageNumber - 1) * this.pageSize, this.pageSize, sortBy, orderBy));
-        }else {
+        } else {
             return ComputerMapper.computerListToComputerDTO(ComputerService.INSTANCE.listComputerLike((this.pageNumber - 1) * this.pageSize, this.pageSize, search, sortBy, orderBy));
         }
     }
 
     /**
      *
-     * @param offset l'offset
-     * @param limit la limit
+     * @param name le nom
      * @return la liste des ComputerDTO
      * @throws CompaniesInexistantException
      */

@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import com.excilys.db.service.ComputerService;
 
 /**
- * Servlet implementation class Delete
+ * Servlet implementation class Delete.
  */
 @WebServlet("/delete")
 public class Delete extends HttpServlet {
@@ -31,7 +31,7 @@ public class Delete extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         org.slf4j.Logger logger = org.slf4j.LoggerFactory.getLogger(AddComputer.class);
-        if (!((request.getParameter(SELECTION) == null) || (request.getParameter(SELECTION).isEmpty()))){
+        if (!((request.getParameter(SELECTION) == null) || (request.getParameter(SELECTION).isEmpty()))) {
             String[] toDelete = (request.getParameterValues(SELECTION)[0]).split(",");
             int[] toDeleteId = new int[toDelete.length];
             for (int i = 0; i < toDelete.length; i++) {
