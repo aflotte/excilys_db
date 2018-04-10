@@ -1,6 +1,7 @@
 package com.excilys.db.cli;
 import com.excilys.db.page.PageCompanies;
 import com.excilys.db.page.PageComputer;
+import com.excilys.db.persistance.DBConnection;
 import com.excilys.db.service.CompaniesService;
 import com.excilys.db.service.ComputerService;
 import com.excilys.db.validator.CompaniesValidator;
@@ -17,6 +18,7 @@ import java.util.InputMismatchException;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.ResourceBundle;
 import java.util.Scanner;
 
 
@@ -115,7 +117,6 @@ public class CLI {
         int result = 0;
         result = ScanCLI.scanInt(sc);
         if ((result > 7) || (result < 1)) {
-            System.out.println("Veuillez entrer un nombre correct");
             return 8;
         }
         return result;
