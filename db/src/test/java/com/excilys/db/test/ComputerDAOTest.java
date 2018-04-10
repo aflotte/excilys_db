@@ -10,7 +10,6 @@ import com.excilys.db.model.Computer;
 import com.excilys.db.persistance.DBConnection;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.ParseException;
@@ -18,36 +17,91 @@ import java.text.SimpleDateFormat;
 import java.time.ZoneId;
 import java.util.Date;
 import java.util.List;
-
-import org.junit.After;
 import org.junit.Test;
 
 import junit.framework.TestCase;
 
 public class ComputerDAOTest extends TestCase {
+    static org.slf4j.Logger logger = org.slf4j.LoggerFactory.getLogger(ComputerDAOTest.class);
+    
+    public void setUp() throws SQLException, ClassNotFoundException {
+        logger.debug("executing_init_but_here");
+        initDatabase();
+    }
+    
+
+
+    public void tearDown() throws SQLException, ClassNotFoundException {
+        try (Connection connection = getConnection(); Statement statement = connection.createStatement();) {
+            statement.executeUpdate("DROP TABLE computer");
+            statement.executeUpdate("DROP TABLE companie");
+            connection.commit();
+        }
+    }
+
+    /**
+     * Database initialization for testing i.e.
+     * &lt;ul&gt;
+     * &lt;li&gt;Creating Table&lt;/li&gt;
+     * &lt;li&gt;Inserting record&lt;/li&gt;
+     * &lt;/ul&gt;
+     * 
+     * @throws SQLException
+     */
+    private static void initDatabase() throws SQLException {
+        logger.debug("executing_init");
+        try (Connection connection = getConnection(); Statement statement = connection.createStatement();) {
+            statement.executeUpdate("drop table if exists computer;");
+            statement.executeUpdate("drop table if exists company;");
+            statement.execute("create table company (\n" + 
+                    "    id                        bigint not null,\n" + 
+                    "    name                      varchar(255),\n" + 
+                    "    PRIMARY KEY (id)) ");
+            statement.execute("create table computer (\n" + 
+                    "    id                        bigint not null,\n" + 
+                    "    name                      varchar(255),\n" + 
+                    "    introduced                date NULL,\n" + 
+                    "    discontinued              date NULL,\n" + 
+                    "    company_id                bigint default NULL,\n" + 
+                    "    PRIMARY KEY (id))");
+            statement.executeUpdate("alter table computer add constraint fk_computer_company_1 foreign key (company_id) references company (id) on delete restrict on update restrict;");
+            statement.executeUpdate("create index ix_computer_company_1 on computer (company_id);");
+            statement.executeUpdate("insert into company (id,name) values (  1,'Apple Inc.');");
+            statement.executeUpdate("insert into company (id,name) values (  2,'Thinking Machines');");
+            statement.executeUpdate("insert into company (id,name) values (  3,'RCA');");
+            statement.executeUpdate("insert into computer (id,name,introduced,discontinued,company_id) values (  1,'MacBook Pro 15.4 inch',null,null,1);");
+            statement.executeUpdate("insert into computer (id,name,introduced,discontinued,company_id) values (  2,'CM-2a',null,null,2);");
+            statement.executeUpdate("insert into computer (id,name,introduced,discontinued,company_id) values (  3,'CM-200',null,null,2);");
+            statement.executeUpdate("insert into computer (id,name,introduced,discontinued,company_id) values (  4,'CM-5e',null,null,2);");
+            statement.executeUpdate("insert into computer (id,name,introduced,discontinued,company_id) values (  5,'CM-5','1991-01-01',null,2);");
+            logger.debug("executed_init");
+        }catch (Exception e) {
+            logger.warn(e.getMessage());
+        }
+    }
+
+    /**
+     * Create a connection
+     * 
+     * @return connection object
+     * @throws SQLException
+     */
+    private static Connection getConnection() throws SQLException {
+        return DBConnection.getConn();
+    }
+    
+    
+    
 
     DBConnection instance = DBConnection.getInstance();
     ComputerDAO computer = ComputerDAO.INSTANCE;
     SimpleDateFormat formatter = new SimpleDateFormat("yyyy/MM/dd");
 
-    @After
-    public void deconnection() {
-        List<Integer> testList2 = computer.getIdFromName("Test_Computer");	
-        for (int i = 0; i < testList2.size(); i++) {
-            computer.deleteAComputer(testList2.get(i));
-        }
-    }
-
-    protected void tearDown() {
-        List<Integer> testList2 = computer.getIdFromName("Test_Computer");	
-        for (int i = 0; i < testList2.size(); i++) {
-            computer.deleteAComputer(testList2.get(i));
-        }
-    }
 
     //Uniquement avec la base initiale ( McBook en 1 )
     @Test
     public void testListComputer() throws CompaniesInexistantException, IncoherentDatesException, CompaniesIdIncorrectException {
+        logger.debug("executed testList");
         Computer McBook = new Computer();
         McBook.setName("MacBook Pro 15.4 inch");
         McBook.setIntroduced(null);
