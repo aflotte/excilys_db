@@ -8,12 +8,12 @@ import java.util.List;
 
 import org.junit.Test;
 
-import com.excilys.db.dao.ComputerDAO;
 import com.excilys.db.exception.CompaniesIdIncorrectException;
 import com.excilys.db.exception.CompaniesInexistantException;
 import com.excilys.db.exception.IncoherentDatesException;
 import com.excilys.db.model.Company;
 import com.excilys.db.model.Computer;
+import com.excilys.db.persistance.ComputerDAO;
 import com.excilys.db.persistance.DBConnection;
 import com.excilys.db.validator.ComputerValidator;
 

@@ -7,8 +7,6 @@ import java.util.ResourceBundle;
 import com.excilys.db.exception.ConnectionFailedException;
 import com.zaxxer.hikari.HikariDataSource;
 
-
-//TODO:réutiliser connection.properties
 public final class DBConnection {
     static org.slf4j.Logger logger = org.slf4j.LoggerFactory.getLogger(DBConnection.class);
     private static DBConnection instance;

@@ -1,12 +1,12 @@
 package com.excilys.db.cli;
 import com.excilys.db.page.PageCompanies;
 import com.excilys.db.page.PageComputer;
+import com.excilys.db.persistance.CompaniesDAO;
 import com.excilys.db.persistance.DBConnection;
 import com.excilys.db.service.CompaniesService;
 import com.excilys.db.service.ComputerService;
 import com.excilys.db.validator.CompaniesValidator;
 import com.excilys.db.validator.ComputerValidator;
-import com.excilys.db.dao.CompaniesDAO;
 import com.excilys.db.exception.CompaniesIdIncorrectException;
 import com.excilys.db.exception.CompaniesInexistantException;
 import com.excilys.db.exception.IncoherentDatesException;

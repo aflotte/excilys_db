@@ -3,9 +3,9 @@ package com.excilys.db.service;
 import java.util.List;
 import java.util.Optional;
 
-import com.excilys.db.dao.CompaniesDAO;
 import com.excilys.db.exception.CompaniesInexistantException;
 import com.excilys.db.model.Company;
+import com.excilys.db.persistance.CompaniesDAO;
 
 public enum CompaniesService {
     INSTANCE;
