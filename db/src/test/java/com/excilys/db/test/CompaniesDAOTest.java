@@ -9,24 +9,23 @@ import java.io.InputStreamReader;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
-import java.util.List;
 
 import org.hsqldb.cmdline.SqlFile;
 import org.hsqldb.cmdline.SqlToolError;
-import org.junit.After;
-import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.excilys.db.exception.DAOConfigurationException;
 import com.excilys.db.model.Company;
 import com.excilys.db.persistance.CompaniesDAO;
-import com.excilys.db.persistance.ComputerDAO;
 import com.excilys.db.persistance.DBConnection;
+import com.excilys.db.persistance.IComputerDAO;
 
-import junit.framework.TestCase;
 
 public class CompaniesDAOTest {
+    @Autowired
+    CompaniesDAO companiesDAO;
     static org.slf4j.Logger logger = org.slf4j.LoggerFactory.getLogger(CompaniesDAOTest.class);
     @BeforeClass
     public static void init() throws SQLException, IOException, ClassNotFoundException, DAOConfigurationException, SqlToolError {
@@ -45,7 +44,8 @@ public class CompaniesDAOTest {
     }
 
     DBConnection instance = DBConnection.getInstance();
-    ComputerDAO computer = ComputerDAO.INSTANCE;
+    @Autowired
+    IComputerDAO computer;
     SimpleDateFormat formatter = new SimpleDateFormat("yyyy/MM/dd");
 
 	@Test
@@ -53,6 +53,6 @@ public class CompaniesDAOTest {
 		Company Apple = new Company();
 		Apple.setId(1);
 		Apple.setName("Apple Inc.");
-		assertEquals(Apple,CompaniesDAO.INSTANCE.listCompanies().get(0));
+		assertEquals(Apple,companiesDAO.listCompanies().get(0));
 	}
 }

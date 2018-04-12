@@ -19,15 +19,15 @@ import com.excilys.db.exception.CompaniesInexistantException;
 import com.excilys.db.exception.IncoherentDatesException;
 import com.excilys.db.model.Company;
 import com.excilys.db.model.Computer;
-import com.excilys.db.persistance.ComputerDAO;
 import com.excilys.db.persistance.DBConnection;
+import com.excilys.db.persistance.IComputerDAO;
 
 import junit.framework.TestCase;
 
 public class ComputerTest extends TestCase {
 
 	static DBConnection instance;
-	static ComputerDAO computer;
+	static IComputerDAO computer;
 	static ResultSet toUseForTest;
 	static Connection conn;
 	SimpleDateFormat formatter = new SimpleDateFormat("yyyy/MM/dd");

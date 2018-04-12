@@ -8,6 +8,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
+
 import com.excilys.db.exception.CompaniesInexistantException;
 import com.excilys.db.exception.DAOAccesExeption;
 import com.excilys.db.mapper.CompaniesMapper;
@@ -20,9 +23,12 @@ import com.excilys.db.utils.Debugging;
  * @author flotte
  *
  */
-public enum CompaniesDAO {
-    INSTANCE;
+@Repository("companiesDAO")
+public class CompaniesDAO {
+    
     static org.slf4j.Logger logger = org.slf4j.LoggerFactory.getLogger(CompaniesDAO.class);
+    @Autowired
+    private IComputerDAO computerDAO;
 
     private static final String QUERRY_LIST_COMPANIES_BY_NAME = "SELECT id FROM company WHERE name LIKE ?";
     private static final String QUERRY_LIST_COMPANIES = "SELECT name, id FROM company";
@@ -115,7 +121,7 @@ public enum CompaniesDAO {
                 AutoRollback tm = new AutoRollback(conn);
                 PreparedStatement prep1 = conn.prepareStatement(DELETE_COMPANY);)
         {
-            ComputerDAO.INSTANCE.deleteListComputer(conn, computerIds);
+            computerDAO.deleteListComputer(conn, computerIds);
 
             prep1.setInt(1, id);
             prep1.executeUpdate();

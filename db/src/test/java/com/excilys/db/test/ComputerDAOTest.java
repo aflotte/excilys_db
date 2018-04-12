@@ -7,8 +7,8 @@ import com.excilys.db.exception.IncoherentDatesException;
 import com.excilys.db.model.Company;
 import com.excilys.db.model.Computer;
 import com.excilys.db.persistance.CompaniesDAO;
-import com.excilys.db.persistance.ComputerDAO;
 import com.excilys.db.persistance.DBConnection;
+import com.excilys.db.persistance.IComputerDAO;
 
 import static org.junit.Assert.assertEquals;
 
@@ -17,9 +17,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.ZoneId;
@@ -31,11 +29,13 @@ import org.hsqldb.cmdline.SqlToolError;
 import org.junit.After;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
-import junit.framework.TestCase;
-
+@Component
 public class ComputerDAOTest {
-
+    @Autowired
+    CompaniesDAO companiesDAO;
     static org.slf4j.Logger logger = org.slf4j.LoggerFactory.getLogger(ComputerDAOTest.class);
     @BeforeClass
     public static void init() throws SQLException, IOException, ClassNotFoundException, DAOConfigurationException, SqlToolError {
@@ -54,7 +54,8 @@ public class ComputerDAOTest {
     }
 
     DBConnection instance = DBConnection.getInstance();
-    ComputerDAO computer = ComputerDAO.INSTANCE;
+    @Autowired
+    IComputerDAO computer;
     SimpleDateFormat formatter = new SimpleDateFormat("yyyy/MM/dd");
 
     @After
@@ -179,7 +180,7 @@ public class ComputerDAOTest {
         Test.setName("Test_Computer");
         Test.setIntroduced(null);
         Test.setDiscontinued(null);
-        Test.setCompany(CompaniesDAO.INSTANCE.getCompany(1).get());
+        Test.setCompany(companiesDAO.getCompany(1).get());
         computer.createAComputer(Test);
         computer.updateAComputer(Test, 2);
     }

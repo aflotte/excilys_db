@@ -9,7 +9,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import com.excilys.db.exception.CompaniesInexistantException;
+import org.springframework.stereotype.Repository;
+
 import com.excilys.db.exception.DAOAccesExeption;
 import com.excilys.db.mapper.ComputerMapper;
 import com.excilys.db.model.Computer;
@@ -22,8 +23,8 @@ import com.excilys.db.utils.Debugging;
  *
  * @author flotte
  */
-public enum ComputerDAO {
-    INSTANCE;
+@Repository("computerDAO")
+public class ComputerDAO implements IComputerDAO {
     org.slf4j.Logger logger = org.slf4j.LoggerFactory.getLogger(ComputerDAO.class);
     private static final String ERROR = "Erreur dans l'accès des données";
 
@@ -74,11 +75,10 @@ public enum ComputerDAO {
         return Optional.ofNullable(result);
     }
 
-    /**
-     *
-     * @return la liste des ordinateurs
-     * @throws CompaniesInexistantException erreur sur la compagnie de l'ordinateur
+    /* (non-Javadoc)
+     * @see com.excilys.db.persistance.IComputerDAO#listComputer()
      */
+    @Override
     public List<Computer> listComputer() {
         List<Computer> listResult;
         try (Connection conn = DBConnection.getConn();PreparedStatement prep1 = conn.prepareStatement(QUERRY_LIST_COMPUTERS);){
@@ -92,13 +92,10 @@ public enum ComputerDAO {
     }
 
 
-    /**
-     *
-     * @param offset l'offset
-     * @param limit le nombre a afficher
-     * @return la liste des ordinateurs
-     * @throws CompaniesInexistantException erreur sur la compagnie de l'ordinateur
+    /* (non-Javadoc)
+     * @see com.excilys.db.persistance.IComputerDAO#listComputer(int, int, java.lang.String, java.lang.String)
      */
+    @Override
     public List<Computer> listComputer(int offset, int limit,String sortBy, String orderBy ) {
         List<Computer> listResult;
         try (Connection conn = DBConnection.getConn();PreparedStatement prep1 = conn.prepareStatement(QUERRY_LIST_COMPUTERS + String.format(ORDER_BY, sortBy, orderBy)  + OFFSET_LIMIT );){
@@ -112,14 +109,11 @@ public enum ComputerDAO {
         return listResult;
     }
     
-    /**
-    *
-    * @param offset l'offset
-    * @param limit le nombre a afficher
-    * @return la liste des ordinateurs
-    * @throws CompaniesInexistantException erreur sur la compagnie de l'ordinateur
-    */
-   public List<Computer> listComputer(PageComputerDTO page) {
+    /* (non-Javadoc)
+     * @see com.excilys.db.persistance.IComputerDAO#listComputer(com.excilys.db.page.PageComputerDTO)
+     */
+   @Override
+public List<Computer> listComputer(PageComputerDTO page) {
        int offset = (page.getPageNumber() - 1) * page.getPageSize();
        int limit = page.getPageSize();
        String sortBy = page.getSortBy();
@@ -136,12 +130,10 @@ public enum ComputerDAO {
        return listResult;
    }
 
-    /**
-     *
-     * @param id de l'ordinateur
-     * @return un ordinateur
-     * @throws CompaniesInexistantException si la compagnie de l'ordinateur est inexistante
+    /* (non-Javadoc)
+     * @see com.excilys.db.persistance.IComputerDAO#showDetails(int)
      */
+    @Override
     public Optional<Computer> showDetails(int id) {
         Optional<Computer> result = null;
         try (Connection conn = DBConnection.getConn();PreparedStatement prep1 = conn.prepareStatement(QUERRY_LIST_COMPUTERS_ID);){
@@ -155,11 +147,10 @@ public enum ComputerDAO {
         return result;
     }
 
-    /**
-     *
-     * @param computer l'ordinateur qui remplacera l'ancien
-     * @param id de l'ordinateur a remplacer
+    /* (non-Javadoc)
+     * @see com.excilys.db.persistance.IComputerDAO#updateAComputer(com.excilys.db.model.Computer, int)
      */
+    @Override
     public void updateAComputer(Computer computer, int id) {
         LocalDate dateIntroduced = computer.getIntroduced();
         LocalDate dateDiscontinued = computer.getDiscontinued();
@@ -190,11 +181,10 @@ public enum ComputerDAO {
         }
     }
 
-    /**
-     *
-     * @param computer l'ordinateur a ajouter
-     * @return l'Id de l'ordinateur qui vient d'être ajouter
+    /* (non-Javadoc)
+     * @see com.excilys.db.persistance.IComputerDAO#createAComputer(com.excilys.db.model.Computer)
      */
+    @Override
     public int createAComputer(Computer computer) {
 
         try (Connection conn = DBConnection.getConn();PreparedStatement ps = conn.prepareStatement(QUERRY_CREATE_COMPUTER, Statement.RETURN_GENERATED_KEYS);){
@@ -250,11 +240,10 @@ public enum ComputerDAO {
     }
 
 
-    /**
-     *
-     * @param name le nom de l'ordinateur
-     * @return la liste des Id
+    /* (non-Javadoc)
+     * @see com.excilys.db.persistance.IComputerDAO#getIdFromName(java.lang.String)
      */
+    @Override
     public List<Integer> getIdFromName(String name) {
         List<Integer> result = new ArrayList<>();
         try (Connection conn = DBConnection.getConn();PreparedStatement ps = conn.prepareStatement(QUERRY_LIST_COMPUTER_BY_NAME);){
@@ -272,10 +261,10 @@ public enum ComputerDAO {
         return result;
     }
 
-    /**
-     *
-     * @param id de l'ordinateur a supprimer
+    /* (non-Javadoc)
+     * @see com.excilys.db.persistance.IComputerDAO#deleteAComputer(int)
      */
+    @Override
     public void deleteAComputer(int id) {
         try (Connection conn = DBConnection.getConn();PreparedStatement prep1 = conn.prepareStatement(QUERRY_DELETE_COMPUTER);){
             prep1.setInt(1, id);
@@ -288,10 +277,10 @@ public enum ComputerDAO {
     }
 
 
-    /**
-     *
-     * @param ids la liste des ids
+    /* (non-Javadoc)
+     * @see com.excilys.db.persistance.IComputerDAO#deleteListComputer(int[])
      */
+    @Override
     public void deleteListComputer(int[] ids) {
         List<Integer> listId = new ArrayList<>();
         for (int i=0;i < ids.length;i++) {
@@ -309,12 +298,10 @@ public enum ComputerDAO {
         }
     }
 
-    /**
-     *
-     * @param conn la connection
-     * @param ids la liste des id
-     * @throws SQLException l'erreur
+    /* (non-Javadoc)
+     * @see com.excilys.db.persistance.IComputerDAO#deleteListComputer(java.sql.Connection, java.util.List)
      */
+    @Override
     public void deleteListComputer(Connection conn, List<Integer> ids) throws SQLException {
         for (int i = 0; i < ids.size(); i++) {
             int id = ids.get(i);
@@ -326,9 +313,10 @@ public enum ComputerDAO {
         }
     }
 
-    /**
-     *
+    /* (non-Javadoc)
+     * @see com.excilys.db.persistance.IComputerDAO#getCount()
      */
+    @Override
     public int getCount() {
         int result = 0;
         try (Connection conn = DBConnection.getConn();PreparedStatement prep1 = conn.prepareStatement(QUERRY_COUNT);){
@@ -346,9 +334,10 @@ public enum ComputerDAO {
         return result;
     }
 
-    /**
-     *
+    /* (non-Javadoc)
+     * @see com.excilys.db.persistance.IComputerDAO#getCount(java.lang.String)
      */
+    @Override
     public int getCount(String search) {
         int result = 0;
         try (Connection conn = DBConnection.getConn();PreparedStatement prep1 = conn.prepareStatement(QUERRY_COUNT + String.format(LIKE, search,search));){
@@ -366,6 +355,10 @@ public enum ComputerDAO {
     }
 
 
+    /* (non-Javadoc)
+     * @see com.excilys.db.persistance.IComputerDAO#listComputerLike(int, int, java.lang.String, java.lang.String, java.lang.String)
+     */
+    @Override
     public List<Computer> listComputerLike(int offset, int limit, String name, String sortBy, String orderBy) {
         List<Computer> listResult = new ArrayList<>();
         try (Connection conn = DBConnection.getConn(); PreparedStatement prep1 = conn.prepareStatement(QUERRY_LIST_COMPUTERS + String.format(LIKE, name, name) + String.format(ORDER_BY, sortBy, orderBy) + OFFSET_LIMIT);) {

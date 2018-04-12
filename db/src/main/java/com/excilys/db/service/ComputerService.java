@@ -3,65 +3,62 @@ package com.excilys.db.service;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import com.excilys.db.exception.CompaniesIdIncorrectException;
-import com.excilys.db.exception.CompaniesInexistantException;
 import com.excilys.db.exception.DAOAccesExeption;
 import com.excilys.db.exception.IncoherentDatesException;
 import com.excilys.db.exception.ServiceException;
 import com.excilys.db.exception.ValidatorException;
 import com.excilys.db.model.Computer;
 import com.excilys.db.page.PageComputerDTO;
-import com.excilys.db.persistance.ComputerDAO;
+import com.excilys.db.persistance.IComputerDAO;
 import com.excilys.db.validator.ComputerValidator;
 
-public enum ComputerService {
-    INSTANCE;
+@Service("computerService")
+public class ComputerService implements IComputerService {
     static org.slf4j.Logger logger = org.slf4j.LoggerFactory.getLogger(ComputerService.class);
-    private ComputerDAO computer = ComputerDAO.INSTANCE;
+    @Autowired
+    private IComputerDAO computer;
 
-    /**
-     *
-     * @return la liste des ordinateurs
-     * @throws CompaniesInexistantException un ordinateur a été mal formé
+    /* (non-Javadoc)
+     * @see com.excilys.db.service.IComputerService#listComputer()
      */
+    @Override
     public List<Computer> listComputer() {
         return computer.listComputer();
     }
 
-    /**
-     *
-     * @param offset l'offset
-     * @param limit la limite
-     * @param sortBy sortBy
-     * @param orderBy l'ordre
-     * @return la liste des ordinateurs
-     * @throws CompaniesInexistantException erreurs lors de la création de l'ordinateur
+    /* (non-Javadoc)
+     * @see com.excilys.db.service.IComputerService#listComputer(int, int, java.lang.String, java.lang.String)
      */
+    @Override
     public List<Computer> listComputer(int offset, int limit, String sortBy, String orderBy) {
         return computer.listComputer(offset, limit, sortBy, orderBy);
     }
 
     
+    /* (non-Javadoc)
+     * @see com.excilys.db.service.IComputerService#listComputer(com.excilys.db.page.PageComputerDTO)
+     */
+    @Override
     public List<Computer> listComputer(PageComputerDTO page) {
         return computer.listComputer(page);
     }
     
-    /**
-     *
-     * @param offset l'offset
-     * @param limit la limite
-     * @return la liste des ordinateurs
+    /* (non-Javadoc)
+     * @see com.excilys.db.service.IComputerService#listComputer(int, int)
      */
+    @Override
     public List<Computer> listComputer(int offset, int limit) {
         return computer.listComputer(offset, limit, "computer.id", "asc");
     }
 
-    /**
-     *
-     * @param aAjouter ordinateur à ajouter
-     * @return l'id de l'ordinateur
-     * @throws ServiceException l'exception du service
+    /* (non-Javadoc)
+     * @see com.excilys.db.service.IComputerService#createComputer(com.excilys.db.model.Computer)
      */
+    @Override
     public int createComputer(Computer aAjouter) throws ServiceException {
         try {
             if (ComputerValidator.INSTANCE.validate(aAjouter)) {
@@ -74,20 +71,18 @@ public enum ComputerService {
         return 0;
     }
 
-    /**
-     *
-     * @param id de l'odinateur à supprimer
+    /* (non-Javadoc)
+     * @see com.excilys.db.service.IComputerService#deleteComputer(int)
      */
+    @Override
     public void deleteComputer(int id) {
         computer.deleteAComputer(id);
     }
 
-    /**
-     *
-     * @param id de l'ordinateur dont on veut les informations
-     * @return l'ordinateur
-     * @throws ServiceException l'exception du service
+    /* (non-Javadoc)
+     * @see com.excilys.db.service.IComputerService#showDetails(int)
      */
+    @Override
     public Optional<Computer> showDetails(int id) throws ServiceException {
         try {
             return computer.showDetails(id);
@@ -97,12 +92,10 @@ public enum ComputerService {
         }
     }
 
-    /**
-     *
-     * @param aAjouter l'ordinateur a ajouter dans la base de donnée
-     * @param toUpdate l'id de l'ordinateur à mettre à jour
-     * @throws ServiceException l'exception du service
+    /* (non-Javadoc)
+     * @see com.excilys.db.service.IComputerService#updateAComputer(com.excilys.db.model.Computer, int)
      */
+    @Override
     public void updateAComputer(Computer aAjouter, int toUpdate) throws ServiceException {
         try {
             if (ComputerValidator.INSTANCE.validate(aAjouter)) {
@@ -114,51 +107,42 @@ public enum ComputerService {
         }
     }
 
-    /**
-     *
-     * @return le nombre d'ordinateur
+    /* (non-Javadoc)
+     * @see com.excilys.db.service.IComputerService#getCount()
      */
+    @Override
     public int getCount() {
         return computer.getCount();
     }
 
-    /**
-     *
-     * @param search search
-     * @return l'ordi
+    /* (non-Javadoc)
+     * @see com.excilys.db.service.IComputerService#getCount(java.lang.String)
      */
+    @Override
     public int getCount(String search) {
         return computer.getCount(search);
     }
 
-    /**
-     *
-     * @param offset l'offset
-     * @param limit la limite
-     * @param name le nom
-     * @param sortBy sortBy
-     * @param orderBy ordre
-     * @return la liste des ordinateurs
+    /* (non-Javadoc)
+     * @see com.excilys.db.service.IComputerService#listComputerLike(int, int, java.lang.String, java.lang.String, java.lang.String)
      */
+    @Override
     public List<Computer> listComputerLike(int offset, int limit, String name, String sortBy, String orderBy) {
         return computer.listComputerLike(offset, limit, name, sortBy, orderBy);
     }
 
-    /**
-     *
-     * @param offset l'offset
-     * @param limit la limite
-     * @param name le nom
-     * @return la liste des ordinateurs
+    /* (non-Javadoc)
+     * @see com.excilys.db.service.IComputerService#listComputerLike(int, int, java.lang.String)
      */
+    @Override
     public List<Computer> listComputerLike(int offset, int limit, String name) {
         return computer.listComputerLike(offset, limit, name, "computer.id", "asc");
     }
 
-    /**
-     *
-     * @param ids ids à delete
+    /* (non-Javadoc)
+     * @see com.excilys.db.service.IComputerService#deleteListComputer(int[])
      */
+    @Override
     public void deleteListComputer(int[] ids) {
         logger.debug("dans service delete");
         computer.deleteListComputer(ids);

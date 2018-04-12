@@ -3,42 +3,51 @@ package com.excilys.db.service;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import com.excilys.db.exception.CompaniesInexistantException;
+import com.excilys.db.exception.ValidatorException;
 import com.excilys.db.model.Company;
 import com.excilys.db.persistance.CompaniesDAO;
+import com.excilys.db.validator.CompaniesValidator;
 
-public enum CompaniesService {
-    INSTANCE;
-    private CompaniesDAO companies = CompaniesDAO.INSTANCE;
+@Service("companiesService")
+public class CompaniesService implements ICompaniesService {
+    @Autowired
+    private CompaniesDAO companies;
 
-    /**
-     *
-     * @return la liste des compagnies
+    /* (non-Javadoc)
+     * @see com.excilys.db.service.ICompaniesService#listCompanies()
      */
+    @Override
     public List<Company> listCompanies() {
         return companies.listCompanies();
     }
 
-    /**
-     *
-     * @param id de la compagnie
-     * @return la compagnie
-     * @throws CompaniesInexistantException si la compagnie n'existe pas
+    /* (non-Javadoc)
+     * @see com.excilys.db.service.ICompaniesService#getCompanies(int)
      */
+    @Override
     public Optional<Company> getCompanies(int id) throws CompaniesInexistantException {
         return companies.getCompany(id);
     }
 
-    /**
-     *
-     * @param name le nom de la compagnie
-     * @return l'id de la compagnie
+    /* (non-Javadoc)
+     * @see com.excilys.db.service.ICompaniesService#getCompagnyId(java.lang.String)
      */
+    @Override
     public Integer getCompagnyId(String name) {
         if (!companies.getIdFromName(name).isEmpty()) {
             return companies.getIdFromName(name).get(0);
         } else {
             return null;
         }
+    }
+
+    @Override
+    public void destroy(int id) throws ValidatorException {
+        CompaniesValidator.INSTANCE.exist(id);
+        companies.deleteCompany(id);
     }
 }

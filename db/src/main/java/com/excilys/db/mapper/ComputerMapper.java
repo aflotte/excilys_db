@@ -8,14 +8,23 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import com.excilys.db.dto.ComputerDTO;
 import com.excilys.db.model.Company;
 import com.excilys.db.model.Computer;
 import com.excilys.db.service.CompaniesService;
+import com.excilys.db.service.ComputerService;
 
+@Component
 public class ComputerMapper {
+
     static org.slf4j.Logger logger = org.slf4j.LoggerFactory.getLogger(ComputerMapper.class);
 
+    @Autowired
+    CompaniesService companies;
+    
     /**
      *
      */
@@ -89,14 +98,14 @@ public class ComputerMapper {
      * @param computer l'ordinateur DTO
      * @return l'ordinateur
      */
-    public static Computer computerDTOToComputer(ComputerDTO computer) {
+    public Computer computerDTOToComputer(ComputerDTO computer) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         formatter = formatter.withLocale(Locale.FRANCE);
         Computer toReturn = new Computer();
         toReturn.setId(computer.getId());
         Company company = new Company();
         company.setName(computer.getCompany());
-        Integer id = CompaniesService.INSTANCE.getCompagnyId(computer.getCompany());
+        Integer id = companies.getCompagnyId(computer.getCompany());
         company.setId(id);
 
         toReturn.setCompany(company);
@@ -128,7 +137,7 @@ public class ComputerMapper {
      * @param computer la liste des ordinateurs DTO
      * @return la liste des ordinateurs
      */
-    public static List<Computer> computerDTOListToComputer(List<ComputerDTO> computer) {
+    public List<Computer> computerDTOListToComputer(List<ComputerDTO> computer) {
         List<Computer> toReturn = new ArrayList<>();
         for (int i = 0; i < computer.size(); i++) {
             toReturn.add(computerDTOToComputer(computer.get(i)));

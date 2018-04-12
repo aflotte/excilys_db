@@ -3,16 +3,22 @@ package com.excilys.db.page;
 import java.util.List;
 import java.util.Scanner;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import com.excilys.db.exception.CompaniesInexistantException;
 import com.excilys.db.model.Computer;
-import com.excilys.db.service.ComputerService;
+import com.excilys.db.service.IComputerService;
 
 
+@Component
 public class PageComputerCLI extends Page {
 
     List<Computer> computers;
     int index;
     private Scanner sc;
+    @Autowired
+    IComputerService computerService;
 
     /**
      *
@@ -69,14 +75,14 @@ public class PageComputerCLI extends Page {
      * @throws CompaniesInexistantException
      */
     public List<Computer> getPage(int offset, int limit, String sortBy, String orderBy) {
-        return ComputerService.INSTANCE.listComputer(offset, limit, sortBy, orderBy);
+        return computerService.listComputer(offset, limit, sortBy, orderBy);
     }
 
     /**
      *
      */
     public void updateComputer() {
-        computers = ComputerService.INSTANCE.listComputer(this.pageNumber, this.pageSize);
+        computers = computerService.listComputer(this.pageNumber, this.pageSize);
     }
 
 }

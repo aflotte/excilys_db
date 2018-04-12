@@ -4,19 +4,27 @@ import java.io.IOException;
 import java.text.MessageFormat;
 
 import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.context.support.SpringBeanAutowiringSupport;
+
+import com.excilys.db.page.IPageComputerDTO;
 import com.excilys.db.page.PageComputerDTO;
+import com.excilys.db.utils.SpringContext;
 
 /**
  * Servlet implementation class GetComputer.
  */
 
-
+@Controller
 @WebServlet("/dashboard")
 public class Dashboard extends HttpServlet {
     static org.slf4j.Logger logger = org.slf4j.LoggerFactory.getLogger(Dashboard.class);
@@ -32,6 +40,16 @@ public class Dashboard extends HttpServlet {
     public Dashboard() {
         super();
     }
+    @Autowired
+    private IPageComputerDTO pageComputer;
+
+
+    @Override
+    public void init(ServletConfig config) throws ServletException {
+        super.init(config);
+        SpringBeanAutowiringSupport.processInjectionBasedOnServletContext(this, config.getServletContext());
+    }
+
 
     /**
      * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
@@ -39,7 +57,6 @@ public class Dashboard extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
-            PageComputerDTO pageComputer;
             int actualPage;
             String[] preparedSort = prepareSort(request);
             String toSort = preparedSort[0];
@@ -66,13 +83,13 @@ public class Dashboard extends HttpServlet {
             String searchJSP;
             if ((request.getParameter(SEARCH) == null) || (request.getParameter(SEARCH).isEmpty())) {
                 searchJSP = "";
-                pageComputer = new PageComputerDTO(actualPage, sizePage);
+                pageComputer.init(actualPage, sizePage);
             } else {
                 String debug = "enter in search not empty";
                 logger.debug(debug);
                 search = request.getParameter(SEARCH);
                 searchJSP = "&search=" + search;
-                pageComputer = new PageComputerDTO(actualPage, sizePage, search);
+                pageComputer.init(actualPage, sizePage, search);
             }
             pageComputer.setSortBy(toSort);
             pageComputer.setOrderBy(orderBy);
@@ -82,6 +99,7 @@ public class Dashboard extends HttpServlet {
                     request.getRequestDispatcher("/WEB-INF/index.jsp");
             rd.forward(request, response);
         } catch (Exception e) {
+            e.printStackTrace();
             logger.error(e.getMessage());
         }
     }

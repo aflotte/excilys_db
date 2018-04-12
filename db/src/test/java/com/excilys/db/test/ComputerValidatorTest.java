@@ -7,14 +7,15 @@ import java.util.Date;
 import java.util.List;
 
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.excilys.db.exception.CompaniesIdIncorrectException;
 import com.excilys.db.exception.CompaniesInexistantException;
 import com.excilys.db.exception.IncoherentDatesException;
 import com.excilys.db.model.Company;
 import com.excilys.db.model.Computer;
-import com.excilys.db.persistance.ComputerDAO;
 import com.excilys.db.persistance.DBConnection;
+import com.excilys.db.persistance.IComputerDAO;
 import com.excilys.db.validator.ComputerValidator;
 
 import junit.framework.TestCase;
@@ -22,7 +23,8 @@ import junit.framework.TestCase;
 public class ComputerValidatorTest extends TestCase {
 
 	DBConnection instance = DBConnection.getInstance();
-	ComputerDAO computer = ComputerDAO.INSTANCE;
+	@Autowired
+	IComputerDAO computer;
 	SimpleDateFormat formatter = new SimpleDateFormat("yyyy/MM/dd");
 
 	@Test
