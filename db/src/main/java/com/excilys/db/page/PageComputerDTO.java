@@ -9,6 +9,7 @@ import com.excilys.db.mapper.ComputerMapper;
 import com.excilys.db.service.ComputerService;
 import com.excilys.db.utils.Debugging;
 
+//TODO :remplacer les fonctions en mettant page en argument
 public class PageComputerDTO extends Page {
     static org.slf4j.Logger logger = org.slf4j.LoggerFactory.getLogger(PageComputerDTO.class);
     private String search = "";
@@ -120,6 +121,7 @@ public class PageComputerDTO extends Page {
      */
     public PageComputerDTO(int page, int size, String name) {
         super();
+        logger.debug("herePAGEDTOcreate");
         setComputerMax(ComputerService.INSTANCE.getCount(name));
         pageSizeInit(page, size);
         search = name;
@@ -177,7 +179,7 @@ public class PageComputerDTO extends Page {
      */
     public List<ComputerDTO> getPage() {
         if (search.isEmpty()) {
-            return ComputerMapper.computerListToComputerDTO(ComputerService.INSTANCE.listComputer((this.pageNumber - 1) * this.pageSize, this.pageSize, sortBy, orderBy));
+            return ComputerMapper.computerListToComputerDTO(ComputerService.INSTANCE.listComputer(this));
         } else {
             return ComputerMapper.computerListToComputerDTO(ComputerService.INSTANCE.listComputerLike((this.pageNumber - 1) * this.pageSize, this.pageSize, search, sortBy, orderBy));
         }

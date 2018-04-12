@@ -10,6 +10,7 @@ import com.excilys.db.exception.IncoherentDatesException;
 import com.excilys.db.exception.ServiceException;
 import com.excilys.db.exception.ValidatorException;
 import com.excilys.db.model.Computer;
+import com.excilys.db.page.PageComputerDTO;
 import com.excilys.db.persistance.ComputerDAO;
 import com.excilys.db.validator.ComputerValidator;
 
@@ -40,6 +41,11 @@ public enum ComputerService {
         return computer.listComputer(offset, limit, sortBy, orderBy);
     }
 
+    
+    public List<Computer> listComputer(PageComputerDTO page) {
+        return computer.listComputer(page);
+    }
+    
     /**
      *
      * @param offset l'offset
@@ -154,6 +160,7 @@ public enum ComputerService {
      * @param ids ids à delete
      */
     public void deleteListComputer(int[] ids) {
+        logger.debug("dans service delete");
         computer.deleteListComputer(ids);
     }
 }

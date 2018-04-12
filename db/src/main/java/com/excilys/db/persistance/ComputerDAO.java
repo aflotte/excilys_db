@@ -13,6 +13,7 @@ import com.excilys.db.exception.CompaniesInexistantException;
 import com.excilys.db.exception.DAOAccesExeption;
 import com.excilys.db.mapper.ComputerMapper;
 import com.excilys.db.model.Computer;
+import com.excilys.db.page.PageComputerDTO;
 
 import java.sql.Statement;
 import com.excilys.db.utils.Debugging;
@@ -34,9 +35,15 @@ public enum ComputerDAO {
     private static final String QUERRY_DELETE_COMPUTER = "DELETE FROM computer WHERE id = ? ";
     private static final String OFFSET_LIMIT = " LIMIT ? OFFSET ?";
     private static final String ORDER_BY = " ORDER BY %s %s ";
-    private static final String QUERRY_COUNT = "SELECT COUNT(*) FROM computer";
-    private static final String LIKE = " WHERE computer.name LIKE '%%s%'";
+    private static final String QUERRY_COUNT = "SELECT COUNT(*) FROM computer LEFT JOIN company ON computer.company_id = company.id";
+    private static final String LIKE = " WHERE computer.name LIKE \'%%%s%%\' or company.name LIKE \'%%%s%%\'";
 
+    /**
+     *
+     * @param prep1 le prepared statement
+     * @return la liste d'ordinateur
+     * @throws SQLException l'erreur
+     */
     private List<Computer> requestToListComputer(PreparedStatement prep1) throws SQLException {
         List<Computer> listResult = new ArrayList<>();
         Debugging.requestDebug(logger, prep1.toString());
@@ -49,6 +56,12 @@ public enum ComputerDAO {
         return listResult;
     }
 
+    /**
+     *
+     * @param prep1 le prepapred statement
+     * @return l'ordinateur
+     * @throws SQLException l'erreur
+     */
     private Optional<Computer> requestToComputer(PreparedStatement prep1) throws SQLException{
         Debugging.requestDebug(logger, prep1.toString());
         Computer result = null;
@@ -58,7 +71,7 @@ public enum ComputerDAO {
             }
         }
 
-        return Optional.of(result);
+        return Optional.ofNullable(result);
     }
 
     /**
@@ -98,6 +111,30 @@ public enum ComputerDAO {
         }
         return listResult;
     }
+    
+    /**
+    *
+    * @param offset l'offset
+    * @param limit le nombre a afficher
+    * @return la liste des ordinateurs
+    * @throws CompaniesInexistantException erreur sur la compagnie de l'ordinateur
+    */
+   public List<Computer> listComputer(PageComputerDTO page) {
+       int offset = (page.getPageNumber() - 1) * page.getPageSize();
+       int limit = page.getPageSize();
+       String sortBy = page.getSortBy();
+       String orderBy = page.getOrderBy();
+       List<Computer> listResult;
+       try (Connection conn = DBConnection.getConn();PreparedStatement prep1 = conn.prepareStatement(QUERRY_LIST_COMPUTERS + String.format(ORDER_BY, sortBy, orderBy)  + OFFSET_LIMIT );){
+           prep1.setInt(1, limit);
+           prep1.setInt(2, offset);
+           listResult = requestToListComputer(prep1);
+       } catch (SQLException e) {
+           logger.error(ERROR);
+           throw new DAOAccesExeption();
+       }
+       return listResult;
+   }
 
     /**
      *
@@ -251,6 +288,10 @@ public enum ComputerDAO {
     }
 
 
+    /**
+     *
+     * @param ids la liste des ids
+     */
     public void deleteListComputer(int[] ids) {
         List<Integer> listId = new ArrayList<>();
         for (int i=0;i < ids.length;i++) {
@@ -268,10 +309,17 @@ public enum ComputerDAO {
         }
     }
 
+    /**
+     *
+     * @param conn la connection
+     * @param ids la liste des id
+     * @throws SQLException l'erreur
+     */
     public void deleteListComputer(Connection conn, List<Integer> ids) throws SQLException {
         for (int i = 0; i < ids.size(); i++) {
             int id = ids.get(i);
-            try (PreparedStatement prep1 = conn.prepareStatement(QUERRY_DELETE_COMPUTER + id);){
+            try (PreparedStatement prep1 = conn.prepareStatement(QUERRY_DELETE_COMPUTER);){
+                prep1.setInt(1, id);
                 Debugging.requestDebug(logger, prep1.toString());
                 prep1.executeUpdate();
             }
@@ -303,7 +351,7 @@ public enum ComputerDAO {
      */
     public int getCount(String search) {
         int result = 0;
-        try (Connection conn = DBConnection.getConn();PreparedStatement prep1 = conn.prepareStatement(QUERRY_COUNT + String.format(LIKE, search));){
+        try (Connection conn = DBConnection.getConn();PreparedStatement prep1 = conn.prepareStatement(QUERRY_COUNT + String.format(LIKE, search,search));){
             Debugging.requestDebug(logger, prep1.toString());
             try (ResultSet resultSet = prep1.executeQuery();){
                 if (resultSet.next()) {
@@ -320,7 +368,7 @@ public enum ComputerDAO {
 
     public List<Computer> listComputerLike(int offset, int limit, String name, String sortBy, String orderBy) {
         List<Computer> listResult = new ArrayList<>();
-        try (Connection conn = DBConnection.getConn();PreparedStatement prep1 = conn.prepareStatement(QUERRY_LIST_COMPUTERS + String.format(LIKE, name) + String.format(ORDER_BY, sortBy, orderBy) + OFFSET_LIMIT );){
+        try (Connection conn = DBConnection.getConn(); PreparedStatement prep1 = conn.prepareStatement(QUERRY_LIST_COMPUTERS + String.format(LIKE, name, name) + String.format(ORDER_BY, sortBy, orderBy) + OFFSET_LIMIT);) {
             prep1.setInt(1, limit);
             prep1.setInt(2, offset);
             Debugging.requestDebug(logger, prep1.toString());

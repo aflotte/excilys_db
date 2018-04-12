@@ -82,7 +82,7 @@ public class Dashboard extends HttpServlet {
                     request.getRequestDispatcher("/WEB-INF/index.jsp");
             rd.forward(request, response);
         } catch (Exception e) {
-            logger.debug(e.getMessage());
+            logger.error(e.getMessage());
         }
     }
 

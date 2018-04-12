@@ -1,6 +1,6 @@
 package com.excilys.db.cli;
-import com.excilys.db.page.PageCompanies;
-import com.excilys.db.page.PageComputer;
+import com.excilys.db.page.PageCompaniesCLI;
+import com.excilys.db.page.PageComputerCLI;
 import com.excilys.db.persistance.CompaniesDAO;
 import com.excilys.db.persistance.DBConnection;
 import com.excilys.db.service.CompaniesService;
@@ -127,7 +127,7 @@ public class CLI {
      */
     public static void afficherCompagnies() {
         List<Company> listeCompanies = CompaniesService.INSTANCE.listCompanies();
-        PageCompanies page = new PageCompanies(listeCompanies, sc);
+        PageCompaniesCLI page = new PageCompaniesCLI(listeCompanies, sc);
         System.out.println("Voici la liste des compagnies ( Q to exit ): ");
         page.afficher();
     }
@@ -138,7 +138,7 @@ public class CLI {
      */
     public static void afficherOrdinateurs() {
         List<Computer> listeOrdinateur = ComputerService.INSTANCE.listComputer();
-        PageComputer page = new PageComputer(listeOrdinateur, sc);
+        PageComputerCLI page = new PageComputerCLI(listeOrdinateur, sc);
         System.out.println("Voici la liste des ordinateurs ( Q to exit ): ");
         page.afficher();
     }

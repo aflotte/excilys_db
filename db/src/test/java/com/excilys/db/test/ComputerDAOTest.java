@@ -96,7 +96,10 @@ public class ComputerDAOTest {
     }
 
 
-
+    @Test
+    public void testShowDetailsEmpty() {
+        computer.showDetails(169819);
+    }
 
     @Test
     public void testCreateAComputerDatesNullCompanieNull() {
@@ -238,6 +241,11 @@ public class ComputerDAOTest {
         computer.createAComputer(Test);
         List<Integer> testList = computer.getIdFromName("Test_Destruction");    
         computer.deleteAComputer(testList.get(0));
+    }
+    
+    @Test
+    public void testGetCount() {
+        
     }
 
 }

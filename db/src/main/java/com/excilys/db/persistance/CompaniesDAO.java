@@ -34,7 +34,11 @@ public enum CompaniesDAO {
 
 
 
-
+    /**
+     * 
+     * @param id id de la compagnie
+     * @return
+     */
     public List<Integer> computerFromCompany(int id){
         List<Integer> result = new ArrayList<>();
         ResultSet resultSet = null;
@@ -100,7 +104,10 @@ public enum CompaniesDAO {
         return listResult;
     }
 
-
+/**
+ *
+ * @param id l'id
+ */
     public void deleteCompany(int id) {
         List<Integer> computerIds = computerFromCompany(id);
         try(   Connection conn = DBConnection.getConn();
@@ -133,7 +140,7 @@ public enum CompaniesDAO {
             prep1.setInt(1, limit);
             prep1.setInt(2, offset);
             Debugging.requestDebug(logger,prep1.toString());
-                resultSet = prep1.executeQuery();
+            resultSet = prep1.executeQuery();
             while (resultSet.next()) {
                 Company toAdd = CompaniesMapper.computerResultToCompanies(resultSet);
                 listResult.add(toAdd);

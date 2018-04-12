@@ -8,7 +8,7 @@ import com.excilys.db.model.Computer;
 import com.excilys.db.service.ComputerService;
 
 
-public class PageComputer extends Page {
+public class PageComputerCLI extends Page {
 
     List<Computer> computers;
     int index;
@@ -17,7 +17,7 @@ public class PageComputer extends Page {
     /**
      *
      */
-    public PageComputer() {
+    public PageComputerCLI() {
         super();
     }
 
@@ -26,7 +26,7 @@ public class PageComputer extends Page {
      * @param list des ordinateurs
      * @param sc le scanner
      */
-    public PageComputer(List<Computer> list, Scanner sc) {
+    public PageComputerCLI(List<Computer> list, Scanner sc) {
         computers = list;
         index = 0;
         this.sc = sc;
