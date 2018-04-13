@@ -64,7 +64,6 @@ public class AddComputer extends HttpServlet {
 
             rd.forward(request, response);
         } catch (Exception e) {
-            e.printStackTrace();
             logger.debug(e.getMessage());
         }
     }

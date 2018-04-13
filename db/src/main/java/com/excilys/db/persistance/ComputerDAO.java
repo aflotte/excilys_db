@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.stereotype.Repository;
+import org.springframework.jdbc.datasource.DataSourceUtils;
 
 import com.excilys.db.exception.DAOAccesExeption;
 import com.excilys.db.mapper.ComputerMapper;
@@ -25,6 +26,8 @@ import com.excilys.db.utils.Debugging;
  */
 @Repository("computerDAO")
 public class ComputerDAO implements IComputerDAO {
+    @Autowired
+    private DataSource dataSource;
     org.slf4j.Logger logger = org.slf4j.LoggerFactory.getLogger(ComputerDAO.class);
     private static final String ERROR = "Erreur dans l'accès des données";
 

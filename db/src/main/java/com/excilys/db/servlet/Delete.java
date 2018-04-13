@@ -13,7 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 
-import com.excilys.db.service.ICompaniesService;
 import com.excilys.db.service.IComputerService;
 
 /**

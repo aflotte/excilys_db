@@ -14,7 +14,10 @@ import org.hsqldb.cmdline.SqlFile;
 import org.hsqldb.cmdline.SqlToolError;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.excilys.db.exception.DAOConfigurationException;
 import com.excilys.db.model.Company;
@@ -22,7 +25,8 @@ import com.excilys.db.persistance.CompaniesDAO;
 import com.excilys.db.persistance.DBConnection;
 import com.excilys.db.persistance.IComputerDAO;
 
-
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(locations= {"/applicationContext.xml"})
 public class CompaniesDAOTest {
     @Autowired
     CompaniesDAO companiesDAO;
@@ -48,11 +52,10 @@ public class CompaniesDAOTest {
     IComputerDAO computer;
     SimpleDateFormat formatter = new SimpleDateFormat("yyyy/MM/dd");
 
-	@Test
-	public void testListCompanies() {
-		Company Apple = new Company();
-		Apple.setId(1);
-		Apple.setName("Apple Inc.");
-		assertEquals(Apple,companiesDAO.listCompanies().get(0));
-	}
+    @Test
+    public void testListCompanies() {
+        Company Apple = new Company();
+        Apple.setId(1);
+        Apple.setName("Apple Inc.");
+        assertEquals(Apple,companiesDAO.listCompanies().get(0));}
 }

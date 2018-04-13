@@ -26,6 +26,7 @@ import junit.framework.TestCase;
 
 public class ComputerTest extends TestCase {
 
+    
 	static DBConnection instance;
 	static IComputerDAO computer;
 	static ResultSet toUseForTest;

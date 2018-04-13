@@ -19,7 +19,6 @@ import com.excilys.db.dto.ComputerDTO;
 import com.excilys.db.exception.ServiceException;
 import com.excilys.db.mapper.ComputerMapper;
 import com.excilys.db.model.Computer;
-import com.excilys.db.service.CompaniesService;
 import com.excilys.db.service.ICompaniesService;
 import com.excilys.db.service.IComputerService;
 import com.excilys.db.validator.ComputerValidator;

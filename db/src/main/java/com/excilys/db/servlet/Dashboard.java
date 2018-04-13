@@ -12,13 +12,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 
 import com.excilys.db.page.IPageComputerDTO;
-import com.excilys.db.page.PageComputerDTO;
-import com.excilys.db.utils.SpringContext;
 
 /**
  * Servlet implementation class GetComputer.
@@ -99,7 +96,6 @@ public class Dashboard extends HttpServlet {
                     request.getRequestDispatcher("/WEB-INF/index.jsp");
             rd.forward(request, response);
         } catch (Exception e) {
-            e.printStackTrace();
             logger.error(e.getMessage());
         }
     }
