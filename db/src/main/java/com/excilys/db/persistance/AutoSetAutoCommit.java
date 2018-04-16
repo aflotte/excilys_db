@@ -1,4 +1,4 @@
-package com.excilys.db.dao;
+package com.excilys.db.persistance;
 
 import java.sql.Connection;
 import java.sql.SQLException;

@@ -4,19 +4,24 @@ import java.io.IOException;
 import java.text.MessageFormat;
 
 import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.excilys.db.page.PageComputerDTO;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.context.support.SpringBeanAutowiringSupport;
+
+import com.excilys.db.page.IPageComputerDTO;
 
 /**
  * Servlet implementation class GetComputer.
  */
 
-
+@Controller
 @WebServlet("/dashboard")
 public class Dashboard extends HttpServlet {
     static org.slf4j.Logger logger = org.slf4j.LoggerFactory.getLogger(Dashboard.class);
@@ -26,13 +31,22 @@ public class Dashboard extends HttpServlet {
     private static final String PAGE_SIZE = "pageSize";
     private static final String SEARCH = "search";
     private static final String SORT_PATH = "sortPath";
-    
     /**
      * @see HttpServlet#HttpServlet()
      */
     public Dashboard() {
         super();
     }
+    @Autowired
+    private IPageComputerDTO pageComputer;
+
+
+    @Override
+    public void init(ServletConfig config) throws ServletException {
+        super.init(config);
+        SpringBeanAutowiringSupport.processInjectionBasedOnServletContext(this, config.getServletContext());
+    }
+
 
     /**
      * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
@@ -40,7 +54,6 @@ public class Dashboard extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
-            PageComputerDTO pageComputer;
             int actualPage;
             String[] preparedSort = prepareSort(request);
             String toSort = preparedSort[0];
@@ -66,14 +79,14 @@ public class Dashboard extends HttpServlet {
             String search;
             String searchJSP;
             if ((request.getParameter(SEARCH) == null) || (request.getParameter(SEARCH).isEmpty())) {
-                searchJSP="";
-                pageComputer = new PageComputerDTO(actualPage, sizePage);
+                searchJSP = "";
+                pageComputer.init(actualPage, sizePage);
             } else {
                 String debug = "enter in search not empty";
                 logger.debug(debug);
                 search = request.getParameter(SEARCH);
-                searchJSP="&search="+search;
-                pageComputer = new PageComputerDTO(actualPage, sizePage, search);
+                searchJSP = "&search=" + search;
+                pageComputer.init(actualPage, sizePage, search);
             }
             pageComputer.setSortBy(toSort);
             pageComputer.setOrderBy(orderBy);
@@ -83,7 +96,7 @@ public class Dashboard extends HttpServlet {
                     request.getRequestDispatcher("/WEB-INF/index.jsp");
             rd.forward(request, response);
         } catch (Exception e) {
-            logger.debug(e.getMessage());
+            logger.error(e.getMessage());
         }
     }
 
@@ -100,14 +113,25 @@ public class Dashboard extends HttpServlet {
         }
     }
 
+    /**
+     *
+     * @param request la requete
+     * @param tested la colonne servant pour sort
+     * @return la string de l'url
+     */
     private String casePrepareSort(HttpServletRequest request, String tested) {
-        String preparation = MessageFormat.format("&sort={0}",tested);
-        if ((request.getParameter(ORDER_BY)!=null)&&(request.getParameter(ORDER_BY).equals("asc"))) {
-            request.setAttribute("computerPath", MessageFormat.format("&sort={0}&orderBy=desc",tested));
+        String preparation = MessageFormat.format("&sort={0}", tested);
+        if ((request.getParameter(ORDER_BY) != null) && (request.getParameter(ORDER_BY).equals("asc"))) {
+            request.setAttribute("computerPath", MessageFormat.format("&sort={0}&orderBy=desc", tested));
         }
         return preparation;
     }
 
+    /**
+     *
+     * @param request la requete
+     * @return { Sort, OrderBy }
+     */
     private String[] prepareSort(HttpServletRequest request) {
         String toSort = "";
         String preparation = "";
@@ -137,11 +161,11 @@ public class Dashboard extends HttpServlet {
                 toSort = "company.name";
                 break;
             default:
-                toSort="computer.id";
+                toSort = "computer.id";
                 break;
             }
-        }else {
-            toSort="computer.id";
+        } else {
+            toSort = "computer.id";
         }
         String orderBy;
         if (!((request.getParameter(ORDER_BY) == null) || (request.getParameter(ORDER_BY).isEmpty()))) {
@@ -153,15 +177,15 @@ public class Dashboard extends HttpServlet {
                     preparation += "&orderBy=asc";
                     orderBy = "asc";
                 }
-            }else {
+            } else {
                 orderBy = "asc";
             }
-        }else {
+        } else {
             orderBy = "asc";
         }
 
         request.setAttribute(SORT_PATH, preparation);
-        return new String[]{toSort,orderBy};
+        return new String[]{toSort, orderBy};
     }
 
 

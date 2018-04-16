@@ -1,10 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
-	<groupId>com.excilys</groupId>
-	<artifactId>db</artifactId>
-	<version>4.2.3-SNAPSHOT</version>
+	<groupId>com.excilys.formation.cdb</groupId>
+	<artifactId>computer-database</artifactId>
+	<version>4.5.1-SNAPSHOT</version>
+
 	<packaging>war</packaging>
 
 	<name>db</name>
@@ -14,67 +16,142 @@
 		<!-- sets the projects encoding to UTF-8 -->
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<java.version>1.8</java.version>
-		<tomcat.version>2.2</tomcat.version>
-		<servletapi.version>2.5</servletapi.version>
-		<javaxservapi.version>3.0.1</javaxservapi.version>
-		<maven.version>3.1</maven.version>
-		<slf4japi.version>1.7.2</slf4japi.version>
+		<mojo.version>1.2.1</mojo.version>
+		<tomcat-plugin.version>2.2</tomcat-plugin.version>
+		<cargo.version>1.6.7</cargo.version>
+		<tomcat.home>/home/excilys/apache-tomcat-7.0.85</tomcat.home>
+		<sqltool.version>2.2.9</sqltool.version>
+
+		<!-- checkstyle -->
+		<checkstyle.version>3.0.0</checkstyle.version>
+
+		<common-lang.version>3.7</common-lang.version>
 
 		<!-- test -->
 		<junit.version>4.12</junit.version>
-		<mockito.version>1.9.5</mockito.version>
-		<javaxserv.version>1.2</javaxserv.version>
-		<selenium.version>2.45.0</selenium.version>
-		<testng.version>6.8</testng.version>
-
 
 		<!-- compile -->
-
-		<hikari.version>2.5.1</hikari.version>
-
 		<!-- logs -->
 		<log4j.version>1.2.17</log4j.version>
-		<slf4j.version>1.7.19</slf4j.version>
-		<logback.version>1.1.6</logback.version>
+		<slf4j.version>1.7.25</slf4j.version>
+		<logback.version>1.2.3</logback.version>
+		<jstl.version>1.2</jstl.version>
+		<hikaricp.version>2.6.1</hikaricp.version>
+		<hsqldb.version>2.3.1</hsqldb.version>
 
 		<!-- runtime -->
 		<mysql.version>5.1.38</mysql.version>
-		<ressourcebundle.version>1.4</ressourcebundle.version>
-		<myqsl-jdbc.version>6.0.6</myqsl-jdbc.version>
+		<myqsl-jdbc.version>8.0.8-dmr</myqsl-jdbc.version>
+
+		<!-- provided -->
+		<javax.version>8.0</javax.version>
+		<jasper.version>9.0.6</jasper.version>
+		<spring.version>5.0.4.RELEASE</spring.version>
+		<servletapi.version>2.5</servletapi.version>
+		<javaxservapi.version>3.0.1</javaxservapi.version>
+		<javaxserv.version>1.2</javaxserv.version>
+		<jacoco.version>0.8.0</jacoco.version>
+		<jcloverslf4j.version>1.7.6</jcloverslf4j.version>
+
 	</properties>
+
 	<build>
 		<plugins>
 			<plugin>
+				<groupId>org.jacoco</groupId>
+				<artifactId>jacoco-maven-plugin</artifactId>
+				<version>${jacoco.version}</version>
+				<executions>
+					<execution>
+						<id>prepare-agent</id>
+						<goals>
+							<goal>prepare-agent</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>report</id>
+						<phase>prepare-package</phase>
+						<goals>
+							<goal>report</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>post-unit-test</id>
+						<phase>test</phase>
+						<goals>
+							<goal>report</goal>
+						</goals>
+						<configuration>
+							<!-- Sets the path to the file which contains the execution data. -->
+
+							<dataFile>target/jacoco.exec</dataFile>
+							<!-- Sets the output directory for the code coverage report. -->
+							<outputDirectory>target/jacoco-ut</outputDirectory>
+						</configuration>
+					</execution>
+				</executions>
+				<configuration>
+					<systemPropertyVariables>
+						<jacoco-agent.destfile>target/jacoco.exec</jacoco-agent.destfile>
+					</systemPropertyVariables>
+				</configuration>
+			</plugin>
+
+			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
-				<version>${maven.version}</version>
+				<version>3.1</version>
 				<configuration>
 					<source>${java.version}</source>
 					<target>${java.version}</target>
 				</configuration>
 			</plugin>
+			<!-- Enables launching the CLI via command line using Maven -->
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>exec-maven-plugin</artifactId>
+				<version>${mojo.version}</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>java</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<mainClass>com.excilys.formation.cdb.ui.CLI</mainClass>
+				</configuration>
+			</plugin>
+			<!-- Tomcat deployment plugin -->
 			<plugin>
 				<groupId>org.apache.tomcat.maven</groupId>
 				<artifactId>tomcat7-maven-plugin</artifactId>
-				<version>${tomcat.version}</version>
+				<version>${tomcat-plugin.version}</version>
 				<configuration>
 					<url>http://localhost:8080/manager/text</url>
 					<server>TomcatServer</server>
-					<path>/myapp</path>
+					<path>/computer-database</path>
+				</configuration>
+			</plugin>
+			<!-- Cargo deployment plugin -->
+			<plugin>
+				<groupId>org.codehaus.cargo</groupId>
+				<artifactId>cargo-maven2-plugin</artifactId>
+				<version>${cargo.version}</version>
+				<configuration>
+					<container>
+						<containerId>tomcat7x</containerId>
+						<type>installed</type>
+						<home>${tomcat.home}</home>
+					</container>
+					<configuration>
+						<type>existing</type>
+						<home>${tomcat.home}</home>
+					</configuration>
 				</configuration>
 			</plugin>
 		</plugins>
-		<resources>
-			<resource>
-				<directory>src/main/resources</directory>
-				<targetPath>${project.build.directory}</targetPath>
-				<includes>
-					<include>log4j.properties</include>
-				</includes>
-			</resource>
-		</resources>
 	</build>
-
 	<reporting>
 		<plugins>
 			<plugin>
@@ -88,24 +165,25 @@
 			</plugin>
 		</plugins>
 	</reporting>
-
 	<dependencies>
 		<!-- tests -->
 		<dependency>
-			<groupId>org.seleniumhq.selenium</groupId>
-			<artifactId>selenium-java</artifactId>
-			<version>${selenium.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.testng</groupId>
-			<artifactId>testng</artifactId>
-			<version>${testng.version}</version>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>${junit.version}</version>
 			<scope>test</scope>
 		</dependency>
+
+		<!-- logging -->
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-api</artifactId>
-			<version>${slf4japi.version}</version>
+			<version>${slf4j.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>ch.qos.logback</groupId>
+			<artifactId>logback-classic</artifactId>
+			<version>${logback.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>ch.qos.logback</groupId>
@@ -114,25 +192,89 @@
 		</dependency>
 		<dependency>
 			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-log4j12</artifactId>
-			<version>1.7.2</version>
+			<artifactId>jcl-over-slf4j</artifactId>
+			<version>${jcloverslf4j.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>jstl</groupId>
+			<artifactId>jstl</artifactId>
+			<version>${jstl.version}</version>
+			<scope>provided</scope>
 		</dependency>
 		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<version>${junit.version}</version>
-			<scope>test</scope>
+			<groupId>javax</groupId>
+			<artifactId>javaee-api</artifactId>
+			<version>${javax.version}</version>
+			<scope>provided</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.maven.plugins</groupId>
+			<artifactId>maven-checkstyle-plugin</artifactId>
+			<version>${checkstyle.version}</version>
 		</dependency>
 		<dependency>
-			<groupId>org.mockito</groupId>
-			<artifactId>mockito-all</artifactId>
-			<version>${mockito.version}</version>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-lang3</artifactId>
+			<version>${common-lang.version}</version>
+		</dependency>
+
+
+		<dependency>
+			<groupId>com.zaxxer</groupId>
+			<artifactId>HikariCP</artifactId>
+			<version>${hikaricp.version}</version>
+		</dependency>
+
+
+		<dependency>
+			<groupId>org.hsqldb</groupId>
+			<artifactId>sqltool</artifactId>
+			<version>${sqltool.version}</version>
 			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+			<version>${myqsl-jdbc.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.hsqldb</groupId>
 			<artifactId>hsqldb</artifactId>
-			<version>2.3.4</version>
+			<version>${hsqldb.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-core</artifactId>
+			<version>${spring.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context</artifactId>
+			<version>${spring.version}</version>
+			<exclusions>
+				<exclusion>
+					<groupId>commons-logging</groupId>
+					<artifactId>commons-logging</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-test</artifactId>
+			<version>${spring.version}</version>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>taglibs</groupId>
+			<artifactId>standard</artifactId>
+			<version>1.1.2</version>
 		</dependency>
 		<dependency>
 			<groupId>javax.servlet</groupId>
@@ -147,27 +289,20 @@
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
-			<groupId>org.apache</groupId>
-			<artifactId>apache-jar-resource-bundle</artifactId>
-			<version>${ressourcebundle.version}</version>
-		</dependency>
-		<dependency>
 			<groupId>javax.servlet</groupId>
 			<artifactId>jstl</artifactId>
 			<version>${javaxserv.version}</version>
 		</dependency>
-		<dependency>
-			<groupId>com.zaxxer</groupId>
-			<artifactId>HikariCP</artifactId>
-			<version>${hikari.version}</version>
-		</dependency>
 
 		<dependency>
-			<groupId>mysql</groupId>
-			<artifactId>mysql-connector-java</artifactId>
-			<version>${myqsl-jdbc.version}</version>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-web</artifactId>
+			<version>${spring.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-jdbc</artifactId>
+			<version>3.0.3.RELEASE</version>
 		</dependency>
 	</dependencies>
-
-
 </project>

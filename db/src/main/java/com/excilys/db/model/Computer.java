@@ -65,6 +65,29 @@ public class Computer {
         return sB.toString();
 
     }
+    
+    
+    private boolean equalsDate(Object obj) {
+        if (this.getIntroduced()!=null) {
+            if (!this.getIntroduced().equals(((Computer) obj).getIntroduced())) {
+                return false;
+            }
+        }else {
+            if (((Computer) obj).getIntroduced()!=null){
+                return false;
+            }
+        }
+        if (this.getDiscontinued()!=null) {
+            if (!this.getDiscontinued().equals(((Computer) obj).getDiscontinued())) {
+                return false;
+            }
+        }else {
+            if (((Computer) obj).getDiscontinued()!=null){
+                return false;
+            }
+        }
+        return true;
+    }
 
     @Override
     public boolean equals(Object obj) {
@@ -80,13 +103,14 @@ public class Computer {
         if (!this.getName().equals(((Computer) obj).getName())) {
             return false;
         }
-        if (this.getIntroduced() != ((Computer) obj).getIntroduced()) {
+        if (!this.equalsDate(obj)) {
             return false;
         }
-        if (this.getDiscontinued() != ((Computer) obj).getDiscontinued()) {
-            return false;
-        }
+        if ( this.getCompany() != null) {
         return this.getCompany().equals(((Computer) obj).getCompany());
+        }else {
+            return ((Computer) obj).getCompany()==null;
+        }
 
     }
 

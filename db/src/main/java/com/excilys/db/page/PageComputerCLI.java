@@ -3,18 +3,27 @@ package com.excilys.db.page;
 import java.util.List;
 import java.util.Scanner;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import com.excilys.db.exception.CompaniesInexistantException;
 import com.excilys.db.model.Computer;
-import com.excilys.db.service.ComputerService;
+import com.excilys.db.service.IComputerService;
 
 
-public class PageComputer extends Page{
+@Component
+public class PageComputerCLI extends Page {
 
     List<Computer> computers;
     int index;
     private Scanner sc;
-    
-    public PageComputer() {
+    @Autowired
+    IComputerService computerService;
+
+    /**
+     *
+     */
+    public PageComputerCLI() {
         super();
     }
 
@@ -23,7 +32,7 @@ public class PageComputer extends Page{
      * @param list des ordinateurs
      * @param sc le scanner
      */
-    public PageComputer(List<Computer> list, Scanner sc) {
+    public PageComputerCLI(List<Computer> list, Scanner sc) {
         computers = list;
         index = 0;
         this.sc = sc;
@@ -60,18 +69,20 @@ public class PageComputer extends Page{
      *
      * @param offset l'offset
      * @param limit la limit
-     * @return 
+     * @param sortBy sortBy
+     * @param orderBy l'ordre
+     * @return la liste des ordinateurs
      * @throws CompaniesInexistantException
      */
     public List<Computer> getPage(int offset, int limit, String sortBy, String orderBy) {
-        return ComputerService.INSTANCE.listComputer(offset, limit, sortBy, orderBy);
+        return computerService.listComputer(offset, limit, sortBy, orderBy);
     }
 
     /**
      *
      */
     public void updateComputer() {
-        computers = ComputerService.INSTANCE.listComputer(this.pageNumber,this.pageSize);
+        computers = computerService.listComputer(this.pageNumber, this.pageSize);
     }
 
 }

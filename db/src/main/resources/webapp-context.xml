@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd">
+
+    <context:component-scan base-package="com.excilys.formation.cdb.persistence.dao.impl"/>
+    <context:component-scan base-package="com.excilys.formation.cdb.service.impl"/>
+    <context:component-scan base-package="com.excilys.formation.cdb.servlets"/>
+
+    <context:property-placeholder location="classpath:/properties/db.properties" />
+    <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource"
+          p:driverClassName="${jdbc.driverClassName}"
+          p:url="${jdbc.jdbcUrl}"
+          p:username="${jdbc.username}"
+          p:password="${jdbc.password}"/>
+
+    <!-- We are using annotations -->
+    <tx:annotation-driven proxy-target-class="true" transaction-manager="txManager"/>
+    <!-- Transaction manager -->
+    <bean id="txManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+</beans>	

@@ -1,11 +1,9 @@
 package com.excilys.db.cli;
-import com.excilys.db.page.PageCompanies;
-import com.excilys.db.page.PageComputer;
-import com.excilys.db.service.CompaniesService;
-import com.excilys.db.service.ComputerService;
-import com.excilys.db.validator.CompaniesValidator;
+import com.excilys.db.page.PageCompaniesCLI;
+import com.excilys.db.page.PageComputerCLI;
+import com.excilys.db.service.ICompaniesService;
+import com.excilys.db.service.IComputerService;
 import com.excilys.db.validator.ComputerValidator;
-import com.excilys.db.dao.CompaniesDAO;
 import com.excilys.db.exception.CompaniesIdIncorrectException;
 import com.excilys.db.exception.CompaniesInexistantException;
 import com.excilys.db.exception.IncoherentDatesException;
@@ -19,6 +17,11 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Scanner;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.stereotype.Controller;
+
 
 
 
@@ -27,18 +30,37 @@ import java.util.Scanner;
  * @author flotte
  *
  */
+@Controller("cLI")
 public class CLI {
     static org.slf4j.Logger logger = org.slf4j.LoggerFactory.getLogger(CLI.class);
-    static Scanner sc;
-
+    Scanner scanner;
+    @Autowired
+    private IComputerService computerService;
+    @Autowired
+    private ICompaniesService companiesService;
+    @Autowired
+    private ComputerValidator computerValidator;
+    @Autowired
+    private ScanCLI scannerCLI;
+    
     /**
      *
      * @param args aucun attendu
      * @throws CompaniesInexistantException erreur lors de la création d'une compagnie
      */
     public static void main(String[] args) {
+        @SuppressWarnings("resource")
+        ApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");
+        context.getBean(CLI.class).start();
+
+    }
+    
+    private CLI() {
+    }
+    
+    private void start() {
         System.out.println("Bienvenue sur le CLI de la base de donnée");
-        sc = new Scanner(System.in);
+        scanner = new Scanner(System.in);
         boolean continu = true;
         while (continu) {
             menuIntroduction();
@@ -75,16 +97,16 @@ public class CLI {
             default:
             }
         }
-        sc.close();
+        scanner.close();
     }
 
-    private static void supprimerCompagnie() {
+
+    private void supprimerCompagnie() {
         System.out.println("Entrer l'id de la compagnie a supprimer !");
         int idCompany = 0;
-        idCompany = ScanCLI.scanInt(sc);
+        idCompany = ScanCLI.scanInt(scanner);
         try {
-            CompaniesValidator.INSTANCE.exist(idCompany);
-            CompaniesDAO.INSTANCE.deleteCompany(idCompany);
+            companiesService.destroy(idCompany);
         }catch (Exception e){
             System.out.println("La compagnie a supprimer n'existe pas");
         }
@@ -95,7 +117,7 @@ public class CLI {
     /**
      *
      */
-    public static void menuIntroduction() {
+    public void menuIntroduction() {
         System.out.println("Liste des commandes :");
         System.out.println("1 - Afficher la liste des compagnies");
         System.out.println("2 - Afficher la liste des ordinateurs");
@@ -111,11 +133,10 @@ public class CLI {
      *
      * @return Le choix de l'utilisateur, 0 si l'utilisateur rentre quelque chose d'incorrect
      */
-    public static int choixMenuIntroduction() {
+    public int choixMenuIntroduction() {
         int result = 0;
-        result = ScanCLI.scanInt(sc);
+        result = ScanCLI.scanInt(scanner);
         if ((result > 7) || (result < 1)) {
-            System.out.println("Veuillez entrer un nombre correct");
             return 8;
         }
         return result;
@@ -124,9 +145,9 @@ public class CLI {
     /**
      *
      */
-    public static void afficherCompagnies() {
-        List<Company> listeCompanies = CompaniesService.INSTANCE.listCompanies();
-        PageCompanies page = new PageCompanies(listeCompanies, sc);
+    public void afficherCompagnies() {
+        List<Company> listeCompanies = companiesService.listCompanies();
+        PageCompaniesCLI page = new PageCompaniesCLI(listeCompanies, scanner);
         System.out.println("Voici la liste des compagnies ( Q to exit ): ");
         page.afficher();
     }
@@ -135,9 +156,9 @@ public class CLI {
      *
      * @throws CompaniesInexistantException erreur avec les compagnies lkors de la création de l'ordinateur
      */
-    public static void afficherOrdinateurs() {
-        List<Computer> listeOrdinateur = ComputerService.INSTANCE.listComputer();
-        PageComputer page = new PageComputer(listeOrdinateur, sc);
+    public void afficherOrdinateurs() {
+        List<Computer> listeOrdinateur = computerService.listComputer();
+        PageComputerCLI page = new PageComputerCLI(listeOrdinateur, scanner);
         System.out.println("Voici la liste des ordinateurs ( Q to exit ): ");
         page.afficher();
     }
@@ -145,15 +166,15 @@ public class CLI {
     /**
      *
      */
-    public static void ajouterOrdinateur() {
+    public void ajouterOrdinateur() {
         Computer aAjouter = new Computer();
             try {
-                aAjouter = ScanCLI.scanComputer(sc);
+                aAjouter = scannerCLI.scanComputer(scanner);
             } catch (InputMismatchException | CompaniesIdIncorrectException | IncoherentDatesException e1) {
                 logger.warn(e1.getMessage());
             }
             try {
-                ComputerService.INSTANCE.createComputer(aAjouter);
+                computerService.createComputer(aAjouter);
             } catch (ServiceException e) {
                 logger.warn(e.getMessage());
             }
@@ -162,14 +183,14 @@ public class CLI {
     /**
      *
      */
-    private static void supprimerOrdinateur() {
+    private void supprimerOrdinateur() {
         System.out.println("Donner l'Id de l'ordinateur à supprimer ( -2 pour annuler )");
         int toDelete = -1;
         while (toDelete == -1) {
-            toDelete = ScanCLI.scanInt(sc);
+            toDelete = ScanCLI.scanInt(scanner);
         }
         if (toDelete != -2) {
-            ComputerService.INSTANCE.deleteComputer(toDelete);
+            computerService.deleteComputer(toDelete);
         }
     }
 
@@ -178,17 +199,17 @@ public class CLI {
      * @throws CompaniesInexistantException erreur avec les compagnies lors de la création de l'ordinateur
      * @throws ServiceException 
      */
-    private static void afficherOrdinateur() throws ServiceException {
+    private void afficherOrdinateur() throws ServiceException {
         System.out.println("Donner l'Id de l'ordinateur à afficher ( -2 pour annuler )");
         int toDisplay = -1;
         while (toDisplay == -1) {
-            toDisplay = ScanCLI.scanInt(sc);
-            if ((toDisplay!=-2)&&(!ComputerValidator.INSTANCE.exist(toDisplay))) {
+            toDisplay = ScanCLI.scanInt(scanner);
+            if ((toDisplay!=-2)&&(!computerValidator.exist(toDisplay))) {
                 toDisplay = -1;
             }
         }
         if (toDisplay != -2) {
-            Optional<Computer> computer = ComputerService.INSTANCE.showDetails(toDisplay);
+            Optional<Computer> computer = computerService.showDetails(toDisplay);
             if (computer.isPresent()) {
                 System.out.println(computer.get());
             } else {
@@ -201,10 +222,10 @@ public class CLI {
      * @throws ServiceException 
      *
      */
-    private static void mettreAJour() {
+    private void mettreAJour() {
         Computer aAjouter = new Computer();
         try {
-            aAjouter = ScanCLI.scanComputer(sc);
+            aAjouter = scannerCLI.scanComputer(scanner);
         } catch (IncoherentDatesException e) {
             System.out.println("Les dates rentrées sont incohérentes");
         } catch (InputMismatchException e) {
@@ -215,11 +236,11 @@ public class CLI {
         System.out.println("Entrer l'Id de l'ordinateur a modifier");
         int toUpdate = -1;
         while (toUpdate == -1) {
-            toUpdate = ScanCLI.scanInt(sc);
+            toUpdate = ScanCLI.scanInt(scanner);
         }
         if (toUpdate != -2) {
             try {
-                ComputerService.INSTANCE.updateAComputer(aAjouter, toUpdate);
+                computerService.updateAComputer(aAjouter, toUpdate);
             } catch (ServiceException e) {
                 logger.warn(e.getMessage());
             }

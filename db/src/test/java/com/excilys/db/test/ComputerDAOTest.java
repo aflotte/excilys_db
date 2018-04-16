@@ -1,77 +1,111 @@
 package com.excilys.db.test;
 
-import com.excilys.db.dao.CompaniesDAO;
-import com.excilys.db.dao.ComputerDAO;
 import com.excilys.db.exception.CompaniesIdIncorrectException;
 import com.excilys.db.exception.CompaniesInexistantException;
+import com.excilys.db.exception.DAOConfigurationException;
 import com.excilys.db.exception.IncoherentDatesException;
 import com.excilys.db.model.Company;
 import com.excilys.db.model.Computer;
-import com.excilys.db.persistance.DBConnection;
+import com.excilys.db.persistance.CompaniesDAO;
+import com.excilys.db.persistance.IComputerDAO;
 
+import static org.junit.Assert.assertEquals;
+
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.ZoneId;
 import java.util.Date;
 import java.util.List;
 
+import javax.sql.DataSource;
+
+import org.hsqldb.cmdline.SqlFile;
+import org.hsqldb.cmdline.SqlToolError;
 import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import junit.framework.TestCase;
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(locations= {"/applicationContext.xml"})
+public class ComputerDAOTest {
+    @Autowired
+    CompaniesDAO companiesDAO;
+    @Autowired
+    private DataSource dataSource;
+    static org.slf4j.Logger logger = org.slf4j.LoggerFactory.getLogger(ComputerDAOTest.class);
+    @Before
+    public void init() throws SQLException, IOException, ClassNotFoundException, DAOConfigurationException, SqlToolError {
+        logger.debug("début init");
+        try (Connection connection = dataSource.getConnection();
+                java.sql.Statement statement = connection.createStatement();
+                InputStream inputStream = DataSource.class.getResourceAsStream("/TEST.sql"); ) {
+            SqlFile sqlFile = new SqlFile(new InputStreamReader(inputStream), "init", System.out, "UTF-8", false,
+                    new File("."));
+            sqlFile.setConnection(connection);
+            sqlFile.execute();
+            logger.debug("fin init");
+        } catch (SQLException e) {
+            logger.debug("problem in init", e);
+        }
+    }
 
-public class ComputerDAOTest extends TestCase {
-
-    DBConnection instance = DBConnection.getInstance();
-    ComputerDAO computer = ComputerDAO.INSTANCE;
+    @Autowired
+    IComputerDAO computer;
     SimpleDateFormat formatter = new SimpleDateFormat("yyyy/MM/dd");
 
     @After
     public void deconnection() {
-        List<Integer> testList2 = computer.getIdFromName("Test_Computer");	
+        List<Integer> testList2 = computer.getIdFromName("Test_Computer");  
         for (int i = 0; i < testList2.size(); i++) {
             computer.deleteAComputer(testList2.get(i));
         }
     }
 
     protected void tearDown() {
-        List<Integer> testList2 = computer.getIdFromName("Test_Computer");	
-        for (int i = 0; i < testList2.size(); i++) {
-            computer.deleteAComputer(testList2.get(i));
-        }
+        logger.debug("TearDown");
     }
 
-    //Uniquement avec la base initiale ( McBook en 1 )
     @Test
     public void testListComputer() throws CompaniesInexistantException, IncoherentDatesException, CompaniesIdIncorrectException {
         Computer McBook = new Computer();
-        McBook.setName("MacBook Pro 15.4 inch");
+        McBook.setName("CM-200");
         McBook.setIntroduced(null);
         McBook.setDiscontinued(null);
-        Company companie = new Company(1);
-        companie.setName("Apple Inc.");
+        Company companie = new Company(2);
+        companie.setName("Thinking Machines");
         McBook.setCompany(companie);
-        assertEquals(McBook,computer.listComputer().get(0));
+        assertEquals(McBook,computer.listComputer().get(2));
     }
 
+    
+    
     @Test
     public void testShowDetails() throws CompaniesInexistantException, IncoherentDatesException, CompaniesIdIncorrectException {
         Computer McBook = new Computer();
-        McBook.setName("MacBook Pro 15.4 inch");
+        McBook.setName("CM-200");
         McBook.setIntroduced(null);
         McBook.setDiscontinued(null);
-        Company companie = new Company(1);
-        companie.setName("Apple Inc.");
+        Company companie = new Company(2);
+        companie.setName("Thinking Machines");
         McBook.setCompany(companie);
-        assertEquals(McBook,computer.showDetails(1).get());
+        assertEquals(McBook,computer.showDetails(3).get());
     }
 
 
-
+    @Test
+    public void testShowDetailsEmpty() {
+        computer.showDetails(169819);
+    }
 
     @Test
     public void testCreateAComputerDatesNullCompanieNull() {
@@ -142,8 +176,7 @@ public class ComputerDAOTest extends TestCase {
         Company companie = new Company();
         Test.setCompany(companie);
         computer.createAComputer(Test);
-        int id = computer.getId(Test).get(0);
-        computer.updateAComputer(Test, id);
+        computer.updateAComputer(Test, 2);
     }
 
     @Test
@@ -152,13 +185,12 @@ public class ComputerDAOTest extends TestCase {
         Test.setName("Test_Computer");
         Test.setIntroduced(null);
         Test.setDiscontinued(null);
-        Test.setCompany(CompaniesDAO.INSTANCE.getCompany(1).get());
+        Test.setCompany(companiesDAO.getCompany(1).get());
         computer.createAComputer(Test);
-        int id = computer.getId(Test).get(0);
-        computer.updateAComputer(Test, id);
+        computer.updateAComputer(Test, 2);
     }
-    //TODO: corriger
-    /*
+
+    
     @Test
     public void testUpdateAComputerDateIntroNull() throws ParseException, CompaniesInexistantException, IncoherentDatesException, CompaniesIdIncorrectException {
         Computer Test = new Computer();
@@ -170,10 +202,9 @@ public class ComputerDAOTest extends TestCase {
         companie.setName("Apple Inc.");
         Test.setCompany(companie);
         computer.createAComputer(Test);
-        int id = computer.getId(Test).get(0);
-        computer.updateAComputer(Test, id);
+        computer.updateAComputer(Test, 2);
     }
-*/
+
     @Test
     public void testUpdateAComputerDateDiscNull() throws ParseException, CompaniesInexistantException, IncoherentDatesException, CompaniesIdIncorrectException {
         Computer Test = new Computer();
@@ -185,8 +216,7 @@ public class ComputerDAOTest extends TestCase {
         companie.setName("Apple Inc.");
         Test.setCompany(companie);
         computer.createAComputer(Test);
-        int id = computer.getId(Test).get(0);
-        computer.updateAComputer(Test, id);
+        computer.updateAComputer(Test, 2);
     }
 
     @Test
@@ -200,27 +230,12 @@ public class ComputerDAOTest extends TestCase {
         companie.setName("Apple Inc.");
         Test.setCompany(companie);
         computer.createAComputer(Test);
-        int id = computer.getId(Test).get(0);
-        computer.updateAComputer(Test, id);
+        computer.updateAComputer(Test, 2);
     }
 
-    //Uniquement avec la base initiale ( McBook en 1 )
-    @Test
-    public void testGetIdComputer() throws CompaniesInexistantException, IncoherentDatesException, CompaniesIdIncorrectException {
-        Computer McBook = new Computer();
-        McBook.setName("MacBook Pro 15.4 inch");
-        McBook.setIntroduced(null);
-        McBook.setDiscontinued(null);
-        Company companie = new Company(1);
-        companie.setName("Apple Inc.");
-        McBook.setCompany(companie);
-        assertEquals(new Integer(1),computer.getId(McBook).get(0));
-    }
-
-    //Uniquement avec la base initiale ( McBook en 1 )
     @Test
     public void testGetIdFromName() {
-        assertEquals(new Integer(1),computer.getIdFromName("MacBook Pro 15.4 inch").get(0));
+        assertEquals(new Integer(3),computer.getIdFromName("CM-200").get(0));
     }
 
     @Test
@@ -230,8 +245,13 @@ public class ComputerDAOTest extends TestCase {
         Test.setIntroduced(null);
         Test.setDiscontinued(null);
         computer.createAComputer(Test);
-        List<Integer> testList = computer.getIdFromName("Test_Destruction");	
+        List<Integer> testList = computer.getIdFromName("Test_Destruction");    
         computer.deleteAComputer(testList.get(0));
+    }
+    
+    @Test
+    public void testGetCount() {
+        
     }
 
 }

@@ -1,4 +1,4 @@
-package com.excilys.db.dao;
+package com.excilys.db.persistance;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -8,11 +8,16 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import javax.sql.DataSource;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.datasource.DataSourceUtils;
+import org.springframework.stereotype.Repository;
+
 import com.excilys.db.exception.CompaniesInexistantException;
 import com.excilys.db.exception.DAOAccesExeption;
 import com.excilys.db.mapper.CompaniesMapper;
 import com.excilys.db.model.Company;
-import com.excilys.db.persistance.DBConnection;
 import com.excilys.db.utils.Close;
 import com.excilys.db.utils.Debugging;
 
@@ -21,9 +26,13 @@ import com.excilys.db.utils.Debugging;
  * @author flotte
  *
  */
-public enum CompaniesDAO {
-    INSTANCE;
+@Repository("companiesDAO")
+public class CompaniesDAO {
+    @Autowired
+    private DataSource dataSource;
     static org.slf4j.Logger logger = org.slf4j.LoggerFactory.getLogger(CompaniesDAO.class);
+    @Autowired
+    private IComputerDAO computerDAO;
 
     private static final String QUERRY_LIST_COMPANIES_BY_NAME = "SELECT id FROM company WHERE name LIKE ?";
     private static final String QUERRY_LIST_COMPANIES = "SELECT name, id FROM company";
@@ -35,11 +44,15 @@ public enum CompaniesDAO {
 
 
 
-
+    /**
+     * 
+     * @param id id de la compagnie
+     * @return
+     */
     public List<Integer> computerFromCompany(int id){
         List<Integer> result = new ArrayList<>();
         ResultSet resultSet = null;
-        try (Connection conn = DBConnection.getConn();PreparedStatement prep1 = conn.prepareStatement(QUERRY_LIST_COMPUTER);){
+        try (Connection conn = DataSourceUtils.getConnection(dataSource);PreparedStatement prep1 = conn.prepareStatement(QUERRY_LIST_COMPUTER);){
             prep1.setInt(1, id);
             Debugging.requestDebug(logger, prep1.toString());
             resultSet = prep1.executeQuery();
@@ -64,7 +77,7 @@ public enum CompaniesDAO {
      */
     public boolean existCompanies(int id) {
         ResultSet resultSet = null;
-        try (Connection conn = DBConnection.getConn();PreparedStatement prep1 = conn.prepareStatement(QUERRY_LIST_COMPANIES_ID);){
+        try (Connection conn = DataSourceUtils.getConnection(dataSource);PreparedStatement prep1 = conn.prepareStatement(QUERRY_LIST_COMPANIES_ID);){
             prep1.setInt(1, id);
             Debugging.requestDebug(logger, prep1.toString());
             resultSet = prep1.executeQuery();
@@ -84,7 +97,7 @@ public enum CompaniesDAO {
     public List<Company> listCompanies() {
         ResultSet resultSet = null;
         List<Company> listResult = new ArrayList<>();
-        try (Connection conn = DBConnection.getConn();PreparedStatement prep1 = conn.prepareStatement(QUERRY_LIST_COMPANIES);){
+        try (Connection conn = DataSourceUtils.getConnection(dataSource);PreparedStatement prep1 = conn.prepareStatement(QUERRY_LIST_COMPANIES);){
             Debugging.requestDebug(logger, prep1.toString());
             resultSet = prep1.executeQuery();
             while (resultSet.next()) {
@@ -101,15 +114,18 @@ public enum CompaniesDAO {
         return listResult;
     }
 
-
+/**
+ *
+ * @param id l'id
+ */
     public void deleteCompany(int id) {
         List<Integer> computerIds = computerFromCompany(id);
-        try(   Connection conn = DBConnection.getConn();
+        try(   Connection conn = DataSourceUtils.getConnection(dataSource);
                 AutoSetAutoCommit a = new AutoSetAutoCommit(conn,false);
                 AutoRollback tm = new AutoRollback(conn);
                 PreparedStatement prep1 = conn.prepareStatement(DELETE_COMPANY);)
         {
-            ComputerDAO.INSTANCE.deleteListComputer(conn, computerIds);
+            computerDAO.deleteListComputer(conn, computerIds);
 
             prep1.setInt(1, id);
             prep1.executeUpdate();
@@ -129,12 +145,12 @@ public enum CompaniesDAO {
     public List<Company> listComputer(int offset, int limit) {
         List<Company> listResult = new ArrayList<>();
         ResultSet resultSet = null;
-        try (Connection conn = DBConnection.getConn();PreparedStatement prep1 = conn.prepareStatement(QUERRY_LIST_COMPANIES + OFFSET_LIMIT);){
+        try (Connection conn = DataSourceUtils.getConnection(dataSource);PreparedStatement prep1 = conn.prepareStatement(QUERRY_LIST_COMPANIES + OFFSET_LIMIT);){
 
             prep1.setInt(1, limit);
             prep1.setInt(2, offset);
             Debugging.requestDebug(logger,prep1.toString());
-                resultSet = prep1.executeQuery();
+            resultSet = prep1.executeQuery();
             while (resultSet.next()) {
                 Company toAdd = CompaniesMapper.computerResultToCompanies(resultSet);
                 listResult.add(toAdd);
@@ -159,7 +175,7 @@ public enum CompaniesDAO {
         if (id == null) {
             result.setId(null);
         } else {
-            try (Connection conn = DBConnection.getConn();PreparedStatement prep1 = conn.prepareStatement(QUERRY_LIST_COMPANIES_ID);){
+            try (Connection conn = DataSourceUtils.getConnection(dataSource);PreparedStatement prep1 = conn.prepareStatement(QUERRY_LIST_COMPANIES_ID);){
                 prep1.setInt(1, id);
                 Debugging.requestDebug(logger, prep1.toString());
                 resultSet = prep1.executeQuery();
@@ -184,7 +200,7 @@ public enum CompaniesDAO {
      *
      */
     public void getCount() {
-        try (Connection conn = DBConnection.getConn();PreparedStatement prep1 = conn.prepareStatement(QUERRY_COUNT);){
+        try (Connection conn = DataSourceUtils.getConnection(dataSource);PreparedStatement prep1 = conn.prepareStatement(QUERRY_COUNT);){
             Debugging.requestDebug(logger, prep1.toString());
             prep1.executeQuery();
         } catch (SQLException e) {
@@ -200,7 +216,7 @@ public enum CompaniesDAO {
     public List<Integer> getIdFromName(String name) {
         List<Integer> result = new ArrayList<>();
         ResultSet resultSet = null;
-        try (Connection conn = DBConnection.getConn();PreparedStatement ps = conn.prepareStatement(QUERRY_LIST_COMPANIES_BY_NAME);){
+        try (Connection conn = DataSourceUtils.getConnection(dataSource);PreparedStatement ps = conn.prepareStatement(QUERRY_LIST_COMPANIES_BY_NAME);){
 
             ps.setString(1, name);
             Debugging.requestDebug(logger, ps.toString());

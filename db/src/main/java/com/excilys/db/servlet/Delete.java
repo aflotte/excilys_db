@@ -2,17 +2,23 @@ package com.excilys.db.servlet;
 
 import java.io.IOException;
 
+import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.excilys.db.service.ComputerService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.context.support.SpringBeanAutowiringSupport;
+
+import com.excilys.db.service.IComputerService;
 
 /**
- * Servlet implementation class Delete
+ * Servlet implementation class Delete.
  */
+@Controller
 @WebServlet("/delete")
 public class Delete extends HttpServlet {
     private static final long serialVersionUID = 1L;
@@ -25,13 +31,25 @@ public class Delete extends HttpServlet {
         super();
     }
 
+    @Autowired
+    private IComputerService computerService;
+
+
+
+    @Override
+    public void init(ServletConfig config) throws ServletException {
+        super.init(config);
+        SpringBeanAutowiringSupport.processInjectionBasedOnServletContext(this, config.getServletContext());
+    }
+
+
     /**
      * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
      */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         org.slf4j.Logger logger = org.slf4j.LoggerFactory.getLogger(AddComputer.class);
-        if (!((request.getParameter(SELECTION) == null) || (request.getParameter(SELECTION).isEmpty()))){
+        if (!((request.getParameter(SELECTION) == null) || (request.getParameter(SELECTION).isEmpty()))) {
             String[] toDelete = (request.getParameterValues(SELECTION)[0]).split(",");
             int[] toDeleteId = new int[toDelete.length];
             for (int i = 0; i < toDelete.length; i++) {
@@ -41,7 +59,7 @@ public class Delete extends HttpServlet {
                     logger.debug(e.getMessage());
                 }
             }
-            ComputerService.INSTANCE.deleteListComputer(toDeleteId);
+            computerService.deleteListComputer(toDeleteId);
         }
         try {
             response.sendRedirect(request.getContextPath() + "/dashboard");

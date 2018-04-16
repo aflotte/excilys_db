@@ -6,7 +6,7 @@ import java.util.Scanner;
 import com.excilys.db.model.Company;
 
 
-public class PageCompanies {
+public class PageCompaniesCLI {
     List<Company> companies;
     int index;
     static final int NOMBRE_AFFICHAGE = 10;
@@ -17,7 +17,7 @@ public class PageCompanies {
      * @param list la liste a afficher
      * @param sc le scanner
      */
-    public PageCompanies(List<Company> list, Scanner sc) {
+    public PageCompaniesCLI(List<Company> list, Scanner sc) {
         companies = list;
         index = 0;
         this.sc = sc;

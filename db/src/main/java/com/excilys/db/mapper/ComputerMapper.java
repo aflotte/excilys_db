@@ -8,16 +8,27 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import com.excilys.db.dto.ComputerDTO;
 import com.excilys.db.model.Company;
 import com.excilys.db.model.Computer;
 import com.excilys.db.service.CompaniesService;
 
+@Component
 public class ComputerMapper {
+
     static org.slf4j.Logger logger = org.slf4j.LoggerFactory.getLogger(ComputerMapper.class);
 
+    @Autowired
+    CompaniesService companies;
+    
+    /**
+     *
+     */
     private ComputerMapper() {
-        
+
     }
 
     /**
@@ -44,41 +55,56 @@ public class ComputerMapper {
         return toReturn;
     }
 
+    /**
+     *
+     * @param computer l'ordinateur
+     * @return l'ordinateur DTO
+     */
     public static ComputerDTO computerToDTO(Computer computer) {
         ComputerDTO toReturn = new ComputerDTO();
         toReturn.setId(computer.getId());
         toReturn.setCompany(computer.getCompany().getName());
         toReturn.setName(computer.getName());
-        if (computer.getDiscontinued()==null) {
+        if (computer.getDiscontinued() == null) {
             toReturn.setDiscontinued("");
-        }else {
+        } else {
             toReturn.setDiscontinued(computer.getDiscontinued().toString());
         }
-        if (computer.getIntroduced()==null) {
+        if (computer.getIntroduced() == null) {
             toReturn.setIntroduced("");
-        }else {
+        } else {
             toReturn.setIntroduced(computer.getIntroduced().toString());
         }
 
         return toReturn;
     }
 
+    /**
+     *
+     * @param computer la liste des ordinateurs
+     * @return la liste des ordinateurs DTO
+     */
     public static List<ComputerDTO> computerListToComputerDTO(List<Computer> computer) {
         List<ComputerDTO> toReturn = new ArrayList<>();
-        for (int i = 0; i < computer.size(); i++  ) {
+        for (int i = 0; i < computer.size(); i++) {
             toReturn.add(computerToDTO(computer.get(i)));
         }
         return toReturn;
     }
 
-    public static Computer computerDTOToComputer(ComputerDTO computer) {
+    /**
+     *
+     * @param computer l'ordinateur DTO
+     * @return l'ordinateur
+     */
+    public Computer computerDTOToComputer(ComputerDTO computer) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         formatter = formatter.withLocale(Locale.FRANCE);
         Computer toReturn = new Computer();
         toReturn.setId(computer.getId());
         Company company = new Company();
         company.setName(computer.getCompany());
-        Integer id = CompaniesService.INSTANCE.getCompagnyId(computer.getCompany());
+        Integer id = companies.getCompagnyId(computer.getCompany());
         company.setId(id);
 
         toReturn.setCompany(company);
@@ -86,28 +112,33 @@ public class ComputerMapper {
         if (computer.getDiscontinued() != null) {
 
             try {
-                toReturn.setDiscontinued(LocalDate.parse(computer.getDiscontinued(),formatter));
-            }catch (Exception e) {
+                toReturn.setDiscontinued(LocalDate.parse(computer.getDiscontinued(), formatter));
+            } catch (Exception e) {
                 toReturn.setDiscontinued(null);
             }
-        }else {
+        } else {
             toReturn.setDiscontinued(null);
         }
         if (computer.getIntroduced() != null) {
             try {
-                toReturn.setIntroduced(LocalDate.parse(computer.getIntroduced(),formatter));
-            }catch (Exception e) {
+                toReturn.setIntroduced(LocalDate.parse(computer.getIntroduced(), formatter));
+            } catch (Exception e) {
                 toReturn.setIntroduced(null);
             }
-        }else {
+        } else {
             toReturn.setIntroduced(null);
         }
         return toReturn;
     }
 
-    public static List<Computer> computerDTOListToComputer(List<ComputerDTO> computer) {
+    /**
+     *
+     * @param computer la liste des ordinateurs DTO
+     * @return la liste des ordinateurs
+     */
+    public List<Computer> computerDTOListToComputer(List<ComputerDTO> computer) {
         List<Computer> toReturn = new ArrayList<>();
-        for (int i = 0; i < computer.size(); i++  ) {
+        for (int i = 0; i < computer.size(); i++) {
             toReturn.add(computerDTOToComputer(computer.get(i)));
         }
         return toReturn;

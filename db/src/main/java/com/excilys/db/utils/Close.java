@@ -5,22 +5,24 @@ import java.sql.SQLException;
 
 public class Close {
     static org.slf4j.Logger logger = org.slf4j.LoggerFactory.getLogger(Close.class);
-    
+
+    /**
+     *
+     */
     private Close() {
-        
+
     }
-    
-    public static void closeQuietly(ResultSet resultSet)
-    {
-      try
-      {
-        if (resultSet!= null)
-        {
+
+    /**
+     *
+     * @param resultSet le résult set à fermer
+     */
+    public static void closeQuietly(ResultSet resultSet) {
+      try {
+        if (resultSet != null) {
           resultSet.close();
         }
-      }
-      catch (SQLException e)
-      {
+      } catch (SQLException e) {
         logger.error("An error occurred closing result set.", e);
       }
     }

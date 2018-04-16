@@ -3,6 +3,7 @@ package com.excilys.db.page;
 import java.io.InputStream;
 import java.util.Properties;
 
+
 public class Page {
     InputStream input;
     Properties prop = new Properties();
@@ -35,16 +36,24 @@ public class Page {
         this.pageMax = pageMax;
     }
     protected final int pageMin;
-
+    /**
+     *
+     */
     public Page() {
         pageSize = 10;
         pageMin = 1;
     }
+    /**
+     *
+     */
     public void nextPage() {
         if (pageNumber + 1 <= pageMax) {
             pageNumber += 1;
         }
     }
+    /**
+     *
+     */
     public void previousPage() {
         if (pageNumber - 1 >= pageMin) {
             pageNumber -= 1;
