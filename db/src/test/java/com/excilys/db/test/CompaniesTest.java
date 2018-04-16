@@ -23,6 +23,14 @@ public class CompaniesTest extends TestCase {
 		comp2.setName("Name");
 		assertEquals(true,comp.equals(comp2));
 	}
+	
+	   @Test
+	    public void testEqualsFalseNull() {
+	        Company comp = new Company();
+	        comp.setName("Name");
+	        Company comp2 = null;
+	        assertEquals(false,comp.equals(comp2));
+	    }
 
 	@Test
 	public void testEqualsSame() {

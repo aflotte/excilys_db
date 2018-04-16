@@ -65,7 +65,7 @@ public class ComputerDAO implements IComputerDAO {
     /**
      *
      * @param prep1 le prepapred statement
-     * @return l'ordinateur
+     * @return l'ordinateurdoGetConnection
      * @throws SQLException l'erreur
      */
     private Optional<Computer> requestToComputer(PreparedStatement prep1) throws SQLException{
@@ -350,7 +350,6 @@ public List<Computer> listComputer(PageComputerDTO page) {
         }
         return result;
     }
-
 
     /* (non-Javadoc)
      * @see com.excilys.db.persistance.IComputerDAO#listComputerLike(int, int, java.lang.String, java.lang.String, java.lang.String)

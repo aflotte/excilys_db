@@ -71,6 +71,17 @@ public class ComputerTest extends TestCase {
         comp.setCompany(companie);
         assertEquals(" | name=Name | introduced=null | discontinued=null | companyId=Digital Equipment Corporation",comp.toString());
     }
+    
+    @Test
+    public void testToStringCompanyNull() throws IncoherentDatesException, CompaniesIdIncorrectException, CompaniesInexistantException {
+        Computer comp = new Computer();
+        comp.setName("Name");
+        comp.setIntroduced(null);
+        comp.setDiscontinued(null);
+        Company companie = null;
+        comp.setCompany(companie);
+        assertEquals(" | name=Name | introduced=null | discontinued=null | companyId=null",comp.toString());
+    }
 
     @Test
     public void testEqualsTrue() throws IncoherentDatesException, CompaniesIdIncorrectException, CompaniesInexistantException {
@@ -85,6 +96,7 @@ public class ComputerTest extends TestCase {
         comp2.setDiscontinued(null);
         comp2.setCompany(new Company(10));
         assertEquals(true,comp.equals(comp2));
+        assertTrue(comp.hashCode() == comp2.hashCode());
     }
 
     @Test
@@ -95,6 +107,7 @@ public class ComputerTest extends TestCase {
         comp.setDiscontinued(null);
         comp.setCompany(new Company(10));
         assertEquals(true,comp.equals(comp));
+        assertTrue(comp.hashCode() == comp.hashCode());
     }
 
     @SuppressWarnings("unlikely-arg-type")
@@ -107,6 +120,7 @@ public class ComputerTest extends TestCase {
         comp.setCompany(new Company(10));
         Integer comp2 = new Integer(5);
         assertEquals(false,comp.equals(comp2));
+        assertTrue(comp.hashCode() != comp2.hashCode());
     }
 
     @Test
@@ -122,38 +136,128 @@ public class ComputerTest extends TestCase {
         comp2.setDiscontinued(null);
         comp2.setCompany(new Company(10));
         assertEquals(false,comp.equals(comp2));
+        assertTrue(comp.hashCode() != comp2.hashCode());
     }
 
     @Test
     public void testEqualsFalseIntroduced() throws ParseException, IncoherentDatesException, CompaniesIdIncorrectException, CompaniesInexistantException {
         Computer comp = new Computer();
         comp.setName("Name");
-        comp.setIntroduced(null);
+        Date date = formatter.parse("1999/12/6");
+        comp.setIntroduced(date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
         comp.setDiscontinued(null);
         comp.setCompany(new Company(10));
         Computer comp2 = new Computer();
-        comp2.setName("Name2");
-        Date date = formatter.parse("1999/12/5");
-        comp2.setIntroduced(date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
+        comp2.setName("Name");
+        Date date2 = formatter.parse("1999/12/5");
+        comp2.setIntroduced(date2.toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
         comp2.setDiscontinued(null);
         comp2.setCompany(new Company(10));
         assertEquals(false,comp.equals(comp2));
+        assertTrue(comp.hashCode() != comp2.hashCode());
+    }
+    
+    @Test
+    public void testEqualsFalseDiscontinued() throws ParseException, IncoherentDatesException, CompaniesIdIncorrectException, CompaniesInexistantException {
+        Computer comp = new Computer();
+        comp.setName("Name");
+        Date date = formatter.parse("1999/12/6");
+        comp.setIntroduced(null);
+        comp.setDiscontinued(date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
+        comp.setCompany(new Company(10));
+        Computer comp2 = new Computer();
+        comp2.setName("Name");
+        Date date2 = formatter.parse("1999/12/5");
+        comp2.setIntroduced(null);
+        comp2.setDiscontinued(date2.toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
+        comp2.setCompany(new Company(10));
+        assertEquals(false,comp.equals(comp2));
+        assertTrue(comp.hashCode() != comp2.hashCode());
+    }
+    
+    @Test
+    public void testEqualsTrueIntroduced() throws ParseException, IncoherentDatesException, CompaniesIdIncorrectException, CompaniesInexistantException {
+        Computer comp = new Computer();
+        comp.setName("Name");
+        Date date = formatter.parse("1999/12/5");
+        comp.setIntroduced(date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
+        comp.setDiscontinued(null);
+        comp.setCompany(new Company(10));
+        Computer comp2 = new Computer();
+        comp2.setName("Name");
+        comp2.setIntroduced(date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
+        comp2.setDiscontinued(null);
+        comp2.setCompany(new Company(10));
+        assertEquals(true,comp.equals(comp2));
+        assertTrue(comp.hashCode() == comp2.hashCode());
+    }
+    
+    
+    @Test
+    public void testEqualsTrueDiscontinued() throws ParseException, IncoherentDatesException, CompaniesIdIncorrectException, CompaniesInexistantException {
+        Computer comp = new Computer();
+        comp.setName("Name");
+        Date date = formatter.parse("1999/12/5");
+        comp.setIntroduced(null);
+        comp.setDiscontinued(date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
+        comp.setCompany(new Company(10));
+        Computer comp2 = new Computer();
+        comp2.setName("Name");
+        comp2.setIntroduced(null);
+        comp2.setDiscontinued(date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
+        comp2.setCompany(new Company(10));
+        assertEquals(true,comp.equals(comp2));
+        assertTrue(comp.hashCode() == comp2.hashCode());
     }
 
     @Test
-    public void testEqualsFalseDiscontinued() throws ParseException, IncoherentDatesException, CompaniesIdIncorrectException, CompaniesInexistantException {
+    public void testEqualsFalseNullIntroduced() throws ParseException, IncoherentDatesException, CompaniesIdIncorrectException, CompaniesInexistantException {
         Computer comp = new Computer();
         comp.setName("Name");
         comp.setIntroduced(null);
         comp.setDiscontinued(null);
         comp.setCompany(new Company(10));
         Computer comp2 = new Computer();
-        comp2.setName("Name2");
+        comp2.setName("Name");
+        Date date = formatter.parse("1999/12/5");
+        comp2.setIntroduced(date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
+        comp2.setDiscontinued(null);
+        comp2.setCompany(new Company(10));
+        assertEquals(false,comp.equals(comp2));
+        assertTrue(comp.hashCode() != comp2.hashCode());
+    }
+    
+    
+    @Test
+    public void testEqualsFalseNullDiscontinued() throws ParseException, IncoherentDatesException, CompaniesIdIncorrectException, CompaniesInexistantException {
+        Computer comp = new Computer();
+        comp.setName("Name");
+        comp.setIntroduced(null);
+        comp.setDiscontinued(null);
+        comp.setCompany(new Company(10));
+        Computer comp2 = new Computer();
+        comp2.setName("Name");
         Date date = formatter.parse("1999/12/5");
         comp2.setIntroduced(null);
         comp2.setDiscontinued(date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
         comp2.setCompany(new Company(10));
         assertEquals(false,comp.equals(comp2));
+        assertTrue(comp.hashCode() != comp2.hashCode());
+    }
+    @Test
+    public void testEqualsTrueNullDiscontinued() throws ParseException, IncoherentDatesException, CompaniesIdIncorrectException, CompaniesInexistantException {
+        Computer comp = new Computer();
+        comp.setName("Name");
+        comp.setIntroduced(null);
+        comp.setDiscontinued(null);
+        comp.setCompany(new Company(10));
+        Computer comp2 = new Computer();
+        comp2.setName("Name");
+        comp2.setIntroduced(null);
+        comp2.setDiscontinued(null);
+        comp2.setCompany(new Company(10));
+        assertEquals(true,comp.equals(comp2));
+        assertTrue(comp.hashCode() == comp2.hashCode());
     }
 
     @Test
@@ -169,6 +273,35 @@ public class ComputerTest extends TestCase {
         comp2.setDiscontinued(null);
         comp2.setCompany(new Company(11));
         assertEquals(false,comp.equals(comp2));
+        assertTrue(comp.hashCode() != comp2.hashCode());
     }
+    
+    @Test
+    public void testEqualsTrueNullCompanyId() throws IncoherentDatesException, CompaniesIdIncorrectException, CompaniesInexistantException{
+        Computer comp = new Computer();
+        comp.setName("Name");
+        comp.setIntroduced(null);
+        comp.setDiscontinued(null);
+        comp.setCompany(null);
+        Computer comp2 = new Computer();
+        comp2.setName("Name2");
+        comp2.setIntroduced(null);
+        comp2.setDiscontinued(null);
+        comp2.setCompany(null);
+        assertEquals(false,comp.equals(comp2));
+        assertTrue(comp.hashCode() != comp2.hashCode());
+    }
+    
+    @Test
+    public void testEqualsNull() throws IncoherentDatesException, CompaniesIdIncorrectException, CompaniesInexistantException{
+        Computer comp = new Computer();
+        comp.setName("Name");
+        comp.setIntroduced(null);
+        comp.setDiscontinued(null);
+        comp.setCompany(new Company(10));
+        Computer comp2 = null;
+        assertEquals(false,comp.equals(comp2));
+    }
+    
 
 }
