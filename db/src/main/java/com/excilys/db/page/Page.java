@@ -3,7 +3,6 @@ package com.excilys.db.page;
 import java.io.InputStream;
 import java.util.Properties;
 
-import org.springframework.stereotype.Component;
 
 public class Page {
     InputStream input;

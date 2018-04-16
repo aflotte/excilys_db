@@ -51,6 +51,7 @@
 		<javaxservapi.version>3.0.1</javaxservapi.version>
 		<javaxserv.version>1.2</javaxserv.version>
 		<jacoco.version>0.8.0</jacoco.version>
+		<jcloverslf4j.version>1.7.6</jcloverslf4j.version>
 
 	</properties>
 
@@ -189,6 +190,11 @@
 			<artifactId>logback-core</artifactId>
 			<version>${logback.version}</version>
 		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>jcl-over-slf4j</artifactId>
+			<version>${jcloverslf4j.version}</version>
+		</dependency>
 
 		<dependency>
 			<groupId>jstl</groupId>
@@ -250,6 +256,12 @@
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-context</artifactId>
 			<version>${spring.version}</version>
+			<exclusions>
+				<exclusion>
+					<groupId>commons-logging</groupId>
+					<artifactId>commons-logging</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 
 		<dependency>
@@ -292,6 +304,5 @@
 			<artifactId>spring-jdbc</artifactId>
 			<version>3.0.3.RELEASE</version>
 		</dependency>
-
 	</dependencies>
 </project>

@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.stereotype.Repository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.datasource.DataSourceUtils;
 
 import com.excilys.db.exception.DAOAccesExeption;
@@ -18,6 +19,7 @@ import com.excilys.db.model.Computer;
 import com.excilys.db.page.PageComputerDTO;
 
 import java.sql.Statement;
+import javax.sql.DataSource;
 import com.excilys.db.utils.Debugging;
 
 /**
@@ -84,7 +86,7 @@ public class ComputerDAO implements IComputerDAO {
     @Override
     public List<Computer> listComputer() {
         List<Computer> listResult;
-        try (Connection conn = DBConnection.getConn();PreparedStatement prep1 = conn.prepareStatement(QUERRY_LIST_COMPUTERS);){
+        try (Connection conn = DataSourceUtils.getConnection(dataSource);PreparedStatement prep1 = conn.prepareStatement(QUERRY_LIST_COMPUTERS);){
             
             listResult = requestToListComputer(prep1);
         } catch (SQLException e) {
@@ -101,7 +103,7 @@ public class ComputerDAO implements IComputerDAO {
     @Override
     public List<Computer> listComputer(int offset, int limit,String sortBy, String orderBy ) {
         List<Computer> listResult;
-        try (Connection conn = DBConnection.getConn();PreparedStatement prep1 = conn.prepareStatement(QUERRY_LIST_COMPUTERS + String.format(ORDER_BY, sortBy, orderBy)  + OFFSET_LIMIT );){
+        try (Connection conn = DataSourceUtils.getConnection(dataSource);PreparedStatement prep1 = conn.prepareStatement(QUERRY_LIST_COMPUTERS + String.format(ORDER_BY, sortBy, orderBy)  + OFFSET_LIMIT );){
             prep1.setInt(1, limit);
             prep1.setInt(2, offset);
             listResult = requestToListComputer(prep1);
@@ -121,16 +123,7 @@ public List<Computer> listComputer(PageComputerDTO page) {
        int limit = page.getPageSize();
        String sortBy = page.getSortBy();
        String orderBy = page.getOrderBy();
-       List<Computer> listResult;
-       try (Connection conn = DBConnection.getConn();PreparedStatement prep1 = conn.prepareStatement(QUERRY_LIST_COMPUTERS + String.format(ORDER_BY, sortBy, orderBy)  + OFFSET_LIMIT );){
-           prep1.setInt(1, limit);
-           prep1.setInt(2, offset);
-           listResult = requestToListComputer(prep1);
-       } catch (SQLException e) {
-           logger.error(ERROR);
-           throw new DAOAccesExeption();
-       }
-       return listResult;
+       return listComputer(offset,limit,sortBy,orderBy);
    }
 
     /* (non-Javadoc)
@@ -139,7 +132,7 @@ public List<Computer> listComputer(PageComputerDTO page) {
     @Override
     public Optional<Computer> showDetails(int id) {
         Optional<Computer> result = null;
-        try (Connection conn = DBConnection.getConn();PreparedStatement prep1 = conn.prepareStatement(QUERRY_LIST_COMPUTERS_ID);){
+        try (Connection conn = DataSourceUtils.getConnection(dataSource);PreparedStatement prep1 = conn.prepareStatement(QUERRY_LIST_COMPUTERS_ID);){
             prep1.setInt(1, id);
             result = requestToComputer(prep1);
 
@@ -157,7 +150,7 @@ public List<Computer> listComputer(PageComputerDTO page) {
     public void updateAComputer(Computer computer, int id) {
         LocalDate dateIntroduced = computer.getIntroduced();
         LocalDate dateDiscontinued = computer.getDiscontinued();
-        try (Connection conn = DBConnection.getConn();PreparedStatement ps = conn.prepareStatement(QUERRY_UPDATE_COMPUTER);){
+        try (Connection conn = DataSourceUtils.getConnection(dataSource);PreparedStatement ps = conn.prepareStatement(QUERRY_UPDATE_COMPUTER);){
             ps.setString(1, computer.getName());
             if (dateIntroduced == null) {
                 ps.setNString(2, null);
@@ -190,7 +183,8 @@ public List<Computer> listComputer(PageComputerDTO page) {
     @Override
     public int createAComputer(Computer computer) {
 
-        try (Connection conn = DBConnection.getConn();PreparedStatement ps = conn.prepareStatement(QUERRY_CREATE_COMPUTER, Statement.RETURN_GENERATED_KEYS);){
+        try (Connection conn = DataSourceUtils.getConnection(dataSource);){
+            PreparedStatement ps = conn.prepareStatement(QUERRY_CREATE_COMPUTER, Statement.RETURN_GENERATED_KEYS);
             fillGetIdStatement(ps, computer);
             Debugging.requestDebug(logger, ps.toString());
             ps.executeUpdate();
@@ -249,7 +243,7 @@ public List<Computer> listComputer(PageComputerDTO page) {
     @Override
     public List<Integer> getIdFromName(String name) {
         List<Integer> result = new ArrayList<>();
-        try (Connection conn = DBConnection.getConn();PreparedStatement ps = conn.prepareStatement(QUERRY_LIST_COMPUTER_BY_NAME);){
+        try (Connection conn = DataSourceUtils.getConnection(dataSource);PreparedStatement ps = conn.prepareStatement(QUERRY_LIST_COMPUTER_BY_NAME);){
             ps.setString(1, name);
             Debugging.requestDebug(logger, ps.toString());
             try (ResultSet resultSet = ps.executeQuery();){
@@ -269,7 +263,7 @@ public List<Computer> listComputer(PageComputerDTO page) {
      */
     @Override
     public void deleteAComputer(int id) {
-        try (Connection conn = DBConnection.getConn();PreparedStatement prep1 = conn.prepareStatement(QUERRY_DELETE_COMPUTER);){
+        try (Connection conn = DataSourceUtils.getConnection(dataSource);PreparedStatement prep1 = conn.prepareStatement(QUERRY_DELETE_COMPUTER);){
             prep1.setInt(1, id);
             Debugging.requestDebug(logger, prep1.toString());
             prep1.executeUpdate();
@@ -289,7 +283,7 @@ public List<Computer> listComputer(PageComputerDTO page) {
         for (int i=0;i < ids.length;i++) {
             listId.add(ids[i]);
         }
-        try(   Connection conn = DBConnection.getConn();
+        try(   Connection conn = DataSourceUtils.getConnection(dataSource);
                 AutoSetAutoCommit a = new AutoSetAutoCommit(conn,false);
                 AutoRollback tm = new AutoRollback(conn)) 
         {
@@ -322,7 +316,7 @@ public List<Computer> listComputer(PageComputerDTO page) {
     @Override
     public int getCount() {
         int result = 0;
-        try (Connection conn = DBConnection.getConn();PreparedStatement prep1 = conn.prepareStatement(QUERRY_COUNT);){
+        try (Connection conn = DataSourceUtils.getConnection(dataSource);PreparedStatement prep1 = conn.prepareStatement(QUERRY_COUNT);){
 
             Debugging.requestDebug(logger, prep1.toString());
             try (ResultSet resultSet = prep1.executeQuery();){
@@ -343,7 +337,7 @@ public List<Computer> listComputer(PageComputerDTO page) {
     @Override
     public int getCount(String search) {
         int result = 0;
-        try (Connection conn = DBConnection.getConn();PreparedStatement prep1 = conn.prepareStatement(QUERRY_COUNT + String.format(LIKE, search,search));){
+        try (Connection conn = DataSourceUtils.getConnection(dataSource);PreparedStatement prep1 = conn.prepareStatement(QUERRY_COUNT + String.format(LIKE, search,search));){
             Debugging.requestDebug(logger, prep1.toString());
             try (ResultSet resultSet = prep1.executeQuery();){
                 if (resultSet.next()) {
@@ -364,7 +358,7 @@ public List<Computer> listComputer(PageComputerDTO page) {
     @Override
     public List<Computer> listComputerLike(int offset, int limit, String name, String sortBy, String orderBy) {
         List<Computer> listResult = new ArrayList<>();
-        try (Connection conn = DBConnection.getConn(); PreparedStatement prep1 = conn.prepareStatement(QUERRY_LIST_COMPUTERS + String.format(LIKE, name, name) + String.format(ORDER_BY, sortBy, orderBy) + OFFSET_LIMIT);) {
+        try (Connection conn = DataSourceUtils.getConnection(dataSource); PreparedStatement prep1 = conn.prepareStatement(QUERRY_LIST_COMPUTERS + String.format(LIKE, name, name) + String.format(ORDER_BY, sortBy, orderBy) + OFFSET_LIMIT);) {
             prep1.setInt(1, limit);
             prep1.setInt(2, offset);
             Debugging.requestDebug(logger, prep1.toString());
@@ -379,6 +373,16 @@ public List<Computer> listComputer(PageComputerDTO page) {
             throw new DAOAccesExeption();
         }
         return listResult;
+    }
+
+    @Override
+    public List<Computer> listComputerLike(PageComputerDTO page) {
+        int offset = (page.getPageNumber() - 1) * page.getPageSize();
+        int limit = page.getPageSize();
+        String name = page.getSearch();
+        String sortBy = page.getSortBy();
+        String orderBy = page.getOrderBy();
+        return listComputerLike(offset, limit, name, sortBy, orderBy);
     }
 
 }

@@ -7,7 +7,6 @@ import com.excilys.db.exception.IncoherentDatesException;
 import com.excilys.db.model.Company;
 import com.excilys.db.model.Computer;
 import com.excilys.db.persistance.CompaniesDAO;
-import com.excilys.db.persistance.DBConnection;
 import com.excilys.db.persistance.IComputerDAO;
 
 import static org.junit.Assert.assertEquals;
@@ -24,14 +23,15 @@ import java.time.ZoneId;
 import java.util.Date;
 import java.util.List;
 
+import javax.sql.DataSource;
+
 import org.hsqldb.cmdline.SqlFile;
 import org.hsqldb.cmdline.SqlToolError;
 import org.junit.After;
-import org.junit.BeforeClass;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
@@ -40,13 +40,15 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 public class ComputerDAOTest {
     @Autowired
     CompaniesDAO companiesDAO;
+    @Autowired
+    private DataSource dataSource;
     static org.slf4j.Logger logger = org.slf4j.LoggerFactory.getLogger(ComputerDAOTest.class);
-    @BeforeClass
-    public static void init() throws SQLException, IOException, ClassNotFoundException, DAOConfigurationException, SqlToolError {
+    @Before
+    public void init() throws SQLException, IOException, ClassNotFoundException, DAOConfigurationException, SqlToolError {
         logger.debug("début init");
-        try (Connection connection = DBConnection.getConn();
+        try (Connection connection = dataSource.getConnection();
                 java.sql.Statement statement = connection.createStatement();
-                InputStream inputStream = DBConnection.class.getResourceAsStream("/TEST.sql"); ) {
+                InputStream inputStream = DataSource.class.getResourceAsStream("/TEST.sql"); ) {
             SqlFile sqlFile = new SqlFile(new InputStreamReader(inputStream), "init", System.out, "UTF-8", false,
                     new File("."));
             sqlFile.setConnection(connection);
@@ -57,7 +59,6 @@ public class ComputerDAOTest {
         }
     }
 
-    DBConnection instance = DBConnection.getInstance();
     @Autowired
     IComputerDAO computer;
     SimpleDateFormat formatter = new SimpleDateFormat("yyyy/MM/dd");
@@ -83,7 +84,7 @@ public class ComputerDAOTest {
         Company companie = new Company(2);
         companie.setName("Thinking Machines");
         McBook.setCompany(companie);
-        assertEquals(McBook,computer.listComputer().get(1));
+        assertEquals(McBook,computer.listComputer().get(2));
     }
 
     

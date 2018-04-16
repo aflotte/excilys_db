@@ -97,4 +97,5 @@ public interface IComputerDAO {
 
     List<Computer> listComputerLike(int offset, int limit, String name, String sortBy, String orderBy);
 
+    List<Computer> listComputerLike(PageComputerDTO page);
 }

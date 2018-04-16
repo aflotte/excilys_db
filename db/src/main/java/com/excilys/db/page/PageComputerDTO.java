@@ -11,8 +11,6 @@ import com.excilys.db.mapper.ComputerMapper;
 import com.excilys.db.service.IComputerService;
 import com.excilys.db.utils.Debugging;
 
-//TODO :remplacer les fonctions en mettant page en argument
-
 @Component
 public class PageComputerDTO extends Page implements IPageComputerDTO {
     static org.slf4j.Logger logger = org.slf4j.LoggerFactory.getLogger(PageComputerDTO.class);
@@ -21,6 +19,10 @@ public class PageComputerDTO extends Page implements IPageComputerDTO {
     private String orderBy = "asc";
     @Autowired
     IComputerService computerService;
+    
+    public String getSearch() {
+        return search;
+    }
 
     /* (non-Javadoc)
      * @see com.excilys.db.page.IPageComputerDTO#getOrderBy()

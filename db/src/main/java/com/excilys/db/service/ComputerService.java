@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.excilys.db.exception.CompaniesIdIncorrectException;
+import com.excilys.db.exception.ComputerNameStrangeException;
 import com.excilys.db.exception.DAOAccesExeption;
 import com.excilys.db.exception.IncoherentDatesException;
 import com.excilys.db.exception.ServiceException;
@@ -21,6 +22,8 @@ public class ComputerService implements IComputerService {
     static org.slf4j.Logger logger = org.slf4j.LoggerFactory.getLogger(ComputerService.class);
     @Autowired
     private IComputerDAO computer;
+    @Autowired
+    private ComputerValidator computerValidator;
 
     /* (non-Javadoc)
      * @see com.excilys.db.service.IComputerService#listComputer()
@@ -61,10 +64,10 @@ public class ComputerService implements IComputerService {
     @Override
     public int createComputer(Computer aAjouter) throws ServiceException {
         try {
-            if (ComputerValidator.INSTANCE.validate(aAjouter)) {
+            if (computerValidator.validate(aAjouter)) {
                 return computer.createAComputer(aAjouter);
             }
-        } catch (IncoherentDatesException | CompaniesIdIncorrectException | DAOAccesExeption | ValidatorException e) {
+        } catch (IncoherentDatesException | CompaniesIdIncorrectException | DAOAccesExeption | ValidatorException | ComputerNameStrangeException e) {
             logger.warn(e.getMessage());
             throw new ServiceException();
         }
@@ -98,10 +101,10 @@ public class ComputerService implements IComputerService {
     @Override
     public void updateAComputer(Computer aAjouter, int toUpdate) throws ServiceException {
         try {
-            if (ComputerValidator.INSTANCE.validate(aAjouter)) {
+            if (computerValidator.validate(aAjouter)) {
                 computer.updateAComputer(aAjouter, toUpdate);
             }
-        } catch (IncoherentDatesException | CompaniesIdIncorrectException | DAOAccesExeption | ValidatorException e) {
+        } catch (IncoherentDatesException | CompaniesIdIncorrectException | DAOAccesExeption | ValidatorException | ComputerNameStrangeException e) {
             logger.warn(e.getMessage());
             throw new ServiceException();
         }

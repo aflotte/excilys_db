@@ -16,6 +16,8 @@ import com.excilys.db.validator.CompaniesValidator;
 public class CompaniesService implements ICompaniesService {
     @Autowired
     private CompaniesDAO companies;
+    @Autowired
+    private CompaniesValidator companiesValidator;
 
     /* (non-Javadoc)
      * @see com.excilys.db.service.ICompaniesService#listCompanies()
@@ -47,7 +49,7 @@ public class CompaniesService implements ICompaniesService {
 
     @Override
     public void destroy(int id) throws ValidatorException {
-        CompaniesValidator.INSTANCE.exist(id);
+        companiesValidator.exist(id);
         companies.deleteCompany(id);
     }
 }

@@ -8,7 +8,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import javax.sql.DataSource;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.datasource.DataSourceUtils;
 import org.springframework.stereotype.Repository;
 
 import com.excilys.db.exception.CompaniesInexistantException;
@@ -25,7 +28,8 @@ import com.excilys.db.utils.Debugging;
  */
 @Repository("companiesDAO")
 public class CompaniesDAO {
-    
+    @Autowired
+    private DataSource dataSource;
     static org.slf4j.Logger logger = org.slf4j.LoggerFactory.getLogger(CompaniesDAO.class);
     @Autowired
     private IComputerDAO computerDAO;
@@ -48,7 +52,7 @@ public class CompaniesDAO {
     public List<Integer> computerFromCompany(int id){
         List<Integer> result = new ArrayList<>();
         ResultSet resultSet = null;
-        try (Connection conn = DBConnection.getConn();PreparedStatement prep1 = conn.prepareStatement(QUERRY_LIST_COMPUTER);){
+        try (Connection conn = DataSourceUtils.getConnection(dataSource);PreparedStatement prep1 = conn.prepareStatement(QUERRY_LIST_COMPUTER);){
             prep1.setInt(1, id);
             Debugging.requestDebug(logger, prep1.toString());
             resultSet = prep1.executeQuery();
@@ -73,7 +77,7 @@ public class CompaniesDAO {
      */
     public boolean existCompanies(int id) {
         ResultSet resultSet = null;
-        try (Connection conn = DBConnection.getConn();PreparedStatement prep1 = conn.prepareStatement(QUERRY_LIST_COMPANIES_ID);){
+        try (Connection conn = DataSourceUtils.getConnection(dataSource);PreparedStatement prep1 = conn.prepareStatement(QUERRY_LIST_COMPANIES_ID);){
             prep1.setInt(1, id);
             Debugging.requestDebug(logger, prep1.toString());
             resultSet = prep1.executeQuery();
@@ -93,7 +97,7 @@ public class CompaniesDAO {
     public List<Company> listCompanies() {
         ResultSet resultSet = null;
         List<Company> listResult = new ArrayList<>();
-        try (Connection conn = DBConnection.getConn();PreparedStatement prep1 = conn.prepareStatement(QUERRY_LIST_COMPANIES);){
+        try (Connection conn = DataSourceUtils.getConnection(dataSource);PreparedStatement prep1 = conn.prepareStatement(QUERRY_LIST_COMPANIES);){
             Debugging.requestDebug(logger, prep1.toString());
             resultSet = prep1.executeQuery();
             while (resultSet.next()) {
@@ -116,7 +120,7 @@ public class CompaniesDAO {
  */
     public void deleteCompany(int id) {
         List<Integer> computerIds = computerFromCompany(id);
-        try(   Connection conn = DBConnection.getConn();
+        try(   Connection conn = DataSourceUtils.getConnection(dataSource);
                 AutoSetAutoCommit a = new AutoSetAutoCommit(conn,false);
                 AutoRollback tm = new AutoRollback(conn);
                 PreparedStatement prep1 = conn.prepareStatement(DELETE_COMPANY);)
@@ -141,7 +145,7 @@ public class CompaniesDAO {
     public List<Company> listComputer(int offset, int limit) {
         List<Company> listResult = new ArrayList<>();
         ResultSet resultSet = null;
-        try (Connection conn = DBConnection.getConn();PreparedStatement prep1 = conn.prepareStatement(QUERRY_LIST_COMPANIES + OFFSET_LIMIT);){
+        try (Connection conn = DataSourceUtils.getConnection(dataSource);PreparedStatement prep1 = conn.prepareStatement(QUERRY_LIST_COMPANIES + OFFSET_LIMIT);){
 
             prep1.setInt(1, limit);
             prep1.setInt(2, offset);
@@ -171,7 +175,7 @@ public class CompaniesDAO {
         if (id == null) {
             result.setId(null);
         } else {
-            try (Connection conn = DBConnection.getConn();PreparedStatement prep1 = conn.prepareStatement(QUERRY_LIST_COMPANIES_ID);){
+            try (Connection conn = DataSourceUtils.getConnection(dataSource);PreparedStatement prep1 = conn.prepareStatement(QUERRY_LIST_COMPANIES_ID);){
                 prep1.setInt(1, id);
                 Debugging.requestDebug(logger, prep1.toString());
                 resultSet = prep1.executeQuery();
@@ -196,7 +200,7 @@ public class CompaniesDAO {
      *
      */
     public void getCount() {
-        try (Connection conn = DBConnection.getConn();PreparedStatement prep1 = conn.prepareStatement(QUERRY_COUNT);){
+        try (Connection conn = DataSourceUtils.getConnection(dataSource);PreparedStatement prep1 = conn.prepareStatement(QUERRY_COUNT);){
             Debugging.requestDebug(logger, prep1.toString());
             prep1.executeQuery();
         } catch (SQLException e) {
@@ -212,7 +216,7 @@ public class CompaniesDAO {
     public List<Integer> getIdFromName(String name) {
         List<Integer> result = new ArrayList<>();
         ResultSet resultSet = null;
-        try (Connection conn = DBConnection.getConn();PreparedStatement ps = conn.prepareStatement(QUERRY_LIST_COMPANIES_BY_NAME);){
+        try (Connection conn = DataSourceUtils.getConnection(dataSource);PreparedStatement ps = conn.prepareStatement(QUERRY_LIST_COMPANIES_BY_NAME);){
 
             ps.setString(1, name);
             Debugging.requestDebug(logger, ps.toString());

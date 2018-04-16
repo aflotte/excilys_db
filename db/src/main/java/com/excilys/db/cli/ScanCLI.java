@@ -8,10 +8,12 @@ import java.util.Date;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
-
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import com.excilys.db.exception.CompaniesIdIncorrectException;
 import com.excilys.db.exception.CompaniesInexistantException;
+import com.excilys.db.exception.ComputerNameStrangeException;
 import com.excilys.db.exception.IncoherentDatesException;
 import com.excilys.db.exception.ValidatorException;
 import com.excilys.db.model.Company;
@@ -23,7 +25,10 @@ import com.excilys.db.validator.ComputerValidator;
  * @author flotte
  *
  */
+@Component
 public class ScanCLI {
+    @Autowired
+    private ComputerValidator computerValidator;
 
     private ScanCLI() {
         
@@ -53,7 +58,7 @@ public class ScanCLI {
      * @throws IncoherentDatesException les dates sont incohérentes
      * @throws CompaniesInexistantException une erreur est survenue avec la compagnie
      */
-    public static Computer scanComputer(Scanner sc) throws CompaniesIdIncorrectException, IncoherentDatesException {
+    public Computer scanComputer(Scanner sc) throws CompaniesIdIncorrectException, IncoherentDatesException {
         Computer aRetourner = new Computer();
         System.out.println("Entrer le nom de l'ordinateur : ");
         aRetourner.setName(sc.next());
@@ -70,8 +75,8 @@ public class ScanCLI {
             aRetourner.setCompany(new Company(Integer.valueOf(idCompanie)));
         }
         try {
-            ComputerValidator.INSTANCE.validate(aRetourner);
-        } catch (ValidatorException e) {
+            computerValidator.validate(aRetourner);
+        } catch (ValidatorException | ComputerNameStrangeException e) {
             System.out.println("Erreur lors de la validation de l'ordinateur");
         }
         return aRetourner;

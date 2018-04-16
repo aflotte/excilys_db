@@ -39,7 +39,8 @@ public class EditComputer extends HttpServlet {
     public EditComputer() {
         super();
     }
-
+    @Autowired
+    private ComputerValidator computerValidator;
     @Autowired
     private ICompaniesService companiesService;
     @Autowired
@@ -98,7 +99,7 @@ public class EditComputer extends HttpServlet {
      */
     private boolean testComputerNotExist(HttpServletRequest request, HttpServletResponse response, int id) {
         org.slf4j.Logger logger = org.slf4j.LoggerFactory.getLogger(EditComputer.class);
-        if (!ComputerValidator.INSTANCE.exist(id)) {
+        if (!computerValidator.exist(id)) {
             RequestDispatcher rd =
                     request.getRequestDispatcher("/WEB-INF/404.jsp");
             try {

@@ -10,8 +10,11 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 
+import javax.sql.DataSource;
+
 import org.hsqldb.cmdline.SqlFile;
 import org.hsqldb.cmdline.SqlToolError;
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -22,7 +25,6 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import com.excilys.db.exception.DAOConfigurationException;
 import com.excilys.db.model.Company;
 import com.excilys.db.persistance.CompaniesDAO;
-import com.excilys.db.persistance.DBConnection;
 import com.excilys.db.persistance.IComputerDAO;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -30,13 +32,15 @@ import com.excilys.db.persistance.IComputerDAO;
 public class CompaniesDAOTest {
     @Autowired
     CompaniesDAO companiesDAO;
+    @Autowired
+    private DataSource dataSource;
     static org.slf4j.Logger logger = org.slf4j.LoggerFactory.getLogger(CompaniesDAOTest.class);
-    @BeforeClass
-    public static void init() throws SQLException, IOException, ClassNotFoundException, DAOConfigurationException, SqlToolError {
+    @Before
+    public void init() throws SQLException, IOException, ClassNotFoundException, DAOConfigurationException, SqlToolError {
         logger.debug("début init");
-        try (Connection connection = DBConnection.getConn();
+        try (Connection connection = dataSource.getConnection();
                 java.sql.Statement statement = connection.createStatement();
-                InputStream inputStream = DBConnection.class.getResourceAsStream("/TEST.sql"); ) {
+                InputStream inputStream = DataSource.class.getResourceAsStream("/TEST.sql"); ) {
             SqlFile sqlFile = new SqlFile(new InputStreamReader(inputStream), "init", System.out, "UTF-8", false,
                     new File("."));
             sqlFile.setConnection(connection);
@@ -47,7 +51,6 @@ public class CompaniesDAOTest {
         }
     }
 
-    DBConnection instance = DBConnection.getInstance();
     @Autowired
     IComputerDAO computer;
     SimpleDateFormat formatter = new SimpleDateFormat("yyyy/MM/dd");

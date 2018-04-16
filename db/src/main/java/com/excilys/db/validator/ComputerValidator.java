@@ -5,18 +5,27 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.util.regex.Pattern;
+
+import javax.sql.DataSource;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.datasource.DataSourceUtils;
+import org.springframework.stereotype.Component;
 
 import com.excilys.db.exception.CompaniesIdIncorrectException;
+import com.excilys.db.exception.ComputerNameStrangeException;
 import com.excilys.db.exception.IncoherentDatesException;
 import com.excilys.db.exception.ValidatorException;
 import com.excilys.db.model.Computer;
-import com.excilys.db.persistance.DBConnection;
 
-public enum ComputerValidator {
-    INSTANCE;
+@Component
+public class ComputerValidator {
+    @Autowired
+    private DataSource dataSource;
+    @Autowired
+    private CompaniesValidator companiesValidator;
     static org.slf4j.Logger logger = org.slf4j.LoggerFactory.getLogger(ComputerValidator.class);
-    //TODO:check les formats des données
-
 
     /**
      *
@@ -25,7 +34,7 @@ public enum ComputerValidator {
      */
     public boolean exist(int id) {
         String querry = "SELECT name FROM computer WHERE id = ?";
-        try (Connection conn = DBConnection.getConn(); PreparedStatement prep1 = conn.prepareStatement(querry);) {
+        try (Connection conn = DataSourceUtils.getConnection(dataSource); PreparedStatement prep1 = conn.prepareStatement(querry);) {
             prep1.setInt(1, id);
             try (ResultSet resultSet = prep1.executeQuery();) {
                 return resultSet.next();
@@ -52,12 +61,12 @@ public enum ComputerValidator {
      * @param computer dont on test l'id compagnie
      * @return si l'id de la compagnie est correct
      */
-    public static boolean testIdCompany(Computer computer) {
+    public boolean testIdCompany(Computer computer) {
         if (computer.getCompany().getId() == null) {
             return true;
         }
         String querry = "SELECT name FROM company WHERE id = " + computer.getCompany().getId();
-        try (Connection conn = DBConnection.getConn(); PreparedStatement prep1 = conn.prepareStatement(querry);) {
+        try (Connection conn = DataSourceUtils.getConnection(dataSource); PreparedStatement prep1 = conn.prepareStatement(querry);) {
             try (ResultSet resultSet = prep1.executeQuery();) {
                 return resultSet.next();
             }
@@ -65,6 +74,14 @@ public enum ComputerValidator {
             logger.warn(e.getMessage());
         }
         return false;
+    }
+    
+    public boolean checkName(String name) {
+        if (name == null) {
+            return false;
+        }
+        final Pattern pattern = Pattern.compile("^[\\wÀ-ÿ]+[\\wÀ-ÿ_\\-'\\+\\*. ]+$");
+        return pattern.matcher(name).matches();
     }
 
     /**
@@ -74,13 +91,17 @@ public enum ComputerValidator {
      * @throws IncoherentDatesException error with dates
      * @throws CompaniesIdIncorrectException error with companies
      * @throws ValidatorException exception levé par le validateur
+     * @throws ComputerNameStrangeException 
      */
-    public boolean validate(Computer computer) throws IncoherentDatesException, CompaniesIdIncorrectException, ValidatorException {
+    public boolean validate(Computer computer) throws IncoherentDatesException, CompaniesIdIncorrectException, ValidatorException, ComputerNameStrangeException {
         if (testDate(computer)) {
             throw new IncoherentDatesException();
         }
-        if (!CompaniesValidator.INSTANCE.check(computer.getCompany())) {
+        if (!companiesValidator.check(computer.getCompany())) {
             throw new CompaniesIdIncorrectException();
+        }
+        if (!checkName(computer.getName())) {
+            throw new ComputerNameStrangeException();
         }
         return true;
     }
