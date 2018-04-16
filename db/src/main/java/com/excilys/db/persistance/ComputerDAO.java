@@ -1,6 +1,7 @@
 package com.excilys.db.persistance;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -11,10 +12,16 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Repository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.datasource.DataSourceUtils;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 
 import com.excilys.db.exception.DAOAccesExeption;
 import com.excilys.db.mapper.ComputerMapper;
+import com.excilys.db.mapper.RowMapperComputer;
 import com.excilys.db.model.Computer;
 import com.excilys.db.page.PageComputerDTO;
 
@@ -30,70 +37,29 @@ import com.excilys.db.utils.Debugging;
 public class ComputerDAO implements IComputerDAO {
     @Autowired
     private DataSource dataSource;
+    @Autowired
+    private RowMapperComputer mapperComputer;
     org.slf4j.Logger logger = org.slf4j.LoggerFactory.getLogger(ComputerDAO.class);
     private static final String ERROR = "Erreur dans l'accès des données";
 
     private static final String QUERRY_LIST_COMPUTERS = "SELECT computer.name, computer.introduced, computer.discontinued, company.id, computer.id, company.name FROM computer LEFT JOIN company ON computer.company_id = company.id";
-    private static final String QUERRY_LIST_COMPUTERS_ID = "SELECT computer.name, introduced, discontinued, company.id, computer.id, company.name FROM computer LEFT JOIN company ON computer.company_id = company.id WHERE computer.id = ? ";
-    private static final String QUERRY_UPDATE_COMPUTER = "UPDATE computer SET name = ?, introduced = ?, discontinued = ?, company_id = ? WHERE id = ? ";
-    private static final String QUERRY_CREATE_COMPUTER = "INSERT INTO computer(name,introduced,discontinued,company_id) VALUES (?,?,?,?)";
-    private static final String QUERRY_LIST_COMPUTER_BY_NAME = "SELECT id FROM computer WHERE name = ? ";
+    private static final String QUERRY_LIST_COMPUTERS_ID = "SELECT computer.name, introduced, discontinued, company.id, computer.id, company.name FROM computer LEFT JOIN company ON computer.company_id = company.id WHERE computer.id = %d ";
+    private static final String QUERRY_UPDATE_COMPUTER = "UPDATE computer SET name = :name , introduced = :introduced , discontinued = :discontinued , company_id = :companyId WHERE id = :id ";
+    private static final String QUERRY_CREATE_COMPUTER = "INSERT INTO computer(name,introduced,discontinued,company_id) VALUES (:name , :introduced , :discontinued , :companyId )";
+    private static final String QUERRY_LIST_COMPUTER_BY_NAME = "SELECT computer.id FROM computer WHERE name = ? ";
     private static final String QUERRY_DELETE_COMPUTER = "DELETE FROM computer WHERE id = ? ";
-    private static final String OFFSET_LIMIT = " LIMIT ? OFFSET ?";
+    private static final String OFFSET_LIMIT = " LIMIT %d OFFSET %d";
     private static final String ORDER_BY = " ORDER BY %s %s ";
     private static final String QUERRY_COUNT = "SELECT COUNT(*) FROM computer LEFT JOIN company ON computer.company_id = company.id";
     private static final String LIKE = " WHERE computer.name LIKE \'%%%s%%\' or company.name LIKE \'%%%s%%\'";
-
-    /**
-     *
-     * @param prep1 le prepared statement
-     * @return la liste d'ordinateur
-     * @throws SQLException l'erreur
-     */
-    private List<Computer> requestToListComputer(PreparedStatement prep1) throws SQLException {
-        List<Computer> listResult = new ArrayList<>();
-        Debugging.requestDebug(logger, prep1.toString());
-        try (ResultSet resultSet = prep1.executeQuery();){
-            while (resultSet.next()) {
-                Computer toAdd = ComputerMapper.resultToComputer(resultSet);
-                listResult.add(toAdd);
-            }
-        }
-        return listResult;
-    }
-
-    /**
-     *
-     * @param prep1 le prepapred statement
-     * @return l'ordinateurdoGetConnection
-     * @throws SQLException l'erreur
-     */
-    private Optional<Computer> requestToComputer(PreparedStatement prep1) throws SQLException{
-        Debugging.requestDebug(logger, prep1.toString());
-        Computer result = null;
-        try (ResultSet resultSet = prep1.executeQuery();){
-            if (resultSet.next()) {
-                result = ComputerMapper.resultToComputer(resultSet);
-            }
-        }
-
-        return Optional.ofNullable(result);
-    }
 
     /* (non-Javadoc)
      * @see com.excilys.db.persistance.IComputerDAO#listComputer()
      */
     @Override
     public List<Computer> listComputer() {
-        List<Computer> listResult;
-        try (Connection conn = DataSourceUtils.getConnection(dataSource);PreparedStatement prep1 = conn.prepareStatement(QUERRY_LIST_COMPUTERS);){
-            
-            listResult = requestToListComputer(prep1);
-        } catch (SQLException e) {
-            logger.error(ERROR);
-            throw new DAOAccesExeption();
-        }
-        return listResult;
+        JdbcTemplate vJdbcTemplate = new JdbcTemplate(dataSource);
+        return vJdbcTemplate.query(QUERRY_LIST_COMPUTERS,mapperComputer);
     }
 
 
@@ -102,45 +68,37 @@ public class ComputerDAO implements IComputerDAO {
      */
     @Override
     public List<Computer> listComputer(int offset, int limit,String sortBy, String orderBy ) {
-        List<Computer> listResult;
-        try (Connection conn = DataSourceUtils.getConnection(dataSource);PreparedStatement prep1 = conn.prepareStatement(QUERRY_LIST_COMPUTERS + String.format(ORDER_BY, sortBy, orderBy)  + OFFSET_LIMIT );){
-            prep1.setInt(1, limit);
-            prep1.setInt(2, offset);
-            listResult = requestToListComputer(prep1);
-        } catch (SQLException e) {
-            logger.error(ERROR);
-            throw new DAOAccesExeption();
-        }
-        return listResult;
+        JdbcTemplate vJdbcTemplate = new JdbcTemplate(dataSource);
+        return vJdbcTemplate.query(QUERRY_LIST_COMPUTERS + String.format(ORDER_BY, sortBy, orderBy)  + String.format(OFFSET_LIMIT,limit,offset),mapperComputer);
     }
-    
+
     /* (non-Javadoc)
      * @see com.excilys.db.persistance.IComputerDAO#listComputer(com.excilys.db.page.PageComputerDTO)
      */
-   @Override
-public List<Computer> listComputer(PageComputerDTO page) {
-       int offset = (page.getPageNumber() - 1) * page.getPageSize();
-       int limit = page.getPageSize();
-       String sortBy = page.getSortBy();
-       String orderBy = page.getOrderBy();
-       return listComputer(offset,limit,sortBy,orderBy);
-   }
+    @Override
+    public List<Computer> listComputer(PageComputerDTO page) {
+        int offset = (page.getPageNumber() - 1) * page.getPageSize();
+        int limit = page.getPageSize();
+        String sortBy = page.getSortBy();
+        String orderBy = page.getOrderBy();
+        return listComputer(offset,limit,sortBy,orderBy);
+    }
 
     /* (non-Javadoc)
      * @see com.excilys.db.persistance.IComputerDAO#showDetails(int)
      */
     @Override
     public Optional<Computer> showDetails(int id) {
-        Optional<Computer> result = null;
-        try (Connection conn = DataSourceUtils.getConnection(dataSource);PreparedStatement prep1 = conn.prepareStatement(QUERRY_LIST_COMPUTERS_ID);){
-            prep1.setInt(1, id);
-            result = requestToComputer(prep1);
-
-        } catch (SQLException e) {
-            logger.error(ERROR);
-            throw new DAOAccesExeption();
+        JdbcTemplate vJdbcTemplate = new JdbcTemplate(dataSource);
+        List<Computer> results = vJdbcTemplate.query(String.format(QUERRY_LIST_COMPUTERS_ID,id),mapperComputer);
+        if (results == null) {
+            return Optional.ofNullable(null);
+        } else if (results.isEmpty()){
+            return Optional.ofNullable(null);
+        }else {
+            return Optional.ofNullable(results.get(0));
         }
-        return result;
+
     }
 
     /* (non-Javadoc)
@@ -148,33 +106,29 @@ public List<Computer> listComputer(PageComputerDTO page) {
      */
     @Override
     public void updateAComputer(Computer computer, int id) {
-        LocalDate dateIntroduced = computer.getIntroduced();
-        LocalDate dateDiscontinued = computer.getDiscontinued();
-        try (Connection conn = DataSourceUtils.getConnection(dataSource);PreparedStatement ps = conn.prepareStatement(QUERRY_UPDATE_COMPUTER);){
-            ps.setString(1, computer.getName());
-            if (dateIntroduced == null) {
-                ps.setNString(2, null);
-            } else {
-                ps.setDate(2, java.sql.Date.valueOf(dateIntroduced));
-            }
-            if (dateDiscontinued == null) {
-                ps.setNString(3, null);
-            } else {
-                ps.setDate(3, java.sql.Date.valueOf(dateDiscontinued));
-            }
-            if ((computer.getCompany() != null) && (computer.getCompany().getId() != null)) {
-
-                ps.setInt(4, computer.getCompany().getId().intValue());
-            } else {
-                ps.setNull(4, java.sql.Types.INTEGER);
-            }
-            ps.setInt(5, id);
-            Debugging.requestDebug(logger, ps.toString());
-            ps.executeUpdate();
-        } catch (SQLException e) {
-            logger.error(ERROR);
-            throw new DAOAccesExeption();
+        NamedParameterJdbcTemplate vJdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
+        String vSQL = QUERRY_UPDATE_COMPUTER;
+        MapSqlParameterSource vParams = new MapSqlParameterSource();
+        if (computer.getCompany() != null) {
+            vParams.addValue("companyId", computer.getCompany().getId());
+        }else {
+            vParams.addValue("companyId",null);
         }
+        vParams.addValue("name", computer.getName());
+        if (computer.getIntroduced() != null) {
+            vParams.addValue("introduced", Date.valueOf(computer.getIntroduced()));
+        } else {
+            vParams.addValue("introduced", null);
+        }
+        if (computer.getDiscontinued() != null) {
+            vParams.addValue("discontinued", Date.valueOf(computer.getDiscontinued()));
+        } else {
+            vParams.addValue("discontinued", null);
+        }
+
+        vParams.addValue("id", computer.getId());
+
+        vJdbcTemplate.update(vSQL, vParams);
     }
 
     /* (non-Javadoc)
@@ -182,24 +136,30 @@ public List<Computer> listComputer(PageComputerDTO page) {
      */
     @Override
     public int createAComputer(Computer computer) {
-
-        try (Connection conn = DataSourceUtils.getConnection(dataSource);){
-            PreparedStatement ps = conn.prepareStatement(QUERRY_CREATE_COMPUTER, Statement.RETURN_GENERATED_KEYS);
-            fillGetIdStatement(ps, computer);
-            Debugging.requestDebug(logger, ps.toString());
-            ps.executeUpdate();
-            try (ResultSet key = ps.getGeneratedKeys();){
-                int ikey = 0;
-                if (key.next()) {
-                    ikey = key.getInt(1);
-                }
-                return ikey;
-            }
-
-        } catch (SQLException e) {
-            logger.error(ERROR);
-            throw new DAOAccesExeption();
+        NamedParameterJdbcTemplate vJdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
+        String vSQL = QUERRY_CREATE_COMPUTER;
+        MapSqlParameterSource vParams = new MapSqlParameterSource();
+        KeyHolder keyHolder = new GeneratedKeyHolder();
+        if (computer.getCompany() != null) {
+            vParams.addValue("companyId", computer.getCompany().getId());
+        }else {
+            vParams.addValue("companyId",null);
         }
+        vParams.addValue("name", computer.getName());
+        if (computer.getIntroduced() != null) {
+            vParams.addValue("introduced", Date.valueOf(computer.getIntroduced()));
+        } else {
+            vParams.addValue("introduced", null);
+        }
+        if (computer.getDiscontinued() != null) {
+            vParams.addValue("discontinued", Date.valueOf(computer.getDiscontinued()));
+        } else {
+            vParams.addValue("discontinued", null);
+        }
+        vParams.addValue("id", computer.getId());
+        vJdbcTemplate.update(vSQL, vParams,keyHolder);
+        Long result = Long.valueOf((long) keyHolder.getKey());
+        return result.intValue();
     }
 
     /**
@@ -315,20 +275,8 @@ public List<Computer> listComputer(PageComputerDTO page) {
      */
     @Override
     public int getCount() {
-        int result = 0;
-        try (Connection conn = DataSourceUtils.getConnection(dataSource);PreparedStatement prep1 = conn.prepareStatement(QUERRY_COUNT);){
-
-            Debugging.requestDebug(logger, prep1.toString());
-            try (ResultSet resultSet = prep1.executeQuery();){
-                if (resultSet.next()) {
-                    result = resultSet.getInt(1);
-                }
-            }
-        } catch (SQLException e) {
-            logger.error(ERROR);
-            throw new DAOAccesExeption();
-        }
-        return result;
+        JdbcTemplate vJdbcTemplate = new JdbcTemplate(dataSource);
+        return vJdbcTemplate.queryForObject(QUERRY_COUNT,Integer.class);
     }
 
     /* (non-Javadoc)
@@ -336,19 +284,8 @@ public List<Computer> listComputer(PageComputerDTO page) {
      */
     @Override
     public int getCount(String search) {
-        int result = 0;
-        try (Connection conn = DataSourceUtils.getConnection(dataSource);PreparedStatement prep1 = conn.prepareStatement(QUERRY_COUNT + String.format(LIKE, search,search));){
-            Debugging.requestDebug(logger, prep1.toString());
-            try (ResultSet resultSet = prep1.executeQuery();){
-                if (resultSet.next()) {
-                    result = resultSet.getInt(1);
-                }
-            }
-        } catch (SQLException e) {
-            logger.error(ERROR);
-            throw new DAOAccesExeption();
-        }
-        return result;
+        JdbcTemplate vJdbcTemplate = new JdbcTemplate(dataSource);
+        return vJdbcTemplate.queryForObject(QUERRY_COUNT + String.format(LIKE, search,search),Integer.class);
     }
 
     /* (non-Javadoc)
@@ -356,22 +293,8 @@ public List<Computer> listComputer(PageComputerDTO page) {
      */
     @Override
     public List<Computer> listComputerLike(int offset, int limit, String name, String sortBy, String orderBy) {
-        List<Computer> listResult = new ArrayList<>();
-        try (Connection conn = DataSourceUtils.getConnection(dataSource); PreparedStatement prep1 = conn.prepareStatement(QUERRY_LIST_COMPUTERS + String.format(LIKE, name, name) + String.format(ORDER_BY, sortBy, orderBy) + OFFSET_LIMIT);) {
-            prep1.setInt(1, limit);
-            prep1.setInt(2, offset);
-            Debugging.requestDebug(logger, prep1.toString());
-            try (ResultSet resultSet = prep1.executeQuery();) {
-                while (resultSet.next()) {
-                    Computer toAdd = ComputerMapper.resultToComputer(resultSet);
-                    listResult.add(toAdd);
-                }
-            }
-        } catch (SQLException e) {
-            logger.error(ERROR);
-            throw new DAOAccesExeption();
-        }
-        return listResult;
+        JdbcTemplate vJdbcTemplate = new JdbcTemplate(dataSource);
+        return vJdbcTemplate.query(QUERRY_LIST_COMPUTERS + String.format(LIKE, name, name) + String.format(ORDER_BY, sortBy, orderBy) + String.format(OFFSET_LIMIT,limit,offset),mapperComputer);
     }
 
     @Override
