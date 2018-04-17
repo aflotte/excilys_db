@@ -5,6 +5,8 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.excilys.db.exception.CompaniesIdIncorrectException;
 import com.excilys.db.exception.ComputerNameStrangeException;
@@ -18,6 +20,7 @@ import com.excilys.db.persistance.IComputerDAO;
 import com.excilys.db.validator.ComputerValidator;
 
 @Service("computerService")
+@EnableTransactionManagement
 public class ComputerService implements IComputerService {
     static org.slf4j.Logger logger = org.slf4j.LoggerFactory.getLogger(ComputerService.class);
     @Autowired
@@ -146,8 +149,8 @@ public class ComputerService implements IComputerService {
      * @see com.excilys.db.service.IComputerService#deleteListComputer(int[])
      */
     @Override
-    public void deleteListComputer(int[] ids) {
-        logger.debug("dans service delete");
+    @Transactional(rollbackFor = Exception.class)
+    public void deleteListComputer(List<Integer> ids) {
         computer.deleteListComputer(ids);
     }
 }

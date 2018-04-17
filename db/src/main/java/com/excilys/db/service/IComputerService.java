@@ -106,6 +106,6 @@ public interface IComputerService {
      *
      * @param ids ids à delete
      */
-    void deleteListComputer(int[] ids);
+    void deleteListComputer(List<Integer> ids);
 
 }

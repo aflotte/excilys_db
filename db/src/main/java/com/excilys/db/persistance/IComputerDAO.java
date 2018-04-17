@@ -1,7 +1,5 @@
 package com.excilys.db.persistance;
 
-import java.sql.Connection;
-import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 
@@ -75,15 +73,7 @@ public interface IComputerDAO {
      *
      * @param ids la liste des ids
      */
-    void deleteListComputer(int[] ids);
-
-    /**
-     *
-     * @param conn la connection
-     * @param ids la liste des id
-     * @throws SQLException l'erreur
-     */
-    void deleteListComputer(Connection conn, List<Integer> ids) throws SQLException;
+    void deleteListComputer(List<Integer> ids);
 
     /**
      *

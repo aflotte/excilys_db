@@ -5,6 +5,8 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.excilys.db.exception.CompaniesInexistantException;
 import com.excilys.db.exception.ValidatorException;
@@ -13,6 +15,7 @@ import com.excilys.db.persistance.CompaniesDAO;
 import com.excilys.db.validator.CompaniesValidator;
 
 @Service("companiesService")
+@EnableTransactionManagement
 public class CompaniesService implements ICompaniesService {
     @Autowired
     private CompaniesDAO companies;
@@ -48,6 +51,7 @@ public class CompaniesService implements ICompaniesService {
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void destroy(int id) throws ValidatorException {
         companiesValidator.exist(id);
         companies.deleteCompany(id);

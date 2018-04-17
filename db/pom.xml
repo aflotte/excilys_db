@@ -21,6 +21,7 @@
 		<cargo.version>1.6.7</cargo.version>
 		<tomcat.home>/home/excilys/apache-tomcat-7.0.85</tomcat.home>
 		<sqltool.version>2.2.9</sqltool.version>
+		<taglibs.version>1.1.2</taglibs.version>
 
 		<!-- checkstyle -->
 		<checkstyle.version>3.0.0</checkstyle.version>
@@ -45,7 +46,6 @@
 
 		<!-- provided -->
 		<javax.version>8.0</javax.version>
-		<jasper.version>9.0.6</jasper.version>
 		<spring.version>5.0.4.RELEASE</spring.version>
 		<servletapi.version>2.5</servletapi.version>
 		<javaxservapi.version>3.0.1</javaxservapi.version>
@@ -274,7 +274,7 @@
 		<dependency>
 			<groupId>taglibs</groupId>
 			<artifactId>standard</artifactId>
-			<version>1.1.2</version>
+			<version>${taglibs.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>javax.servlet</groupId>
