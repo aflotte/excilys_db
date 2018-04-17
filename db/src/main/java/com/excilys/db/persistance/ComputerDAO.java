@@ -1,6 +1,10 @@
 package com.excilys.db.persistance;
 
+import java.sql.Connection;
 import java.sql.Date;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -12,12 +16,15 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 
+import com.excilys.db.exception.DAOAccesExeption;
 import com.excilys.db.mapper.RowMapperComputer;
 import com.excilys.db.mapper.RowMapperInteger;
 import com.excilys.db.model.Computer;
 import com.excilys.db.page.PageComputerDTO;
 
 import javax.sql.DataSource;
+import com.excilys.db.utils.Debugging;
+
 /**
  *
  * @author flotte

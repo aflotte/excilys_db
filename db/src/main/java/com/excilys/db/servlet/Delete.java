@@ -61,6 +61,7 @@ public class Delete extends HttpServlet {
                     logger.debug(e.getMessage());
                 }
             }
+            System.out.println("before deleteList");
             computerService.deleteListComputer(toDeleteId);
         }
         try {

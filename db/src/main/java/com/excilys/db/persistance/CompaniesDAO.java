@@ -33,7 +33,7 @@ public class CompaniesDAO {
 
     private static final String QUERRY_LIST_COMPANIES_BY_NAME = "SELECT company.id FROM company WHERE name LIKE %s";
     private static final String QUERRY_LIST_COMPANIES = "SELECT company.name, company.id FROM company";
-    private static final String QUERRY_LIST_COMPANIES_ID = "SELECT company.name FROM company WHERE id = %d";
+    private static final String QUERRY_LIST_COMPANIES_ID = "SELECT company.id, company.name FROM company WHERE id = %d";
     private static final String QUERRY_LIST_COMPUTER = "SELECT computer.id FROM computer RIGHT JOIN company ON computer.company_id = %d ";
     private static final String OFFSET_LIMIT = " LIMIT %d OFFSET %d";
     private static final String DELETE_COMPANY = "DELETE FROM company WHERE id = %d";
