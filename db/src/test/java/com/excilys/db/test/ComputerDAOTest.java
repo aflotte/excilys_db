@@ -27,7 +27,6 @@ import javax.sql.DataSource;
 
 import org.hsqldb.cmdline.SqlFile;
 import org.hsqldb.cmdline.SqlToolError;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -63,13 +62,6 @@ public class ComputerDAOTest {
     IComputerDAO computer;
     SimpleDateFormat formatter = new SimpleDateFormat("yyyy/MM/dd");
 
-    @After
-    public void deconnection() {
-        List<Integer> testList2 = computer.getIdFromName("Test_Computer");  
-        for (int i = 0; i < testList2.size(); i++) {
-            computer.deleteAComputer(testList2.get(i));
-        }
-    }
 
     protected void tearDown() {
         logger.debug("TearDown");

@@ -1,6 +1,8 @@
 package com.excilys.db.servlet;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -51,10 +53,10 @@ public class Delete extends HttpServlet {
         org.slf4j.Logger logger = org.slf4j.LoggerFactory.getLogger(AddComputer.class);
         if (!((request.getParameter(SELECTION) == null) || (request.getParameter(SELECTION).isEmpty()))) {
             String[] toDelete = (request.getParameterValues(SELECTION)[0]).split(",");
-            int[] toDeleteId = new int[toDelete.length];
+            List<Integer> toDeleteId = new ArrayList<>();
             for (int i = 0; i < toDelete.length; i++) {
                 try {
-                    toDeleteId[i] = Integer.parseInt(toDelete[i]);
+                    toDeleteId.add(Integer.parseInt(toDelete[i]));
                 } catch (Exception e) {
                     logger.debug(e.getMessage());
                 }
