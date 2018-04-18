@@ -30,7 +30,8 @@ import org.springframework.web.servlet.view.JstlView;
         "com.excilys.db.page",
         "com.excilys.db.mapper",
         "com.excilys.db.cli",
-        "com.excilys.db.validator"
+        "com.excilys.db.validator",
+        "com.excilys.db.servlet"
 })
 @PropertySource("classpath:/connect.properties")
 public class WebConfig implements WebMvcConfigurer {
