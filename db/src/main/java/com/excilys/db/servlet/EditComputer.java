@@ -4,16 +4,14 @@ import java.io.IOException;
 import java.util.Optional;
 
 import javax.servlet.RequestDispatcher;
-import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.context.support.SpringBeanAutowiringSupport;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.excilys.db.dto.ComputerDTO;
 import com.excilys.db.exception.ServiceException;
@@ -27,7 +25,7 @@ import com.excilys.db.validator.ComputerValidator;
  * Servlet implementation class EditComputer.
  */
 @Controller
-@WebServlet("/editComputer")
+@RequestMapping(value = "/editComputer")
 public class EditComputer extends HttpServlet {
 
     private static final long serialVersionUID = 1L;
@@ -48,16 +46,6 @@ public class EditComputer extends HttpServlet {
 
     @Autowired
     private ComputerMapper computerMapper;
-
-
-
-
-    @Override
-    public void init(ServletConfig config) throws ServletException {
-        super.init(config);
-        SpringBeanAutowiringSupport.processInjectionBasedOnServletContext(this, config.getServletContext());
-    }
-
 
     /**
      *

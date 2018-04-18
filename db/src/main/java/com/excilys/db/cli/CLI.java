@@ -4,6 +4,7 @@ import com.excilys.db.page.PageComputerCLI;
 import com.excilys.db.service.ICompaniesService;
 import com.excilys.db.service.IComputerService;
 import com.excilys.db.validator.ComputerValidator;
+import com.excilys.db.config.CLIConfig;
 import com.excilys.db.exception.CompaniesIdIncorrectException;
 import com.excilys.db.exception.CompaniesInexistantException;
 import com.excilys.db.exception.IncoherentDatesException;
@@ -19,6 +20,7 @@ import java.util.Scanner;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.stereotype.Controller;
 
@@ -50,7 +52,7 @@ public class CLI {
      */
     public static void main(String[] args) {
         @SuppressWarnings("resource")
-        ApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");
+        AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(CLIConfig.class);
         context.getBean(CLI.class).start();
 
     }

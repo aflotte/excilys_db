@@ -52,6 +52,7 @@
 		<javaxserv.version>1.2</javaxserv.version>
 		<jacoco.version>0.8.0</jacoco.version>
 		<jcloverslf4j.version>1.7.6</jcloverslf4j.version>
+		<maven-war.version>3.2.0</maven-war.version>
 
 	</properties>
 
@@ -150,6 +151,14 @@
 					</configuration>
 				</configuration>
 			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-war-plugin</artifactId>
+				<version>${maven-war.version}</version>
+				<configuration>
+					<failOnMissingWebXml>false</failOnMissingWebXml>
+				</configuration>
+			</plugin>
 		</plugins>
 	</build>
 	<reporting>
@@ -163,6 +172,7 @@
 					<suppressionsLocation>suppressions.xml</suppressionsLocation>
 				</configuration>
 			</plugin>
+
 		</plugins>
 	</reporting>
 	<dependencies>

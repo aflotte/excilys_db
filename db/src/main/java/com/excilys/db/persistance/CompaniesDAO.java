@@ -20,7 +20,7 @@ import com.excilys.db.model.Company;
  *
  */
 @Repository("companiesDAO")
-public class CompaniesDAO {
+public class CompaniesDAO implements ICompaniesDAO {
     @Autowired
     private DataSource dataSource;
     static org.slf4j.Logger logger = org.slf4j.LoggerFactory.getLogger(CompaniesDAO.class);
@@ -41,40 +41,38 @@ public class CompaniesDAO {
 
 
 
-    /**
-     * 
-     * @param id id de la compagnie
-     * @return
+    /* (non-Javadoc)
+     * @see com.excilys.db.persistance.ICompaniesDAO#computerFromCompany(int)
      */
+    @Override
     public List<Integer> computerFromCompany(int id){
         JdbcTemplate vJdbcTemplate = new JdbcTemplate(dataSource);
         return vJdbcTemplate.query(String.format(QUERRY_LIST_COMPUTER,id),mapperInteger);
     }
 
 
-    /**
-     *
-     * @param id d'une compagnie
-     * @return true si la compagnie exist, false sinon
+    /* (non-Javadoc)
+     * @see com.excilys.db.persistance.ICompaniesDAO#existCompanies(int)
      */
+    @Override
     public boolean existCompanies(int id) {
         JdbcTemplate vJdbcTemplate = new JdbcTemplate(dataSource);
         return !vJdbcTemplate.query(String.format(QUERRY_LIST_COMPANIES_ID,id),mapperCompany).isEmpty();
     }
 
-    /**
-     *
-     * @return la liste des compagnies
+    /* (non-Javadoc)
+     * @see com.excilys.db.persistance.ICompaniesDAO#listCompanies()
      */
+    @Override
     public List<Company> listCompanies() {
         JdbcTemplate vJdbcTemplate = new JdbcTemplate(dataSource);
         return vJdbcTemplate.query(String.format(QUERRY_LIST_COMPANIES),mapperCompany);
     }
 
-    /**
-     *
-     * @param id l'id
+    /* (non-Javadoc)
+     * @see com.excilys.db.persistance.ICompaniesDAO#deleteCompany(int)
      */
+    @Override
     public void deleteCompany(int id) {
         List<Integer> computerIds = computerFromCompany(id);
         computerDAO.deleteListComputer(computerIds);
@@ -82,24 +80,19 @@ public class CompaniesDAO {
         vJdbcTemplate.update(String.format(DELETE_COMPANY,id));
     }
 
-    /**
-     *
-     * @param offset l'offset
-     * @param limit le nombre a afficher
-     * @return la liste des compagnies
-     * @throws CompaniesInexistantException erreur sur la compagnie de l'ordinateur
+    /* (non-Javadoc)
+     * @see com.excilys.db.persistance.ICompaniesDAO#listCompany(int, int)
      */
+    @Override
     public List<Company> listCompany(int offset, int limit) {
         JdbcTemplate vJdbcTemplate = new JdbcTemplate(dataSource);
         return vJdbcTemplate.query(QUERRY_LIST_COMPANIES + String.format(OFFSET_LIMIT,limit,offset), mapperCompany);
     }
 
-    /**
-     *
-     * @param id de la compagnie
-     * @return la compagnie
-     * @throws CompaniesInexistantException la compagnie recherché n'existe pas
+    /* (non-Javadoc)
+     * @see com.excilys.db.persistance.ICompaniesDAO#getCompany(java.lang.Integer)
      */
+    @Override
     public Optional<Company> getCompany(Integer id) {
         JdbcTemplate vJdbcTemplate = new JdbcTemplate(dataSource);
         List<Company> results = vJdbcTemplate.query(String.format(QUERRY_LIST_COMPANIES_ID,id), mapperCompany);
@@ -112,19 +105,19 @@ public class CompaniesDAO {
         }
     }
 
-    /**
-     *
+    /* (non-Javadoc)
+     * @see com.excilys.db.persistance.ICompaniesDAO#getCount()
      */
+    @Override
     public int getCount() {
         JdbcTemplate vJdbcTemplate = new JdbcTemplate(dataSource);
         return vJdbcTemplate.queryForObject(QUERRY_COUNT,Integer.class);
     }
 
-    /**
-     *
-     * @param name le nom de l'ordinateur
-     * @return la liste des Id
+    /* (non-Javadoc)
+     * @see com.excilys.db.persistance.ICompaniesDAO#getIdFromName(java.lang.String)
      */
+    @Override
     public List<Integer> getIdFromName(String name) {
         JdbcTemplate vJdbcTemplate = new JdbcTemplate(dataSource);
         return vJdbcTemplate.query(String.format(QUERRY_LIST_COMPANIES_BY_NAME, name), mapperInteger);

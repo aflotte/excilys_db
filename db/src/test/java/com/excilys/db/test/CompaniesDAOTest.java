@@ -21,16 +21,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import com.excilys.db.config.TestConfig;
 import com.excilys.db.exception.DAOConfigurationException;
 import com.excilys.db.model.Company;
-import com.excilys.db.persistance.CompaniesDAO;
+import com.excilys.db.persistance.ICompaniesDAO;
 import com.excilys.db.persistance.IComputerDAO;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations= {"/applicationContext.xml"})
+@ContextConfiguration(classes = TestConfig.class)
 public class CompaniesDAOTest {
     @Autowired
-    CompaniesDAO companiesDAO;
+    ICompaniesDAO companiesDAO;
     @Autowired
     private DataSource dataSource;
     static org.slf4j.Logger logger = org.slf4j.LoggerFactory.getLogger(CompaniesDAOTest.class);
