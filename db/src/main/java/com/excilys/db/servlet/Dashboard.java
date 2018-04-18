@@ -36,6 +36,10 @@ public class Dashboard {
     private static final String SEARCH = "search";
     private static final String SORT_PATH = "sortPath";
     private static final String DEFAULT_PAGE = "1";
+    private static final String DEFAULT_PAGE_SIZE = "10";
+    private static final String DEFAULT_SEARCH = "";
+    private static final String DEFAULT_SORT = "computer.id";
+private static final String DEFAULT_ORDER = "asc";
 
     private IPageComputerDTO pageComputer;
     
@@ -44,157 +48,104 @@ public class Dashboard {
     }
     
     @GetMapping
-    public ModelAndView handleGet(@RequestParam(value = "pageNumber", defaultValue = DEFAULT_PAGE) int pageNumber) {
-        return handlePost();
+    public ModelAndView handleGet(@RequestParam(value = ACTUAL_PAGE, defaultValue = DEFAULT_PAGE) int actualPage,
+            @RequestParam(value = PAGE_SIZE, defaultValue = DEFAULT_PAGE_SIZE) int sizePage,
+            @RequestParam(value = SEARCH, defaultValue = DEFAULT_SEARCH) String search,
+            @RequestParam(value = "sort", defaultValue = DEFAULT_SORT) String toSort,
+            @RequestParam(value = ORDER_BY, defaultValue = DEFAULT_ORDER) String orderBy) {
+        ModelAndView modelAndView = new ModelAndView("index");
+        String[] preparedSort = prepareSort(toSort,orderBy,modelAndView);
+        toSort = preparedSort[0];
+        orderBy = preparedSort[1];
+        if (sizePage < 10) {
+            sizePage = 10;
+        }
+        String searchJSP;
+        if (search.equals("")) {
+            searchJSP = "";
+            pageComputer.init(actualPage, sizePage);
+        }else {
+            searchJSP = "&search=" + search;
+            pageComputer.init(actualPage, sizePage, search);
+        }
+        pageComputer.setSortBy(toSort);
+        pageComputer.setOrderBy(orderBy);
+        modelAndView.addObject(SEARCH, searchJSP);
+        modelAndView.addObject("page", pageComputer);
+        return modelAndView;
     }
-    
+
     @PostMapping
     public ModelAndView handlePost() {
         ModelAndView modelAndView = new ModelAndView("index");
         return modelAndView;
-    }
+}
 
-    /**
-     * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
-     */
-    /*
-    @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        try {
-            int actualPage;
-            String[] preparedSort = prepareSort(request);
-            String toSort = preparedSort[0];
-            String orderBy = preparedSort[1];
-            if (request.getParameter(ACTUAL_PAGE) == null) {
-                actualPage = 1;
-            } else {
-                if (request.getParameter(ACTUAL_PAGE).isEmpty()) {
-                    actualPage = 1;
-                } else {
-                    actualPage = Integer.parseInt(request.getParameter(ACTUAL_PAGE));
-                }
-            }
-            int sizePage;
-            if ((request.getParameter(PAGE_SIZE) == null) || (request.getParameter(PAGE_SIZE).isEmpty())) {
-                sizePage = 10;
-            } else {
-                sizePage = Integer.parseInt(request.getParameter(PAGE_SIZE));
-            }
-            if (sizePage < 10) {
-                sizePage = 10;
-            }
-            String search;
-            String searchJSP;
-            if ((request.getParameter(SEARCH) == null) || (request.getParameter(SEARCH).isEmpty())) {
-                searchJSP = "";
-                pageComputer.init(actualPage, sizePage);
-            } else {
-                String debug = "enter in search not empty";
-                logger.debug(debug);
-                search = request.getParameter(SEARCH);
-                searchJSP = "&search=" + search;
-                pageComputer.init(actualPage, sizePage, search);
-            }
-            pageComputer.setSortBy(toSort);
-            pageComputer.setOrderBy(orderBy);
-            request.setAttribute(SEARCH, searchJSP);
-            request.setAttribute("page", pageComputer);
-            RequestDispatcher rd =
-                    request.getRequestDispatcher("/WEB-INF/index.jsp");
-            rd.forward(request, response);
-        } catch (Exception e) {
-            logger.error(e.getMessage());
-        }
-    }
-
-    /**
-     * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-     *
-     */
-    /*
-    @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        try {
-            doGet(request, response);
-        } catch (Exception e) {
-            logger.debug(e.getMessage());
-        }
-    }
-
-    /**
+/**
      *
      * @param request la requete
      * @param tested la colonne servant pour sort
      * @return la string de l'url
      */
-    private String casePrepareSort(HttpServletRequest request, String tested) {
+    private String casePrepareSort(ModelAndView modelAndView, String tested, String orderBy) {
         String preparation = MessageFormat.format("&sort={0}", tested);
-        if ((request.getParameter(ORDER_BY) != null) && (request.getParameter(ORDER_BY).equals("asc"))) {
-            request.setAttribute("computerPath", MessageFormat.format("&sort={0}&orderBy=desc", tested));
+        if (orderBy.equals("asc")) {
+            modelAndView.addObject(MessageFormat.format("{0}Path",tested), MessageFormat.format("&sort={0}&orderBy=desc", tested));
         }
         return preparation;
     }
 
+    /*TODO : bug -> asc
     /**
      *
+     * @param modelAndView 
      * @param request la requete
      * @return { Sort, OrderBy }
      */
-    private String[] prepareSort(HttpServletRequest request) {
-        String toSort = "";
+    private String[] prepareSort(String toSort, String orderBy, ModelAndView modelAndView) {
         String preparation = "";
-        request.setAttribute("computerPath", "&sort=computer&orderBy=asc");
-        request.setAttribute("introducedPath", "&sort=introduced&orderBy=asc");
-        request.setAttribute("discontinuedPath", "&sort=discontinued&orderBy=asc");
-        request.setAttribute("companyPath", "&sort=company&orderBy=asc");
-        request.setAttribute(SORT_PATH, "");
-        if (!((request.getParameter("sort") == null) || (request.getParameter("sort").isEmpty()))) {
-            toSort = request.getParameter("sort");
-            request.setAttribute(SORT_PATH, "");
+        modelAndView.addObject("computerPath", "&sort=computer&orderBy=asc");
+        modelAndView.addObject("introducedPath", "&sort=introduced&orderBy=asc");
+        modelAndView.addObject("discontinuedPath", "&sort=discontinued&orderBy=asc");
+        modelAndView.addObject("companyPath", "&sort=company&orderBy=asc");
+        modelAndView.addObject(SORT_PATH, "");
+        if (!toSort.equals(DEFAULT_SORT)) {
             switch (toSort) {
             case "computer":
-                preparation = casePrepareSort(request, "computer");
+                preparation = casePrepareSort(modelAndView, "computer", orderBy);
                 toSort = "computer.name";
                 break;
             case "introduced":
-                preparation = casePrepareSort(request, "introduced");
+                preparation = casePrepareSort(modelAndView, "introduced", orderBy);
                 toSort = "computer.introduced";
                 break;
             case "discontinued":
-                preparation = casePrepareSort(request, "discontinued");
+                preparation = casePrepareSort(modelAndView, "discontinued", orderBy);
                 toSort = "computer.discontinued";
                 break;
             case "company":
-                preparation = casePrepareSort(request, "company");
+                preparation = casePrepareSort(modelAndView, "company", orderBy);
                 toSort = "company.name";
                 break;
             default:
-                toSort = "computer.id";
+                toSort = DEFAULT_SORT;
                 break;
             }
-        } else {
-            toSort = "computer.id";
         }
-        String orderBy;
-        if (!((request.getParameter(ORDER_BY) == null) || (request.getParameter(ORDER_BY).isEmpty()))) {
-            if (!preparation.isEmpty()) {
-                if (request.getParameter(ORDER_BY).equals("desc")) {
-                    preparation += "&orderBy=desc";
-                    orderBy = "desc";
-                } else {
-                    preparation += "&orderBy=asc";
-                    orderBy = "asc";
-                }
+        if (!preparation.isEmpty()) {
+            if (orderBy.equals("desc")) {
+                preparation += "&orderBy=desc";
+                orderBy = "desc";
             } else {
+                preparation += "&orderBy=asc";
                 orderBy = "asc";
             }
         } else {
             orderBy = "asc";
         }
 
-        request.setAttribute(SORT_PATH, preparation);
+        modelAndView.addObject(SORT_PATH, preparation);
         return new String[]{toSort, orderBy};
     }
-
 
 }
