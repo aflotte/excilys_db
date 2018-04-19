@@ -6,7 +6,6 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.excilys.db.exception.CompaniesIdIncorrectException;
 import com.excilys.db.exception.ComputerNameStrangeException;
@@ -145,11 +144,12 @@ public class ComputerService implements IComputerService {
         return computer.listComputerLike(offset, limit, name, "computer.id", "asc");
     }
 
+    
+    //TODO : passer en transactional
     /* (non-Javadoc)
      * @see com.excilys.db.service.IComputerService#deleteListComputer(int[])
      */
     @Override
-    @Transactional(rollbackFor = Exception.class)
     public void deleteListComputer(List<Integer> ids) {
         computer.deleteListComputer(ids);
     }

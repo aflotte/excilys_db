@@ -8,16 +8,15 @@
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd
 		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd">
 
-    <context:component-scan base-package="com.excilys.formation.cdb.persistence.dao.impl"/>
-    <context:component-scan base-package="com.excilys.formation.cdb.service.impl"/>
-    <context:component-scan base-package="com.excilys.formation.cdb.servlets"/>
+<context:component-scan base-package="com.excilys.db" />
 
     <context:property-placeholder location="classpath:/properties/db.properties" />
-    <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource"
-          p:driverClassName="${jdbc.driverClassName}"
-          p:url="${jdbc.jdbcUrl}"
-          p:username="${jdbc.username}"
-          p:password="${jdbc.password}"/>
+    	<bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+		<property name="driverClassName" value="com.mysql.cj.jdbc.Driver" />
+		<property name="url" value="jdbc:mysql://127.0.0.1:3306/computer-database-db?zeroDateTimeBehavior=CONVERT_TO_NULL&amp;autoReconnect=true&amp;characterEncoding=UTF-8&amp;useSSL=false&amp;serverTimezone=CET" />
+		<property name="username" value="admincdb" />
+		<property name="password" value="qwerty1234" />
+	</bean>
 
     <!-- We are using annotations -->
     <tx:annotation-driven proxy-target-class="true" transaction-manager="txManager"/>
@@ -25,4 +24,6 @@
     <bean id="txManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
         <property name="dataSource" ref="dataSource"/>
     </bean>
+
+<context:component-scan base-package="com.baledung.controller" />
 </beans>	
