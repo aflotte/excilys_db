@@ -1,19 +1,17 @@
 package com.excilys.db.servlet;
 
-import java.io.IOException;
 import java.util.List;
 
-import javax.servlet.RequestDispatcher;
-import javax.servlet.ServletConfig;
-import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.context.support.SpringBeanAutowiringSupport;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.excilys.db.dto.ComputerDTO;
 import com.excilys.db.exception.ServiceException;
@@ -22,76 +20,62 @@ import com.excilys.db.model.Computer;
 import com.excilys.db.service.ICompaniesService;
 import com.excilys.db.service.IComputerService;
 
-/**
- * Servlet implementation class AddComputer.
- */
 @Controller
-@WebServlet("/addComputer")
-public class AddComputer extends HttpServlet {
-    private static final long serialVersionUID = 1L;
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
-    public AddComputer() {
-        super();
+@RequestMapping(value = "/addComputer")
+public class AddComputer {
+    org.slf4j.Logger logger = org.slf4j.LoggerFactory.getLogger(AddComputer.class);
+
+    public AddComputer(ICompaniesService companiesService, IComputerService computerService, ComputerMapper computerMapper) {
+        this.companiesService = companiesService;
+        this.computerService = computerService;
+        this.computerMapper = computerMapper;
     }
 
-    @Autowired
     private ICompaniesService companiesService;
-    @Autowired
     private IComputerService computerService;
-    @Autowired
     private ComputerMapper computerMapper;
 
-
-
-    @Override
-    public void init(ServletConfig config) throws ServletException {
-        super.init(config);
-        SpringBeanAutowiringSupport.processInjectionBasedOnServletContext(this, config.getServletContext());
+    @GetMapping
+    public ModelAndView handleGet() {
+        ModelAndView modelAndView = new ModelAndView("addComputer");
+        modelAndView.addObject("companies", companiesService.listCompanies());
+        return modelAndView;
     }
 
-    /**
-     * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
-     */
-    @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        org.slf4j.Logger logger = org.slf4j.LoggerFactory.getLogger(AddComputer.class);
-        try {
-            request.setAttribute("companies", companiesService.listCompanies());
-            RequestDispatcher rd =
-                    request.getRequestDispatcher("/WEB-INF/addComputer.jsp");
-
-            rd.forward(request, response);
-        } catch (Exception e) {
-            logger.debug(e.getMessage());
-        }
-    }
-
-    /**
-     * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-     */
-    @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        org.slf4j.Logger logger = org.slf4j.LoggerFactory.getLogger(AddComputer.class);
+    @PostMapping
+    public ModelAndView handlePost(@RequestParam(value = "computerName", defaultValue = "") String computerName,
+            @RequestParam(value = "introduced", defaultValue = "") String introduced,
+            @RequestParam(value = "discontinued", defaultValue = "") String discontinued,
+            @RequestParam(value = "companyId", defaultValue = "") String companyId) {
         ComputerDTO computerDTO = new ComputerDTO();
-        computerDTO.setName(request.getParameter("computerName"));
-        computerDTO.setIntroduced(request.getParameter("introduced"));
-        computerDTO.setDiscontinued(request.getParameter("discontinued"));
-        computerDTO.setCompany(request.getParameter("companyId"));
+        computerDTO.setName(computerName);
+        computerDTO.setIntroduced(introduced);
+        computerDTO.setDiscontinued(discontinued);
+        computerDTO.setCompany(companyId);
         Computer computer = computerMapper.computerDTOToComputer(computerDTO);
         try {
             computerService.createComputer(computer);
         } catch (ServiceException e) {
-            logger.debug(e.getMessage());
+            logger.warn(e.getMessage());
         }
+        return handleGet();
+}
+
+    
+    /**
+     * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+     */
+    /*
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
         try {
             doGet(request, response);
         } catch (Exception e) {
             logger.debug(e.getMessage());
         }
     }
-
+    */
     public List<ComputerDTO> getComputer() {
 
         return ComputerMapper.computerListToComputerDTO(computerService.listComputer());

@@ -1,8 +1,5 @@
 package com.excilys.db.config;
 
-import java.io.IOException;
-import java.util.Properties;
-
 import javax.sql.DataSource;
 
 import org.slf4j.Logger;
@@ -48,8 +45,6 @@ public class WebConfig implements WebMvcConfigurer {
     @Value("${dbpassword}")
     private String password;
 
-    private final Logger LOGGER = LoggerFactory.getLogger(WebConfig.class);
-    
     @Bean
     public ViewResolver viewResolver() {
         InternalResourceViewResolver viewResolver = new InternalResourceViewResolver();

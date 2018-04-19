@@ -12,6 +12,7 @@ import org.springframework.stereotype.Repository;
 import com.excilys.db.exception.CompaniesInexistantException;
 import com.excilys.db.mapper.RowMapperCompany;
 import com.excilys.db.mapper.RowMapperInteger;
+import com.excilys.db.mapper.RowMapperIntegerFromCompany;
 import com.excilys.db.model.Company;
 
 /**
@@ -29,9 +30,11 @@ public class CompaniesDAO implements ICompaniesDAO {
     @Autowired
     private RowMapperCompany mapperCompany;
     @Autowired
+    private RowMapperIntegerFromCompany mapperIntegerFromCompany;
+    @Autowired
     private RowMapperInteger mapperInteger;
 
-    private static final String QUERRY_LIST_COMPANIES_BY_NAME = "SELECT company.id FROM company WHERE name LIKE %s";
+    private static final String QUERRY_LIST_COMPANIES_BY_NAME = "SELECT company.id FROM company WHERE name LIKE \'%s\'";
     private static final String QUERRY_LIST_COMPANIES = "SELECT company.name, company.id FROM company";
     private static final String QUERRY_LIST_COMPANIES_ID = "SELECT company.id, company.name FROM company WHERE id = %d";
     private static final String QUERRY_LIST_COMPUTER = "SELECT computer.id FROM computer RIGHT JOIN company ON computer.company_id = %d ";
@@ -120,7 +123,7 @@ public class CompaniesDAO implements ICompaniesDAO {
     @Override
     public List<Integer> getIdFromName(String name) {
         JdbcTemplate vJdbcTemplate = new JdbcTemplate(dataSource);
-        return vJdbcTemplate.query(String.format(QUERRY_LIST_COMPANIES_BY_NAME, name), mapperInteger);
+        return vJdbcTemplate.query(String.format(QUERRY_LIST_COMPANIES_BY_NAME, name), mapperIntegerFromCompany);
     }
 
 }

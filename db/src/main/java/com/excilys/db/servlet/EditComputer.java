@@ -1,17 +1,15 @@
 package com.excilys.db.servlet;
 
-import java.io.IOException;
 import java.util.Optional;
 
-import javax.servlet.RequestDispatcher;
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.excilys.db.dto.ComputerDTO;
 import com.excilys.db.exception.ServiceException;
@@ -21,102 +19,33 @@ import com.excilys.db.service.ICompaniesService;
 import com.excilys.db.service.IComputerService;
 import com.excilys.db.validator.ComputerValidator;
 
-/**
- * Servlet implementation class EditComputer.
- */
+
 @Controller
 @RequestMapping(value = "/editComputer")
-public class EditComputer extends HttpServlet {
-
-    private static final long serialVersionUID = 1L;
-    private static final String INDEX = "/WEB-INF/index.jsp";
+public class EditComputer {
+    org.slf4j.Logger logger = org.slf4j.LoggerFactory.getLogger(EditComputer.class);
+    private static final String DASHBOARD = "redirect:/dashboard";
 
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public EditComputer() {
-        super();
+    public EditComputer(ComputerValidator computerValidator, ICompaniesService companiesService, IComputerService computerService, ComputerMapper computerMapper) {
+        this.computerValidator = computerValidator;
+        this.companiesService = companiesService;
+        this.computerService = computerService;
+        this.computerMapper = computerMapper;
     }
-    @Autowired
-    private ComputerValidator computerValidator;
-    @Autowired
-    private ICompaniesService companiesService;
-    @Autowired
-    private IComputerService computerService;
 
-    @Autowired
+    private ComputerValidator computerValidator;
+    private ICompaniesService companiesService;
+    private IComputerService computerService;
     private ComputerMapper computerMapper;
 
-    /**
-     *
-     * @param request la requête
-     * @param response la réponse
-     * @return si il est null
-     */
-    private boolean testNullEmpty(HttpServletRequest request, HttpServletResponse response) {
-        org.slf4j.Logger logger = org.slf4j.LoggerFactory.getLogger(EditComputer.class);
-        if (request.getParameter("id") == null) {
-            RequestDispatcher rd =
-                    request.getRequestDispatcher(INDEX);
-            try {
-                rd.forward(request, response);
-                return true;
-            } catch (Exception e) {
-                logger.warn(e.getMessage());
-            }
-        }
-        if (request.getParameter("id").isEmpty()) {
-            RequestDispatcher rd =
-                    request.getRequestDispatcher(INDEX);
-            try {
-                rd.forward(request, response);
-                return true;
-            } catch (Exception e) {
-                logger.warn(e.getMessage());
-            }
-        }
-        return false;
-    }
-
-    /**
-     *
-     * @param request la requête
-     * @param response la réponse
-     * @param id l'id de l'ordinateur
-     * @return si il existe
-     */
-    private boolean testComputerNotExist(HttpServletRequest request, HttpServletResponse response, int id) {
-        org.slf4j.Logger logger = org.slf4j.LoggerFactory.getLogger(EditComputer.class);
-        if (!computerValidator.exist(id)) {
-            RequestDispatcher rd =
-                    request.getRequestDispatcher("/WEB-INF/404.jsp");
-            try {
-                rd.forward(request, response);
-                return true;
-            } catch (Exception e) {
-                logger.warn(e.getMessage());
-            }
-        }
-        return false;
-    }
-
-    /**
-     * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
-     */
-    @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        org.slf4j.Logger logger = org.slf4j.LoggerFactory.getLogger(EditComputer.class);
-        int id = 0;
-        if (testNullEmpty(request, response)) {
-            return;
-        }
-        try {
-            id = Integer.parseInt(request.getParameter("id"));
-        } catch (Exception e) {
-            logger.warn(e.getMessage());
-        }
-        if (testComputerNotExist(request, response, id)) {
-            return;
+    
+    @GetMapping
+    public ModelAndView handleGet(@RequestParam(value = "id", defaultValue = "0") int id) {
+        if ((id == 0)||(!computerValidator.exist(id))) {
+            return new ModelAndView(DASHBOARD);
         }
         ComputerDTO computerDTO = null;
         try {
@@ -126,54 +55,29 @@ public class EditComputer extends HttpServlet {
             }
         } catch (ServiceException e) {
             logger.warn(e.getMessage());
-            RequestDispatcher rd = request.getRequestDispatcher(INDEX);
-            try {
-                rd.forward(request, response);
-            } catch (Exception e1) {
-                logger.warn(e.getMessage());
-            }
+            return new ModelAndView(DASHBOARD);
         }
-        request.setAttribute("id", id);
-        request.setAttribute("computer", computerDTO);
-        request.setAttribute("companies", companiesService.listCompanies());
-        try {
-            RequestDispatcher rd =
-                    request.getRequestDispatcher("/WEB-INF/editComputer.jsp");
-            rd.forward(request, response);
-        } catch (Exception e) {
-            logger.warn(e.getMessage());
-        }
+        ModelAndView modelAndView = new ModelAndView("editComputer");
+        modelAndView.addObject("id", id);
+        modelAndView.addObject("computer", computerDTO);
+        modelAndView.addObject("companies", companiesService.listCompanies());
+        return modelAndView;
     }
-
-    /**
-     * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-     */
-    @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        org.slf4j.Logger logger = org.slf4j.LoggerFactory.getLogger(EditComputer.class);
-        int id = 0;
-        try {
-            id = Integer.parseInt(request.getParameter("id"));
-        } catch (Exception e) {
-            logger.debug(e.getMessage());
-        }
-        Computer computer = postComputer(request);
-        computer.setId(id);
+    
+    @PostMapping
+    public ModelAndView handlePost(@RequestParam(value = "id", defaultValue = "0") int id,
+            @RequestParam(value = "computerName", defaultValue = "") String name,
+            @RequestParam(value = "introduced", defaultValue = "")  String introduced,
+            @RequestParam(value = "discontinued", defaultValue = "") String discontinued,
+            @RequestParam(value = "companyId", defaultValue = "") String companyId) {
+        Computer computer = postComputer(name,introduced,discontinued,companyId);
         try {
             computerService.updateAComputer(computer, id);
         } catch (ServiceException e) {
             logger.warn(e.getMessage());
-            try {
-                response.sendRedirect(request.getContextPath() + "/dashboard");
-            } catch (Exception e1) {
-                logger.debug(e1.getMessage());
-            }
+            return new ModelAndView(DASHBOARD);
         }
-        try {
-            response.sendRedirect(request.getContextPath() + "/dashboard");
-        } catch (Exception e) {
-            logger.debug(e.getMessage());
-        }
+        return new ModelAndView(DASHBOARD);
     }
 
     /**
@@ -181,13 +85,13 @@ public class EditComputer extends HttpServlet {
      * @param request la requete
      * @return l'ordinateur construit grâce à elle
      */
-    private Computer postComputer(HttpServletRequest request) {
+    private Computer postComputer(String name, String introduced, String discontinued, String CompanyId) {
         ComputerDTO computerDTO = new ComputerDTO();
 
-        computerDTO.setName(request.getParameter("computerName"));
-        computerDTO.setIntroduced(request.getParameter("introduced"));
-        computerDTO.setDiscontinued(request.getParameter("discontinued"));
-        computerDTO.setCompany(request.getParameter("companyId"));
+        computerDTO.setName(name);
+        computerDTO.setIntroduced(introduced);
+        computerDTO.setDiscontinued(discontinued);
+        computerDTO.setCompany(CompanyId);
         return computerMapper.computerDTOToComputer(computerDTO);
     }
 
