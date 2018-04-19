@@ -35,8 +35,7 @@ public class ComputerValidatorTest extends TestCase {
 
 	@Test
 	public void testExist() throws ParseException, IncoherentDatesException, CompaniesIdIncorrectException, CompaniesInexistantException {
-		Computer Test = new Computer();
-		Test.setName("Test_Computer");
+		Computer Test = new Computer("Test_Computer");
 		Date date = formatter.parse("1999/12/5");
 		Test.setIntroduced(date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
 		Test.setDiscontinued(date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate());

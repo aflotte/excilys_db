@@ -39,8 +39,7 @@ public class ComputerMapper {
      * @throws SQLException en cas d'erreur de connection
      */
     public static Computer resultToComputer(ResultSet resultSet) throws SQLException {
-        Computer toReturn = new Computer();
-        toReturn.setName(resultSet.getString(1));
+        Computer toReturn = new Computer(resultSet.getString(1));
         if (resultSet.getDate(2) != null) {
             toReturn.setIntroduced(resultSet.getDate(2).toLocalDate());
         } else {
@@ -101,15 +100,13 @@ public class ComputerMapper {
     public Computer computerDTOToComputer(ComputerDTO computer) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         formatter = formatter.withLocale(Locale.FRANCE);
-        Computer toReturn = new Computer();
+        Computer toReturn = new Computer(computer.getName());
         toReturn.setId(computer.getId());
         Company company = new Company();
         company.setName(computer.getCompany());
         Integer id = companies.getCompagnyId(computer.getCompany());
         company.setId(id);
-
         toReturn.setCompany(company);
-        toReturn.setName(computer.getName());
         if (computer.getDiscontinued() != null) {
 
             try {

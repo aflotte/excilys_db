@@ -13,9 +13,8 @@ public class RowMapperComputer implements RowMapper<Computer>{
 
     @Override
     public Computer mapRow(ResultSet rs, int rowNum) throws SQLException {
-        Computer result = new Computer();
+        Computer result = new Computer(rs.getString("computer.name"));
         result.setId(rs.getInt("computer.id"));
-        result.setName(rs.getString("computer.name"));
         if (rs.getDate("computer.introduced")!=null) {
             result.setIntroduced(rs.getDate("computer.introduced").toLocalDate());
         }else {

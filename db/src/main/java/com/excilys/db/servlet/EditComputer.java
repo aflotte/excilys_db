@@ -5,9 +5,10 @@ import java.util.Optional;
 import javax.servlet.http.HttpServlet;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -21,7 +22,6 @@ import com.excilys.db.validator.ComputerValidator;
 
 
 @Controller
-@RequestMapping(value = "/editComputer")
 public class EditComputer {
     org.slf4j.Logger logger = org.slf4j.LoggerFactory.getLogger(EditComputer.class);
     private static final String DASHBOARD = "redirect:/dashboard";
@@ -42,7 +42,7 @@ public class EditComputer {
     private ComputerMapper computerMapper;
 
     
-    @GetMapping
+    @GetMapping("/editComputer")
     public ModelAndView handleGet(@RequestParam(value = "id", defaultValue = "0") int id) {
         if ((id == 0)||(!computerValidator.exist(id))) {
             return new ModelAndView(DASHBOARD);
@@ -64,35 +64,17 @@ public class EditComputer {
         return modelAndView;
     }
     
-    @PostMapping
-    public ModelAndView handlePost(@RequestParam(value = "id", defaultValue = "0") int id,
-            @RequestParam(value = "computerName", defaultValue = "") String name,
-            @RequestParam(value = "introduced", defaultValue = "")  String introduced,
-            @RequestParam(value = "discontinued", defaultValue = "") String discontinued,
-            @RequestParam(value = "companyId", defaultValue = "") String companyId) {
-        Computer computer = postComputer(name,introduced,discontinued,companyId);
+    @PostMapping("/editComputer")
+    public String handlePost(ModelMap model, @ModelAttribute("computerDTO") ComputerDTO computerDTO, @RequestParam(value = "id", defaultValue = "0") int id) {
         try {
+            Computer computer = computerMapper.computerDTOToComputer(computerDTO);
             computerService.updateAComputer(computer, id);
         } catch (ServiceException e) {
             logger.warn(e.getMessage());
-            return new ModelAndView(DASHBOARD);
+            return DASHBOARD;
         }
-        return new ModelAndView(DASHBOARD);
+        return DASHBOARD;
     }
 
-    /**
-     *
-     * @param request la requete
-     * @return l'ordinateur construit grâce à elle
-     */
-    private Computer postComputer(String name, String introduced, String discontinued, String CompanyId) {
-        ComputerDTO computerDTO = new ComputerDTO();
-
-        computerDTO.setName(name);
-        computerDTO.setIntroduced(introduced);
-        computerDTO.setDiscontinued(discontinued);
-        computerDTO.setCompany(CompanyId);
-        return computerMapper.computerDTOToComputer(computerDTO);
-    }
 
 }

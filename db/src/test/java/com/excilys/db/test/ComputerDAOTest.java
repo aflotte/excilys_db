@@ -70,8 +70,7 @@ public class ComputerDAOTest {
 
     @Test
     public void testListComputer() throws CompaniesInexistantException, IncoherentDatesException, CompaniesIdIncorrectException {
-        Computer McBook = new Computer();
-        McBook.setName("CM-200");
+        Computer McBook = new Computer("CM-200");
         McBook.setIntroduced(null);
         McBook.setDiscontinued(null);
         Company companie = new Company(2);
@@ -84,8 +83,7 @@ public class ComputerDAOTest {
     
     @Test
     public void testShowDetails() throws CompaniesInexistantException, IncoherentDatesException, CompaniesIdIncorrectException {
-        Computer McBook = new Computer();
-        McBook.setName("CM-200");
+        Computer McBook = new Computer("CM-200");
         McBook.setIntroduced(null);
         McBook.setDiscontinued(null);
         Company companie = new Company(2);
@@ -102,8 +100,7 @@ public class ComputerDAOTest {
 
     @Test
     public void testCreateAComputerDatesNullCompanieNull() {
-        Computer Test = new Computer();
-        Test.setName("Test_Computer");
+        Computer Test = new Computer("Test_Computer");
         Test.setIntroduced(null);
         Test.setDiscontinued(null);
         computer.createAComputer(Test);
@@ -111,8 +108,7 @@ public class ComputerDAOTest {
 
     @Test
     public void testCreateAComputerDatesNull() throws CompaniesInexistantException, IncoherentDatesException, CompaniesIdIncorrectException {
-        Computer Test = new Computer();
-        Test.setName("Test_Computer");
+        Computer Test = new Computer("Test_Computer");
         Test.setIntroduced(null);
         Test.setDiscontinued(null);
         Company companie = new Company(1);
@@ -123,8 +119,7 @@ public class ComputerDAOTest {
 
     @Test
     public void testCreateAComputerDateIntroNull() throws ParseException, CompaniesInexistantException, IncoherentDatesException, CompaniesIdIncorrectException {
-        Computer Test = new Computer();
-        Test.setName("Test_Computer");
+        Computer Test = new Computer("Test_Computer");
         Test.setIntroduced(null);
         Date date = formatter.parse("1999/12/5");
         Test.setDiscontinued(date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
@@ -136,8 +131,7 @@ public class ComputerDAOTest {
 
     @Test
     public void testCreateAComputerDateDiscNull() throws ParseException, CompaniesInexistantException, IncoherentDatesException, CompaniesIdIncorrectException {
-        Computer Test = new Computer();
-        Test.setName("Test_Computer");
+        Computer Test = new Computer("Test_Computer");
         Date date = formatter.parse("1999/12/5");
         Test.setIntroduced(date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
         Test.setDiscontinued(null);
@@ -149,8 +143,7 @@ public class ComputerDAOTest {
 
     @Test
     public void testCreateAComputerDateNotNull() throws ParseException, CompaniesInexistantException, IncoherentDatesException, CompaniesIdIncorrectException {
-        Computer Test = new Computer();
-        Test.setName("Test_Computer");
+        Computer Test = new Computer("Test_Computer");
         Date date = formatter.parse("1999/12/5");
         Test.setIntroduced(date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
         Test.setDiscontinued(date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
@@ -162,8 +155,7 @@ public class ComputerDAOTest {
 
     @Test
     public void testUpdateAComputerDatesNullCompanieNull() throws IncoherentDatesException, CompaniesIdIncorrectException, CompaniesInexistantException {
-        Computer Test = new Computer();
-        Test.setName("Test_Computer");
+        Computer Test = new Computer("Test_Computer");
         Test.setIntroduced(null);
         Test.setDiscontinued(null);
         Company companie = new Company();
@@ -174,8 +166,7 @@ public class ComputerDAOTest {
 
     @Test
     public void testUpdateAComputerDatesNull() throws CompaniesInexistantException, IncoherentDatesException, CompaniesIdIncorrectException {
-        Computer Test = new Computer();
-        Test.setName("Test_Computer");
+        Computer Test = new Computer("Test_Computer");
         Test.setIntroduced(null);
         Test.setDiscontinued(null);
         Test.setCompany(companiesDAO.getCompany(1).get());
@@ -186,8 +177,7 @@ public class ComputerDAOTest {
     
     @Test
     public void testUpdateAComputerDateIntroNull() throws ParseException, CompaniesInexistantException, IncoherentDatesException, CompaniesIdIncorrectException {
-        Computer Test = new Computer();
-        Test.setName("Test_Computer");
+        Computer Test = new Computer("Test_Computer");
         Test.setIntroduced(null);
         Date date = formatter.parse("1999/12/5");
         Test.setDiscontinued(date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
@@ -200,8 +190,7 @@ public class ComputerDAOTest {
 
     @Test
     public void testUpdateAComputerDateDiscNull() throws ParseException, CompaniesInexistantException, IncoherentDatesException, CompaniesIdIncorrectException {
-        Computer Test = new Computer();
-        Test.setName("Test_Computer");
+        Computer Test = new Computer("Test_Computer");
         Date date = formatter.parse("1999/12/5");
         Test.setIntroduced(date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
         Test.setDiscontinued(null);
@@ -214,8 +203,7 @@ public class ComputerDAOTest {
 
     @Test
     public void testUpdateAComputerDateNotNull() throws ParseException, CompaniesInexistantException, IncoherentDatesException, CompaniesIdIncorrectException {
-        Computer Test = new Computer();
-        Test.setName("Test_Computer");
+        Computer Test = new Computer("Test_Computer");
         Date date = formatter.parse("1999/12/5");
         Test.setIntroduced(date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
         Test.setDiscontinued(date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
@@ -233,8 +221,7 @@ public class ComputerDAOTest {
 
     @Test
     public void testDelete() throws IncoherentDatesException, CompaniesIdIncorrectException, CompaniesInexistantException {
-        Computer Test = new Computer();
-        Test.setName("Test_Destruction");
+        Computer Test = new Computer("Test_Destruction");
         Test.setIntroduced(null);
         Test.setDiscontinued(null);
         computer.createAComputer(Test);

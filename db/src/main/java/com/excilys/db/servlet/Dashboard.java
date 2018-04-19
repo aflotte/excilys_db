@@ -6,7 +6,6 @@ import java.text.MessageFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import org.springframework.web.servlet.ModelAndView;
@@ -18,7 +17,6 @@ import com.excilys.db.page.IPageComputerDTO;
  */
 
 @Controller
-@RequestMapping(value = "/dashboard")
 public class Dashboard {
     static org.slf4j.Logger logger = org.slf4j.LoggerFactory.getLogger(Dashboard.class);
     private static final String ORDER_BY = "orderBy";
@@ -38,7 +36,7 @@ private static final String DEFAULT_ORDER = "asc";
         this.pageComputer = pageComputer;
     }
     
-    @GetMapping
+    @GetMapping("/dashboard")
     public ModelAndView handleGet(@RequestParam(value = ACTUAL_PAGE, defaultValue = DEFAULT_PAGE) int actualPage,
             @RequestParam(value = PAGE_SIZE, defaultValue = DEFAULT_PAGE_SIZE) int sizePage,
             @RequestParam(value = SEARCH, defaultValue = DEFAULT_SEARCH) String search,
@@ -66,7 +64,7 @@ private static final String DEFAULT_ORDER = "asc";
         return modelAndView;
     }
 
-    @PostMapping
+    @PostMapping("/dashboard")
     public ModelAndView handlePost() {
         ModelAndView modelAndView = new ModelAndView("index");
         return modelAndView;

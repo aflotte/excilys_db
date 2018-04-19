@@ -18,7 +18,8 @@ import javax.sql.DataSource;
         "com.excilys.db.page",
         "com.excilys.db.mapper",
         "com.excilys.db.cli",
-        "com.excilys.db.validator"
+        "com.excilys.db.validator",
+        "com.excilys.db.controller"
 })
 public class CLIConfig {
 

@@ -75,14 +75,6 @@ public class ComputerValidator {
         }
         return false;
     }
-    
-    public boolean checkName(String name) {
-        if (name == null) {
-            return false;
-        }
-        final Pattern pattern = Pattern.compile("^[\\wÀ-ÿ]+[\\wÀ-ÿ_\\-'\\+\\*. ]+$");
-        return pattern.matcher(name).matches();
-    }
 
     /**
      *
@@ -93,15 +85,12 @@ public class ComputerValidator {
      * @throws ValidatorException exception levé par le validateur
      * @throws ComputerNameStrangeException 
      */
-    public boolean validate(Computer computer) throws IncoherentDatesException, CompaniesIdIncorrectException, ValidatorException, ComputerNameStrangeException {
+    public boolean validate(Computer computer) throws IncoherentDatesException, CompaniesIdIncorrectException, ValidatorException {
         if (testDate(computer)) {
             throw new IncoherentDatesException();
         }
         if (!companiesValidator.check(computer.getCompany())) {
             throw new CompaniesIdIncorrectException();
-        }
-        if (!checkName(computer.getName())) {
-            throw new ComputerNameStrangeException();
         }
         return true;
     }

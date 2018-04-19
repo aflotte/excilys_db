@@ -169,7 +169,7 @@ public class CLI {
      *
      */
     public void ajouterOrdinateur() {
-        Computer aAjouter = new Computer();
+        Computer aAjouter = null;
             try {
                 aAjouter = scannerCLI.scanComputer(scanner);
             } catch (InputMismatchException | CompaniesIdIncorrectException | IncoherentDatesException e1) {
@@ -225,7 +225,7 @@ public class CLI {
      *
      */
     private void mettreAJour() {
-        Computer aAjouter = new Computer();
+        Computer aAjouter = null;
         try {
             aAjouter = scannerCLI.scanComputer(scanner);
         } catch (IncoherentDatesException e) {

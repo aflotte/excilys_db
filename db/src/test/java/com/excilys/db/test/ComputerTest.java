@@ -63,8 +63,7 @@ public class ComputerTest extends TestCase {
 
     @Test
     public void testToString() throws IncoherentDatesException, CompaniesIdIncorrectException, CompaniesInexistantException {
-        Computer comp = new Computer();
-        comp.setName("Name");
+        Computer comp = new Computer("Name");
         comp.setIntroduced(null);
         comp.setDiscontinued(null);
         Company companie = new Company(10);
@@ -75,8 +74,7 @@ public class ComputerTest extends TestCase {
     
     @Test
     public void testToStringCompanyNull() throws IncoherentDatesException, CompaniesIdIncorrectException, CompaniesInexistantException {
-        Computer comp = new Computer();
-        comp.setName("Name");
+        Computer comp = new Computer("Name");
         comp.setIntroduced(null);
         comp.setDiscontinued(null);
         Company companie = null;
@@ -86,13 +84,11 @@ public class ComputerTest extends TestCase {
 
     @Test
     public void testEqualsTrue() throws IncoherentDatesException, CompaniesIdIncorrectException, CompaniesInexistantException {
-        Computer comp = new Computer();
-        comp.setName("Name");
+        Computer comp = new Computer("Name");
         comp.setIntroduced(null);
         comp.setDiscontinued(null);
         comp.setCompany(new Company(10));
-        Computer comp2 = new Computer();
-        comp2.setName("Name");
+        Computer comp2 = new Computer("Name");
         comp2.setIntroduced(null);
         comp2.setDiscontinued(null);
         comp2.setCompany(new Company(10));
@@ -102,8 +98,7 @@ public class ComputerTest extends TestCase {
 
     @Test
     public void testEqualsSame() throws IncoherentDatesException, CompaniesIdIncorrectException, CompaniesInexistantException {
-        Computer comp = new Computer();
-        comp.setName("Name");
+        Computer comp = new Computer("Name");
         comp.setIntroduced(null);
         comp.setDiscontinued(null);
         comp.setCompany(new Company(10));
@@ -114,8 +109,7 @@ public class ComputerTest extends TestCase {
     @SuppressWarnings("unlikely-arg-type")
     @Test
     public void testEqualsFalseClass() throws IncoherentDatesException, CompaniesIdIncorrectException, CompaniesInexistantException {
-        Computer comp = new Computer();
-        comp.setName("Name");
+        Computer comp = new Computer("Name");
         comp.setIntroduced(null);
         comp.setDiscontinued(null);
         comp.setCompany(new Company(10));
@@ -126,13 +120,11 @@ public class ComputerTest extends TestCase {
 
     @Test
     public void testEqualsFalseName() throws IncoherentDatesException, CompaniesIdIncorrectException, CompaniesInexistantException {
-        Computer comp = new Computer();
-        comp.setName("Name");
+        Computer comp = new Computer("Name");
         comp.setIntroduced(null);
         comp.setDiscontinued(null);
         comp.setCompany(new Company(10));
-        Computer comp2 = new Computer();
-        comp2.setName("Name2");
+        Computer comp2 = new Computer("Name2");
         comp2.setIntroduced(null);
         comp2.setDiscontinued(null);
         comp2.setCompany(new Company(10));
@@ -142,14 +134,12 @@ public class ComputerTest extends TestCase {
 
     @Test
     public void testEqualsFalseIntroduced() throws ParseException, IncoherentDatesException, CompaniesIdIncorrectException, CompaniesInexistantException {
-        Computer comp = new Computer();
-        comp.setName("Name");
+        Computer comp = new Computer("Name");
         Date date = formatter.parse("1999/12/6");
         comp.setIntroduced(date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
         comp.setDiscontinued(null);
         comp.setCompany(new Company(10));
-        Computer comp2 = new Computer();
-        comp2.setName("Name");
+        Computer comp2 = new Computer("Name");
         Date date2 = formatter.parse("1999/12/5");
         comp2.setIntroduced(date2.toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
         comp2.setDiscontinued(null);
@@ -160,14 +150,12 @@ public class ComputerTest extends TestCase {
     
     @Test
     public void testEqualsFalseDiscontinued() throws ParseException, IncoherentDatesException, CompaniesIdIncorrectException, CompaniesInexistantException {
-        Computer comp = new Computer();
-        comp.setName("Name");
+        Computer comp = new Computer("Name");
         Date date = formatter.parse("1999/12/6");
         comp.setIntroduced(null);
         comp.setDiscontinued(date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
         comp.setCompany(new Company(10));
-        Computer comp2 = new Computer();
-        comp2.setName("Name");
+        Computer comp2 = new Computer("Name");
         Date date2 = formatter.parse("1999/12/5");
         comp2.setIntroduced(null);
         comp2.setDiscontinued(date2.toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
@@ -178,14 +166,12 @@ public class ComputerTest extends TestCase {
     
     @Test
     public void testEqualsTrueIntroduced() throws ParseException, IncoherentDatesException, CompaniesIdIncorrectException, CompaniesInexistantException {
-        Computer comp = new Computer();
-        comp.setName("Name");
+        Computer comp = new Computer("Name");
         Date date = formatter.parse("1999/12/5");
         comp.setIntroduced(date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
         comp.setDiscontinued(null);
         comp.setCompany(new Company(10));
-        Computer comp2 = new Computer();
-        comp2.setName("Name");
+        Computer comp2 = new Computer("Name");
         comp2.setIntroduced(date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
         comp2.setDiscontinued(null);
         comp2.setCompany(new Company(10));
@@ -196,14 +182,12 @@ public class ComputerTest extends TestCase {
     
     @Test
     public void testEqualsTrueDiscontinued() throws ParseException, IncoherentDatesException, CompaniesIdIncorrectException, CompaniesInexistantException {
-        Computer comp = new Computer();
-        comp.setName("Name");
+        Computer comp = new Computer("Name");
         Date date = formatter.parse("1999/12/5");
         comp.setIntroduced(null);
         comp.setDiscontinued(date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
         comp.setCompany(new Company(10));
-        Computer comp2 = new Computer();
-        comp2.setName("Name");
+        Computer comp2 = new Computer("Name");
         comp2.setIntroduced(null);
         comp2.setDiscontinued(date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
         comp2.setCompany(new Company(10));
@@ -213,13 +197,11 @@ public class ComputerTest extends TestCase {
 
     @Test
     public void testEqualsFalseNullIntroduced() throws ParseException, IncoherentDatesException, CompaniesIdIncorrectException, CompaniesInexistantException {
-        Computer comp = new Computer();
-        comp.setName("Name");
+        Computer comp = new Computer("Name");
         comp.setIntroduced(null);
         comp.setDiscontinued(null);
         comp.setCompany(new Company(10));
-        Computer comp2 = new Computer();
-        comp2.setName("Name");
+        Computer comp2 = new Computer("Name");
         Date date = formatter.parse("1999/12/5");
         comp2.setIntroduced(date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
         comp2.setDiscontinued(null);
@@ -231,13 +213,11 @@ public class ComputerTest extends TestCase {
     
     @Test
     public void testEqualsFalseNullDiscontinued() throws ParseException, IncoherentDatesException, CompaniesIdIncorrectException, CompaniesInexistantException {
-        Computer comp = new Computer();
-        comp.setName("Name");
+        Computer comp = new Computer("Name");
         comp.setIntroduced(null);
         comp.setDiscontinued(null);
         comp.setCompany(new Company(10));
-        Computer comp2 = new Computer();
-        comp2.setName("Name");
+        Computer comp2 = new Computer("Name");
         Date date = formatter.parse("1999/12/5");
         comp2.setIntroduced(null);
         comp2.setDiscontinued(date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
@@ -247,13 +227,11 @@ public class ComputerTest extends TestCase {
     }
     @Test
     public void testEqualsTrueNullDiscontinued() throws ParseException, IncoherentDatesException, CompaniesIdIncorrectException, CompaniesInexistantException {
-        Computer comp = new Computer();
-        comp.setName("Name");
+        Computer comp = new Computer("Name");
         comp.setIntroduced(null);
         comp.setDiscontinued(null);
         comp.setCompany(new Company(10));
-        Computer comp2 = new Computer();
-        comp2.setName("Name");
+        Computer comp2 = new Computer("Name");
         comp2.setIntroduced(null);
         comp2.setDiscontinued(null);
         comp2.setCompany(new Company(10));
@@ -263,13 +241,11 @@ public class ComputerTest extends TestCase {
 
     @Test
     public void testEqualsFalseCompanyId() throws IncoherentDatesException, CompaniesIdIncorrectException, CompaniesInexistantException{
-        Computer comp = new Computer();
-        comp.setName("Name");
+        Computer comp = new Computer("Name");
         comp.setIntroduced(null);
         comp.setDiscontinued(null);
         comp.setCompany(new Company(10));
-        Computer comp2 = new Computer();
-        comp2.setName("Name2");
+        Computer comp2 = new Computer("Name");
         comp2.setIntroduced(null);
         comp2.setDiscontinued(null);
         comp2.setCompany(new Company(11));
@@ -279,24 +255,21 @@ public class ComputerTest extends TestCase {
     
     @Test
     public void testEqualsTrueNullCompanyId() throws IncoherentDatesException, CompaniesIdIncorrectException, CompaniesInexistantException{
-        Computer comp = new Computer();
-        comp.setName("Name");
+        Computer comp = new Computer("Name");
         comp.setIntroduced(null);
         comp.setDiscontinued(null);
         comp.setCompany(null);
-        Computer comp2 = new Computer();
-        comp2.setName("Name2");
+        Computer comp2 = new Computer("Name");
         comp2.setIntroduced(null);
         comp2.setDiscontinued(null);
         comp2.setCompany(null);
-        assertEquals(false,comp.equals(comp2));
-        assertTrue(comp.hashCode() != comp2.hashCode());
+        assertEquals(true,comp.equals(comp2));
+        assertTrue(comp.hashCode() == comp2.hashCode());
     }
     
     @Test
     public void testEqualsNull() throws IncoherentDatesException, CompaniesIdIncorrectException, CompaniesInexistantException{
-        Computer comp = new Computer();
-        comp.setName("Name");
+        Computer comp = new Computer("Name");
         comp.setIntroduced(null);
         comp.setDiscontinued(null);
         comp.setCompany(new Company(10));

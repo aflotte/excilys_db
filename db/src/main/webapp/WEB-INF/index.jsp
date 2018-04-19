@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <%@ page language="java" contentType="text/html; charset=UTF-8" %>
  <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+ <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 <html>
 <head>
 <title>Computer Database</title>
@@ -39,9 +40,9 @@
             </div>
         </div>
 
-        <form id="deleteForm" action="delete" method="POST">
+        <form:form id="deleteForm" action="delete" method="POST" >
             <input type="hidden" name="selection" value="">
-        </form>
+        </form:form>
 
         <div class="container" style="margin-top: 10px;">
             <table class="table table-striped table-bordered">

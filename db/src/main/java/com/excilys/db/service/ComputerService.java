@@ -69,7 +69,7 @@ public class ComputerService implements IComputerService {
             if (computerValidator.validate(aAjouter)) {
                 return computer.createAComputer(aAjouter);
             }
-        } catch (IncoherentDatesException | CompaniesIdIncorrectException | DAOAccesExeption | ValidatorException | ComputerNameStrangeException e) {
+        } catch (IncoherentDatesException | CompaniesIdIncorrectException | DAOAccesExeption | ValidatorException e) {
             logger.warn(e.getMessage());
             throw new ServiceException();
         }
@@ -106,7 +106,7 @@ public class ComputerService implements IComputerService {
             if (computerValidator.validate(aAjouter)) {
                 computer.updateAComputer(aAjouter, toUpdate);
             }
-        } catch (IncoherentDatesException | CompaniesIdIncorrectException | DAOAccesExeption | ValidatorException | ComputerNameStrangeException e) {
+        } catch (IncoherentDatesException | CompaniesIdIncorrectException | DAOAccesExeption | ValidatorException e) {
             logger.warn(e.getMessage());
             throw new ServiceException();
         }

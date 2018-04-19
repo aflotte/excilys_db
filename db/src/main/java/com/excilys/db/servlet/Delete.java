@@ -7,14 +7,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.excilys.db.service.IComputerService;
 
 @Controller
-@RequestMapping(value = "/delete")
 public class Delete {
     static org.slf4j.Logger logger = org.slf4j.LoggerFactory.getLogger(AddComputer.class);
     private static final String SELECTION = "selection";
@@ -27,7 +25,7 @@ public class Delete {
         this.computerService = computerService;
     }
     
-    @GetMapping
+    @GetMapping("/delete")
     public ModelAndView handleGet(@RequestParam(value = SELECTION, defaultValue = DEFAULT_VALUE) String toDeleteString) {
         logger.warn(toDeleteString);
         if (!toDeleteString.equals(DEFAULT_VALUE)) {
@@ -46,7 +44,7 @@ public class Delete {
         return new ModelAndView("redirect:/dashboard");
     }
     
-    @PostMapping
+    @PostMapping("/delete")
     public ModelAndView handlePost(@RequestParam(value = SELECTION, defaultValue = DEFAULT_VALUE) String toDeleteString) {
         return handleGet(toDeleteString);
     }
