@@ -43,6 +43,7 @@
         <jacoco.version>0.8.0</jacoco.version>
         <jcloverslf4j.version>1.7.6</jcloverslf4j.version>
         <maven-war.version>3.2.0</maven-war.version>
+        <hibernate.version>4.1.9.Final</hibernate.version>
     </properties>
     <build>
         <plugins>
@@ -307,6 +308,11 @@
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-web</artifactId>
             <version>${spring.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-entitymanager</artifactId>
+            <version>${hibernate.version}</version>
         </dependency>
     </dependencies>
 </project>

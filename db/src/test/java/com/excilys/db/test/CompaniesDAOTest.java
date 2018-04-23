@@ -11,6 +11,8 @@ import java.io.InputStreamReader;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.sql.DataSource;
@@ -84,5 +86,24 @@ public class CompaniesDAOTest {
     @Test
     public void testExistCompanyFalse() {
         assertFalse(companiesDAO.existCompanies(15));
+    }
+    
+    @Test
+    public void testListCompany() {
+        Company company = new Company();
+        company.setId(3);
+        company.setName("RCA");
+        assertEquals(company,companiesDAO.listCompanies().get(2));
+    }
+    
+    @Test
+    public void testGetCompanyNull() {
+        assertFalse(companiesDAO.getCompany(15869).isPresent());
+    }
+    
+    @Test
+    public void testComputerFromCompany() {
+        List<Integer> computers = new ArrayList<>(Arrays.asList(2,3,4,5,14,15));
+        assertEquals(computers, companiesDAO.computerFromCompany(2));
     }
 }
