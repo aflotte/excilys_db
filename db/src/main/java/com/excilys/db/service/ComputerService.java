@@ -144,8 +144,6 @@ public class ComputerService implements IComputerService {
         return computer.listComputerLike(offset, limit, name, "computer.id", "asc");
     }
 
-    
-    //TODO : passer en transactional
     /* (non-Javadoc)
      * @see com.excilys.db.service.IComputerService#deleteListComputer(int[])
      */

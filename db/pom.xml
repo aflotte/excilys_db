@@ -44,6 +44,7 @@
         <jcloverslf4j.version>1.7.6</jcloverslf4j.version>
         <maven-war.version>3.2.0</maven-war.version>
         <hibernate.version>4.1.9.Final</hibernate.version>
+        <javassit.version>3.18.2-GA</javassit.version>
     </properties>
     <build>
         <plugins>
@@ -313,6 +314,11 @@
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-entitymanager</artifactId>
             <version>${hibernate.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.javassist</groupId>
+            <artifactId>javassist</artifactId>
+            <version>${javassit.version}</version>
         </dependency>
     </dependencies>
 </project>
