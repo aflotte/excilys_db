@@ -6,6 +6,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.excilys.db.exception.CompaniesIdIncorrectException;
 import com.excilys.db.exception.DAOAccesExeption;
@@ -148,6 +149,7 @@ public class ComputerService implements IComputerService {
     /* (non-Javadoc)
      * @see com.excilys.db.service.IComputerService#deleteListComputer(int[])
      */
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public void deleteListComputer(List<Integer> ids) {
         computer.deleteListComputer(ids);

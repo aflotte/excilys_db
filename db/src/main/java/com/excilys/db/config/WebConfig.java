@@ -12,6 +12,7 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
+import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
@@ -50,11 +51,16 @@ public class WebConfig implements WebMvcConfigurer {
 
     @Value("${dbpassword}")
     private String password;
-    
+
     @Bean
     public static PropertySourcesPlaceholderConfigurer propertySourcesPlaceholderConfigurer() {
         return new PropertySourcesPlaceholderConfigurer();
-}
+    }
+
+    @Bean
+    public DataSourceTransactionManager txManager() {
+        return new DataSourceTransactionManager(dataSource());
+    }
 
     @Bean
     public ReloadableResourceBundleMessageSource messageSource(){
@@ -101,8 +107,8 @@ public class WebConfig implements WebMvcConfigurer {
         driverManagerDataSource.setDriverClassName(driverClassName);
         return driverManagerDataSource;
     }
-    
-    
+
+
 
     @Override
     public void addResourceHandlers(final ResourceHandlerRegistry registry) {

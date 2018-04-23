@@ -46,6 +46,10 @@ public class ControllerComputer {
     private static final String COMPUTER = "computer";
 
     private IPageComputerDTO pageComputer;
+    private ICompaniesService companiesService;
+    private IComputerService computerService;
+    private ComputerMapper computerMapper;
+    private ComputerValidator computerValidator;
 
     public ControllerComputer(IPageComputerDTO pageComputer, ComputerValidator computerValidator, ICompaniesService companiesService, IComputerService computerService, ComputerMapper computerMapper) {
         this.pageComputer = pageComputer;
@@ -87,11 +91,6 @@ public class ControllerComputer {
     public ModelAndView handlePost() {
         return new ModelAndView("index");
     }
-
-    private ICompaniesService companiesService;
-    private IComputerService computerService;
-    private ComputerMapper computerMapper;
-    private ComputerValidator computerValidator;
 
     @GetMapping("/addComputer")
     public String handleGet(ModelMap model) {
@@ -196,11 +195,7 @@ public class ControllerComputer {
      */
     private String[] prepareSort(String toSort, String orderBy, ModelAndView modelAndView) {
         String preparation = "";
-        modelAndView.addObject("computerPath", "&sort=computer&orderBy=asc");
-        modelAndView.addObject("introducedPath", "&sort=introduced&orderBy=asc");
-        modelAndView.addObject("discontinuedPath", "&sort=discontinued&orderBy=asc");
-        modelAndView.addObject("companyPath", "&sort=company&orderBy=asc");
-        modelAndView.addObject(SORT_PATH, "");
+        initModelAndViewForPrepareSort(modelAndView);
         if (!toSort.equals(DEFAULT_SORT)) {
             switch (toSort) {
             case COMPUTER:
@@ -235,9 +230,16 @@ public class ControllerComputer {
         } else {
             orderBy = "asc";
         }
-
         modelAndView.addObject(SORT_PATH, preparation);
         return new String[]{toSort, orderBy};
+    }
+
+    private void initModelAndViewForPrepareSort(ModelAndView modelAndView) {
+        modelAndView.addObject("computerPath", "&sort=computer&orderBy=asc");
+        modelAndView.addObject("introducedPath", "&sort=introduced&orderBy=asc");
+        modelAndView.addObject("discontinuedPath", "&sort=discontinued&orderBy=asc");
+        modelAndView.addObject("companyPath", "&sort=company&orderBy=asc");
+        modelAndView.addObject(SORT_PATH, "");
     }
 
 }

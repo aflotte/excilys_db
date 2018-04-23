@@ -12,11 +12,13 @@ import com.excilys.db.service.IComputerService;
 
 
 @Component
-public class PageComputerCLI extends Page {
+public class PageComputerCLI {
 
     List<Computer> computers;
     int index;
     private Scanner sc;
+    protected int pageSize;
+    protected int pageNumber;
     @Autowired
     IComputerService computerService;
 
