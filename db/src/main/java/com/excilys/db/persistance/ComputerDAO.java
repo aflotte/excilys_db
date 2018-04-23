@@ -106,101 +106,88 @@ public class ComputerDAO implements IComputerDAO {
                                         id);
     }
 
-/* (non-Javadoc)
- * @see com.excilys.db.persistance.IComputerDAO#createAComputer(com.excilys.db.model.Computer)
- */
-    //TODO : passer en JDBC update simple 
-@Override
-public int createAComputer(Computer computer) {
-    NamedParameterJdbcTemplate vJdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
-    String vSQL = QUERRY_CREATE_COMPUTER;
-    MapSqlParameterSource vParams = new MapSqlParameterSource();
-    KeyHolder keyHolder = new GeneratedKeyHolder();
-    if (computer.getCompany() != null) {
-        vParams.addValue("companyId", computer.getCompany().getId());
-    }else {
-        vParams.addValue("companyId",null);
+    /* (non-Javadoc)
+     * @see com.excilys.db.persistance.IComputerDAO#createAComputer(com.excilys.db.model.Computer)
+     */
+    @Override
+    public int createAComputer(Computer computer) {
+        NamedParameterJdbcTemplate vJdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
+        String vSQL = QUERRY_CREATE_COMPUTER;
+        MapSqlParameterSource vParams = new MapSqlParameterSource();
+        KeyHolder keyHolder = new GeneratedKeyHolder();
+        vParams.addValue("companyId", computer.getCompany() == null ? null : computer.getCompany().getId());
+        vParams.addValue("name", computer.getName());
+        vParams.addValue("introduced", computer.getIntroduced() == null ? null : Date.valueOf(computer.getIntroduced()));
+        vParams.addValue("discontinued", computer.getDiscontinued() == null ? null : Date.valueOf(computer.getDiscontinued()));
+        vParams.addValue("id", computer.getId());
+        vJdbcTemplate.update(vSQL, vParams, keyHolder);
+        return keyHolder.getKey().intValue();
     }
-    vParams.addValue("name", computer.getName());
-    if (computer.getIntroduced() != null) {
-        vParams.addValue("introduced", Date.valueOf(computer.getIntroduced()));
-    } else {
-        vParams.addValue("introduced", null);
+
+    /* (non-Javadoc)
+     * @see com.excilys.db.persistance.IComputerDAO#getIdFromName(java.lang.String)
+     */
+    @Override
+    public List<Integer> getIdFromName(String name) {
+        JdbcTemplate vJdbcTemplate = new JdbcTemplate(dataSource);
+        return vJdbcTemplate.query(String.format(QUERRY_LIST_COMPUTER_BY_NAME,name),mapperInteger);
     }
-    if (computer.getDiscontinued() != null) {
-        vParams.addValue("discontinued", Date.valueOf(computer.getDiscontinued()));
-    } else {
-        vParams.addValue("discontinued", null);
+
+    /* (non-Javadoc)
+     * @see com.excilys.db.persistance.IComputerDAO#deleteAComputer(int)
+     */
+    @Override
+    public void deleteAComputer(int id) {
+        JdbcTemplate vJdbcTemplate = new JdbcTemplate(dataSource);
+        vJdbcTemplate.update(String.format(QUERRY_DELETE_COMPUTER,id));
     }
-    vParams.addValue("id", computer.getId());
-    vJdbcTemplate.update(vSQL, vParams,keyHolder);
-    return keyHolder.getKey().intValue();
-}
-
-/* (non-Javadoc)
- * @see com.excilys.db.persistance.IComputerDAO#getIdFromName(java.lang.String)
- */
-@Override
-public List<Integer> getIdFromName(String name) {
-    JdbcTemplate vJdbcTemplate = new JdbcTemplate(dataSource);
-    return vJdbcTemplate.query(String.format(QUERRY_LIST_COMPUTER_BY_NAME,name),mapperInteger);
-}
-
-/* (non-Javadoc)
- * @see com.excilys.db.persistance.IComputerDAO#deleteAComputer(int)
- */
-@Override
-public void deleteAComputer(int id) {
-    JdbcTemplate vJdbcTemplate = new JdbcTemplate(dataSource);
-    vJdbcTemplate.update(String.format(QUERRY_DELETE_COMPUTER,id));
-}
 
 
-/* (non-Javadoc)
- * @see com.excilys.db.persistance.IComputerDAO#deleteListComputer(int[])
- */
-@Override
-public void deleteListComputer(List<Integer> ids) {
-    for (int i=0;i < ids.size();i++) {
-        deleteAComputer(ids.get(i));
+    /* (non-Javadoc)
+     * @see com.excilys.db.persistance.IComputerDAO#deleteListComputer(int[])
+     */
+    @Override
+    public void deleteListComputer(List<Integer> ids) {
+        for (int i=0;i < ids.size();i++) {
+            deleteAComputer(ids.get(i));
+        }
     }
-}
 
-/* (non-Javadoc)
- * @see com.excilys.db.persistance.IComputerDAO#getCount()
- */
-@Override
-public int getCount() {
-    JdbcTemplate vJdbcTemplate = new JdbcTemplate(dataSource);
-    return vJdbcTemplate.queryForObject(QUERRY_COUNT,Integer.class);
-}
+    /* (non-Javadoc)
+     * @see com.excilys.db.persistance.IComputerDAO#getCount()
+     */
+    @Override
+    public int getCount() {
+        JdbcTemplate vJdbcTemplate = new JdbcTemplate(dataSource);
+        return vJdbcTemplate.queryForObject(QUERRY_COUNT,Integer.class);
+    }
 
-/* (non-Javadoc)
- * @see com.excilys.db.persistance.IComputerDAO#getCount(java.lang.String)
- */
-@Override
-public int getCount(String search) {
-    JdbcTemplate vJdbcTemplate = new JdbcTemplate(dataSource);
-    return vJdbcTemplate.queryForObject(QUERRY_COUNT + String.format(LIKE, search,search),Integer.class);
-}
+    /* (non-Javadoc)
+     * @see com.excilys.db.persistance.IComputerDAO#getCount(java.lang.String)
+     */
+    @Override
+    public int getCount(String search) {
+        JdbcTemplate vJdbcTemplate = new JdbcTemplate(dataSource);
+        return vJdbcTemplate.queryForObject(QUERRY_COUNT + String.format(LIKE, search,search),Integer.class);
+    }
 
-/* (non-Javadoc)
- * @see com.excilys.db.persistance.IComputerDAO#listComputerLike(int, int, java.lang.String, java.lang.String, java.lang.String)
- */
-@Override
-public List<Computer> listComputerLike(int offset, int limit, String name, String sortBy, String orderBy) {
-    JdbcTemplate vJdbcTemplate = new JdbcTemplate(dataSource);
-    return vJdbcTemplate.query(QUERRY_LIST_COMPUTERS + String.format(LIKE, name, name) + String.format(ORDER_BY, sortBy, orderBy) + String.format(OFFSET_LIMIT,limit,offset),mapperComputer);
-}
+    /* (non-Javadoc)
+     * @see com.excilys.db.persistance.IComputerDAO#listComputerLike(int, int, java.lang.String, java.lang.String, java.lang.String)
+     */
+    @Override
+    public List<Computer> listComputerLike(int offset, int limit, String name, String sortBy, String orderBy) {
+        JdbcTemplate vJdbcTemplate = new JdbcTemplate(dataSource);
+        return vJdbcTemplate.query(QUERRY_LIST_COMPUTERS + String.format(LIKE, name, name) + String.format(ORDER_BY, sortBy, orderBy) + String.format(OFFSET_LIMIT,limit,offset),mapperComputer);
+    }
 
-@Override
-public List<Computer> listComputerLike(PageComputerDTO page) {
-    int offset = (page.getPageNumber() - 1) * page.getPageSize();
-    int limit = page.getPageSize();
-    String name = page.getSearch();
-    String sortBy = page.getSortBy();
-    String orderBy = page.getOrderBy();
-    return listComputerLike(offset, limit, name, sortBy, orderBy);
-}
+    @Override
+    public List<Computer> listComputerLike(PageComputerDTO page) {
+        int offset = (page.getPageNumber() - 1) * page.getPageSize();
+        int limit = page.getPageSize();
+        String name = page.getSearch();
+        String sortBy = page.getSortBy();
+        String orderBy = page.getOrderBy();
+        return listComputerLike(offset, limit, name, sortBy, orderBy);
+    }
 
 }

@@ -2,9 +2,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" %>
  <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
  <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
+  <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <html>
 <head>
-<title>Computer Database</title>
+<title><spring:message code="index.applName"/></title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <!-- Bootstrap -->
 <link href="static/css/bootstrap.min.css" rel="stylesheet" media="screen">
@@ -14,7 +15,7 @@
 <body>
     <header class="navbar navbar-inverse navbar-fixed-top">
         <div class="container">
-            <a class="navbar-brand" href="dashboard"> Application - Computer Database </a>
+            <a class="navbar-brand" href="dashboard"> <spring:message code="index.application"/> </a>
         </div>
     </header>
     <section id="main">
@@ -24,25 +25,25 @@
                     <div class="label label-default pull-right">
                         id: ${id}
                     </div>
-                    <h1>Edit Computer</h1>
+                    <h1><spring:message code="index.edit"/></h1>
 
                     <form:form action="editComputer" method="POST" modelAttribute="computer">
                         <form:input path="id" type="hidden" value="${id}" id="id" name ="id"/>
                         <fieldset>
                             <div class="form-group">
-                                <form:label path="name" for="computerName">Computer name</form:label>
+                                <form:label path="name" for="computerName"><spring:message code="index.name"/></form:label>
                                 <form:input path="name" type="text" pattern="^[\wÀ-ÿ]+[\wÀ-ÿ_\-'\+\*. ]+$" class="form-control" id="computerName" name="computerName" placeholder="Computer name" value="${computer.getName()}"/>
                             </div>
                             <div class="form-group">
-                                <form:label path="introduced" for="introduced">Introduced date</form:label>
+                                <form:label path="introduced" for="introduced"><spring:message code="index.introduced"/></form:label>
                                 <form:input path="introduced" type="date" pattern="(?:19|20)[0-9]{2}-(?:(?:0[1-9]|1[0-2])-(?:0[1-9]|1[0-9]|2[0-9])|(?:(?!02)(?:0[1-9]|1[0-2])-(?:30))|(?:(?:0[13578]|1[02])-31))" class="form-control" id="introduced" name="introduced" placeholder="aaaa-MM-jj" value="${computer.getIntroduced()}"/>
                             </div>
                             <div class="form-group">
-                                <form:label path="discontinued" for="discontinued">Discontinued date</form:label>
+                                <form:label path="discontinued" for="discontinued"><spring:message code="index.discontinued"/></form:label>
                                 <form:input path="discontinued" type="date" pattern="(?:19|20)[0-9]{2}-(?:(?:0[1-9]|1[0-2])-(?:0[1-9]|1[0-9]|2[0-9])|(?:(?!02)(?:0[1-9]|1[0-2])-(?:30))|(?:(?:0[13578]|1[02])-31))" class="form-control" id="discontinued" name="discontinued" placeholder="aaaa-MM-jj" value="${computer.getDiscontinued()}"/>
                             </div>
                             <div class="form-group">
-                                <form:label path="company" for="companyId">Company</form:label>
+                                <form:label path="company" for="companyId"><spring:message code="index.company"/></form:label>
                                 <form:select path="company" class="form-control" id="companyId" name="companyId">
                                 <form:option value = ''>-----</form:option>
                                     <c:forEach var="company" items="${companies}">
@@ -52,9 +53,9 @@
                             </div>            
                         </fieldset>
                         <div class="actions pull-right">
-                            <input type="submit" value="Edit" class="btn btn-primary"/>
+                            <input type="submit" value=<spring:message code="index.edit"/> class="btn btn-primary"/>
                             or
-                            <a href="dashboard" class="btn btn-default">Cancel</a>
+                            <a href="dashboard" class="btn btn-default"><spring:message code="index.cancel"/></a>
                         </div>
                     </form:form>
                 </div>

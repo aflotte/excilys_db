@@ -14,7 +14,6 @@ import org.springframework.stereotype.Component;
 import com.excilys.db.dto.ComputerDTO;
 import com.excilys.db.model.Company;
 import com.excilys.db.model.Computer;
-import com.excilys.db.service.CompaniesService;
 import com.excilys.db.service.ICompaniesService;
 
 @Component

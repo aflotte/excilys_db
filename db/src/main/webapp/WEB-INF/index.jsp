@@ -2,9 +2,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" %>
  <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
  <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
+ <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <html>
 <head>
-<title>Computer Database</title>
+<title><spring:message code="index.applName"/></title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta charset="utf-8">
 <!-- Bootstrap -->
@@ -15,27 +16,27 @@
 <body>
     <header class="navbar navbar-inverse navbar-fixed-top">
         <div class="container">
-            <a class="navbar-brand" href="dashboard"> Application - Computer Database </a>
+            <a class="navbar-brand" href="dashboard"> <spring:message code="index.application"/> </a>
         </div>
     </header>
 
     <section id="main">
         <div class="container">
             <h1 id="homeTitle">
-    ${page.getComputerMax()} Computers found
+    <spring:message code="index.count" arguments="${page.getComputerMax()}" htmlEscape="false" argumentSeparator=";"/>  
             </h1>
             <div id="actions" class="form-horizontal">
                 <div class="pull-left">
                     <form id="searchForm" action="" method="GET" class="form-inline">
-
-                        <input type="search" id="searchbox" name="search" class="form-control" pattern="^[\wÀ-ÿ]+[\wÀ-ÿ_\-'\+\*. ]+$" placeholder="Search name" />
-                        <input type="submit" id="searchsubmit" value="Filter by name"
+<spring:message code="index.search" var="i18nSearch"/>
+                        <input type="search" id="searchbox" name="search" class="form-control" pattern="^[\wÀ-ÿ]+[\wÀ-ÿ_\-'\+\*. ]+$" placeholder="${i18nSearch}" />
+                        <input type="submit" id="searchsubmit" value=<spring:message code="index.filter"/>
                         class="btn btn-primary" />
                     </form>
                 </div>
                 <div class="pull-right">
-                    <a class="btn btn-success" id="addComputer" href="addComputer">Add Computer</a> 
-                    <a class="btn btn-default" id="editComputer" href="#" onclick="$.fn.toggleEditMode();">Delete</a>
+                    <a class="btn btn-success" id="addComputer" href="addComputer"><spring:message code="index.add"/></a> 
+                    <a class="btn btn-default" id="editComputer" href="#" onclick="$.fn.toggleEditMode();"><spring:message code="index.delete"/></a>
                 </div>
             </div>
         </div>
@@ -60,18 +61,18 @@
                             </span>
                         </th>
                         <th>
-                            <a href="?actualPage=${page.getPageNumber()}&pageSize=${page.getPageSize()}${search}${computerPath}" >Computer name</a>
+                            <a href="?actualPage=${page.getPageNumber()}&pageSize=${page.getPageSize()}${search}${computerPath}" ><spring:message code="index.name"/></a>
                         </th>
                         <th>
-                            <a href="?actualPage=${page.getPageNumber()}&pageSize=${page.getPageSize()}${search}${introducedPath}" >Introduced date</a>
+                            <a href="?actualPage=${page.getPageNumber()}&pageSize=${page.getPageSize()}${search}${introducedPath}" ><spring:message code="index.introduced"/></a>
                         </th>
                         <!-- Table header for Discontinued Date -->
                         <th>
-                            <a href="?actualPage=${page.getPageNumber()}&pageSize=${page.getPageSize()}${search}${discontinuedPath}" >Discontinued date</a>
+                            <a href="?actualPage=${page.getPageNumber()}&pageSize=${page.getPageSize()}${search}${discontinuedPath}" ><spring:message code="index.discontinued"/></a>
                         </th>
                         <!-- Table header for Company -->
                         <th>
-                            <a href="?actualPage=${page.getPageNumber()}&pageSize=${page.getPageSize()}${search}${companyPath}" >Company</a>
+                            <a href="?actualPage=${page.getPageNumber()}&pageSize=${page.getPageSize()}${search}${companyPath}" ><spring:message code="index.company"/></a>
                         </th>
 
                     </tr>

@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
-import com.excilys.db.exception.CompaniesInexistantException;
 import com.excilys.db.mapper.RowMapperCompany;
 import com.excilys.db.mapper.RowMapperInteger;
 import com.excilys.db.mapper.RowMapperIntegerFromCompany;

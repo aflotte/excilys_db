@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import com.excilys.db.exception.CompaniesIdIncorrectException;
-import com.excilys.db.exception.ComputerNameStrangeException;
 import com.excilys.db.exception.DAOAccesExeption;
 import com.excilys.db.exception.IncoherentDatesException;
 import com.excilys.db.exception.ServiceException;

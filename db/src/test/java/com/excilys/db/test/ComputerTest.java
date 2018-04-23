@@ -277,5 +277,18 @@ public class ComputerTest extends TestCase {
         assertEquals(false,comp.equals(comp2));
     }
     
+    @Test
+    public void testEqualsFalseCompanyNull() throws IncoherentDatesException, CompaniesIdIncorrectException, CompaniesInexistantException{
+        Computer comp = new Computer("Name");
+        comp.setIntroduced(null);
+        comp.setDiscontinued(null);
+        comp.setCompany(null);
+        Computer comp2 = new Computer("Name");
+        comp2.setIntroduced(null);
+        comp2.setDiscontinued(null);
+        comp2.setCompany(new Company(1));
+        assertEquals(false,comp.equals(comp2));
+    }
+    
 
 }

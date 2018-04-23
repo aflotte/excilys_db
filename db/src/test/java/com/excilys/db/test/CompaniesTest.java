@@ -55,4 +55,14 @@ public class CompaniesTest extends TestCase {
 		comp2.setName("Name2");
 		assertEquals(false,comp.equals(comp2));
 	}
+	
+	   @Test
+	    public void testEqualsFalseNullId() {
+	        Company comp = new Company();
+	        comp.setName("Name");
+	        Company comp2 = new Company();
+	        comp2.setName("Name");
+	        comp2.setId(1);
+	        assertEquals(false,comp.equals(comp2));
+	    }
 }

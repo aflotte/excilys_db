@@ -7,10 +7,12 @@ import com.excilys.db.exception.DAOConfigurationException;
 import com.excilys.db.exception.IncoherentDatesException;
 import com.excilys.db.model.Company;
 import com.excilys.db.model.Computer;
+import com.excilys.db.page.PageComputerDTO;
 import com.excilys.db.persistance.ICompaniesDAO;
 import com.excilys.db.persistance.IComputerDAO;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 
 import java.io.File;
 import java.io.IOException;
@@ -21,6 +23,7 @@ import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.ZoneId;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -42,6 +45,8 @@ public class ComputerDAOTest {
     ICompaniesDAO companiesDAO;
     @Autowired
     private DataSource dataSource;
+    @Autowired
+    private PageComputerDTO page;
     static org.slf4j.Logger logger = org.slf4j.LoggerFactory.getLogger(ComputerDAOTest.class);
     @Before
     public void init() throws SQLException, IOException, ClassNotFoundException, DAOConfigurationException, SqlToolError {
@@ -95,7 +100,7 @@ public class ComputerDAOTest {
 
     @Test
     public void testShowDetailsEmpty() {
-        computer.showDetails(169819);
+        assertFalse(computer.showDetails(169819).isPresent());
     }
 
     @Test
@@ -158,7 +163,7 @@ public class ComputerDAOTest {
         Computer Test = new Computer("Test_Computer");
         Test.setIntroduced(null);
         Test.setDiscontinued(null);
-        Company companie = new Company();
+        Company companie = null;
         Test.setCompany(companie);
         computer.createAComputer(Test);
         computer.updateAComputer(Test, 2);
@@ -231,7 +236,33 @@ public class ComputerDAOTest {
     
     @Test
     public void testGetCount() {
-        
+        assertEquals(16,computer.getCount());
     }
+    
+    @Test
+    public void listComputerLike() {
+        page.init(1,3,"a");
+        List<Computer> result = computer.listComputerLike(page);
+        String resultString = "[ | name=MacBook Pro 15.4 inch | introduced=null | discontinued=null | companyId=Apple Inc.,  | name=CM-2a | introduced=null | discontinued=null | companyId=Thinking Machines,  | name=CM-200 | introduced=null | discontinued=null | companyId=Thinking Machines]";
+        assertEquals(resultString,result.toString());
+    }
+
+    @Test
+    public void listComputer() {
+        page.init(1,3);
+        List<Computer> result = computer.listComputer(page);
+        String resultString = "[ | name=MacBook Pro 15.4 inch | introduced=null | discontinued=null | companyId=Apple Inc.,  | name=CM-2a | introduced=null | discontinued=null | companyId=Thinking Machines,  | name=CM-200 | introduced=null | discontinued=null | companyId=Thinking Machines]";
+        assertEquals(resultString,result.toString());
+    }
+    
+    @Test
+    public void testDeleteList() {
+        List<Integer> computerIdList = new ArrayList<>();
+        computerIdList.add(1);
+        computerIdList.add(3);
+        computerIdList.add(4);
+        computer.deleteListComputer(computerIdList);
+    }
+    
 
 }

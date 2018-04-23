@@ -1,6 +1,8 @@
 package com.excilys.db.test;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 import java.io.IOException;
@@ -9,6 +11,7 @@ import java.io.InputStreamReader;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
+import java.util.List;
 
 import javax.sql.DataSource;
 
@@ -61,4 +64,25 @@ public class CompaniesDAOTest {
         Apple.setId(1);
         Apple.setName("Apple Inc.");
         assertEquals(Apple,companiesDAO.listCompanies().get(0));}
+    
+    @Test
+    public void testGetCount() {
+        assertEquals(6,companiesDAO.getCount());
+    }
+    
+    @Test
+    public void testGetIdForName() {
+        List<Integer> list = companiesDAO.getIdFromName("Apple Inc.");
+        assertEquals(1,list.get(0).intValue());
+    }
+    
+    @Test
+    public void testExistCompanyTrue() {
+        assertTrue(companiesDAO.existCompanies(1));
+    }
+    
+    @Test
+    public void testExistCompanyFalse() {
+        assertFalse(companiesDAO.existCompanies(15));
+    }
 }
