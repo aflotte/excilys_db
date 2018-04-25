@@ -13,6 +13,7 @@ import org.springframework.stereotype.Component;
 import com.excilys.db.dto.ComputerDTO;
 import com.excilys.db.model.Company;
 import com.excilys.db.model.Computer;
+import com.excilys.db.service.CompagnyIdable;
 
 @Component
 public class ComputerMapper {
@@ -92,13 +93,15 @@ public class ComputerMapper {
      * @param computer l'ordinateur DTO
      * @return l'ordinateur
      */
-    public Computer computerDTOToComputer(ComputerDTO computer) {
+    public Computer computerDTOToComputer(ComputerDTO computer, CompagnyIdable service) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         formatter = formatter.withLocale(Locale.FRANCE);
         Computer toReturn = new Computer(computer.getName());
         toReturn.setId(computer.getId());
         Company company = new Company();
         company.setName(computer.getCompany());
+        Integer id = service.getCompagnyId(computer.getCompany());
+        company.setId(id);
         toReturn.setCompany(company);
         if (computer.getDiscontinued() != null) {
 
@@ -127,10 +130,10 @@ public class ComputerMapper {
      * @param computer la liste des ordinateurs DTO
      * @return la liste des ordinateurs
      */
-    public List<Computer> computerDTOListToComputer(List<ComputerDTO> computer) {
+    public List<Computer> computerDTOListToComputer(List<ComputerDTO> computer, CompagnyIdable service) {
         List<Computer> toReturn = new ArrayList<>();
         for (int i = 0; i < computer.size(); i++) {
-            toReturn.add(computerDTOToComputer(computer.get(i)));
+            toReturn.add(computerDTOToComputer(computer.get(i),service));
         }
         return toReturn;
     }

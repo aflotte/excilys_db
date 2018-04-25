@@ -43,7 +43,7 @@ public class CompaniesValidator {
         } else {
             String querry = "SELECT name FROM company WHERE id = " + company.getId();
             JdbcTemplate vJdbcTemplate = new JdbcTemplate(dataSource);
-            return vJdbcTemplate.queryForObject(querry,String.class).isEmpty();
+            return !vJdbcTemplate.queryForObject(querry,String.class).isEmpty();
         }
     }
 }

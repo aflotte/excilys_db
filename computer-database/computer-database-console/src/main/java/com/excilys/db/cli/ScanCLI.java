@@ -30,7 +30,7 @@ public class ScanCLI {
     private ComputerValidator computerValidator;
 
     private ScanCLI() {
-        
+
     }
 
     /**
@@ -58,7 +58,7 @@ public class ScanCLI {
      * @throws CompaniesInexistantException une erreur est survenue avec la compagnie
      */
     public Computer scanComputer(Scanner sc) throws CompaniesIdIncorrectException, IncoherentDatesException {
-        
+
         System.out.println("Entrer le nom de l'ordinateur : ");
         Computer aRetourner = new Computer(sc.next());
         System.out.println("Entrer la date d'introduction de l'ordinateur (aaaa/mm/jj) : ");
@@ -73,11 +73,8 @@ public class ScanCLI {
         if (idCompanie != -2) {
             aRetourner.setCompany(new Company(Integer.valueOf(idCompanie)));
         }
-        try {
-            computerValidator.validate(aRetourner);
-        } catch (ValidatorException e) {
-            System.out.println("Erreur lors de la validation de l'ordinateur");
-        }
+        computerValidator.validate(aRetourner);
+
         return aRetourner;
     }
 

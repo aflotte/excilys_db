@@ -83,7 +83,7 @@ public class ComputerValidator {
      * @throws ValidatorException exception levé par le validateur
      * @throws ComputerNameStrangeException 
      */
-    public boolean validate(Computer computer) throws IncoherentDatesException, CompaniesIdIncorrectException, ValidatorException {
+    public boolean validate(Computer computer) throws IncoherentDatesException, CompaniesIdIncorrectException {
         if (testDate(computer)) {
             throw new IncoherentDatesException();
         }

@@ -11,15 +11,6 @@
     <name>computer-database-persistance</name>
     <!-- FIXME change it to the project's website -->
     <url>http://www.example.com</url>
-    <properties>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <maven.compiler.source>1.7</maven.compiler.source>
-        <maven.compiler.target>1.7</maven.compiler.target>
-        <spring.version>5.0.4.RELEASE</spring.version>
-        <hsqldb.version>2.3.1</hsqldb.version>
-        <myqsl-jdbc.version>8.0.8-dmr</myqsl-jdbc.version>
-        <sqltool.version>2.2.9</sqltool.version>
-    </properties>
     <dependencies>
         <dependency>
             <groupId>junit</groupId>
@@ -48,11 +39,16 @@
             <groupId>org.hsqldb</groupId>
             <artifactId>hsqldb</artifactId>
         </dependency>
-<dependency>
-    <groupId>org.springframework</groupId>
-    <artifactId>spring-beans</artifactId>
-    <version>${spring.version}</version>
-</dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-beans</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
     </dependencies>
     <build>
         <pluginManagement><!-- lock down plugins versions to avoid using 

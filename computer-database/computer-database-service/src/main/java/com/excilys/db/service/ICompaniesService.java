@@ -7,7 +7,7 @@ import com.excilys.db.exception.CompaniesInexistantException;
 import com.excilys.db.exception.ValidatorException;
 import com.excilys.db.model.Company;
 
-public interface ICompaniesService {
+public interface ICompaniesService extends CompagnyIdable {
 
     /**
      *
