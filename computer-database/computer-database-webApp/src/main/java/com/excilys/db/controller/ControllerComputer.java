@@ -101,7 +101,7 @@ public class ControllerComputer {
 
     @PostMapping("/addComputer")
     public String handlePost(ModelMap model,  @ModelAttribute("computer") ComputerDTO computerDTO) {
-        Computer computer = computerMapper.computerDTOToComputer(computerDTO);
+        Computer computer = computerMapper.computerDTOToComputer(computerDTO, companiesService);
         try {
             computerService.createComputer(computer);
         } catch (ServiceException e) {
@@ -163,7 +163,7 @@ public class ControllerComputer {
     @PostMapping("/editComputer")
     public String handlePost(ModelMap model, @ModelAttribute("computerDTO") ComputerDTO computerDTO, @RequestParam(value = "id", defaultValue = "0") int id) {
         try {
-            Computer computer = computerMapper.computerDTOToComputer(computerDTO);
+            Computer computer = computerMapper.computerDTOToComputer(computerDTO, companiesService);
             computerService.updateAComputer(computer, id);
         } catch (ServiceException e) {
             logger.warn(e.getMessage());
