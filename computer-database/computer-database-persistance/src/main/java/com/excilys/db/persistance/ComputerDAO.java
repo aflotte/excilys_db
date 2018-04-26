@@ -5,6 +5,9 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.stereotype.Repository;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -14,8 +17,10 @@ import org.springframework.jdbc.support.KeyHolder;
 
 import com.excilys.db.mapper.RowMapperComputer;
 import com.excilys.db.mapper.RowMapperInteger;
+import com.excilys.db.model.Company;
 import com.excilys.db.model.Computer;
 
+import javax.persistence.TypedQuery;
 import javax.sql.DataSource;
 
 /**
@@ -25,6 +30,8 @@ import javax.sql.DataSource;
 @Repository("computerDAO")
 public class ComputerDAO implements IComputerDAO {
     @Autowired
+    SessionFactory sessionFactory;
+    @Autowired
     private DataSource dataSource;
     @Autowired
     private RowMapperComputer mapperComputer;
@@ -32,7 +39,7 @@ public class ComputerDAO implements IComputerDAO {
     private RowMapperInteger mapperInteger;
     org.slf4j.Logger logger = org.slf4j.LoggerFactory.getLogger(ComputerDAO.class);
 
-    private static final String QUERRY_LIST_COMPUTERS = "SELECT computer.name, computer.introduced, computer.discontinued, company.id, computer.id, company.name FROM computer LEFT JOIN company ON computer.company_id = company.id";
+    private static final String QUERRY_LIST_COMPUTERS = "FROM " +  Computer.class.getName();
     private static final String QUERRY_LIST_COMPUTERS_ID = "SELECT computer.name, introduced, discontinued, company.id, computer.id, company.name FROM computer LEFT JOIN company ON computer.company_id = company.id WHERE computer.id = %d ";
     private static final String QUERRY_UPDATE_COMPUTER = "UPDATE computer SET name = ? , introduced = ? , discontinued = ? , company_id = ? WHERE id = ? ";
     private static final String QUERRY_CREATE_COMPUTER = "INSERT INTO computer(name,introduced,discontinued,company_id) VALUES (:name , :introduced , :discontinued , :companyId )";
@@ -40,16 +47,19 @@ public class ComputerDAO implements IComputerDAO {
     private static final String QUERRY_DELETE_COMPUTER = "DELETE FROM computer WHERE id = %d ";
     private static final String OFFSET_LIMIT = " LIMIT %d OFFSET %d";
     private static final String ORDER_BY = " ORDER BY %s %s ";
-    private static final String QUERRY_COUNT = "SELECT COUNT(*) FROM computer LEFT JOIN company ON computer.company_id = company.id";
-    private static final String LIKE = " WHERE computer.name LIKE \'%%%s%%\' or company.name LIKE \'%%%s%%\'";
+    private static final String QUERRY_COUNT = "SELECT COUNT(*) FROM " + Computer.class.getName();
+    private static final String LIKE = " computer WHERE (computer.name LIKE \'%%%s%%\') OR (computer.company.name LIKE \'%%%s%%\')";
 
     /* (non-Javadoc)
      * @see com.excilys.db.persistance.IComputerDAO#listComputer()
      */
     @Override
     public List<Computer> listComputer() {
-        JdbcTemplate vJdbcTemplate = new JdbcTemplate(dataSource);
-        return vJdbcTemplate.query(QUERRY_LIST_COMPUTERS,mapperComputer);
+        try (Session session = sessionFactory.openSession();){
+            TypedQuery<Computer> querry = session.createQuery(QUERRY_LIST_COMPUTERS,Computer.class);
+            System.out.println(getCount("ac"));
+            return querry.getResultList();
+        }
     }
 
 
@@ -145,8 +155,10 @@ public class ComputerDAO implements IComputerDAO {
      */
     @Override
     public int getCount() {
-        JdbcTemplate vJdbcTemplate = new JdbcTemplate(dataSource);
-        return vJdbcTemplate.queryForObject(QUERRY_COUNT,Integer.class);
+        try (Session session = sessionFactory.openSession();){
+            Query<Long> querry = session.createQuery(QUERRY_COUNT,Long.class);
+            return querry.uniqueResult().intValue();
+        }
     }
 
     /* (non-Javadoc)
@@ -154,8 +166,10 @@ public class ComputerDAO implements IComputerDAO {
      */
     @Override
     public int getCount(String search) {
-        JdbcTemplate vJdbcTemplate = new JdbcTemplate(dataSource);
-        return vJdbcTemplate.queryForObject(QUERRY_COUNT + String.format(LIKE, search,search),Integer.class);
+        try (Session session = sessionFactory.openSession();){
+            Query<Long> querry = session.createQuery(QUERRY_COUNT + String.format(LIKE, search,search),Long.class);
+            return querry.uniqueResult().intValue();
+        }
     }
 
     /* (non-Javadoc)

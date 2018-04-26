@@ -158,7 +158,6 @@ public class CLI {
      */
     public void afficherOrdinateurs() {
         List<Computer> listeOrdinateur = computerService.listComputer();
-        System.out.println(listeOrdinateur.get(1).toString());
         PageComputerCLI page = new PageComputerCLI(listeOrdinateur, scanner);
         System.out.println("Voici la liste des ordinateurs ( Q to exit ): ");
         page.afficher();

@@ -3,8 +3,11 @@ package com.excilys.db.persistance;
 import java.util.List;
 import java.util.Optional;
 
+import javax.persistence.TypedQuery;
 import javax.sql.DataSource;
 
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -22,6 +25,8 @@ import com.excilys.db.model.Company;
 @Repository("companiesDAO")
 public class CompaniesDAO implements ICompaniesDAO {
     @Autowired
+    SessionFactory sessionFactory;
+    @Autowired
     private DataSource dataSource;
     static org.slf4j.Logger logger = org.slf4j.LoggerFactory.getLogger(CompaniesDAO.class);
     @Autowired
@@ -33,9 +38,10 @@ public class CompaniesDAO implements ICompaniesDAO {
     @Autowired
     private RowMapperInteger mapperInteger;
 
-    private static final String QUERRY_LIST_COMPANIES_BY_NAME = "SELECT company.id FROM company WHERE name LIKE \'%s\'";
-    private static final String QUERRY_LIST_COMPANIES = "SELECT company.name, company.id FROM company";
-    private static final String QUERRY_LIST_COMPANIES_ID = "SELECT company.id, company.name FROM company WHERE id = %d";
+
+    private static final String QUERRY_LIST_COMPANIES_BY_NAME = "SELECT company.id FROM " + Company.class.getName() + " WHERE name LIKE \'%s\'";
+    private static final String QUERRY_LIST_COMPANIES = "FROM " + Company.class.getName();
+    private static final String QUERRY_LIST_COMPANIES_ID = "FROM " + Company.class.getName() + "WHERE id = %d";
     private static final String QUERRY_LIST_COMPUTER = "SELECT computer.id FROM computer WHERE computer.company_id = %d ";
     private static final String OFFSET_LIMIT = " LIMIT %d OFFSET %d";
     private static final String DELETE_COMPANY = "DELETE FROM company WHERE id = %d";
@@ -58,8 +64,10 @@ public class CompaniesDAO implements ICompaniesDAO {
      */
     @Override
     public boolean existCompanies(int id) {
-        JdbcTemplate vJdbcTemplate = new JdbcTemplate(dataSource);
-        return !vJdbcTemplate.query(String.format(QUERRY_LIST_COMPANIES_ID,id),mapperCompany).isEmpty();
+        try (Session session = sessionFactory.openSession();){
+            TypedQuery<Company> querry = session.createQuery(String.format(QUERRY_LIST_COMPANIES_ID,id),Company.class);
+            return !querry.getResultList().isEmpty();
+        }
     }
 
     /* (non-Javadoc)
@@ -67,8 +75,11 @@ public class CompaniesDAO implements ICompaniesDAO {
      */
     @Override
     public List<Company> listCompanies() {
-        JdbcTemplate vJdbcTemplate = new JdbcTemplate(dataSource);
-        return vJdbcTemplate.query(String.format(QUERRY_LIST_COMPANIES),mapperCompany);
+        try(Session session = sessionFactory.openSession();){
+            TypedQuery<Company> querry = session.createQuery(QUERRY_LIST_COMPANIES,Company.class);
+
+            return querry.getResultList();
+        }
     }
 
     /* (non-Javadoc)
