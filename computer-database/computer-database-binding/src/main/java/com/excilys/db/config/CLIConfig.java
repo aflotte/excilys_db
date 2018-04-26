@@ -31,9 +31,7 @@ import javax.sql.DataSource;
         "com.excilys.db.controller"
 })
 public class CLIConfig {
-    @Autowired
-    private Environment env;
-    
+
     @Value("${dbdriver}")
     private String driverClassName;
 
@@ -50,7 +48,7 @@ public class CLIConfig {
     @Bean
     public DataSource dataSource() {
         DriverManagerDataSource driverManagerDataSource = new DriverManagerDataSource("jdbc:mysql://localhost:3306/computer-database-db?zeroDateTimeBehavior=CONVERT_TO_NULL&autoReconnect=true&characterEncoding=UTF-8&characterSetResults=UTF-8&characterSetResults=UTF-8&useSSL=FALSE&useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=CET", "admincdb", "qwerty1234");
-        driverManagerDataSource.setDriverClassName(env.getProperties("dbdriver"));
+        driverManagerDataSource.setDriverClassName("com.mysql.cj.jdbc.Driver");
         return driverManagerDataSource;
     }
     
@@ -58,7 +56,7 @@ public class CLIConfig {
     public LocalSessionFactoryBean sessionFactory() {
         LocalSessionFactoryBean sessionFactory = new LocalSessionFactoryBean();
         sessionFactory.setDataSource(dataSource());
-        sessionFactory.setPackagesToScan(new String[] { "com.excilys.db.model" });
+        sessionFactory.setPackagesToScan("com.excilys.db.model");
         sessionFactory.setHibernateProperties(hibernateProperties());
         
         return sessionFactory;

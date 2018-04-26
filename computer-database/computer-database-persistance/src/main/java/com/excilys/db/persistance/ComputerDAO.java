@@ -1,6 +1,5 @@
 package com.excilys.db.persistance;
 
-import java.sql.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -9,20 +8,9 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
-import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
-import org.springframework.jdbc.support.GeneratedKeyHolder;
-import org.springframework.jdbc.support.KeyHolder;
-
-import com.excilys.db.mapper.RowMapperComputer;
-import com.excilys.db.mapper.RowMapperInteger;
-import com.excilys.db.model.Company;
 import com.excilys.db.model.Computer;
 
 import javax.persistence.TypedQuery;
-import javax.sql.DataSource;
-
 /**
  *
  * @author flotte
@@ -31,24 +19,14 @@ import javax.sql.DataSource;
 public class ComputerDAO implements IComputerDAO {
     @Autowired
     SessionFactory sessionFactory;
-    @Autowired
-    private DataSource dataSource;
-    @Autowired
-    private RowMapperComputer mapperComputer;
-    @Autowired
-    private RowMapperInteger mapperInteger;
     org.slf4j.Logger logger = org.slf4j.LoggerFactory.getLogger(ComputerDAO.class);
 
     private static final String QUERRY_LIST_COMPUTERS = "FROM " +  Computer.class.getName();
-    private static final String QUERRY_LIST_COMPUTERS_ID = "SELECT computer.name, introduced, discontinued, company.id, computer.id, company.name FROM computer LEFT JOIN company ON computer.company_id = company.id WHERE computer.id = %d ";
-    private static final String QUERRY_UPDATE_COMPUTER = "UPDATE computer SET name = ? , introduced = ? , discontinued = ? , company_id = ? WHERE id = ? ";
-    private static final String QUERRY_CREATE_COMPUTER = "INSERT INTO computer(name,introduced,discontinued,company_id) VALUES (:name , :introduced , :discontinued , :companyId )";
-    private static final String QUERRY_LIST_COMPUTER_BY_NAME = "SELECT computer.id FROM computer WHERE name = '%s' ";
-    private static final String QUERRY_DELETE_COMPUTER = "DELETE FROM computer WHERE id = %d ";
-    private static final String OFFSET_LIMIT = " LIMIT %d OFFSET %d";
+    private static final String QUERRY_LIST_COMPUTERS_ID = "FROM " + Computer.class.getName() + " computer WHERE computer.id = %d ";
+    private static final String QUERRY_LIST_COMPUTER_BY_NAME = "SELECT computer.id FROM " + Computer.class.getName() + " WHERE name = '%s' ";
     private static final String ORDER_BY = " ORDER BY %s %s ";
     private static final String QUERRY_COUNT = "SELECT COUNT(*) FROM " + Computer.class.getName();
-    private static final String LIKE = " computer WHERE (computer.name LIKE \'%%%s%%\') OR (computer.company.name LIKE \'%%%s%%\')";
+    private static final String LIKE = " computer WHERE computer IN ((FROM computer WHERE computer.name LIKE \'%%%s%%\'),(FROM computer WHERE computer.company.name LIKE \'%%%s%%\'))";
 
     /* (non-Javadoc)
      * @see com.excilys.db.persistance.IComputerDAO#listComputer()
@@ -57,7 +35,6 @@ public class ComputerDAO implements IComputerDAO {
     public List<Computer> listComputer() {
         try (Session session = sessionFactory.openSession();){
             TypedQuery<Computer> querry = session.createQuery(QUERRY_LIST_COMPUTERS,Computer.class);
-            System.out.println(getCount("ac"));
             return querry.getResultList();
         }
     }
@@ -68,8 +45,12 @@ public class ComputerDAO implements IComputerDAO {
      */
     @Override
     public List<Computer> listComputer(int offset, int limit,String sortBy, String orderBy ) {
-        JdbcTemplate vJdbcTemplate = new JdbcTemplate(dataSource);
-        return vJdbcTemplate.query(QUERRY_LIST_COMPUTERS + String.format(ORDER_BY, sortBy, orderBy)  + String.format(OFFSET_LIMIT,limit,offset),mapperComputer);
+        try (Session session = sessionFactory.openSession();){
+            TypedQuery<Computer> querry = session.createQuery(QUERRY_LIST_COMPUTERS + String.format(ORDER_BY, sortBy, orderBy), Computer.class);
+            querry.setMaxResults(limit);
+            querry.setFirstResult(offset);
+            return querry.getResultList();
+        }
     }
 
     /* (non-Javadoc)
@@ -77,16 +58,17 @@ public class ComputerDAO implements IComputerDAO {
      */
     @Override
     public Optional<Computer> showDetails(int id) {
-        JdbcTemplate vJdbcTemplate = new JdbcTemplate(dataSource);
-        List<Computer> results = vJdbcTemplate.query(String.format(QUERRY_LIST_COMPUTERS_ID,id),mapperComputer);
-        if (results == null) {
-            return Optional.ofNullable(null);
-        } else if (results.isEmpty()){
-            return Optional.ofNullable(null);
-        }else {
-            return Optional.ofNullable(results.get(0));
+        try (Session session = sessionFactory.openSession();){
+            TypedQuery<Computer> querry = session.createQuery(String.format(QUERRY_LIST_COMPUTERS_ID,id), Computer.class);
+            List<Computer> results = querry.getResultList();
+            if (results == null) {
+                return Optional.ofNullable(null);
+            } else if (results.isEmpty()){
+                return Optional.ofNullable(null);
+            }else {
+                return Optional.ofNullable(results.get(0));
+            }
         }
-
     }
 
     /* (non-Javadoc)
@@ -94,13 +76,10 @@ public class ComputerDAO implements IComputerDAO {
      */
     @Override
     public void updateAComputer(Computer computer, int id) {
-        JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
-        String query = QUERRY_UPDATE_COMPUTER;
-        jdbcTemplate.update(query, computer.getName(),
-                computer.getIntroduced() == null ? null : Date.valueOf(computer.getIntroduced()),
-                        computer.getDiscontinued() == null ? null : Date.valueOf(computer.getDiscontinued()),
-                                computer.getCompany() == null ? null : computer.getCompany().getId(),
-                                        id);
+        try (Session session = sessionFactory.openSession();){
+            computer.setId(id);
+            session.update(computer);
+        }
     }
 
     /* (non-Javadoc)
@@ -108,17 +87,9 @@ public class ComputerDAO implements IComputerDAO {
      */
     @Override
     public int createAComputer(Computer computer) {
-        NamedParameterJdbcTemplate vJdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
-        String vSQL = QUERRY_CREATE_COMPUTER;
-        MapSqlParameterSource vParams = new MapSqlParameterSource();
-        KeyHolder keyHolder = new GeneratedKeyHolder();
-        vParams.addValue("companyId", computer.getCompany() == null ? null : computer.getCompany().getId());
-        vParams.addValue("name", computer.getName());
-        vParams.addValue("introduced", computer.getIntroduced() == null ? null : Date.valueOf(computer.getIntroduced()));
-        vParams.addValue("discontinued", computer.getDiscontinued() == null ? null : Date.valueOf(computer.getDiscontinued()));
-        vParams.addValue("id", computer.getId());
-        vJdbcTemplate.update(vSQL, vParams, keyHolder);
-        return keyHolder.getKey().intValue();
+        try (Session session = sessionFactory.openSession();){
+            return (int)session.save(computer);
+        }
     }
 
     /* (non-Javadoc)
@@ -126,8 +97,10 @@ public class ComputerDAO implements IComputerDAO {
      */
     @Override
     public List<Integer> getIdFromName(String name) {
-        JdbcTemplate vJdbcTemplate = new JdbcTemplate(dataSource);
-        return vJdbcTemplate.query(String.format(QUERRY_LIST_COMPUTER_BY_NAME,name),mapperInteger);
+        try (Session session = sessionFactory.openSession();){
+            TypedQuery<Integer> querry = session.createQuery(QUERRY_LIST_COMPUTER_BY_NAME,Integer.class);
+            return querry.getResultList();
+        }
     }
 
     /* (non-Javadoc)
@@ -135,8 +108,16 @@ public class ComputerDAO implements IComputerDAO {
      */
     @Override
     public void deleteAComputer(int id) {
-        JdbcTemplate vJdbcTemplate = new JdbcTemplate(dataSource);
-        vJdbcTemplate.update(String.format(QUERRY_DELETE_COMPUTER,id));
+        try (Session session = sessionFactory.openSession();){
+            Optional<Computer> computer = showDetails(id);
+            
+            if (computer.isPresent()) {
+                session.getTransaction().begin();
+                session.delete(computer.get());
+                session.getTransaction().commit();
+            }
+            
+        }
     }
 
 
@@ -177,8 +158,12 @@ public class ComputerDAO implements IComputerDAO {
      */
     @Override
     public List<Computer> listComputerLike(int offset, int limit, String name, String sortBy, String orderBy) {
-        JdbcTemplate vJdbcTemplate = new JdbcTemplate(dataSource);
-        return vJdbcTemplate.query(QUERRY_LIST_COMPUTERS + String.format(LIKE, name, name) + String.format(ORDER_BY, sortBy, orderBy) + String.format(OFFSET_LIMIT,limit,offset),mapperComputer);
+        try (Session session = sessionFactory.openSession();){
+            TypedQuery<Computer> querry = session.createQuery(QUERRY_LIST_COMPUTERS + String.format(LIKE, name, name) + String.format(ORDER_BY, sortBy, orderBy), Computer.class);
+            querry.setMaxResults(limit);
+            querry.setFirstResult(offset);
+            return querry.getResultList();
+        }
     }
 
 }
