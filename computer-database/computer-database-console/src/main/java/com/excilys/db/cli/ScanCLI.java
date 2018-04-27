@@ -14,7 +14,6 @@ import org.springframework.stereotype.Component;
 import com.excilys.db.exception.CompaniesIdIncorrectException;
 import com.excilys.db.exception.CompaniesInexistantException;
 import com.excilys.db.exception.IncoherentDatesException;
-import com.excilys.db.exception.ValidatorException;
 import com.excilys.db.model.Company;
 import com.excilys.db.model.Computer;
 import com.excilys.db.validator.ComputerValidator;

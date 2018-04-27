@@ -23,7 +23,7 @@ public class ComputerDAO implements IComputerDAO {
 
     private static final String QUERRY_LIST_COMPUTERS = "FROM " +  Computer.class.getName();
     private static final String QUERRY_LIST_COMPUTERS_ID = "FROM " + Computer.class.getName() + " computer WHERE computer.id = %d ";
-    private static final String QUERRY_LIST_COMPUTER_BY_NAME = "SELECT computer.id FROM " + Computer.class.getName() + " WHERE name = '%s' ";
+    private static final String QUERRY_LIST_COMPUTER_BY_NAME = "SELECT computer.id FROM " + Computer.class.getName() + " computer WHERE computer.name = '%s' ";
     private static final String ORDER_BY = " ORDER BY %s %s ";
     private static final String QUERRY_COUNT = "SELECT COUNT(*) FROM " + Computer.class.getName();
     private static final String LIKE = " computer WHERE computer IN ((FROM computer WHERE computer.name LIKE \'%%%s%%\'),(FROM computer WHERE computer.company.name LIKE \'%%%s%%\'))";
@@ -78,7 +78,9 @@ public class ComputerDAO implements IComputerDAO {
     public void updateAComputer(Computer computer, int id) {
         try (Session session = sessionFactory.openSession();){
             computer.setId(id);
+            session.getTransaction().begin();
             session.update(computer);
+            session.getTransaction().commit();
         }
     }
 
@@ -110,13 +112,13 @@ public class ComputerDAO implements IComputerDAO {
     public void deleteAComputer(int id) {
         try (Session session = sessionFactory.openSession();){
             Optional<Computer> computer = showDetails(id);
-            
+
             if (computer.isPresent()) {
                 session.getTransaction().begin();
                 session.delete(computer.get());
                 session.getTransaction().commit();
             }
-            
+
         }
     }
 
@@ -126,8 +128,29 @@ public class ComputerDAO implements IComputerDAO {
      */
     @Override
     public void deleteListComputer(List<Integer> ids) {
-        for (int i=0;i < ids.size();i++) {
-            deleteAComputer(ids.get(i));
+        try (Session session = sessionFactory.openSession();){
+            session.getTransaction().begin();
+            for (int i=0;i < ids.size();i++) {
+                Optional<Computer> computer = showDetails(i);
+                if (computer.isPresent()) {
+                    session.delete(computer.get());
+                }
+            }
+            session.getTransaction().commit();
+        }
+    }
+
+    /* (non-Javadoc)
+     * @see com.excilys.db.persistance.IComputerDAO#deleteListComputer(int[])
+     */
+    @Override
+    public void deleteListComputer(List<Integer> ids, Session session) {
+        if (session != null) {
+            for (int i=0;i < ids.size();i++) {
+                deleteAComputer(ids.get(i));
+            }
+        } else {
+            deleteListComputer(ids);
         }
     }
 

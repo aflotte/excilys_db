@@ -3,6 +3,8 @@ package com.excilys.db.persistance;
 import java.util.List;
 import java.util.Optional;
 
+import org.hibernate.Session;
+
 import com.excilys.db.model.Computer;
 
 public interface IComputerDAO {
@@ -75,6 +77,8 @@ public interface IComputerDAO {
     int getCount(String search);
 
     List<Computer> listComputerLike(int offset, int limit, String name, String sortBy, String orderBy);
+
+    void deleteListComputer(List<Integer> ids, Session session);
 
     //List<Computer> listComputerLike(PageComputerDTO page);
 }

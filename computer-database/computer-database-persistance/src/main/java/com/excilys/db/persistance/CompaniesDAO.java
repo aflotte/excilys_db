@@ -4,18 +4,15 @@ import java.util.List;
 import java.util.Optional;
 
 import javax.persistence.TypedQuery;
-import javax.sql.DataSource;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
-import com.excilys.db.mapper.RowMapperCompany;
-import com.excilys.db.mapper.RowMapperInteger;
-import com.excilys.db.mapper.RowMapperIntegerFromCompany;
 import com.excilys.db.model.Company;
+import com.excilys.db.model.Computer;
 
 /**
  * La classe DAO de Companies.
@@ -26,26 +23,16 @@ import com.excilys.db.model.Company;
 public class CompaniesDAO implements ICompaniesDAO {
     @Autowired
     SessionFactory sessionFactory;
-    @Autowired
-    private DataSource dataSource;
     static org.slf4j.Logger logger = org.slf4j.LoggerFactory.getLogger(CompaniesDAO.class);
     @Autowired
     private IComputerDAO computerDAO;
-    @Autowired
-    private RowMapperCompany mapperCompany;
-    @Autowired
-    private RowMapperIntegerFromCompany mapperIntegerFromCompany;
-    @Autowired
-    private RowMapperInteger mapperInteger;
 
 
-    private static final String QUERRY_LIST_COMPANIES_BY_NAME = "SELECT company.id FROM " + Company.class.getName() + " WHERE name LIKE \'%s\'";
+    private static final String QUERRY_LIST_COMPANIES_BY_NAME = "SELECT company.id FROM " + Company.class.getName() + " company WHERE company.name LIKE \'%s\'";
     private static final String QUERRY_LIST_COMPANIES = "FROM " + Company.class.getName();
-    private static final String QUERRY_LIST_COMPANIES_ID = "FROM " + Company.class.getName() + "WHERE id = %d";
-    private static final String QUERRY_LIST_COMPUTER = "SELECT computer.id FROM computer WHERE computer.company_id = %d ";
-    private static final String OFFSET_LIMIT = " LIMIT %d OFFSET %d";
-    private static final String DELETE_COMPANY = "DELETE FROM company WHERE id = %d";
-    private static final String QUERRY_COUNT = "SELECT COUNT(*) FROM company";
+    private static final String QUERRY_LIST_COMPANIES_ID = "FROM " + Company.class.getName() + " company WHERE company.id = %d";
+    private static final String QUERRY_LIST_COMPUTER = "SELECT computer.id FROM " + Computer.class.getName() + " computer WHERE computer.company.id = %d ";
+    private static final String QUERRY_COUNT = "SELECT COUNT(*) FROM " + Company.class.getName();
 
 
 
@@ -54,8 +41,10 @@ public class CompaniesDAO implements ICompaniesDAO {
      */
     @Override
     public List<Integer> computerFromCompany(int id){
-        JdbcTemplate vJdbcTemplate = new JdbcTemplate(dataSource);
-        return vJdbcTemplate.query(String.format(QUERRY_LIST_COMPUTER,id),mapperInteger);
+        try (Session session = sessionFactory.openSession();){
+            TypedQuery<Integer> querry = session.createQuery(String.format(QUERRY_LIST_COMPUTER,id),Integer.class);
+            return querry.getResultList();
+        }
     }
 
 
@@ -87,19 +76,32 @@ public class CompaniesDAO implements ICompaniesDAO {
      */
     @Override
     public void deleteCompany(int id) {
-        List<Integer> computerIds = computerFromCompany(id);
-        computerDAO.deleteListComputer(computerIds);
-        JdbcTemplate vJdbcTemplate = new JdbcTemplate(dataSource);
-        vJdbcTemplate.update(String.format(DELETE_COMPANY,id));
+        try (Session session = sessionFactory.openSession();){
+            Optional<Company> company = getCompany(id);
+            if (company.isPresent()) {
+                session.getTransaction().begin();
+                List<Integer> computerIds = computerFromCompany(id);
+                computerDAO.deleteListComputer(computerIds,session);
+                session.delete(company.get());
+                session.getTransaction().commit();
+            }
+        }
     }
+
+
+
 
     /* (non-Javadoc)
      * @see com.excilys.db.persistance.ICompaniesDAO#listCompany(int, int)
      */
     @Override
     public List<Company> listCompany(int offset, int limit) {
-        JdbcTemplate vJdbcTemplate = new JdbcTemplate(dataSource);
-        return vJdbcTemplate.query(QUERRY_LIST_COMPANIES + String.format(OFFSET_LIMIT,limit,offset), mapperCompany);
+        try(Session session = sessionFactory.openSession();){
+            TypedQuery<Company> querry = session.createQuery(QUERRY_LIST_COMPANIES,Company.class);
+            querry.setFirstResult(offset);
+            querry.setMaxResults(limit);
+            return querry.getResultList();
+        }
     }
 
     /* (non-Javadoc)
@@ -107,14 +109,16 @@ public class CompaniesDAO implements ICompaniesDAO {
      */
     @Override
     public Optional<Company> getCompany(Integer id) {
-        JdbcTemplate vJdbcTemplate = new JdbcTemplate(dataSource);
-        List<Company> results = vJdbcTemplate.query(String.format(QUERRY_LIST_COMPANIES_ID,id), mapperCompany);
-        if (results == null) {
-            return Optional.ofNullable(null);
-        } else if (results.isEmpty()){
-            return Optional.ofNullable(null);
-        }else {
-            return Optional.ofNullable(results.get(0));
+        try (Session session = sessionFactory.openSession();){
+            TypedQuery<Company> querry = session.createQuery(String.format(QUERRY_LIST_COMPANIES_ID,id), Company.class);
+            List<Company> results = querry.getResultList();
+            if (results == null) {
+                return Optional.ofNullable(null);
+            } else if (results.isEmpty()){
+                return Optional.ofNullable(null);
+            }else {
+                return Optional.ofNullable(results.get(0));
+            }
         }
     }
 
@@ -123,8 +127,10 @@ public class CompaniesDAO implements ICompaniesDAO {
      */
     @Override
     public int getCount() {
-        JdbcTemplate vJdbcTemplate = new JdbcTemplate(dataSource);
-        return vJdbcTemplate.queryForObject(QUERRY_COUNT,Integer.class);
+        try (Session session = sessionFactory.openSession();){
+            Query<Long> querry = session.createQuery(QUERRY_COUNT,Long.class);
+            return querry.uniqueResult().intValue();
+        }
     }
 
     /* (non-Javadoc)
@@ -132,8 +138,10 @@ public class CompaniesDAO implements ICompaniesDAO {
      */
     @Override
     public List<Integer> getIdFromName(String name) {
-        JdbcTemplate vJdbcTemplate = new JdbcTemplate(dataSource);
-        return vJdbcTemplate.query(String.format(QUERRY_LIST_COMPANIES_BY_NAME, name), mapperIntegerFromCompany);
+        try (Session session = sessionFactory.openSession();){
+            TypedQuery<Integer> querry = session.createQuery(QUERRY_LIST_COMPANIES_BY_NAME,Integer.class);
+            return querry.getResultList();
+        }
     }
 
 }

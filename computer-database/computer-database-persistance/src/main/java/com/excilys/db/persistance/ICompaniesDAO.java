@@ -3,6 +3,7 @@ package com.excilys.db.persistance;
 import java.util.List;
 import java.util.Optional;
 
+
 import com.excilys.db.model.Company;
 
 public interface ICompaniesDAO {
@@ -61,5 +62,9 @@ public interface ICompaniesDAO {
      * @return la liste des Id
      */
     List<Integer> getIdFromName(String name);
+
+
+
+
 
 }

@@ -22,7 +22,7 @@ public class ComputerTest extends TestCase {
         Company companie = new Company(10);
         companie.setName("Digital Equipment Corporation");
         comp.setCompany(companie);
-        assertEquals(" | name=Name | introduced=null | discontinued=null | companyId=Digital Equipment Corporation",comp.toString());
+        assertEquals(" | id = null | name=Name | introduced=null | discontinued=null | companyId=Digital Equipment Corporation",comp.toString());
     }
     
     public void testToStringCompanyNull() {
@@ -31,7 +31,7 @@ public class ComputerTest extends TestCase {
         comp.setDiscontinued(null);
         Company companie = null;
         comp.setCompany(companie);
-        assertEquals(" | name=Name | introduced=null | discontinued=null | companyId=null",comp.toString());
+        assertEquals(" | id = null | name=Name | introduced=null | discontinued=null | companyId=null",comp.toString());
     }
 
     public void testEqualsTrue() {

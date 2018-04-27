@@ -51,7 +51,6 @@ public class CompaniesService implements ICompaniesService {
     }
 
     @Override
-    @Transactional(rollbackFor = Exception.class)
     public void destroy(int id) throws ValidatorException {
         companiesValidator.exist(id);
         companies.deleteCompany(id);
