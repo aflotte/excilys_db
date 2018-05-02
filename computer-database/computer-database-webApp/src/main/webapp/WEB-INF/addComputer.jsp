@@ -12,10 +12,26 @@
 <link href="static/css/font-awesome.css" rel="stylesheet" media="screen">
 <link href="static/css/main.css" rel="stylesheet" media="screen">
 </head>
+<c:url value="/logout" var="logoutUrl" />
+<form action="${logoutUrl}" method="post" id="logoutForm">
+    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+</form>
+<script>
+    function formSubmit() {
+        document.getElementById("logoutForm").submit();
+    }
+</script>
 <body>
     <header class="navbar navbar-inverse navbar-fixed-top">
         <div class="container">
             <a class="navbar-brand" href="dashboard"> <spring:message code="index.application"/> </a>
+            <a href="?lang=fr">FR</a>
+            <a href="?lang=en">EN</a>
+            <div class="pull-right">
+                <a href="updateUser?username=${username}">${username}</a>
+                <a href="javascript:formSubmit()"><spring:message code="logout"/></a>
+</div>
+            
         </div>
     </header>
 
