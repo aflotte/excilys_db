@@ -139,7 +139,7 @@ public class CompaniesDAO implements ICompaniesDAO {
     @Override
     public List<Integer> getIdFromName(String name) {
         try (Session session = sessionFactory.openSession();){
-            TypedQuery<Integer> querry = session.createQuery(QUERRY_LIST_COMPANIES_BY_NAME,Integer.class);
+            TypedQuery<Integer> querry = session.createQuery(String.format(QUERRY_LIST_COMPANIES_BY_NAME,name),Integer.class);
             return querry.getResultList();
         }
     }

@@ -20,7 +20,6 @@ import com.excilys.db.validator.ComputerValidator;
 import page.PageComputerInterface;
 
 @Service("computerService")
-@EnableTransactionManagement
 public class ComputerService implements IComputerService {
     static org.slf4j.Logger logger = org.slf4j.LoggerFactory.getLogger(ComputerService.class);
     @Autowired
@@ -152,7 +151,6 @@ public class ComputerService implements IComputerService {
     /* (non-Javadoc)
      * @see com.excilys.db.service.IComputerService#deleteListComputer(int[])
      */
-    @Transactional(rollbackFor = Exception.class)
     @Override
     public void deleteListComputer(List<Integer> ids) {
         computer.deleteListComputer(ids);

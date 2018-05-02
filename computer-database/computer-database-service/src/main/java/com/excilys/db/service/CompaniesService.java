@@ -15,7 +15,6 @@ import com.excilys.db.persistance.ICompaniesDAO;
 import com.excilys.db.validator.CompaniesValidator;
 
 @Service("companiesService")
-@EnableTransactionManagement
 public class CompaniesService implements ICompaniesService {
     @Autowired
     private ICompaniesDAO companies;

@@ -59,7 +59,11 @@ public class ComputerMapper {
     public static ComputerDTO computerToDTO(Computer computer) {
         ComputerDTO toReturn = new ComputerDTO();
         toReturn.setId(computer.getId());
-        toReturn.setCompany(computer.getCompany().getName());
+        if (computer.getCompany() != null) {
+            toReturn.setCompany(computer.getCompany().getName());
+        } else {
+            toReturn.setCompany("");
+        }
         toReturn.setName(computer.getName());
         if (computer.getDiscontinued() == null) {
             toReturn.setDiscontinued("");

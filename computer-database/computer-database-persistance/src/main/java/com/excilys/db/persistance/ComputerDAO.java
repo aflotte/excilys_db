@@ -25,8 +25,9 @@ public class ComputerDAO implements IComputerDAO {
     private static final String QUERRY_LIST_COMPUTERS_ID = "FROM " + Computer.class.getName() + " computer WHERE computer.id = %d ";
     private static final String QUERRY_LIST_COMPUTER_BY_NAME = "SELECT computer.id FROM " + Computer.class.getName() + " computer WHERE computer.name = '%s' ";
     private static final String ORDER_BY = " ORDER BY %s %s ";
+    private static final String ORDER_BY_COMPUTER = " computer ORDER BY %s %s ";
     private static final String QUERRY_COUNT = "SELECT COUNT(*) FROM " + Computer.class.getName();
-    private static final String LIKE = " computer WHERE computer IN ((FROM computer WHERE computer.name LIKE \'%%%s%%\'),(FROM computer WHERE computer.company.name LIKE \'%%%s%%\'))";
+    private static final String LIKE = " computer WHERE computer IN ((FROM " + Computer.class.getName() + " computer1 WHERE computer1.name LIKE \'%%%s%%\'),(FROM " + Computer.class.getName() + " computer2 WHERE computer2.company.name LIKE \'%%%s%%\'))";
 
     /* (non-Javadoc)
      * @see com.excilys.db.persistance.IComputerDAO#listComputer()
@@ -46,7 +47,7 @@ public class ComputerDAO implements IComputerDAO {
     @Override
     public List<Computer> listComputer(int offset, int limit,String sortBy, String orderBy ) {
         try (Session session = sessionFactory.openSession();){
-            TypedQuery<Computer> querry = session.createQuery(QUERRY_LIST_COMPUTERS + String.format(ORDER_BY, sortBy, orderBy), Computer.class);
+            TypedQuery<Computer> querry = session.createQuery(QUERRY_LIST_COMPUTERS + String.format(ORDER_BY_COMPUTER, sortBy, orderBy), Computer.class);
             querry.setMaxResults(limit);
             querry.setFirstResult(offset);
             return querry.getResultList();
@@ -131,9 +132,13 @@ public class ComputerDAO implements IComputerDAO {
         try (Session session = sessionFactory.openSession();){
             session.getTransaction().begin();
             for (int i=0;i < ids.size();i++) {
-                Optional<Computer> computer = showDetails(i);
+                Optional<Computer> computer = showDetails(ids.get(i));
                 if (computer.isPresent()) {
                     session.delete(computer.get());
+                    if (i%19 == 0) {
+                        session.flush();
+                        session.clear();
+                    }
                 }
             }
             session.getTransaction().commit();
@@ -148,6 +153,10 @@ public class ComputerDAO implements IComputerDAO {
         if (session != null) {
             for (int i=0;i < ids.size();i++) {
                 deleteAComputer(ids.get(i));
+                if (i%19 == 0) {
+                    session.flush();
+                    session.clear();
+                }
             }
         } else {
             deleteListComputer(ids);

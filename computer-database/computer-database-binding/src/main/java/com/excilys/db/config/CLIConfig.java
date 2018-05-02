@@ -1,13 +1,13 @@
 package com.excilys.db.config;
 
 import org.hibernate.SessionFactory;
-import org.hibernate.cfg.Environment;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.core.env.Environment;
 import org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
@@ -32,23 +32,18 @@ import javax.sql.DataSource;
 })
 public class CLIConfig {
 
-    @Value("${dbdriver}")
-    private String driverClassName;
+    private Environment environment;
 
-    @Value("${database}")
-    private String url;
+    public CLIConfig(Environment environment) {
+        this.environment = environment;
+    }
 
-    @Value("${dbuser}")
-    private String username;
-
-    @Value("${dbpassword}")
-    private String password;
-
-    //TODO : enlever les magics string
     @Bean
     public DataSource dataSource() {
-        DriverManagerDataSource driverManagerDataSource = new DriverManagerDataSource("jdbc:mysql://localhost:3306/computer-database-db?zeroDateTimeBehavior=CONVERT_TO_NULL&autoReconnect=true&characterEncoding=UTF-8&characterSetResults=UTF-8&characterSetResults=UTF-8&useSSL=FALSE&useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=CET", "admincdb", "qwerty1234");
-        driverManagerDataSource.setDriverClassName("com.mysql.cj.jdbc.Driver");
+        DriverManagerDataSource driverManagerDataSource = new DriverManagerDataSource( environment.getProperty("database"),
+                environment.getProperty("dbuser"),
+                environment.getProperty("dbpassword"));
+        driverManagerDataSource.setDriverClassName(environment.getProperty("dbdriver"));
         return driverManagerDataSource;
     }
     
