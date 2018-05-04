@@ -22,6 +22,7 @@ import org.springframework.orm.hibernate5.HibernateTransactionManager;
 import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.web.servlet.ViewResolver;
+import org.springframework.web.servlet.config.annotation.DefaultServletHandlerConfigurer;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
@@ -189,5 +190,10 @@ public class WebConfig implements WebMvcConfigurer {
     public void addResourceHandlers(final ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/static/**").addResourceLocations("/static/");
     }
+    
+    @Override
+    public void configureDefaultServletHandling(DefaultServletHandlerConfigurer configurer) {
+        configurer.enable();
+}
 
 }

@@ -45,12 +45,14 @@
             <artifactId>jstl</artifactId>
         </dependency>
         <dependency>
-    <groupId>org.springframework.security</groupId>
-    <artifactId>spring-security-taglibs</artifactId>
-</dependency>
+            <groupId>javax.xml.bind</groupId>
+            <artifactId>jaxb-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-taglibs</artifactId>
+        </dependency>
     </dependencies>
-    
-    
     <build>
         <finalName>computer-database-webApp</finalName>
         <plugins>
