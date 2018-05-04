@@ -17,8 +17,8 @@
         <div class="container">
             <a class="navbar-brand" href="dashboard"> Application - Computer Database </a>
             <div class="pull-right">
-                <a href="?lang=fr">FR</a>
-                <a href="?lang=en">EN</a>
+                <a class="navbar-brand" href="?lang=fr">FR</a>
+                <a class="navbar-brand" href="?lang=en">EN</a>
             </div>
         </div>
     </header>
@@ -29,7 +29,7 @@
             <p><spring:message code="autherror"/></p>
         </c:if>
         <c:if test="${param.logout != null}">       
-            <p><spring:message code="logedout"/></p>
+            <a class="navbar-brand"><spring:message  code="logedout"/></a>
         </c:if>
         <p>
             <label for="username"><spring:message code="Username"/></label>

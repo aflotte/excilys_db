@@ -16,12 +16,12 @@ import javax.persistence.Table;
 public class UserRoles {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "user_role_id")
+    @Column(name = "id")
     private int userRoleId;
     
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
     @JoinColumn(name = "username")
-    private User user;
+    private Users user;
     
     private String role;
     
@@ -29,7 +29,7 @@ public class UserRoles {
         this.role = "ROLE_USER";
     }
     
-    public UserRoles(User user, String role) {
+    public UserRoles(Users user, String role) {
         this.user = user;
         this.role = role;
     }
@@ -46,10 +46,10 @@ public class UserRoles {
     public void setRole(String role) {
         this.role = role;
     }
-    public User getUser() {
+    public Users getUser() {
         return user;
     }
-    public void setUser(User user) {
+    public void setUser(Users user) {
         this.user = user;
     }
     

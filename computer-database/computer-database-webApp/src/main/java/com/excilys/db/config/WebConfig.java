@@ -43,6 +43,7 @@ import org.springframework.web.servlet.view.JstlView;
         "com.excilys.db.cli",
         "com.excilys.db.validator",
         "com.excilys.db.controller",
+        "com.excilys.db.config",
         "com.memorynotfound"
 })
 @PropertySource("classpath:/connect.properties")

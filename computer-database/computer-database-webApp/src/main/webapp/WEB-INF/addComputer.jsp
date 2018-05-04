@@ -25,8 +25,8 @@
     <header class="navbar navbar-inverse navbar-fixed-top">
         <div class="container">
             <a class="navbar-brand" href="dashboard"> <spring:message code="index.application"/> </a>
-            <a href="?lang=fr">FR</a>
-            <a href="?lang=en">EN</a>
+            <a class="navbar-brand" href="?lang=fr">FR</a>
+            <a class="navbar-brand" href="?lang=en">EN</a>
             <div class="pull-right">
                 <a href="updateUser?username=${username}">${username}</a>
                 <a href="javascript:formSubmit()"><spring:message code="logout"/></a>

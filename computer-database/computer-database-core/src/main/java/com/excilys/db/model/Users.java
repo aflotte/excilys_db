@@ -10,7 +10,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "users")
-public class User {    
+public class Users {    
     @Id
     private String username;
 
@@ -20,13 +20,13 @@ public class User {
     @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
     private List<UserRoles> userRoles;
 
-    public User(String username, String password, Boolean enabled) {
+    public Users(String username, String password, Boolean enabled) {
         this.username = username;
         this.password = password;
         this.enable = enabled;
     }
 
-    public User() {
+    public Users() {
     }
 
     public String getUsername() {
@@ -85,7 +85,7 @@ public class User {
             return false;
         if (getClass() != obj.getClass())
             return false;
-        User other = (User) obj;
+        Users other = (Users) obj;
         if (enable == null) {
             if (other.enable != null)
                 return false;

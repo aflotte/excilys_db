@@ -16,8 +16,8 @@
     <header class="navbar navbar-inverse navbar-fixed-top">
         <div class="container">
             <a class="navbar-brand" href="dashboard"> Application - Computer Database </a>
-            <a href="?lang=fr">FR</a>
-            <a href="?lang=en">EN</a>
+            <a class="navbar-brand" href="?lang=fr">FR</a>
+            <a class="navbar-brand" href="?lang=en">EN</a>
             <div class="pull-right">
             </div>
         </div>
