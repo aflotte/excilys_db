@@ -97,7 +97,7 @@ public class ComputerMapper {
      * @param computer l'ordinateur DTO
      * @return l'ordinateur
      */
-    public Computer computerDTOToComputer(ComputerDTO computer, CompagnyIdable service) {
+    public static Computer computerDTOToComputer(ComputerDTO computer, CompagnyIdable service) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         formatter = formatter.withLocale(Locale.FRANCE);
         Computer toReturn = new Computer(computer.getName());
@@ -134,7 +134,7 @@ public class ComputerMapper {
      * @param computer la liste des ordinateurs DTO
      * @return la liste des ordinateurs
      */
-    public List<Computer> computerDTOListToComputer(List<ComputerDTO> computer, CompagnyIdable service) {
+    public static List<Computer> computerDTOListToComputer(List<ComputerDTO> computer, CompagnyIdable service) {
         List<Computer> toReturn = new ArrayList<>();
         for (int i = 0; i < computer.size(); i++) {
             toReturn.add(computerDTOToComputer(computer.get(i),service));

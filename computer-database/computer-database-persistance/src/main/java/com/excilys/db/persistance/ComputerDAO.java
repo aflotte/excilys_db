@@ -35,6 +35,7 @@ public class ComputerDAO implements IComputerDAO {
     @Override
     public List<Computer> listComputer() {
         try (Session session = sessionFactory.openSession();){
+            logger.warn(QUERRY_LIST_COMPUTERS);
             TypedQuery<Computer> querry = session.createQuery(QUERRY_LIST_COMPUTERS,Computer.class);
             return querry.getResultList();
         }
@@ -191,6 +192,7 @@ public class ComputerDAO implements IComputerDAO {
     @Override
     public List<Computer> listComputerLike(int offset, int limit, String name, String sortBy, String orderBy) {
         try (Session session = sessionFactory.openSession();){
+            System.out.println(orderBy);
             TypedQuery<Computer> querry = session.createQuery(QUERRY_LIST_COMPUTERS + String.format(LIKE, name, name) + String.format(ORDER_BY, sortBy, orderBy), Computer.class);
             querry.setMaxResults(limit);
             querry.setFirstResult(offset);

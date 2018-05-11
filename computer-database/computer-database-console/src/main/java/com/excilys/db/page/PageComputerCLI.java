@@ -6,6 +6,7 @@ import java.util.Scanner;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.excilys.db.dto.ComputerDTO;
 import com.excilys.db.exception.CompaniesInexistantException;
 import com.excilys.db.model.Computer;
 import com.excilys.db.service.IComputerService;
@@ -14,7 +15,7 @@ import com.excilys.db.service.IComputerService;
 @Component
 public class PageComputerCLI {
 
-    List<Computer> computers;
+    List<ComputerDTO> computers;
     int index;
     private Scanner sc;
     protected int pageSize;
@@ -34,7 +35,7 @@ public class PageComputerCLI {
      * @param list des ordinateurs
      * @param sc le scanner
      */
-    public PageComputerCLI(List<Computer> list, Scanner sc) {
+    public PageComputerCLI(List<ComputerDTO> list, Scanner sc) {
         computers = list;
         index = 0;
         this.sc = sc;
@@ -81,11 +82,5 @@ public class PageComputerCLI {
         return computerService.listComputer(offset, limit, sortBy, orderBy);
     }
 
-    /**
-     *
-     */
-    public void updateComputer() {
-        computers = computerService.listComputer(this.pageNumber, this.pageSize);
-    }
 
 }

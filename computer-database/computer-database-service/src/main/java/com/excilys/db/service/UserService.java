@@ -1,4 +1,4 @@
-package com.excilys.db.config;
+package com.excilys.db.service;
 
 
 import java.util.Optional;

@@ -5,10 +5,13 @@ import com.excilys.db.service.ICompaniesService;
 import com.excilys.db.service.IComputerService;
 import com.excilys.db.validator.ComputerValidator;
 import com.excilys.db.config.CLIConfig;
+import com.excilys.db.dto.CompanyDTO;
+import com.excilys.db.dto.ComputerDTO;
 import com.excilys.db.exception.CompaniesIdIncorrectException;
 import com.excilys.db.exception.CompaniesInexistantException;
 import com.excilys.db.exception.IncoherentDatesException;
 import com.excilys.db.exception.ServiceException;
+import com.excilys.db.mapper.ComputerMapper;
 import com.excilys.db.model.Company;
 import com.excilys.db.model.Computer;
 
@@ -17,6 +20,12 @@ import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Optional;
 import java.util.Scanner;
+
+import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.client.Entity;
+import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.core.GenericType;
+import javax.ws.rs.core.MediaType;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
@@ -42,7 +51,12 @@ public class CLI {
     private ComputerValidator computerValidator;
     @Autowired
     private ScanCLI scannerCLI;
-    
+
+    private static final String REST_URI = "http://localhost:8080/computer-database/";
+
+    private WebTarget client = ClientBuilder.newClient().target(REST_URI);
+
+
     /**
      *
      * @param args aucun attendu
@@ -54,10 +68,10 @@ public class CLI {
         context.getBean(CLI.class).start();
 
     }
-    
+
     private CLI() {
     }
-    
+
     private void start() {
         System.out.println("Bienvenue sur le CLI de la base de donnée");
         scanner = new Scanner(System.in);
@@ -79,11 +93,7 @@ public class CLI {
                 supprimerOrdinateur();
                 break;
             case AFFICHER_ORDINATEUR:
-                try {
-                    afficherOrdinateur();
-                } catch (ServiceException e) {
-                    logger.warn(e.getMessage());
-                }
+                afficherOrdinateur();
                 break;
             case METTRE_A_JOUR:
                 mettreAJour();
@@ -106,12 +116,15 @@ public class CLI {
         int idCompany = 0;
         idCompany = ScanCLI.scanInt(scanner);
         try {
-            companiesService.destroy(idCompany);
+            client
+            .path("company/delete/" + idCompany)
+            .request(MediaType.APPLICATION_JSON)
+            .delete();
         }catch (Exception e){
             System.out.println("La compagnie a supprimer n'existe pas");
         }
-        
-        
+
+
     }
 
     /**
@@ -146,7 +159,10 @@ public class CLI {
      *
      */
     public void afficherCompagnies() {
-        List<Company> listeCompanies = companiesService.listCompanies();
+        List<CompanyDTO> listeCompanies = client
+                .path("listCompany/")
+                .request(MediaType.APPLICATION_JSON)
+                .get(new GenericType<List<CompanyDTO>>() {});
         PageCompaniesCLI page = new PageCompaniesCLI(listeCompanies, scanner);
         System.out.println("Voici la liste des compagnies ( Q to exit ): ");
         page.afficher();
@@ -157,7 +173,10 @@ public class CLI {
      * @throws CompaniesInexistantException erreur avec les compagnies lkors de la création de l'ordinateur
      */
     public void afficherOrdinateurs() {
-        List<Computer> listeOrdinateur = computerService.listComputer();
+        List<ComputerDTO> listeOrdinateur = client
+                .path("listComputer/")
+                .request(MediaType.APPLICATION_JSON)
+                .get(new GenericType<List<ComputerDTO>>() {});
         PageComputerCLI page = new PageComputerCLI(listeOrdinateur, scanner);
         System.out.println("Voici la liste des ordinateurs ( Q to exit ): ");
         page.afficher();
@@ -168,16 +187,20 @@ public class CLI {
      */
     public void ajouterOrdinateur() {
         Computer aAjouter = null;
-            try {
-                aAjouter = scannerCLI.scanComputer(scanner);
-            } catch (InputMismatchException | CompaniesIdIncorrectException | IncoherentDatesException e1) {
-                logger.warn(e1.getMessage());
-            }
-            try {
-                computerService.createComputer(aAjouter);
-            } catch (ServiceException e) {
-                logger.warn(e.getMessage());
-            }
+        try {
+            aAjouter = scannerCLI.scanComputer(scanner);
+        } catch (InputMismatchException | CompaniesIdIncorrectException | IncoherentDatesException e1) {
+            logger.warn(e1.getMessage());
+        }
+        try {
+            client
+            .path("computer/addComputer/")
+            .request(MediaType.APPLICATION_JSON)
+            .post(Entity.entity(aAjouter, MediaType.APPLICATION_JSON));
+            computerService.createComputer(aAjouter);
+        } catch (ServiceException e) {
+            logger.warn(e.getMessage());
+        }
     }
 
     /**
@@ -190,7 +213,10 @@ public class CLI {
             toDelete = ScanCLI.scanInt(scanner);
         }
         if (toDelete != -2) {
-            computerService.deleteComputer(toDelete);
+            client
+            .path("computer/delete/" + toDelete)
+            .request(MediaType.APPLICATION_JSON)
+            .delete();
         }
     }
 
@@ -199,7 +225,7 @@ public class CLI {
      * @throws CompaniesInexistantException erreur avec les compagnies lors de la création de l'ordinateur
      * @throws ServiceException 
      */
-    private void afficherOrdinateur() throws ServiceException {
+    private void afficherOrdinateur() {
         System.out.println("Donner l'Id de l'ordinateur à afficher ( -2 pour annuler )");
         int toDisplay = -1;
         while (toDisplay == -1) {
@@ -209,9 +235,12 @@ public class CLI {
             }
         }
         if (toDisplay != -2) {
-            Optional<Computer> computer = computerService.showDetails(toDisplay);
-            if (computer.isPresent()) {
-                System.out.println(computer.get());
+            ComputerDTO computer = client
+                    .path("computer/Computer/" + toDisplay)
+                    .request(MediaType.APPLICATION_JSON)
+                    .get(ComputerDTO.class);
+            if (computer != null) {
+                System.out.println(computer);
             } else {
                 System.out.println("Aucun ordinateur correspondant à l'Id rentré n'a été trouvé !");
             }
@@ -239,11 +268,11 @@ public class CLI {
             toUpdate = ScanCLI.scanInt(scanner);
         }
         if (toUpdate != -2) {
-            try {
-                computerService.updateAComputer(aAjouter, toUpdate);
-            } catch (ServiceException e) {
-                logger.warn(e.getMessage());
-            }
+            aAjouter.setId(toUpdate);
+            client
+            .path("computer/updateComputer")
+            .request(MediaType.APPLICATION_JSON)
+            .put(Entity.entity(aAjouter, MediaType.APPLICATION_JSON));
         }
 
     }

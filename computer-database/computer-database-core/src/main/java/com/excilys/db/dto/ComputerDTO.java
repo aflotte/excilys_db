@@ -47,4 +47,23 @@ public class ComputerDTO {
     public void setDiscontinued(String discontinued) {
         this.discontinued = discontinued;
     }
+    
+    @Override
+    public String toString() {
+        StringBuilder sB = new StringBuilder(200);
+        sB.append(" | id = ").append(this.getId());
+        sB.append(" | name=").append(this.getName());
+        sB.append(" | introduced=").append(this.getIntroduced());
+        sB.append(" | discontinued=").append(this.getDiscontinued());
+        String compIdtoPrint;
+        if (this.getCompany() == null) {
+            compIdtoPrint = "null";
+        } else {
+            compIdtoPrint = this.getCompany();
+        }
+        sB.append(" | companyId=").append(compIdtoPrint);
+        return sB.toString();
+
+    }
+    
 }

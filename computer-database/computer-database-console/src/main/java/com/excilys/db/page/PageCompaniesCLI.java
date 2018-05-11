@@ -3,11 +3,12 @@ package com.excilys.db.page;
 import java.util.List;
 import java.util.Scanner;
 
+import com.excilys.db.dto.CompanyDTO;
 import com.excilys.db.model.Company;
 
 
 public class PageCompaniesCLI {
-    List<Company> companies;
+    List<CompanyDTO> companies;
     int index;
     static final int NOMBRE_AFFICHAGE = 10;
     private Scanner sc;
@@ -17,7 +18,7 @@ public class PageCompaniesCLI {
      * @param list la liste a afficher
      * @param sc le scanner
      */
-    public PageCompaniesCLI(List<Company> list, Scanner sc) {
+    public PageCompaniesCLI(List<CompanyDTO> list, Scanner sc) {
         companies = list;
         index = 0;
         this.sc = sc;
